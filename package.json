@@ -1,0 +1,28 @@
+{
+  "author": "Dario Sechi",
+  "dependencies": {
+    "nanoid": "^3.1.23"
+  },
+  "devDependencies": {
+    "@microsoft/api-extractor": "^7.16.1",
+    "@rollup/plugin-typescript": "^8.2.1",
+    "@types/jest": "^26.0.22",
+    "jest": "^27.0.4",
+    "prettier": "^2.3.1",
+    "rollup": "^2.51.2",
+    "rollup-plugin-terser": "^7.0.2",
+    "ts-jest": "^27.0.3",
+    "tslib": "^2.3.0",
+    "typescript": "4.2.2"
+  },
+  "license": "MIT",
+  "main": "index.js",
+  "name": "@queelag/core",
+  "scripts": {
+    "test": "yarn jest --coverage",
+    "build": "rm -rf declarations && rm -rf dist && yarn tsc && yarn api-extractor run --local && yarn rollup -c rollup.config.js",
+    "tarball": "yarn version && cp package.json dist/. && cd dist && yarn pack",
+    "deploy": "yarn test && yarn build && yarn tarball && yarn publish dist/*.tgz --access public"
+  },
+  "version": "1.0.0"
+}
