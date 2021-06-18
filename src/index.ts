@@ -1,5 +1,6 @@
 export * from './definitions/enums'
 export * from './definitions/types'
+export * from './modules/api'
 export * from './modules/debounce'
 export * from './modules/interval'
 export * from './modules/localization'
