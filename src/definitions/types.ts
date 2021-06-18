@@ -1,5 +1,4 @@
 export type ID = string
-export type OptionalID = string | undefined
 
 export type LocalizationPack = {
   data: LocalizationPackData
@@ -8,4 +7,8 @@ export type LocalizationPack = {
 
 export type LocalizationPackData = {
   [key: string]: string | LocalizationPackData
+}
+
+export type WithIdentity = {
+  id: ID
 }
