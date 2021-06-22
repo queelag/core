@@ -48,6 +48,15 @@ export class ObjectUtils {
     }
   }
 
+  static omit<T extends object, K extends keyof T>(object: T, ...keys: K[]): Omit<T, K> {
+    let clone: T
+
+    clone = { ...object }
+    keys.forEach((v: K) => delete clone[v])
+
+    return clone
+  }
+
   static has<T extends object>(object: T, key: string | keyof T): boolean {
     return this.get(object, key, this.plain) !== this.plain
   }
