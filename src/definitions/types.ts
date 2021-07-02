@@ -9,6 +9,8 @@ export type LocalizationPackData = {
   [key: string]: string | LocalizationPackData
 }
 
+export type StatusTransformer = (keys: string[]) => string
+
 export type WithIdentity = {
   id: ID
 }

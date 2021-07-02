@@ -1,11 +1,12 @@
-const terser = require('rollup-plugin-terser').terser
-const typescript = require('@rollup/plugin-typescript')
+import typescript from '@rollup/plugin-typescript'
+import { terser } from 'rollup-plugin-terser'
 
 export default {
+  external: ['axios', 'nanoid'],
   input: 'src/index.ts',
-  plugins: [terser(), typescript()],
   output: {
     file: 'dist/index.js',
-    format: 'es'
-  }
+    format: 'cjs'
+  },
+  plugins: [terser(), typescript()]
 }

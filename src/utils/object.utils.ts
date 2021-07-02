@@ -3,6 +3,10 @@ import { tc } from '../modules/tc'
 export class ObjectUtils {
   private static plain: object = {}
 
+  static clone<T extends object>(object: T): T {
+    return JSON.parse(JSON.stringify(object))
+  }
+
   static get<T extends object, U extends any>(object: T, key: string | keyof T, fallback?: U): U | undefined {
     switch (typeof key) {
       case 'number':
@@ -48,11 +52,11 @@ export class ObjectUtils {
     }
   }
 
-  static omit<T extends object, K extends keyof T>(object: T, ...keys: K[]): Omit<T, K> {
+  static omit<T extends object>(object: T, ...keys: (keyof T)[]): Omit<T, keyof T> {
     let clone: T
 
     clone = { ...object }
-    keys.forEach((v: K) => delete clone[v])
+    keys.forEach((v: keyof T) => delete clone[v])
 
     return clone
   }

@@ -1,5 +1,6 @@
 import Axios, { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios'
 import { APIMethod } from '../definitions/enums'
+import { StatusTransformer } from '../definitions/types'
 import { URLUtils } from '../utils/url.utils'
 import { Status } from './status'
 import { tcp } from './tcp'
@@ -10,11 +11,11 @@ export class API {
   private readonly instance: AxiosInstance
   readonly status: Status
 
-  constructor(baseURL: string = '', config: AxiosRequestConfig = {}) {
+  constructor(baseURL: string = '', config: AxiosRequestConfig = {}, statusTransformer: StatusTransformer = Status.defaultTransformer) {
     this.baseURL = baseURL
     this.config = config
     this.instance = Axios.create({ baseURL: baseURL, ...config })
-    this.status = new Status()
+    this.status = new Status(statusTransformer)
   }
 
   async delete<T>(url: string, config?: AxiosRequestConfig): Promise<AxiosResponse<T> | AxiosError> {

@@ -8,7 +8,7 @@ class _Localization {
 
   constructor() {
     this.data = {}
-    this.language = window.navigator.language.slice(0, 2) || 'en'
+    this.language = global.window ? window.navigator.language.slice(0, 2) : 'en'
     this.packs = []
   }
 

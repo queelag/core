@@ -1,10 +1,15 @@
+import { StatusTransformer } from '../definitions/types'
 import { Logger } from './logger'
 
-class Status {
+export class Status {
   readonly data: Map<string, string> = new Map()
 
-  get(keys: string[]): string {
-    return this.data.get(keys.join('_')) || this.IDLE
+  constructor(transformer: StatusTransformer = Status.defaultTransformer) {
+    this.transformer = transformer
+  }
+
+  private get(keys: string[]): string {
+    return this.data.get(this.transformer(keys)) || this.IDLE
   }
 
   idle(...keys: string[]): void {
@@ -23,14 +28,18 @@ class Status {
     this.set(keys, this.ERROR)
   }
 
-  set(keys: string[], status: string): void {
-    this.data.set(keys.join('_'), status)
-    Logger.debug('Status', 'set', `The status for the key ${keys.join('_')} has been set to ${status}.`)
+  private set(keys: string[], status: string): void {
+    this.data.set(this.transformer(keys), status)
+    Logger.debug('Status', 'set', `The status for the key ${this.transformer(keys)} has been set to ${status}.`)
   }
 
   clear(): void {
     this.data.clear()
     Logger.debug('Status', 'clear', `Every status has been set to ${this.IDLE}.`)
+  }
+
+  private transformer(keys: string[]): string {
+    return keys.join('_')
   }
 
   isIdle(...keys: string[]): boolean {
@@ -81,21 +90,23 @@ class Status {
     return keys.some((v: string[]) => this.isError(...v))
   }
 
-  get IDLE(): string {
+  private get IDLE(): string {
     return 'IDLE'
   }
 
-  get PENDING(): string {
+  private get PENDING(): string {
     return 'PENDING'
   }
 
-  get SUCCESS(): string {
+  private get SUCCESS(): string {
     return 'SUCCESS'
   }
 
-  get ERROR(): string {
+  private get ERROR(): string {
     return 'ERROR'
   }
-}
 
-export { Status }
+  static get defaultTransformer(): StatusTransformer {
+    return (keys: string[]) => keys.join('_')
+  }
+}
