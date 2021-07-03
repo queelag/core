@@ -52,11 +52,30 @@ export class ObjectUtils {
     }
   }
 
-  static omit<T extends object>(object: T, ...keys: (keyof T)[]): Omit<T, keyof T> {
+  static pick<T extends object>(object: T, keys: (keyof T)[]): Pick<T, keyof T> {
+    let output: Pick<T, keyof T>
+
+    // @ts-ignore
+    output = {}
+    keys.forEach((k: keyof T) => object[k])
+
+    return output
+  }
+
+  static pickToArray<T extends object>(object: T, keys: (keyof T)[]): Pick<T, keyof T>[] {
+    let output: Pick<T, keyof T>[]
+
+    output = []
+    Object.entries(object).forEach((v: [string, any]) => keys.includes(v[0] as keyof T) && output.push(v[1]))
+
+    return output
+  }
+
+  static omit<T extends object>(object: T, keys: (keyof T)[]): Omit<T, keyof T> {
     let clone: T
 
     clone = { ...object }
-    keys.forEach((v: keyof T) => delete clone[v])
+    keys.forEach((k: keyof T) => delete clone[k])
 
     return clone
   }

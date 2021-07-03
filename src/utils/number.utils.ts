@@ -11,8 +11,10 @@ export class NumberUtils {
     return isNaN(parseFloat(value)) ? fallback : parseFloat(value)
   }
 
-  static pickLowest(...values: number[]): number {
-    return values.reduce((r: number, v: number) => (v < r ? v : r), 0)
+  static pickLowest(values: number[]): number
+  static pickLowest(...values: number[]): number
+  static pickLowest(...args: any[]): number {
+    return (args.length > 1 ? args : args[0]).reduce((r: number, v: number) => (v < r ? v : r), 0)
   }
 
   static range(a: number, b: number): number {
