@@ -6,55 +6,55 @@ import { rc } from './rc'
 import { Status } from './status'
 import { tcp } from './tcp'
 
-export class API {
+export class API<T extends AxiosRequestConfig = AxiosRequestConfig, U extends AxiosError = AxiosError> {
   readonly baseURL: string
   readonly config: AxiosRequestConfig
   readonly instance: AxiosInstance
   readonly status: Status
 
-  constructor(baseURL: string = '', config: AxiosRequestConfig = {}, statusTransformer: StatusTransformer = API.defaultStatusTransformer) {
+  constructor(baseURL: string = '', config: T = API.dummyConfig, statusTransformer: StatusTransformer = API.defaultStatusTransformer) {
     this.baseURL = baseURL
     this.config = config
     this.instance = Axios.create({ baseURL: baseURL, ...config })
     this.status = new Status(statusTransformer)
   }
 
-  async delete<T>(url: string, config: AxiosRequestConfig = {}): Promise<AxiosResponse<T> | AxiosError> {
-    return this.handle<T>(APIMethod.DELETE, url, undefined, config)
+  async delete<V, W extends U>(url: string, config: T = API.dummyConfig): Promise<AxiosResponse<V> | W> {
+    return this.handle<V, any, W>(APIMethod.DELETE, url, undefined, config)
   }
 
-  async get<T>(url: string, config: AxiosRequestConfig = {}): Promise<AxiosResponse<T> | AxiosError> {
-    return this.handle<T>(APIMethod.GET, url, undefined, config)
+  async get<V, W extends U>(url: string, config: T = API.dummyConfig): Promise<AxiosResponse<V> | W> {
+    return this.handle<V, any, W>(APIMethod.GET, url, undefined, config)
   }
 
-  async post<T, U>(url: string, data?: U, config: AxiosRequestConfig = {}): Promise<AxiosResponse<T> | AxiosError> {
-    return this.handle<T, U>(APIMethod.POST, url, data, config)
+  async post<V, W, X extends U>(url: string, data?: W, config: T = API.dummyConfig): Promise<AxiosResponse<V> | X> {
+    return this.handle<V, W, X>(APIMethod.POST, url, data, config)
   }
 
-  async put<T, U>(url: string, data?: U, config: AxiosRequestConfig = {}): Promise<AxiosResponse<T> | AxiosError> {
-    return this.handle<T, U>(APIMethod.PUT, url, data, config)
+  async put<V, W, X extends U>(url: string, data?: W, config: T = API.dummyConfig): Promise<AxiosResponse<V> | X> {
+    return this.handle<V, W, X>(APIMethod.PUT, url, data, config)
   }
 
-  private async handle<T, U = any>(method: APIMethod, url: string, data?: U, config: AxiosRequestConfig = {}): Promise<AxiosResponse<T> | AxiosError> {
-    let handled: boolean, response: AxiosResponse<T> | AxiosError
+  private async handle<V, W, X extends U>(method: APIMethod, url: string, data?: W, config: T = API.dummyConfig): Promise<AxiosResponse<V> | X> {
+    let handled: boolean, response: AxiosResponse<V> | X
 
     this.status.pending(method, url)
 
     handled = await this.handlePending(method, url, data, config)
-    if (!handled) return new Error() as AxiosError
+    if (!handled) return new Error() as X
 
     switch (method) {
       case APIMethod.DELETE:
-        response = await tcp<AxiosResponse<T>, AxiosError>(() => this.instance.delete<T>(url, config))
+        response = await tcp<AxiosResponse<V>, X>(() => this.instance.delete<V>(url, config))
         break
       case APIMethod.GET:
-        response = await tcp<AxiosResponse<T>, AxiosError>(() => this.instance.get<T>(url, config))
+        response = await tcp<AxiosResponse<V>, X>(() => this.instance.get<V>(url, config))
         break
       case APIMethod.POST:
-        response = await tcp<AxiosResponse<T>, AxiosError>(() => this.instance.post<T>(url, data, config))
+        response = await tcp<AxiosResponse<V>, X>(() => this.instance.post<V>(url, data, config))
         break
       case APIMethod.PUT:
-        response = await tcp<AxiosResponse<T>, AxiosError>(() => this.instance.put<T>(url, data, config))
+        response = await tcp<AxiosResponse<V>, X>(() => this.instance.put<V>(url, data, config))
         break
     }
 
@@ -66,24 +66,28 @@ export class API {
     }
 
     handled = await this.handleSuccess(method, url, data, config, response)
-    if (!handled) return new Error() as AxiosError
+    if (!handled) return new Error() as X
 
     return rc(() => this.status.success(method, url), response)
   }
 
-  async handleError<T, U>(method: APIMethod, url: string, data: U | undefined, config: AxiosRequestConfig, error: AxiosError<T>): Promise<boolean> {
+  async handleError<V, W, X extends U>(method: APIMethod, url: string, data: W | undefined, config: T, error: X): Promise<boolean> {
     return false
   }
 
-  async handlePending<T, U>(method: APIMethod, url: string, data: U | undefined, config: AxiosRequestConfig): Promise<boolean> {
+  async handlePending<V>(method: APIMethod, url: string, data: V | undefined, config: T): Promise<boolean> {
     return true
   }
 
-  async handleSuccess<T, U>(method: APIMethod, url: string, data: U | undefined, config: AxiosRequestConfig, response: AxiosResponse<T>): Promise<boolean> {
+  async handleSuccess<V, W>(method: APIMethod, url: string, data: W | undefined, config: T, response: AxiosResponse<V>): Promise<boolean> {
     return true
   }
 
   static get defaultStatusTransformer(): (keys: string[]) => string {
     return (keys: string[]) => keys[0] + '_' + URLUtils.removeSearchParams(keys[1])
+  }
+
+  static get dummyConfig(): any {
+    return {}
   }
 }
