@@ -8,7 +8,7 @@ export class NumberUtils {
   }
 
   static parseFloat(value: any, fallback: number = 0): number {
-    return isNaN(parseFloat(value)) ? fallback : parseFloat(value)
+    return this.isParseable(value) ? parseFloat(value) : fallback
   }
 
   static pickLowest(values: number[]): number
@@ -22,10 +22,14 @@ export class NumberUtils {
   }
 
   static isMultipleOf(value: number, of: number, decimals: number = 0): boolean {
-    return this.toFixedNumber(value / of, decimals) % 1 === 0
+    return this.toFixed(value / of, decimals) % 1 === 0
   }
 
-  static toFixedNumber(value: number, decimals: number): number {
+  static isParseable(value: any): boolean {
+    return !isNaN(parseFloat(value))
+  }
+
+  static toFixed(value: number, decimals: number): number {
     return this.parseFloat(value.toFixed(decimals))
   }
 }

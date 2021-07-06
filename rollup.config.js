@@ -6,7 +6,7 @@ export default {
   input: 'src/index.ts',
   output: {
     file: 'dist/index.js',
-    format: 'esm'
+    format: 'cjs'
   },
   plugins: [terser(), typescript()]
 }

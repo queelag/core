@@ -1,18 +1,18 @@
 import { Logger } from './logger'
 import { tc } from './tc'
 
-export class Storage<T extends object> {
+export class LocalStorage<T extends object> {
   name: string
   keys: (keyof T)[]
   store: T
 
-  constructor(name: string, keys: (keyof T)[], store: T) {
+  constructor(name: string, store: T, keys: (keyof T)[]) {
     this.name = name
     this.keys = keys
     this.store = store
   }
 
-  async load(): Promise<boolean> {
+  load(): boolean {
     let parsed: object
 
     parsed = tc(() => JSON.parse(window.localStorage.getItem(this.name) || '{}'))
@@ -28,7 +28,7 @@ export class Storage<T extends object> {
     return true
   }
 
-  async save(): Promise<boolean> {
+  save(): boolean {
     let stringified: string | Error
 
     stringified = tc(() => JSON.stringify(this.keys.reduce((r: object, k: keyof T) => ({ ...r, [k]: this.store[k] }), {})))
@@ -40,7 +40,7 @@ export class Storage<T extends object> {
     return true
   }
 
-  async remove(): Promise<void> {
+  remove(): void {
     window.localStorage.removeItem(this.name)
     Logger.debug('Storage', this.name, 'remove', `The item has been removed.`)
   }
