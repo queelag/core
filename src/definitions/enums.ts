@@ -11,3 +11,8 @@ export enum LoggerLevel {
   INFO = 'INFO',
   WARN = 'WARN'
 }
+
+export enum WriteMode {
+  CREATE = 'CREATE',
+  UPDATE = 'UPDATE'
+}

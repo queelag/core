@@ -1,24 +1,23 @@
 import { LoggerLevel } from '../definitions/enums'
-import { tc } from './tc'
 
 export class Logger {
   static level: LoggerLevel = LoggerLevel.DEBUG
   static status: 'disabled' | 'enabled' = 'enabled'
 
   static debug(...args: any[]): void {
-    this.isEnabled && this.level <= LoggerLevel.DEBUG && console.debug(this.format(args))
+    this.isEnabled && this.level <= LoggerLevel.DEBUG && console.debug(...this.format(args))
   }
 
   static info(...args: any[]): void {
-    this.isEnabled && this.level <= LoggerLevel.INFO && console.info(this.format(args))
+    this.isEnabled && this.level <= LoggerLevel.INFO && console.info(...this.format(args))
   }
 
   static warn(...args: any[]): void {
-    this.isEnabled && this.level <= LoggerLevel.WARN && console.warn(this.format(args))
+    this.isEnabled && this.level <= LoggerLevel.WARN && console.warn(...this.format(args))
   }
 
   static error(...args: any[]): void {
-    this.isEnabled && this.level <= LoggerLevel.ERROR && console.error(this.format(args))
+    this.isEnabled && this.level <= LoggerLevel.ERROR && console.error(...this.format(args))
   }
 
   static disable(): void {
@@ -29,14 +28,11 @@ export class Logger {
     this.status = 'enabled'
   }
 
-  private static format(args: any[] = []): string {
+  private static format(args: any[] = []): any[] {
     return [
       args.filter((v: any) => ['boolean', 'number', 'string'].includes(typeof v)).join(' -> '),
-      args
-        .filter((v: any) => ['object'].includes(typeof v))
-        .map((v: object) => tc(() => JSON.stringify(v, null, 2)))
-        .join('\n')
-    ].join('\n')
+      ...args.filter((v: any) => !['boolean', 'number', 'string'].includes(typeof v))
+    ]
   }
 
   private static get isDisabled(): boolean {
