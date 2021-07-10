@@ -1,36 +1,29 @@
 import { LocalizationPack, LocalizationPackData } from '../definitions/types'
 import { ObjectUtils } from '../utils/object.utils'
 
-class _Localization {
-  data: LocalizationPackData
-  language: string
-  packs: LocalizationPack[]
+class Localization {
+  static data: LocalizationPackData = {}
+  static language: string = ObjectUtils.has(window, 'navigator') ? window.navigator.language.slice(0, 2) : 'en'
+  static packs: LocalizationPack[] = []
 
-  constructor() {
-    this.data = {}
-    this.language = global.window ? window.navigator.language.slice(0, 2) : 'en'
-    this.packs = []
-  }
-
-  add(...packs: LocalizationPack[]): void {
+  static add(...packs: LocalizationPack[]): void {
     packs.forEach((v: LocalizationPack) => (this.data[v.language] = Object.assign({}, ObjectUtils.get(this.data, v.language, {}), v.data)))
   }
 
-  get(path: string, inject: any[] = ['']): string {
+  static get(path: string, inject: any[] = ['']): string {
     return inject.reduce(
-      (r: string, v: any) => r.replace(this.INJECTION_SYMBOL, ObjectUtils.get(this.data, [this.language, v].join('.'), v)),
+      (r: string, v: any, k: number) => r.replace(this.INJECTION_SYMBOL + k, ObjectUtils.get(this.data, [this.language, v].join('.'), v)),
       ObjectUtils.get(this.data, [this.language, path].join('.'), typeof path === 'string' ? path : '')
     )
   }
 
-  has(path: string): boolean {
+  static has(path: string): boolean {
     return ObjectUtils.has(this.data, [this.language, path].join('.'))
   }
 
-  private get INJECTION_SYMBOL(): string {
-    return '%%'
+  private static get INJECTION_SYMBOL(): string {
+    return '__'
   }
 }
 
-const Localization = new _Localization()
 export { Localization }
