@@ -4,6 +4,7 @@ export class URLUtils {
       .join('/')
       .replace(/\/{2,}/g, '/')
       .replace(/\/$/, '')
+      .replace(':/', '://')
   }
 
   static removeSearchParams(url: string): string {
