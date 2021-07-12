@@ -83,4 +83,12 @@ export class ObjectUtils {
   static has<T extends object>(object: T, key: string | keyof T): boolean {
     return this.get(object, key, this.plain) !== this.plain
   }
+
+  static hasKeys<T extends object>(object: T): boolean {
+    return Object.keys(object).length > 0
+  }
+
+  static hasValues<T extends object>(object: T): boolean {
+    return Object.values(object).length > 0
+  }
 }
