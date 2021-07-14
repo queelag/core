@@ -21,11 +21,11 @@
   },
   "license": "MIT",
   "main": "index.cjs",
-  "module": "index.mjs",
+  "module": "index.js",
   "name": "@queelag/core",
   "scripts": {
     "test": "yarn jest --coverage",
-    "build": "rm -rf declarations && rm -rf dist && yarn tsc && yarn api-extractor run --local && yarn rollup -c rollup.config.js",
+    "build": "yarn rollup -c && yarn api-extractor run --local",
     "tarball": "yarn version && cp package.json dist/. && cd dist && yarn pack",
     "deploy": "yarn test && yarn build && yarn tarball && yarn publish dist/*.tgz --access public"
   },

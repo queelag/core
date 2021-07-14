@@ -3,7 +3,7 @@ import { ObjectUtils } from '../utils/object.utils'
 
 class Localization {
   static data: LocalizationPackData = {}
-  static language: string = ObjectUtils.has(window, 'navigator') ? window.navigator.language.slice(0, 2) : 'en'
+  static language: string = 'en'
   static packs: LocalizationPack[] = []
 
   static add(...packs: LocalizationPack[]): void {

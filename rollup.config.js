@@ -10,7 +10,8 @@ export default {
       format: 'cjs'
     },
     {
-      file: 'dist/index.mjs',
+      dir: 'dist',
+      preserveModules: true,
       format: 'esm'
     }
   ],

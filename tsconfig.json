@@ -2,7 +2,7 @@
   "compilerOptions": {
     "allowSyntheticDefaultImports": true,
     "declaration": true,
-    "declarationDir": "declarations",
+    "declarationDir": "dist/declarations",
     "emitDeclarationOnly": true,
     "esModuleInterop": true,
     "jsx": "react",
