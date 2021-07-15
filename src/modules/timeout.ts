@@ -28,9 +28,6 @@ export class Timeout {
   /**
    * Calls a fn after ms time
    *
-   * @param name An unique string
-   * @param fn Any function
-   * @param ms A number which determines after how many milliseconds the fn will be called
    */
   static set<T extends string>(name: T, fn: () => any, ms: number): void {
     this.data.set(name, setTimeout(fn, ms))
@@ -40,7 +37,6 @@ export class Timeout {
   /**
    * Clears a timeout, blocking its eventual execution
    *
-   * @param name An unique string
    */
   static clear<T extends string>(name: T): void {
     let potential: NodeJS.Timeout | number | undefined

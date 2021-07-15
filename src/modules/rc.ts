@@ -16,10 +16,7 @@ import { tc } from './tc'
  * // logs 'John' and then true
  * ```
  *
- * @param fn Any function
- * @param c A T value
  * @template T Any interface or type
- * @returns T
  */
 export function rc<T>(fn: () => any, c: T): T {
   tc(() => fn())

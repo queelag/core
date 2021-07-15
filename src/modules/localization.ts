@@ -46,7 +46,6 @@ class Localization {
   /**
    * Adds n {@link LocalizationPack} to the {@link Localization.data}
    *
-   * @param packs An array of {@link LocalizationPack}
    */
   static add(...packs: LocalizationPack[]): void {
     packs.forEach((v: LocalizationPack) => (this.data[v.language] = Object.assign({}, ObjectUtils.get(this.data, v.language, {}), v.data)))
@@ -55,9 +54,6 @@ class Localization {
   /**
    * Returns a string localized to the current {@link Localizaton.language}
    *
-   * @param path A string which supports the dot notation
-   * @param inject An array of values that will get injected into the string
-   * @returns A string localized to the current {@link Localizaton.language}
    */
   static get(path: string, inject: any[] = ['']): string {
     return inject.reduce(
@@ -69,8 +65,6 @@ class Localization {
   /**
    * Checks whether a path is localizable or not
    *
-   * @param path A string which supports the dot notation
-   * @returns A boolean value
    */
   static has(path: string): boolean {
     return ObjectUtils.has(this.data, [this.language, path].join('.'))

@@ -13,8 +13,6 @@ export class IDUtils {
   /**
    * Generates an ID with a prefix separating the two with an underscore.
    *
-   * @param prefix A string that will be put before the ID
-   * @returns The prefix and the ID separated by an underscore
    */
   static prefixed(prefix: string): string {
     return prefix + '_' + nanoid()
@@ -23,8 +21,6 @@ export class IDUtils {
   /**
    * Generates an unique ID excluding the IDs in the blacklist
    *
-   * @param blacklist An array of IDs to blacklist
-   * @returns An unique ID
    */
   static unique(blacklist: ID[] = []): string {
     let id: string

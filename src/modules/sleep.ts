@@ -22,7 +22,6 @@ export class Sleep {
   /**
    * Waits for ms time
    *
-   * @param ms A number which determines the duration of the sleep in milliseconds
    * @returns
    */
   static async for(ms: number): Promise<void> {

@@ -26,9 +26,6 @@ export class Throttle {
   /**
    * Calls the fn only if ms time has passed since the last execution
    *
-   * @param name An unique string
-   * @param fn Any function
-   * @param ms A number which determines how many milliseconds must have passed to allow the fn to be called
    * @returns
    */
   static handle<T extends string>(name: T, fn: () => any, ms: number): void {

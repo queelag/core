@@ -109,8 +109,6 @@ export class API<T extends AxiosRequestConfig = AxiosRequestConfig, U = undefine
   readonly status: Status
 
   /**
-   * @param baseURL A string used as a prefix for all requests made by the instance
-   * @param config A config based on the T interface
    * @template T The configuration interface which extends the AxiosRequestConfig one
    * @template U The default Error interface
    */
@@ -124,11 +122,8 @@ export class API<T extends AxiosRequestConfig = AxiosRequestConfig, U = undefine
   /**
    * Performs a DELETE request
    *
-   * @param path A string which is concatenated to the baseURL
-   * @param config A config based on the T interface
    * @template V The response data interface
    * @template W The error data interface, defaults to U
-   * @returns An AxiosResponse with V data or an AxiosError with W data
    */
   async delete<V, W = U>(path: string, config: T = API.dummyConfig): Promise<AxiosResponse<V> | AxiosError<W>> {
     return this.handle<V, any, W>(APIMethod.DELETE, path, undefined, config)
@@ -137,11 +132,8 @@ export class API<T extends AxiosRequestConfig = AxiosRequestConfig, U = undefine
   /**
    * Performs a GET request
    *
-   * @param path A string which is concatenated to the baseURL
-   * @param config A config based on the T interface
    * @template V The response data interface
    * @template W The error data interface, defaults to U
-   * @returns An AxiosResponse with V data or an AxiosError with W data
    */
   async get<V, W = U>(path: string, config: T = API.dummyConfig): Promise<AxiosResponse<V> | AxiosError<W>> {
     return this.handle<V, any, W>(APIMethod.GET, path, undefined, config)
@@ -150,13 +142,9 @@ export class API<T extends AxiosRequestConfig = AxiosRequestConfig, U = undefine
   /**
    * Performs a POST request
    *
-   * @param path A string which is concatenated to the baseURL
-   * @param body Anything based on the W interface
-   * @param config A config based on the T interface
    * @template V The response data interface
    * @template W The body interface
    * @template X The error data interface, defaults to U
-   * @returns An AxiosResponse with V data or an AxiosError with W data
    */
   async post<V, W, X = U>(path: string, body?: W, config: T = API.dummyConfig): Promise<AxiosResponse<V> | AxiosError<X>> {
     return this.handle<V, W, X>(APIMethod.POST, path, body, config)
@@ -165,13 +153,9 @@ export class API<T extends AxiosRequestConfig = AxiosRequestConfig, U = undefine
   /**
    * Performs a PUT request
    *
-   * @param path A string which is concatenated to the baseURL
-   * @param body Anything based on the W interface
-   * @param config A config based on the T interface
    * @template V The response data interface
    * @template W The body interface
    * @template X The error data interface, defaults to U
-   * @returns An AxiosResponse with V data or an AxiosError with W data
    */
   async put<V, W, X = U>(path: string, body?: W, config: T = API.dummyConfig): Promise<AxiosResponse<V> | AxiosError<X>> {
     return this.handle<V, W, X>(APIMethod.PUT, path, body, config)
@@ -180,14 +164,9 @@ export class API<T extends AxiosRequestConfig = AxiosRequestConfig, U = undefine
   /**
    * Performs either a POST request if mode is CREATE or a PUT request if mode is UPDATE
    *
-   * @param mode {@link WriteMode}
-   * @param path A string which is concatenated to the baseURL
-   * @param body Anything based on the W interface
-   * @param config A config based on the T interface
    * @template V The response data interface
    * @template W The body interface
    * @template X The error data interface, defaults to U
-   * @returns An AxiosResponse with V data or an AxiosError with W data
    */
   async write<V, W, X = U>(mode: WriteMode, path: string, body?: W, config: T = API.dummyConfig): Promise<AxiosResponse<V> | AxiosError<X>> {
     switch (mode) {
@@ -238,14 +217,8 @@ export class API<T extends AxiosRequestConfig = AxiosRequestConfig, U = undefine
   /**
    * Called when any API call returns an Error
    *
-   * @param method {@link APIMethod}
-   * @param path A string which is concatenated to the baseURL
-   * @param body Anything based on the W interface
-   * @param config A config based on the T interface
-   * @param error An AxiosError with W data
    * @template V The body interface
    * @template W The error data interface, defaults to U
-   * @returns A boolean value, if true the request status will be set to SUCCESS
    */
   async handleError<V, W = U>(method: APIMethod, path: string, body: V | undefined, config: T, error: AxiosError<W>): Promise<boolean> {
     return false
@@ -254,12 +227,7 @@ export class API<T extends AxiosRequestConfig = AxiosRequestConfig, U = undefine
   /**
    * Called when any API call has started
    *
-   * @param method {@link APIMethod}
-   * @param path A string which is concatenated to the baseURL
-   * @param body Anything based on the W interface
-   * @param config A config based on the T interface
    * @template V The body interface
-   * @returns A boolean value, if false the request status will be set to ERROR
    */
   async handlePending<V>(method: APIMethod, path: string, body: V | undefined, config: T): Promise<boolean> {
     return true
@@ -268,14 +236,8 @@ export class API<T extends AxiosRequestConfig = AxiosRequestConfig, U = undefine
   /**
    * Called when any API call returns an Error
    *
-   * @param method {@link APIMethod}
-   * @param path A string which is concatenated to the baseURL
-   * @param body Anything based on the W interface
-   * @param config A config based on the T interface
-   * @param response An AxiosResponse with V data
    * @template V The response data interface
    * @template W The body interface
-   * @returns A boolean value, if false the request status will be set to ERROR
    */
   async handleSuccess<V, W>(method: APIMethod, path: string, body: W | undefined, config: T, response: AxiosResponse<V>): Promise<boolean> {
     return true

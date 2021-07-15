@@ -10,6 +10,5 @@
  * // does nothing
  * ```
  *
- * @param args Anything
  */
 export function noop(...args: any): any {}

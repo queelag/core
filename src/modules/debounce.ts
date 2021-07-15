@@ -27,9 +27,6 @@ export class Debounce {
   constructor() {}
 
   /**
-   * @param name An unique string
-   * @param fn A function which will be called only if no other handle with the same name is called after ms time
-   * @param ms A number which determines after how many milliseconds the fn needs to be called
    */
   static handle(name: string, fn: () => any, ms: number): void {
     clearTimeout(this.data.get(name) as any)

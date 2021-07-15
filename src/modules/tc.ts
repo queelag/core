@@ -31,11 +31,8 @@
  * main()
  * ```
  *
- * @param fn Any function which returns T
- * @param v A boolean, if true the caught error will be logged to the console
  * @template T Any interface or type
  * @template U An error which extends the ES Error
- * @returns T | U
  */
 export function tc<T, U extends Error = Error>(fn: () => T, v: boolean = true): T | U {
   try {

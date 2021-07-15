@@ -31,9 +31,6 @@ export class Interval {
   /**
    * Starts an interval
    *
-   * @param name An unique string
-   * @param fn A function which gets called every ms
-   * @param ms A number which determines the interval period in milliseconds
    */
   static start<T extends string>(name: T, fn: () => any, ms: number): void {
     clearInterval(this.data.get(name) as any)
@@ -49,7 +46,6 @@ export class Interval {
   /**
    * Stops an interval
    *
-   * @param name An unique string
    */
   static stop<T extends string>(name: T): void {
     let potential: NodeJS.Timeout | number | undefined
@@ -66,8 +62,6 @@ export class Interval {
   /**
    * Checks whether an interval is running or not
    *
-   * @param name
-   * @returns A boolean value
    */
   static isRunning<T extends string>(name: T): boolean {
     return this.data.has(name)

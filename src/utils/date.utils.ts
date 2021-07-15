@@ -10,8 +10,6 @@ export class DateUtils {
   /**
    * Converts any parsable value by Date to milliseconds
    *
-   * @param value Any parsable value by Date
-   * @returns The date in milliseconds
    */
   static toMilliseconds(value: any): number {
     return new Date(value).valueOf()

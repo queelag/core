@@ -16,7 +16,6 @@ import { tc } from './tc'
  * // logs nothing
  * ```
  *
- * @param fn Any function
  */
 export function rv(fn: () => any): void {
   tc(() => fn())
