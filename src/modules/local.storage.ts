@@ -1,6 +1,9 @@
 import { Logger } from './logger'
 import { tc } from './tc'
 
+/**
+ * @ignore
+ */
 export class LocalStorage<T extends object> {
   name: string
   keys: (keyof T)[]

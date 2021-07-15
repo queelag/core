@@ -5,11 +5,16 @@ export enum APIMethod {
   PUT = 'PUT'
 }
 
+export enum BooleanValue {
+  FALSE = 'FALSE',
+  TRUE = 'TRUE'
+}
+
 export enum LoggerLevel {
-  DEBUG = 'DEBUG',
-  ERROR = 'ERROR',
-  INFO = 'INFO',
-  WARN = 'WARN'
+  DEBUG = 0,
+  INFO = 1,
+  WARN = 2,
+  ERROR = 3
 }
 
 export enum WriteMode {

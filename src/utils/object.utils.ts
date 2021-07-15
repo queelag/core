@@ -1,12 +1,36 @@
 import { tc } from '../modules/tc'
 
+/**
+ * @category Utility
+ */
 export class ObjectUtils {
+  /** @internal */
   private static plain: object = {}
 
+  /** @hidden */
+  constructor() {}
+
+  /**
+   * Clones an object
+   *
+   * @param object T
+   * @template T Any object
+   * @returns T
+   */
   static clone<T extends object>(object: T): T {
     return JSON.parse(JSON.stringify(object))
   }
 
+  /**
+   * Gets a key from an object, supports dot notation
+   *
+   * @param object T
+   * @param key A string or keyof T
+   * @param fallback An U value which is returned if the key does not exist
+   * @template T Any object
+   * @template U Any value
+   * @returns U or undefined if fallback is not defined
+   */
   static get<T extends object, U extends any>(object: T, key: string | keyof T, fallback?: U): U | undefined {
     switch (typeof key) {
       case 'number':
@@ -26,6 +50,15 @@ export class ObjectUtils {
     }
   }
 
+  /**
+   * Sets a value to a key in an object, supports dot notation
+   *
+   * @param object T
+   * @param key A string or keyof T
+   * @template T Any object
+   * @template U Any value
+   * @param value An U value
+   */
   static set<T extends object, U extends any>(object: T, key: string | keyof T, value: U): void {
     switch (typeof key) {
       case 'number':
@@ -52,6 +85,14 @@ export class ObjectUtils {
     }
   }
 
+  /**
+   * Creates a new object with only the picked keys of T
+   *
+   * @param object T
+   * @param keys An array of keys of T
+   * @template T Any object
+   * @returns T with only the picked keys of T
+   */
   static pick<T extends object>(object: T, keys: (keyof T)[]): Pick<T, keyof T> {
     let output: Pick<T, keyof T>
 
@@ -62,6 +103,14 @@ export class ObjectUtils {
     return output
   }
 
+  /**
+   * Creates an array of values of picked keys of T
+   *
+   * @param object T
+   * @param keys An array of keys of T
+   * @template T Any object
+   * @returns An array of values of picked keys of T
+   */
   static pickToArray<T extends object>(object: T, keys: (keyof T)[]): Pick<T, keyof T>[] {
     let output: Pick<T, keyof T>[]
 
@@ -71,6 +120,14 @@ export class ObjectUtils {
     return output
   }
 
+  /**
+   * Creates a new object without the omitted keys of T
+   *
+   * @param object T
+   * @param keys An array of keys of T
+   * @template T Any object
+   * @returns T without the omitted keys of T
+   */
   static omit<T extends object>(object: T, keys: (keyof T)[]): Omit<T, keyof T> {
     let clone: T
 
@@ -80,14 +137,36 @@ export class ObjectUtils {
     return clone
   }
 
+  /**
+   * Checks whether the object has the key or not
+   *
+   * @param object T
+   * @param key A string or keyof T
+   * @template T Any object
+   * @returns A boolean
+   */
   static has<T extends object>(object: T, key: string | keyof T): boolean {
     return this.get(object, key, this.plain) !== this.plain
   }
 
+  /**
+   * Checks if the object has keys
+   *
+   * @param object T
+   * @template T Any object
+   * @returns A boolean
+   */
   static hasKeys<T extends object>(object: T): boolean {
     return Object.keys(object).length > 0
   }
 
+  /**
+   * Checks if the object has values
+   *
+   * @param object T
+   * @template T Any object
+   * @returns A boolean
+   */
   static hasValues<T extends object>(object: T): boolean {
     return Object.values(object).length > 0
   }

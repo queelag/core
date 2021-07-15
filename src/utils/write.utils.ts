@@ -1,7 +1,13 @@
 import { WriteMode } from '../definitions/enums'
 import { WithIdentity } from '../definitions/types'
 
+/**
+ * @category Utility
+ */
 export class WriteUtils {
+  /** @hidden */
+  constructor() {}
+
   static findMode<T extends WithIdentity>(object: T): WriteMode {
     return object.id.length > 0 ? WriteMode.UPDATE : WriteMode.CREATE
   }

@@ -1,6 +1,12 @@
 import { tcp } from '../modules/tcp'
 
+/**
+ * @category Utility
+ */
 class PromiseUtils {
+  /** @hidden */
+  constructor() {}
+
   static async chain(...fns: ((...args: any) => Promise<any>)[]): Promise<void> {
     for (let i = 0; i < fns.length; i++) {
       await tcp(() => fns[i]())

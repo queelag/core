@@ -1,4 +1,10 @@
+/**
+ * @category Utility
+ */
 export class StoreUtils {
+  /** @hidden */
+  constructor() {}
+
   static updateKeys<T extends object, U extends object>(store: T, props: U, whitelist: (keyof T & keyof U)[], onUpdate: () => any = () => {}): void {
     let updated: boolean | undefined
 

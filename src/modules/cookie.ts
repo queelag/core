@@ -5,26 +5,88 @@ import { tc } from './tc'
 
 type StringObject = { [k: string]: string }
 
+/**
+ * A module to handle cookies through a store.
+ *
+ * Usage:
+ *
+ * ```typescript
+ * import { Cookie } from '@queelag/core'
+ *
+ * interface AuthData {
+ *   token: string
+ * }
+ *
+ * class AuthStore {
+ *   data: AuthData
+ *
+ *   constructor() {
+ *     this.data = { token: '' }
+ *     Cookie.get(this.name, this.data)
+ *   }
+ *
+ *   login(): void {
+ *     let response: string
+ *
+ *     response = 'token'
+ *     this.token = response
+ *
+ *     Cookie.set(this.name, this.data, ['token'], { secure: true })
+ *   }
+ *
+ *   logout(): void {
+ *     Cookie.remove(this.name, this.data)
+ *   }
+ *
+ *   get name(): string {
+ *     return 'auth'
+ *   }
+ * }
+ * ```
+ *
+ * @category Module
+ */
 export class Cookie {
-  static get<T extends StringObject>(name: string, store: T): boolean {
-    let json: StringObject | Error
+  /** @hidden */
+  constructor() {}
+
+  /**
+   * Sets a value for each key in keys found in the cookies prefixed by the name
+   *
+   * @param name A string which prefixes every key of T
+   * @param store A store which contains only strings
+   * @param keys An array of keys of T, defaults to all of them
+   * @returns A boolean value
+   */
+  static get<T extends StringObject>(name: string, store: T, keys: (keyof T)[] = Object.keys(store)): boolean {
+    let json: StringObject | Error, value: string
 
     json = tc(() => Cookies.getJSON())
     if (json instanceof Error) return false
 
     Logger.debug('Cookie', 'load', `The cookies have been parsed as JSON.`, json)
 
-    Object.entries(json).forEach((v: [string, string]) => {
-      if (v[0].includes(name + '_')) {
-        store[v[0].replace(name + '_', '') as keyof T] = v[1] as any
-        Logger.debug('Cookie', 'load', `The key ${v[0]} has been set with value ${v[1]}.`)
-      }
+    keys.forEach((k: keyof T) => {
+      value = (json as StringObject)[StringUtils.concat(name, k as string)]
+      if (!value) return Logger.error('Cookie', 'get', `The JSON does not contain the key ${k}.`, json)
+
+      store[k] = value as any
+      Logger.debug('Cookie', 'load', `The key ${k} has been set with value ${value}.`)
     })
 
     return true
   }
 
-  static set<T extends StringObject>(name: string, store: T, keys: (keyof T)[], attributes: CookieAttributes = {}): boolean {
+  /**
+   * Sets a cookie for each key in keys prefixed by the name
+   *
+   * @param name A string which prefixes every key of T
+   * @param store A store which contains only strings
+   * @param keys An array of keys of T, defaults to all of them
+   * @param attributes An object matching the CookieAttributes interface
+   * @returns A boolean value
+   */
+  static set<T extends StringObject>(name: string, store: T, keys: (keyof T)[] = Object.keys(store), attributes: CookieAttributes = {}): boolean {
     let sets: boolean[]
 
     sets = keys.map((k: keyof T) => {
@@ -41,7 +103,15 @@ export class Cookie {
     return sets.every((v: boolean) => v)
   }
 
-  static remove(name: string): boolean {
+  /**
+   * Removes a cookie for each key in keys prefixed by the name
+   *
+   * @param name A string which prefixes every key of T
+   * @param store A store which contains only strings
+   * @param keys An array of keys of T, defaults to all of them
+   * @returns A boolean value
+   */
+  static remove<T extends StringObject>(name: string, store: T, keys: (keyof T)[] = Object.keys(store)): boolean {
     let json: StringObject | Error, removes: boolean[]
 
     json = tc(() => Cookies.getJSON())
@@ -49,15 +119,13 @@ export class Cookie {
 
     Logger.debug('Cookie', 'load', `The cookies have been parsed as JSON.`, json)
 
-    removes = Object.entries(json).map((v: [string, string]) => {
-      if (v[0].includes(name + '_')) {
-        let removed: void | Error
+    removes = keys.map((k: keyof T) => {
+      let removed: void | Error
 
-        removed = tc(() => Cookies.remove(v[0]))
-        if (removed instanceof Error) return false
+      removed = tc(() => Cookies.remove(StringUtils.concat(name, k as string)))
+      if (removed instanceof Error) return false
 
-        Logger.debug('Cookie', 'remove', `The key ${v[0]} has been removed.`)
-      }
+      Logger.debug('Cookie', 'remove', `The key ${k} has been removed.`)
 
       return true
     })

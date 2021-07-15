@@ -1,16 +1,16 @@
 export type ID = string
 
-export type LocalizationPack = {
+export interface LocalizationPack {
   data: LocalizationPackData
   language: string
 }
 
-export type LocalizationPackData = {
+export interface LocalizationPackData {
   [key: string]: string | LocalizationPackData
 }
 
 export type StatusTransformer = (keys: string[]) => string
 
-export type WithIdentity = {
+export interface WithIdentity {
   id: ID
 }

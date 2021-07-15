@@ -1,101 +1,292 @@
 import Axios, { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios'
 import { APIMethod, WriteMode } from '../definitions/enums'
-import { StatusTransformer } from '../definitions/types'
 import { URLUtils } from '../utils/url.utils'
 import { rc } from './rc'
 import { Status } from './status'
 import { tcp } from './tcp'
 
+/**
+ * A module to smartly handle API calls and observe their status through the {@link Status} module.
+ *
+ * Initialization:
+ *
+ * ```typescript
+ * import { API } from '@queelag/core'
+ *
+ * export const ServiceAPI: API = new API(
+ *   'https://api.service.com',
+ *   { headers: { authorization: 'Bearer token' } }
+ * )
+ * ```
+ *
+ * Usage:
+ *
+ * ```typescript
+ * import { APIMethod, tcp } from '@queelag/core'
+ * import { AxiosError, AxiosResponse } from 'axios'
+ * import { ServiceAPI } from './service.api'
+ *
+ * interface Book {
+ *   title: string
+ * }
+ *
+ * async function getBooks(): Promise<Book[]> {
+ *   let response: AxiosResponse<Book[]> | AxiosError
+ *
+ *   response = await tcp(() => ServiceAPI.get('books'))
+ *   if (response instanceof Error) return []
+ *
+ *   return response.data
+ * }
+ * ```
+ *
+ * React + MobX Usage:
+ *
+ * ```typescript
+ * import React, { Fragment, useEffect, useState } from 'react'
+ * import { API, APIMethod } from '@queelag/core'
+ * import { AxiosError, AxiosResponse } from 'axios'
+ * import { makeObservable, observable, observer } from 'mobx'
+ *
+ * interface Book {
+ *   title: string
+ * }
+ *
+ * class ObservableAPI extends API {
+ *   constructor() {
+ *     super('https://api.service.com')
+ *     makeObservable(this.status, { data: observable })
+ *   }
+ * }
+ *
+ * const ServiceAPI = new ObservableAPI()
+ *
+ * export const Books = observer(() => {
+ *   const [books, setBooks] = useState<Book[]>([])
+ *   const [error, setError] = useState<string>('')
+ *
+ *   useEffect(() => {
+ *     ServiceAPI.get('books')
+ *       .then((v: AxiosResponse<Book[]> | AxiosError) => (v instanceof Error ? setError(v.code) : setBooks(v.data)))
+ *   }, [])
+ *
+ *   if (ServiceAPI.status.isPending(APIMethod.GET, 'books')) {
+ *     return 'Loading'
+ *   }
+ *
+ *   if (ServiceAPI.status.isSuccess(APIMethod.GET, 'books')) {
+ *     return `Books: ${JSON.stringify(books, null, 2)}`
+ *   }
+ *
+ *   if (ServiceAPI.status.isError(APIMethod.GET, 'books')) {
+ *     return `Error: ${error}`
+ *   }
+ *
+ *   return null
+ * })
+ * ```
+ *
+ * @category Module
+ * @template T The configuration interface which extends the AxiosRequestConfig one
+ * @template U The default Error interface
+ */
 export class API<T extends AxiosRequestConfig = AxiosRequestConfig, U = undefined> {
+  /**
+   * A string used as a prefix for all requests made by the instance
+   */
   readonly baseURL: string
-  readonly config: AxiosRequestConfig
+  /**
+   * A config based on the T interface
+   */
+  readonly config: T
+  /**
+   * An AxiosInstance created with the baseURL and config variables
+   */
   readonly instance: AxiosInstance
+  /**
+   * A Status module initialized with a custom transformer
+   */
   readonly status: Status
 
-  constructor(baseURL: string = '', config: T = API.dummyConfig, statusTransformer: StatusTransformer = API.defaultStatusTransformer) {
+  /**
+   * @param baseURL A string used as a prefix for all requests made by the instance
+   * @param config A config based on the T interface
+   * @template T The configuration interface which extends the AxiosRequestConfig one
+   * @template U The default Error interface
+   */
+  constructor(baseURL: string = '', config: T = API.dummyConfig) {
     this.baseURL = baseURL
     this.config = config
     this.instance = Axios.create({ baseURL: baseURL, ...config })
-    this.status = new Status(statusTransformer)
+    this.status = new Status(API.defaultStatusTransformer)
   }
 
-  async delete<V, W = U>(url: string, config: T = API.dummyConfig): Promise<AxiosResponse<V> | AxiosError<W>> {
-    return this.handle<V, any, W>(APIMethod.DELETE, url, undefined, config)
+  /**
+   * Performs a DELETE request
+   *
+   * @param path A string which is concatenated to the baseURL
+   * @param config A config based on the T interface
+   * @template V The response data interface
+   * @template W The error data interface, defaults to U
+   * @returns An AxiosResponse with V data or an AxiosError with W data
+   */
+  async delete<V, W = U>(path: string, config: T = API.dummyConfig): Promise<AxiosResponse<V> | AxiosError<W>> {
+    return this.handle<V, any, W>(APIMethod.DELETE, path, undefined, config)
   }
 
-  async get<V, W = U>(url: string, config: T = API.dummyConfig): Promise<AxiosResponse<V> | AxiosError<W>> {
-    return this.handle<V, any, W>(APIMethod.GET, url, undefined, config)
+  /**
+   * Performs a GET request
+   *
+   * @param path A string which is concatenated to the baseURL
+   * @param config A config based on the T interface
+   * @template V The response data interface
+   * @template W The error data interface, defaults to U
+   * @returns An AxiosResponse with V data or an AxiosError with W data
+   */
+  async get<V, W = U>(path: string, config: T = API.dummyConfig): Promise<AxiosResponse<V> | AxiosError<W>> {
+    return this.handle<V, any, W>(APIMethod.GET, path, undefined, config)
   }
 
-  async post<V, W, X = U>(url: string, data?: W, config: T = API.dummyConfig): Promise<AxiosResponse<V> | AxiosError<X>> {
-    return this.handle<V, W, X>(APIMethod.POST, url, data, config)
+  /**
+   * Performs a POST request
+   *
+   * @param path A string which is concatenated to the baseURL
+   * @param body Anything based on the W interface
+   * @param config A config based on the T interface
+   * @template V The response data interface
+   * @template W The body interface
+   * @template X The error data interface, defaults to U
+   * @returns An AxiosResponse with V data or an AxiosError with W data
+   */
+  async post<V, W, X = U>(path: string, body?: W, config: T = API.dummyConfig): Promise<AxiosResponse<V> | AxiosError<X>> {
+    return this.handle<V, W, X>(APIMethod.POST, path, body, config)
   }
 
-  async put<V, W, X = U>(url: string, data?: W, config: T = API.dummyConfig): Promise<AxiosResponse<V> | AxiosError<X>> {
-    return this.handle<V, W, X>(APIMethod.PUT, url, data, config)
+  /**
+   * Performs a PUT request
+   *
+   * @param path A string which is concatenated to the baseURL
+   * @param body Anything based on the W interface
+   * @param config A config based on the T interface
+   * @template V The response data interface
+   * @template W The body interface
+   * @template X The error data interface, defaults to U
+   * @returns An AxiosResponse with V data or an AxiosError with W data
+   */
+  async put<V, W, X = U>(path: string, body?: W, config: T = API.dummyConfig): Promise<AxiosResponse<V> | AxiosError<X>> {
+    return this.handle<V, W, X>(APIMethod.PUT, path, body, config)
   }
 
-  async write<V, W, X = U>(mode: WriteMode, url: string, data?: W, config: T = API.dummyConfig): Promise<AxiosResponse<V> | AxiosError<X>> {
+  /**
+   * Performs either a POST request if mode is CREATE or a PUT request if mode is UPDATE
+   *
+   * @param mode {@link WriteMode}
+   * @param path A string which is concatenated to the baseURL
+   * @param body Anything based on the W interface
+   * @param config A config based on the T interface
+   * @template V The response data interface
+   * @template W The body interface
+   * @template X The error data interface, defaults to U
+   * @returns An AxiosResponse with V data or an AxiosError with W data
+   */
+  async write<V, W, X = U>(mode: WriteMode, path: string, body?: W, config: T = API.dummyConfig): Promise<AxiosResponse<V> | AxiosError<X>> {
     switch (mode) {
       case WriteMode.CREATE:
-        return this.post(url, data, config)
+        return this.post(path, body, config)
       case WriteMode.UPDATE:
-        return this.put(url, data, config)
+        return this.put(path, body, config)
     }
   }
 
-  private async handle<V, W, X = U>(method: APIMethod, url: string, data?: W, config: T = API.dummyConfig): Promise<AxiosResponse<V> | AxiosError<X>> {
+  /** @internal */
+  private async handle<V, W, X = U>(method: APIMethod, path: string, body?: W, config: T = API.dummyConfig): Promise<AxiosResponse<V> | AxiosError<X>> {
     let handled: boolean, response: AxiosResponse<V> | AxiosError<X>
 
-    this.status.pending(method, url)
+    this.status.pending(method, path)
 
-    handled = await this.handlePending(method, url, data, config)
-    if (!handled) return new Error() as AxiosError<X>
+    handled = await this.handlePending(method, path, body, config)
+    if (!handled) return rc(() => this.status.error(method, path), new Error() as AxiosError<X>)
 
     switch (method) {
       case APIMethod.DELETE:
-        response = await tcp<AxiosResponse<V>, AxiosError<X>>(() => this.instance.delete<V>(url, config))
+        response = await tcp<AxiosResponse<V>, AxiosError<X>>(() => this.instance.delete<V>(path, config))
         break
       case APIMethod.GET:
-        response = await tcp<AxiosResponse<V>, AxiosError<X>>(() => this.instance.get<V>(url, config))
+        response = await tcp<AxiosResponse<V>, AxiosError<X>>(() => this.instance.get<V>(path, config))
         break
       case APIMethod.POST:
-        response = await tcp<AxiosResponse<V>, AxiosError<X>>(() => this.instance.post<V>(url, data, config))
+        response = await tcp<AxiosResponse<V>, AxiosError<X>>(() => this.instance.post<V>(path, body, config))
         break
       case APIMethod.PUT:
-        response = await tcp<AxiosResponse<V>, AxiosError<X>>(() => this.instance.put<V>(url, data, config))
+        response = await tcp<AxiosResponse<V>, AxiosError<X>>(() => this.instance.put<V>(path, body, config))
         break
     }
 
     if (response instanceof Error) {
-      handled = await this.handleError(method, url, data, config, response)
-      if (!handled) return rc(() => this.status.error(method, url), response)
+      handled = await this.handleError(method, path, body, config, response)
+      if (!handled) return rc(() => this.status.error(method, path), response)
 
-      return rc(() => this.status.success(method, url), response)
+      return rc(() => this.status.success(method, path), response)
     }
 
-    handled = await this.handleSuccess(method, url, data, config, response)
-    if (!handled) return new Error() as AxiosError<X>
+    handled = await this.handleSuccess(method, path, body, config, response)
+    if (!handled) return rc(() => this.status.error(method, path), new Error() as AxiosError<X>)
 
-    return rc(() => this.status.success(method, url), response)
+    return rc(() => this.status.success(method, path), response)
   }
 
-  async handleError<V, W, X = U>(method: APIMethod, url: string, data: W | undefined, config: T, error: AxiosError<X>): Promise<boolean> {
+  /**
+   * Called when any API call returns an Error
+   *
+   * @param method {@link APIMethod}
+   * @param path A string which is concatenated to the baseURL
+   * @param body Anything based on the W interface
+   * @param config A config based on the T interface
+   * @param error An AxiosError with W data
+   * @template V The body interface
+   * @template W The error data interface, defaults to U
+   * @returns A boolean value, if true the request status will be set to SUCCESS
+   */
+  async handleError<V, W = U>(method: APIMethod, path: string, body: V | undefined, config: T, error: AxiosError<W>): Promise<boolean> {
     return false
   }
 
-  async handlePending<V>(method: APIMethod, url: string, data: V | undefined, config: T): Promise<boolean> {
+  /**
+   * Called when any API call has started
+   *
+   * @param method {@link APIMethod}
+   * @param path A string which is concatenated to the baseURL
+   * @param body Anything based on the W interface
+   * @param config A config based on the T interface
+   * @template V The body interface
+   * @returns A boolean value, if false the request status will be set to ERROR
+   */
+  async handlePending<V>(method: APIMethod, path: string, body: V | undefined, config: T): Promise<boolean> {
     return true
   }
 
-  async handleSuccess<V, W>(method: APIMethod, url: string, data: W | undefined, config: T, response: AxiosResponse<V>): Promise<boolean> {
+  /**
+   * Called when any API call returns an Error
+   *
+   * @param method {@link APIMethod}
+   * @param path A string which is concatenated to the baseURL
+   * @param body Anything based on the W interface
+   * @param config A config based on the T interface
+   * @param response An AxiosResponse with V data
+   * @template V The response data interface
+   * @template W The body interface
+   * @returns A boolean value, if false the request status will be set to ERROR
+   */
+  async handleSuccess<V, W>(method: APIMethod, path: string, body: W | undefined, config: T, response: AxiosResponse<V>): Promise<boolean> {
     return true
   }
 
+  /** @internal */
   static get defaultStatusTransformer(): (keys: string[]) => string {
     return (keys: string[]) => keys[0] + '_' + URLUtils.removeSearchParams(keys[1])
   }
 
+  /** @internal */
   static get dummyConfig(): any {
     return {}
   }

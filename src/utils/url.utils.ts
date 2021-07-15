@@ -1,4 +1,10 @@
+/**
+ * @category Utility
+ */
 export class URLUtils {
+  /** @hidden */
+  constructor() {}
+
   static concat(...chunks: string[]): string {
     return chunks
       .join('/')
