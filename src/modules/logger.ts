@@ -29,7 +29,6 @@ export class Logger {
 
   /**
    * Logs a debug message to the console
-   *
    */
   static debug(...args: any[]): void {
     this.isEnabled && this.level <= LoggerLevel.DEBUG && console.debug(...this.format(args))
@@ -37,7 +36,6 @@ export class Logger {
 
   /**
    * Logs an info message to the console
-   *
    */
   static info(...args: any[]): void {
     this.isEnabled && this.level <= LoggerLevel.INFO && console.info(...this.format(args))
@@ -45,7 +43,6 @@ export class Logger {
 
   /**
    * Logs a warn message to the console
-   *
    */
   static warn(...args: any[]): void {
     this.isEnabled && this.level <= LoggerLevel.WARN && console.warn(...this.format(args))
@@ -53,7 +50,6 @@ export class Logger {
 
   /**
    * Logs an error message to the console
-   *
    */
   static error(...args: any[]): void {
     this.isEnabled && this.level <= LoggerLevel.ERROR && console.error(...this.format(args))

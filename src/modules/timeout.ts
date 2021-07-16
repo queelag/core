@@ -27,18 +27,16 @@ export class Timeout {
 
   /**
    * Calls a fn after ms time
-   *
    */
-  static set<T extends string>(name: T, fn: () => any, ms: number): void {
+  static set(name: string, fn: () => any, ms: number): void {
     this.data.set(name, setTimeout(fn, ms))
     Logger.debug('Timeout', 'start', `The timeout with name ${name} has been set.`)
   }
 
   /**
    * Clears a timeout, blocking its eventual execution
-   *
    */
-  static clear<T extends string>(name: T): void {
+  static clear(name: string): void {
     let potential: NodeJS.Timeout | number | undefined
 
     potential = this.data.get(name)

@@ -31,8 +31,8 @@
  * main()
  * ```
  *
- * @template T Any interface or type
- * @template U An error which extends the ES Error
+ * @template T The return interface or type
+ * @template U The error interface which extends Error
  */
 export function tc<T, U extends Error = Error>(fn: () => T, v: boolean = true): T | U {
   try {

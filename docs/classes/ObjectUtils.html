@@ -65,6 +65,13 @@
 <div class="container container-main">
 	<div class="row">
 		<div class="col-8 col-content">
+			<section class="tsd-panel tsd-comment">
+				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<p>Utils for anything related to objects.</p>
+					</div>
+				</div>
+			</section>
 			<section class="tsd-panel tsd-hierarchy">
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
@@ -106,7 +113,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/queelag/core/blob/4c9dd3d/src/utils/object.utils.ts#L20">utils/object.utils.ts:20</a></li>
+									<li>Defined in <a href="https://github.com/queelag/core/blob/dfdbb63/src/utils/object.utils.ts#L20">utils/object.utils.ts:20</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -119,7 +126,7 @@
 								<li>
 									<h4>T<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">object</span></h4>
 									<div class="tsd-comment tsd-typography">
-										<p>Any object</p>
+										<p>The object interface</p>
 									</div>
 								</li>
 							</ul>
@@ -127,13 +134,9 @@
 							<ul class="tsd-parameters">
 								<li>
 									<h5>object: <span class="tsd-signature-type">T</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>T</p>
-									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">T</span></h4>
-							<p>T</p>
 						</li>
 					</ul>
 				</section>
@@ -147,7 +150,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/queelag/core/blob/4c9dd3d/src/utils/object.utils.ts#L34">utils/object.utils.ts:34</a></li>
+									<li>Defined in <a href="https://github.com/queelag/core/blob/dfdbb63/src/utils/object.utils.ts#L30">utils/object.utils.ts:30</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -160,13 +163,13 @@
 								<li>
 									<h4>T<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">object</span></h4>
 									<div class="tsd-comment tsd-typography">
-										<p>Any object</p>
+										<p>The object interface</p>
 									</div>
 								</li>
 								<li>
 									<h4>U<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">unknown</span></h4>
 									<div class="tsd-comment tsd-typography">
-										<p>Any value</p>
+										<p>The value interface or type</p>
 									</div>
 								</li>
 							</ul>
@@ -174,25 +177,15 @@
 							<ul class="tsd-parameters">
 								<li>
 									<h5>object: <span class="tsd-signature-type">T</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>T</p>
-									</div>
 								</li>
 								<li>
 									<h5>key: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">keyof </span><span class="tsd-signature-type">T</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>A string or keyof T</p>
-									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> fallback: <span class="tsd-signature-type">U</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>An U value which is returned if the key does not exist</p>
-									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">U</span></h4>
-							<p>U or undefined if fallback is not defined</p>
 						</li>
 					</ul>
 				</section>
@@ -206,7 +199,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/queelag/core/blob/4c9dd3d/src/utils/object.utils.ts#L148">utils/object.utils.ts:148</a></li>
+									<li>Defined in <a href="https://github.com/queelag/core/blob/dfdbb63/src/utils/object.utils.ts#L129">utils/object.utils.ts:129</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -219,7 +212,7 @@
 								<li>
 									<h4>T<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">object</span></h4>
 									<div class="tsd-comment tsd-typography">
-										<p>Any object</p>
+										<p>The object interface</p>
 									</div>
 								</li>
 							</ul>
@@ -227,19 +220,12 @@
 							<ul class="tsd-parameters">
 								<li>
 									<h5>object: <span class="tsd-signature-type">T</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>T</p>
-									</div>
 								</li>
 								<li>
 									<h5>key: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">keyof </span><span class="tsd-signature-type">T</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>A string or keyof T</p>
-									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
-							<p>A boolean</p>
 						</li>
 					</ul>
 				</section>
@@ -253,7 +239,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/queelag/core/blob/4c9dd3d/src/utils/object.utils.ts#L159">utils/object.utils.ts:159</a></li>
+									<li>Defined in <a href="https://github.com/queelag/core/blob/dfdbb63/src/utils/object.utils.ts#L138">utils/object.utils.ts:138</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -266,7 +252,7 @@
 								<li>
 									<h4>T<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">object</span></h4>
 									<div class="tsd-comment tsd-typography">
-										<p>Any object</p>
+										<p>The object interface</p>
 									</div>
 								</li>
 							</ul>
@@ -274,13 +260,9 @@
 							<ul class="tsd-parameters">
 								<li>
 									<h5>object: <span class="tsd-signature-type">T</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>T</p>
-									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
-							<p>A boolean</p>
 						</li>
 					</ul>
 				</section>
@@ -294,7 +276,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/queelag/core/blob/4c9dd3d/src/utils/object.utils.ts#L170">utils/object.utils.ts:170</a></li>
+									<li>Defined in <a href="https://github.com/queelag/core/blob/dfdbb63/src/utils/object.utils.ts#L147">utils/object.utils.ts:147</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -307,7 +289,7 @@
 								<li>
 									<h4>T<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">object</span></h4>
 									<div class="tsd-comment tsd-typography">
-										<p>Any object</p>
+										<p>The object interface</p>
 									</div>
 								</li>
 							</ul>
@@ -315,13 +297,9 @@
 							<ul class="tsd-parameters">
 								<li>
 									<h5>object: <span class="tsd-signature-type">T</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>T</p>
-									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
-							<p>A boolean</p>
 						</li>
 					</ul>
 				</section>
@@ -335,7 +313,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/queelag/core/blob/4c9dd3d/src/utils/object.utils.ts#L131">utils/object.utils.ts:131</a></li>
+									<li>Defined in <a href="https://github.com/queelag/core/blob/dfdbb63/src/utils/object.utils.ts#L115">utils/object.utils.ts:115</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -348,7 +326,7 @@
 								<li>
 									<h4>T<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">object</span></h4>
 									<div class="tsd-comment tsd-typography">
-										<p>Any object</p>
+										<p>The object interface</p>
 									</div>
 								</li>
 							</ul>
@@ -356,19 +334,12 @@
 							<ul class="tsd-parameters">
 								<li>
 									<h5>object: <span class="tsd-signature-type">T</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>T</p>
-									</div>
 								</li>
 								<li>
 									<h5>keys: <span class="tsd-signature-symbol">keyof </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">[]</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>An array of keys of T</p>
-									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Omit</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-symbol">keyof </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span></h4>
-							<p>T without the omitted keys of T</p>
 						</li>
 					</ul>
 				</section>
@@ -382,7 +353,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/queelag/core/blob/4c9dd3d/src/utils/object.utils.ts#L96">utils/object.utils.ts:96</a></li>
+									<li>Defined in <a href="https://github.com/queelag/core/blob/dfdbb63/src/utils/object.utils.ts#L86">utils/object.utils.ts:86</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -395,7 +366,7 @@
 								<li>
 									<h4>T<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">object</span></h4>
 									<div class="tsd-comment tsd-typography">
-										<p>Any object</p>
+										<p>The object interface</p>
 									</div>
 								</li>
 							</ul>
@@ -403,19 +374,12 @@
 							<ul class="tsd-parameters">
 								<li>
 									<h5>object: <span class="tsd-signature-type">T</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>T</p>
-									</div>
 								</li>
 								<li>
 									<h5>keys: <span class="tsd-signature-symbol">keyof </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">[]</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>An array of keys of T</p>
-									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Pick</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-symbol">keyof </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span></h4>
-							<p>T with only the picked keys of T</p>
 						</li>
 					</ul>
 				</section>
@@ -429,7 +393,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/queelag/core/blob/4c9dd3d/src/utils/object.utils.ts#L114">utils/object.utils.ts:114</a></li>
+									<li>Defined in <a href="https://github.com/queelag/core/blob/dfdbb63/src/utils/object.utils.ts#L101">utils/object.utils.ts:101</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -442,7 +406,7 @@
 								<li>
 									<h4>T<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">object</span></h4>
 									<div class="tsd-comment tsd-typography">
-										<p>Any object</p>
+										<p>The object interface</p>
 									</div>
 								</li>
 							</ul>
@@ -450,19 +414,12 @@
 							<ul class="tsd-parameters">
 								<li>
 									<h5>object: <span class="tsd-signature-type">T</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>T</p>
-									</div>
 								</li>
 								<li>
 									<h5>keys: <span class="tsd-signature-symbol">keyof </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">[]</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>An array of keys of T</p>
-									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Pick</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-symbol">keyof </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">[]</span></h4>
-							<p>An array of values of picked keys of T</p>
 						</li>
 					</ul>
 				</section>
@@ -476,7 +433,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/queelag/core/blob/4c9dd3d/src/utils/object.utils.ts#L62">utils/object.utils.ts:62</a></li>
+									<li>Defined in <a href="https://github.com/queelag/core/blob/dfdbb63/src/utils/object.utils.ts#L55">utils/object.utils.ts:55</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -489,13 +446,13 @@
 								<li>
 									<h4>T<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">object</span></h4>
 									<div class="tsd-comment tsd-typography">
-										<p>Any object</p>
+										<p>The object interface</p>
 									</div>
 								</li>
 								<li>
 									<h4>U<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">unknown</span></h4>
 									<div class="tsd-comment tsd-typography">
-										<p>Any value</p>
+										<p>The value interface or type</p>
 									</div>
 								</li>
 							</ul>
@@ -503,21 +460,12 @@
 							<ul class="tsd-parameters">
 								<li>
 									<h5>object: <span class="tsd-signature-type">T</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>T</p>
-									</div>
 								</li>
 								<li>
 									<h5>key: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">keyof </span><span class="tsd-signature-type">T</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>A string or keyof T</p>
-									</div>
 								</li>
 								<li>
 									<h5>value: <span class="tsd-signature-type">U</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>An U value</p>
-									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -687,7 +635,6 @@
 		<h2>Legend</h2>
 		<div class="tsd-legend-group">
 			<ul class="tsd-legend">
-				<li class="tsd-kind-constructor tsd-parent-kind-class"><span class="tsd-kind-icon">Constructor</span></li>
 				<li class="tsd-kind-property tsd-parent-kind-class"><span class="tsd-kind-icon">Property</span></li>
 				<li class="tsd-kind-method tsd-parent-kind-class"><span class="tsd-kind-icon">Method</span></li>
 			</ul>

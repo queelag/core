@@ -28,7 +28,7 @@ export class Throttle {
    *
    * @returns
    */
-  static handle<T extends string>(name: T, fn: () => any, ms: number): void {
+  static handle(name: string, fn: () => any, ms: number): void {
     let previous: number
 
     previous = this.data.get(name) || Date.now() - ms

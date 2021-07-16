@@ -31,8 +31,8 @@
  * main()
  * ```
  *
- * @template T Any interface or type
- * @template U An error which extends the ES Error
+ * @template T The return interface or type
+ * @template U The error interface which extends Error
  */
 export async function tcp<T, U extends Error = Error>(f: () => Promise<T>, v: boolean = true): Promise<T | U> {
   try {

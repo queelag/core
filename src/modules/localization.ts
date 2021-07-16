@@ -45,15 +45,13 @@ class Localization {
 
   /**
    * Adds n {@link LocalizationPack} to the {@link Localization.data}
-   *
    */
   static add(...packs: LocalizationPack[]): void {
     packs.forEach((v: LocalizationPack) => (this.data[v.language] = Object.assign({}, ObjectUtils.get(this.data, v.language, {}), v.data)))
   }
 
   /**
-   * Returns a string localized to the current {@link Localizaton.language}
-   *
+   * Returns a string localized to the current {@link Localization.language}
    */
   static get(path: string, inject: any[] = ['']): string {
     return inject.reduce(
@@ -64,7 +62,6 @@ class Localization {
 
   /**
    * Checks whether a path is localizable or not
-   *
    */
   static has(path: string): boolean {
     return ObjectUtils.has(this.data, [this.language, path].join('.'))

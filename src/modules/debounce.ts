@@ -27,6 +27,7 @@ export class Debounce {
   constructor() {}
 
   /**
+   * Lets fn run only if it hasn't be called again for ms time
    */
   static handle(name: string, fn: () => any, ms: number): void {
     clearTimeout(this.data.get(name) as any)

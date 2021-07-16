@@ -50,8 +50,7 @@ export class Status {
    */
   readonly data: Map<string, string> = new Map()
 
-  /**
-   */
+  /** @hidden */
   constructor(transformer: StatusTransformer = Status.defaultTransformer) {
     this.transformer = transformer
   }
@@ -63,7 +62,6 @@ export class Status {
 
   /**
    * Sets the transformed key to IDLE
-   *
    */
   idle(...keys: string[]): void {
     this.set(keys, this.IDLE)
@@ -71,7 +69,6 @@ export class Status {
 
   /**
    * Sets the transformed key to PENDING
-   *
    */
   pending(...keys: string[]): void {
     this.set(keys, this.PENDING)
@@ -79,7 +76,6 @@ export class Status {
 
   /**
    * Sets the transformed key to SUCCESS
-   *
    */
   success(...keys: string[]): void {
     this.set(keys, this.SUCCESS)
@@ -87,7 +83,6 @@ export class Status {
 
   /**
    * Sets the transformed key to ERROR
-   *
    */
   error(...keys: string[]): void {
     this.set(keys, this.ERROR)
@@ -114,7 +109,6 @@ export class Status {
 
   /**
    * Checks whether the transformed key is IDLE
-   *
    */
   isIdle(...keys: string[]): boolean {
     return this.get(keys) === this.IDLE
@@ -122,7 +116,6 @@ export class Status {
 
   /**
    * Checks whether the transformed key is PENDING
-   *
    */
   isPending(...keys: string[]): boolean {
     return this.get(keys) === this.PENDING
@@ -130,7 +123,6 @@ export class Status {
 
   /**
    * Checks whether the transformed key is SUCCESS
-   *
    */
   isSuccess(...keys: string[]): boolean {
     return this.get(keys) === this.SUCCESS
@@ -138,7 +130,6 @@ export class Status {
 
   /**
    * Checks whether the transformed key is ERROR
-   *
    */
   isError(...keys: string[]): boolean {
     return this.get(keys) === this.ERROR
@@ -146,7 +137,6 @@ export class Status {
 
   /**
    * Checks whether every transformed keys is IDLE
-   *
    */
   isEveryIdle(...keys: string[][]): boolean {
     return keys.every((v: string[]) => this.isIdle(...v))
@@ -154,7 +144,6 @@ export class Status {
 
   /**
    * Checks whether every transformed keys is PENDING
-   *
    */
   isEveryPending(...keys: string[][]): boolean {
     return keys.every((v: string[]) => this.isPending(...v))
@@ -162,7 +151,6 @@ export class Status {
 
   /**
    * Checks whether every transformed keys is SUCCESS
-   *
    */
   isEverySuccess(...keys: string[][]): boolean {
     return keys.every((v: string[]) => this.isSuccess(...v))
@@ -170,7 +158,6 @@ export class Status {
 
   /**
    * Checks whether every transformed keys is ERROR
-   *
    */
   isEveryError(...keys: string[][]): boolean {
     return keys.every((v: string[]) => this.isError(...v))
@@ -178,7 +165,6 @@ export class Status {
 
   /**
    * Checks whether some of the transformed keys are IDLE
-   *
    */
   areSomeIdle(...keys: string[][]): boolean {
     return keys.some((v: string[]) => this.isPending(...v))
@@ -186,7 +172,6 @@ export class Status {
 
   /**
    * Checks whether some of the transformed keys are PENDING
-   *
    */
   areSomePending(...keys: string[][]): boolean {
     return keys.some((v: string[]) => this.isPending(...v))
@@ -194,7 +179,6 @@ export class Status {
 
   /**
    * Checks whether some of the transformed keys are SUCCESS
-   *
    */
   areSomeSuccess(...keys: string[][]): boolean {
     return keys.some((v: string[]) => this.isPending(...v))
@@ -202,7 +186,6 @@ export class Status {
 
   /**
    * Checks whether some of the transformed keys are ERROR
-   *
    */
   areSomeError(...keys: string[][]): boolean {
     return keys.some((v: string[]) => this.isError(...v))

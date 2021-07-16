@@ -30,9 +30,8 @@ export class Interval {
 
   /**
    * Starts an interval
-   *
    */
-  static start<T extends string>(name: T, fn: () => any, ms: number): void {
+  static start(name: string, fn: () => any, ms: number): void {
     clearInterval(this.data.get(name) as any)
     Logger.debug('Interval', 'start', `The interval with name ${name} has been cleared.`)
 
@@ -45,9 +44,8 @@ export class Interval {
 
   /**
    * Stops an interval
-   *
    */
-  static stop<T extends string>(name: T): void {
+  static stop(name: string): void {
     let potential: NodeJS.Timeout | number | undefined
 
     potential = this.data.get(name)
@@ -61,9 +59,8 @@ export class Interval {
 
   /**
    * Checks whether an interval is running or not
-   *
    */
-  static isRunning<T extends string>(name: T): boolean {
+  static isRunning(name: string): boolean {
     return this.data.has(name)
   }
 }

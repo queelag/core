@@ -53,6 +53,7 @@ export class Cookie {
   /**
    * Sets a value for each key in keys found in the cookies prefixed by the name
    *
+   * @template T The store interface which extends {@link StringObject}
    */
   static get<T extends StringObject>(name: string, store: T, keys: (keyof T)[] = Object.keys(store)): boolean {
     let json: StringObject | Error, value: string
@@ -76,6 +77,7 @@ export class Cookie {
   /**
    * Sets a cookie for each key in keys prefixed by the name
    *
+   * @template T The store interface which extends {@link StringObject}
    */
   static set<T extends StringObject>(name: string, store: T, keys: (keyof T)[] = Object.keys(store), attributes: CookieAttributes = {}): boolean {
     let sets: boolean[]
@@ -96,7 +98,8 @@ export class Cookie {
 
   /**
    * Removes a cookie for each key in keys prefixed by the name
-   *
+
+  * @template T The store interface which extends {@link StringObject}
    */
   static remove<T extends StringObject>(name: string, store: T, keys: (keyof T)[] = Object.keys(store)): boolean {
     let json: StringObject | Error, removes: boolean[]

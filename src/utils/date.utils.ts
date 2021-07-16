@@ -9,7 +9,6 @@ export class DateUtils {
 
   /**
    * Converts any parsable value by Date to milliseconds
-   *
    */
   static toMilliseconds(value: any): number {
     return new Date(value).valueOf()

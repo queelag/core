@@ -16,7 +16,7 @@ import { tcp } from './tcp'
  * // logs 'John' and then true
  * ```
  *
- * @template T Any interface or type
+ * @template T The return interface or type
  */
 export async function rcp<T>(fn: () => any, c: T): Promise<T> {
   await tcp(() => fn())
