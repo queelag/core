@@ -4,7 +4,7 @@
  * Usage:
  *
  * ```typescript
- * import { tc } from '@queelag/core'
+ * import { tcp } from '@queelag/core'
  *
  * async function canThrow(throws: boolean): Promise<string> {
  *   if (throws) {
@@ -17,12 +17,12 @@
  * async function main() {
  *   let output: string | Error
  *
- *   output = await tc(() => canThrow(false))
+ *   output = await tcp(() => canThrow(false))
  *   if (output instanceof Error) return
  *
  *   // do something
  *
- *   output = await tc(() => canThrow(true))
+ *   output = await tcp(() => canThrow(true))
  *   if (output instanceof Error) return
  *
  *   // execution won't get here
@@ -34,11 +34,11 @@
  * @template T The return interface or type
  * @template U The error interface which extends Error
  */
-export async function tcp<T, U extends Error = Error>(f: () => Promise<T>, v: boolean = true): Promise<T | U> {
+export async function tcp<T, U extends Error = Error>(fn: () => Promise<T>, verbose: boolean = true): Promise<T | U> {
   try {
-    return await f()
+    return await fn()
   } catch (e: any) {
-    v && console.error('TryCatchPromise', e)
+    verbose && console.error(e)
     return e
   }
 }

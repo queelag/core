@@ -11,6 +11,10 @@ export interface LocalizationPackData {
 
 export type StatusTransformer = (keys: string[]) => string
 
+export interface StringObject {
+  [k: string]: string
+}
+
 export interface WithIdentity {
   id: ID
 }

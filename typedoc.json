@@ -2,7 +2,9 @@
   "$schema": "https://typedoc.org/schema.json",
   "entryPoints": "./src/index.ts",
   "excludeInternal": true,
+  "excludePrivate": true,
   "highlightTheme": "github-light",
+  "listInvalidSymbolLinks": true,
   "includeVersion": true,
   "readme": "none"
 }

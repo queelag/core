@@ -41,7 +41,7 @@ export class NumberUtils {
   static pickLowest(values: number[]): number
   static pickLowest(...values: number[]): number
   static pickLowest(...args: any[]): number {
-    return (args.length > 1 ? args : args[0]).reduce((r: number, v: number) => (v < r ? v : r), 0)
+    return (args.length > 1 ? args : args[0]).reduce((r: number, v: number) => (v < r ? v : r), Number.MAX_SAFE_INTEGER)
   }
 
   /**

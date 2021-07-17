@@ -1,9 +1,8 @@
 import Cookies, { CookieAttributes } from 'js-cookie'
+import { StringObject } from '../definitions/types'
 import { StringUtils } from '../utils/string.utils'
 import { Logger } from './logger'
 import { tc } from './tc'
-
-type StringObject = { [k: string]: string }
 
 /**
  * A module to handle cookies through a store.
