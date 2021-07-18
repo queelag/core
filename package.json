@@ -24,9 +24,13 @@
   "main": "index.cjs",
   "module": "index.js",
   "name": "@queelag/core",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
+  "repository": "https://github.com/queelag/core",
   "scripts": {
     "test": "yarn jest --coverage",
-    "build": "yarn rollup -c && yarn api-extractor run --local",
+    "build": "rm -rf dist && yarn rollup -c && yarn api-extractor run --local",
     "tarball": "yarn version && cp package.json dist/. && cd dist && yarn pack",
     "deploy": "yarn test && yarn build && yarn tarball && yarn publish dist/*.tgz --access public"
   },
