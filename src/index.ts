@@ -1,4 +1,5 @@
 export * from './definitions/enums'
+export * from './definitions/interfaces'
 export * from './definitions/types'
 export * from './modules/api'
 export * from './modules/cookie'

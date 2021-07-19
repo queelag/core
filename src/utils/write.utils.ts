@@ -1,5 +1,5 @@
 import { WriteMode } from '../definitions/enums'
-import { WithIdentity } from '../definitions/types'
+import { WithIdentity } from '../definitions/interfaces'
 
 /**
  * Utils for anything related to writing identifiable objects.

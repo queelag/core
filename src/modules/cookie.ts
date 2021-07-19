@@ -1,5 +1,5 @@
 import Cookies, { CookieAttributes } from 'js-cookie'
-import { StringObject } from '../definitions/types'
+import { StringObject } from '../definitions/interfaces'
 import { StringUtils } from '../utils/string.utils'
 import { Logger } from './logger'
 import { tc } from './tc'

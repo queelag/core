@@ -1,4 +1,4 @@
-import { LocalizationPack, LocalizationPackData } from '../definitions/types'
+import { LocalizationPack, LocalizationPackData } from '../definitions/interfaces'
 import { ObjectUtils } from '../utils/object.utils'
 
 /**
