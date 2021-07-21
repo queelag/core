@@ -3,7 +3,8 @@
   "dependencies": {
     "axios": "^0.21.1",
     "js-cookie": "^2.2.1",
-    "nanoid": "^3.1.23"
+    "nanoid": "^3.1.23",
+    "rfc4648": "^1.5.0"
   },
   "devDependencies": {
     "@microsoft/api-extractor": "^7.18.4",
