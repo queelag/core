@@ -3,8 +3,8 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>URLUtils | @queelag/core - v1.0.0</title>
-	<meta name="description" content="Documentation for @queelag/core - v1.0.0">
+	<title>URLUtils | @queelag/core - v1.0.2</title>
+	<meta name="description" content="Documentation for @queelag/core - v1.0.2">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
 	<script async src="../assets/js/search.js" id="search-script"></script>
@@ -23,7 +23,7 @@
 						<li class="state loading">Preparing search index...</li>
 						<li class="state failure">The search index is not available</li>
 					</ul>
-					<a href="../index.html" class="title">@queelag/core - v1.0.0</a>
+					<a href="../index.html" class="title">@queelag/core - v1.0.2</a>
 				</div>
 				<div class="table-cell" id="tsd-widgets">
 					<div id="tsd-filter">
@@ -52,7 +52,7 @@
 		<div class="container">
 			<ul class="tsd-breadcrumb">
 				<li>
-					<a href="../index.html">@queelag/core - v1.0.0</a>
+					<a href="../index.html">@queelag/core - v1.0.2</a>
 				</li>
 				<li>
 					<a href="URLUtils.html">URLUtils</a>
@@ -87,6 +87,7 @@
 						<section class="tsd-index-section ">
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><a href="URLUtils.html#appendSearchParams" class="tsd-kind-icon">append<wbr>Search<wbr>Params</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><a href="URLUtils.html#concat" class="tsd-kind-icon">concat</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><a href="URLUtils.html#removeSearchParams" class="tsd-kind-icon">remove<wbr>Search<wbr>Params</a></li>
 							</ul>
@@ -97,6 +98,37 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Methods</h2>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-static">
+					<a name="appendSearchParams" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> append<wbr>Search<wbr>Params</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-static">
+						<li class="tsd-signature tsd-kind-icon">append<wbr>Search<wbr>Params<span class="tsd-signature-symbol">(</span>url<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, params<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/queelag/core/blob/b3eb1b9/src/utils/url.utils.ts#L24">utils/url.utils.ts:24</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Joins a set of search params and safely appends them to the url.</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>url: <span class="tsd-signature-type">string</span></h5>
+								</li>
+								<li>
+									<h5>params: <span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">[]</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-static">
 					<a name="concat" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagStatic">Static</span> concat</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-static">
@@ -106,7 +138,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/queelag/core/blob/2717d8a/src/utils/url.utils.ts#L13">utils/url.utils.ts:13</a></li>
+									<li>Defined in <a href="https://github.com/queelag/core/blob/b3eb1b9/src/utils/url.utils.ts#L13">utils/url.utils.ts:13</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -134,7 +166,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/queelag/core/blob/2717d8a/src/utils/url.utils.ts#L24">utils/url.utils.ts:24</a></li>
+									<li>Defined in <a href="https://github.com/queelag/core/blob/b3eb1b9/src/utils/url.utils.ts#L37">utils/url.utils.ts:37</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -178,6 +210,9 @@
 					</li>
 					<li class=" tsd-kind-class tsd-has-type-parameter">
 						<a href="API.html" class="tsd-kind-icon">API</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="Base64.html" class="tsd-kind-icon">Base64</a>
 					</li>
 					<li class=" tsd-kind-class">
 						<a href="Cookie.html" class="tsd-kind-icon">Cookie</a>
@@ -239,6 +274,9 @@
 						<a href="URLUtils.html" class="tsd-kind-icon">URLUtils</a>
 						<ul>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-static">
+								<a href="URLUtils.html#appendSearchParams" class="tsd-kind-icon">append<wbr>Search<wbr>Params</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-static">
 								<a href="URLUtils.html#concat" class="tsd-kind-icon">concat</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-static">
@@ -297,6 +335,7 @@
 		<h2>Legend</h2>
 		<div class="tsd-legend-group">
 			<ul class="tsd-legend">
+				<li class="tsd-kind-constructor tsd-parent-kind-class"><span class="tsd-kind-icon">Constructor</span></li>
 				<li class="tsd-kind-property tsd-parent-kind-class"><span class="tsd-kind-icon">Property</span></li>
 				<li class="tsd-kind-method tsd-parent-kind-class"><span class="tsd-kind-icon">Method</span></li>
 			</ul>
