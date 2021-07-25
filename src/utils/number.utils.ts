@@ -45,10 +45,24 @@ export class NumberUtils {
   }
 
   /**
+   * Checks whether a value is even
+   */
+  static isEven(value: number): boolean {
+    return value % 2 == 0
+  }
+
+  /**
    * Checks whether value is a multiple of of
    */
   static isMultipleOf(value: number, of: number, decimals: number = 0): boolean {
     return this.toFixed(value / of, decimals) % 1 === 0
+  }
+
+  /**
+   * Checks whether a value is odd
+   */
+  static isOdd(value: number): boolean {
+    return Math.abs(value % 2) == 1
   }
 
   /**
