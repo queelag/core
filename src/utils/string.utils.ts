@@ -20,4 +20,14 @@ export class StringUtils {
   static concat(...strings: string[]): string {
     return strings.join('_')
   }
+
+  /**
+   * Transforms any string to a per word capitalized string.
+   */
+  static startCase(string: string): string {
+    return string
+      .split(/[^a-zA-Z]/)
+      .map((v: string) => this.capitalize(v, true))
+      .join(' ')
+  }
 }
