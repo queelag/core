@@ -60,14 +60,14 @@ export class Cookie {
     json = tc(() => Cookies.getJSON())
     if (json instanceof Error) return false
 
-    Logger.debug('Cookie', 'load', `The cookies have been parsed as JSON.`, json)
+    Logger.debug('Cookie', 'get', `The cookies have been parsed as JSON.`, json)
 
     keys.forEach((k: keyof T) => {
       value = (json as StringObject)[StringUtils.concat(name, k as string)]
       if (!value) return Logger.error('Cookie', 'get', `The JSON does not contain the key ${k}.`, json)
 
       store[k] = value as any
-      Logger.debug('Cookie', 'load', `The key ${k} has been set with value ${value}.`)
+      Logger.debug('Cookie', 'get', `The key ${k} has been set with value ${value}.`)
     })
 
     return true
@@ -87,7 +87,7 @@ export class Cookie {
       set = tc(() => Cookies.set(StringUtils.concat(name, k as string), store[k], attributes))
       if (set instanceof Error || !set) return false
 
-      Logger.debug('Cookie', 'save', `The key ${k} has been set with value ${store[k]}.`)
+      Logger.debug('Cookie', 'set', `The key ${k} has been set with value ${store[k]}.`)
 
       return true
     })
@@ -106,7 +106,7 @@ export class Cookie {
     json = tc(() => Cookies.getJSON())
     if (json instanceof Error) return false
 
-    Logger.debug('Cookie', 'load', `The cookies have been parsed as JSON.`, json)
+    Logger.debug('Cookie', 'remove', `The cookies have been parsed as JSON.`, json)
 
     removes = keys.map((k: keyof T) => {
       let removed: void | Error

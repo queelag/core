@@ -1,6 +1,10 @@
 import type { AxiosResponse } from 'axios'
 import { ID } from './types'
 
+export interface AnyObject {
+  [k: string]: any
+}
+
 export interface GraphQLAPIAxiosResponse<T = any> extends AxiosResponse<GraphQLAPIResponseBody<T>> {}
 
 export interface GraphQLAPIResponseBody<T = any> {
@@ -15,6 +19,10 @@ export interface LocalizationPack {
 
 export interface LocalizationPackData {
   [key: string]: string | LocalizationPackData
+}
+
+export interface PrimitiveObject {
+  [k: string]: boolean | null | number | string | undefined
 }
 
 export interface StringObject {
