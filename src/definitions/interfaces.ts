@@ -5,6 +5,8 @@ export interface AnyObject {
   [k: string]: any
 }
 
+export interface ElementTagNameMap extends HTMLElementTagNameMap, Pick<SVGElementTagNameMap, 'svg'> {}
+
 export interface GraphQLAPIAxiosResponse<T = any> extends AxiosResponse<GraphQLAPIResponseBody<T>> {}
 
 export interface GraphQLAPIResponseBody<T = any> {
