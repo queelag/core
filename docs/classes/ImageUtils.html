@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>Base64 | @queelag/core - v1.0.9</title>
+	<title>ImageUtils | @queelag/core - v1.0.9</title>
 	<meta name="description" content="Documentation for @queelag/core - v1.0.9">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -55,21 +55,28 @@
 					<a href="../index.html">@queelag/core - v1.0.9</a>
 				</li>
 				<li>
-					<a href="Base64.html">Base64</a>
+					<a href="ImageUtils.html">ImageUtils</a>
 				</li>
 			</ul>
-			<h1>Class Base64</h1>
+			<h1>Class ImageUtils</h1>
 		</div>
 	</div>
 </header>
 <div class="container container-main">
 	<div class="row">
 		<div class="col-8 col-content">
+			<section class="tsd-panel tsd-comment">
+				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<p>Utils for anything related to images.</p>
+					</div>
+				</div>
+			</section>
 			<section class="tsd-panel tsd-hierarchy">
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">Base64</span>
+						<span class="target">ImageUtils</span>
 					</li>
 				</ul>
 			</section>
@@ -80,14 +87,14 @@
 						<section class="tsd-index-section ">
 							<h3>Constructors</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-constructor tsd-parent-kind-class"><a href="Base64.html#constructor" class="tsd-kind-icon">constructor</a></li>
+								<li class="tsd-kind-constructor tsd-parent-kind-class"><a href="ImageUtils.html#constructor" class="tsd-kind-icon">constructor</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><a href="Base64.html#decode" class="tsd-kind-icon">decode</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><a href="Base64.html#encode" class="tsd-kind-icon">encode</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><a href="ImageUtils.html#preload" class="tsd-kind-icon">preload</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><a href="ImageUtils.html#toBase64" class="tsd-kind-icon">to<wbr>Base64</a></li>
 							</ul>
 						</section>
 					</div>
@@ -99,13 +106,13 @@
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
 					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>Base64<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="Base64.html" class="tsd-signature-type" data-tsd-kind="Class">Base64</a></li>
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Image<wbr>Utils<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="ImageUtils.html" class="tsd-signature-type" data-tsd-kind="Class">ImageUtils</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 							</aside>
-							<h4 class="tsd-returns-title">Returns <a href="Base64.html" class="tsd-signature-type" data-tsd-kind="Class">Base64</a></h4>
+							<h4 class="tsd-returns-title">Returns <a href="ImageUtils.html" class="tsd-signature-type" data-tsd-kind="Class">ImageUtils</a></h4>
 						</li>
 					</ul>
 				</section>
@@ -113,45 +120,61 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Methods</h2>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-static">
-					<a name="decode" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagStatic">Static</span> decode</h3>
+					<a name="preload" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> preload</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-static">
-						<li class="tsd-signature tsd-kind-icon">decode<span class="tsd-signature-symbol">(</span>string<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Uint8Array</span></li>
+						<li class="tsd-signature tsd-kind-icon">preload<span class="tsd-signature-symbol">(</span>sources<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/queelag/core/blob/5e801e7/src/modules/base64.ts#L4">src/modules/base64.ts:4</a></li>
+									<li>Defined in <a href="https://github.com/queelag/core/blob/5e801e7/src/utils/image.utils.ts#L29">src/utils/image.utils.ts:29</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Preloads a set of image sources and caches them as base64 data URLs.</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>string: <span class="tsd-signature-type">string</span></h5>
+									<h5>sources: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Uint8Array</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">&gt;</span></h4>
 						</li>
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-static">
-					<a name="encode" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagStatic">Static</span> encode</h3>
+					<a name="toBase64" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> to<wbr>Base64</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-static">
-						<li class="tsd-signature tsd-kind-icon">encode<span class="tsd-signature-symbol">(</span>buffer<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ArrayBuffer</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
+						<li class="tsd-signature tsd-kind-icon">to<wbr>Base64<span class="tsd-signature-symbol">(</span>image<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">HTMLImageElement</span>, alpha<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">boolean</span>, quality<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/queelag/core/blob/5e801e7/src/modules/base64.ts#L8">src/modules/base64.ts:8</a></li>
+									<li>Defined in <a href="https://github.com/queelag/core/blob/5e801e7/src/utils/image.utils.ts#L13">src/utils/image.utils.ts:13</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Draws an already loaded image element to a canvas and exports it as a base64 data URL.</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>buffer: <span class="tsd-signature-type">ArrayBuffer</span></h5>
+									<h5>image: <span class="tsd-signature-type">HTMLImageElement</span></h5>
+								</li>
+								<li>
+									<h5>alpha: <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> = false</span></h5>
+								</li>
+								<li>
+									<h5>quality: <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> = 0.8</span></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
@@ -173,16 +196,16 @@
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-class">
-						<a href="Base64.html" class="tsd-kind-icon">Base64</a>
+						<a href="ImageUtils.html" class="tsd-kind-icon">Image<wbr>Utils</a>
 						<ul>
 							<li class=" tsd-kind-constructor tsd-parent-kind-class">
-								<a href="Base64.html#constructor" class="tsd-kind-icon">constructor</a>
+								<a href="ImageUtils.html#constructor" class="tsd-kind-icon">constructor</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-static">
-								<a href="Base64.html#decode" class="tsd-kind-icon">decode</a>
+								<a href="ImageUtils.html#preload" class="tsd-kind-icon">preload</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-static">
-								<a href="Base64.html#encode" class="tsd-kind-icon">encode</a>
+								<a href="ImageUtils.html#toBase64" class="tsd-kind-icon">to<wbr>Base64</a>
 							</li>
 						</ul>
 					</li>
