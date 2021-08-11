@@ -1,6 +1,11 @@
 import { Cache } from '../modules/cache'
 import { Logger } from '../modules/logger'
 
+/**
+ * Utils for anything related to images.
+ *
+ * @category Utility
+ */
 export class ImageUtils {
   /**
    * Draws an already loaded image element to a canvas and exports it as a base64 data URL.
