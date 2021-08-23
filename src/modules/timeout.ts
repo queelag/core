@@ -1,7 +1,7 @@
 import { Logger } from './logger'
 
 /**
- * A module to safely handle timeouts
+ * A module to safely handle timeouts.
  *
  * Usage:
  *
@@ -26,7 +26,7 @@ export class Timeout {
   constructor() {}
 
   /**
-   * Calls a fn after ms time
+   * Calls a fn after ms time.
    */
   static set(name: string, fn: () => any, ms: number): void {
     this.data.set(name, setTimeout(fn, ms))
@@ -34,7 +34,7 @@ export class Timeout {
   }
 
   /**
-   * Clears a timeout, blocking its eventual execution
+   * Clears a timeout, blocking its eventual execution.
    */
   static clear(name: string): void {
     let potential: NodeJS.Timeout | number | undefined

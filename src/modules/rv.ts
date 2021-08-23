@@ -1,7 +1,7 @@
 import { tc } from './tc'
 
 /**
- * Calls fn whilst returning void
+ * Calls fn whilst returning void.
  *
  * Usage:
  *

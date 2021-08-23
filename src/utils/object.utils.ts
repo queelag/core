@@ -13,19 +13,19 @@ export class ObjectUtils {
   constructor() {}
 
   /**
-   * Clones an object
+   * Clones an object.
    *
-   * @template T The object interface
+   * @template T The object interface.
    */
   static clone<T extends object>(object: T): T {
     return JSON.parse(JSON.stringify(object))
   }
 
   /**
-   * Gets a key from an object, supports dot notation
+   * Gets a key from an object, supports dot notation.
    *
-   * @template T The object interface
-   * @template U The value interface or type
+   * @template T The object interface.
+   * @template U The value interface or type.
    */
   static get<T extends object, U extends any>(object: T, key: string | keyof T, fallback?: U): U | undefined {
     switch (typeof key) {
@@ -47,10 +47,10 @@ export class ObjectUtils {
   }
 
   /**
-   * Sets a value to a key in an object, supports dot notation
+   * Sets a value to a key in an object, supports dot notation.
    *
-   * @template T The object interface
-   * @template U The value interface or type
+   * @template T The object interface.
+   * @template U The value interface or type.
    */
   static set<T extends object, U extends any>(object: T, key: string | keyof T, value: U): void {
     switch (typeof key) {
@@ -79,9 +79,9 @@ export class ObjectUtils {
   }
 
   /**
-   * Creates a new object with only the picked keys of T
+   * Creates a new object with only the picked keys of T.
    *
-   * @template T The object interface
+   * @template T The object interface.
    */
   static pick<T extends object>(object: T, keys: (keyof T)[]): Pick<T, keyof T> {
     let output: Pick<T, keyof T>
@@ -94,9 +94,9 @@ export class ObjectUtils {
   }
 
   /**
-   * Creates an array of values of picked keys of T
+   * Creates an array of values of picked keys of T.
    *
-   * @template T The object interface
+   * @template T The object interface.
    */
   static pickToArray<T extends object>(object: T, keys: (keyof T)[]): Pick<T, keyof T>[] {
     let output: Pick<T, keyof T>[]
@@ -108,9 +108,9 @@ export class ObjectUtils {
   }
 
   /**
-   * Creates a new object without the omitted keys of T
+   * Creates a new object without the omitted keys of T.
    *
-   * @template T The object interface
+   * @template T The object interface.
    */
   static omit<T extends object>(object: T, keys: (keyof T)[]): Omit<T, keyof T> {
     let clone: T
@@ -122,27 +122,27 @@ export class ObjectUtils {
   }
 
   /**
-   * Checks whether the object has the key or not
+   * Checks whether the object has the key or not.
    *
-   * @template T The object interface
+   * @template T The object interface.
    */
   static has<T extends object>(object: T, key: string | keyof T): boolean {
     return this.get(object, key, this.plain) !== this.plain
   }
 
   /**
-   * Checks if the object has keys
+   * Checks if the object has keys.
    *
-   * @template T The object interface
+   * @template T The object interface.
    */
   static hasKeys<T extends object>(object: T): boolean {
     return Object.keys(object).length > 0
   }
 
   /**
-   * Checks if the object has values
+   * Checks if the object has values.
    *
-   * @template T The object interface
+   * @template T The object interface.
    */
   static hasValues<T extends object>(object: T): boolean {
     return Object.values(object).length > 0

@@ -1,5 +1,5 @@
 /**
- * A module to handle sleeping
+ * A module to handle sleeping.
  *
  * Usage:
  *
@@ -20,7 +20,7 @@ export class Sleep {
   constructor() {}
 
   /**
-   * Waits for ms time
+   * Waits for ms time.
    *
    * @returns
    */

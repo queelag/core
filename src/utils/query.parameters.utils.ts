@@ -10,7 +10,7 @@ export class QueryParametersUtils {
   /**
    * Converts an object to a chain of query parameters.
    *
-   * @template T The object interface
+   * @template T The object interface.
    */
   static toString<T extends object>(parameters: T): string {
     return Object.entries(parameters)

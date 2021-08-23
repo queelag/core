@@ -1,7 +1,7 @@
 import { tc } from './tc'
 
 /**
- * Calls fn whilst returning a custom T value
+ * Calls fn whilst returning a custom T value.
  *
  * Usage:
  *
@@ -16,7 +16,7 @@ import { tc } from './tc'
  * // logs 'John' and then true
  * ```
  *
- * @template T The return interface or type
+ * @template T The return interface or type.
  */
 export function rc<T>(fn: () => any, c: T): T {
   tc(() => fn())

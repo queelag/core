@@ -10,7 +10,7 @@ class PromiseUtils {
   constructor() {}
 
   /**
-   * Calls every function of fns synchronously
+   * Calls every function of fns synchronously.
    */
   static async chain(...fns: ((...args: any) => Promise<any>)[]): Promise<void> {
     for (let i = 0; i < fns.length; i++) {
@@ -19,7 +19,7 @@ class PromiseUtils {
   }
 
   /**
-   * Calls every function of fns synchronously and keeps running only if the return value is truthy
+   * Calls every function of fns synchronously and keeps running only if the return value is truthy.
    */
   static async truthyChain(...fns: ((...args: any) => Promise<any>)[]): Promise<boolean> {
     let output: boolean | Error

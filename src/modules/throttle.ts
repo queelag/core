@@ -1,7 +1,7 @@
 import { tc } from './tc'
 
 /**
- * A module to handle functions throttling
+ * A module to handle functions throttling.
  *
  * Usage:
  *
@@ -24,7 +24,7 @@ export class Throttle {
   constructor() {}
 
   /**
-   * Calls the fn only if ms time has passed since the last execution
+   * Calls the fn only if ms time has passed since the last execution.
    *
    * @returns
    */

@@ -1,5 +1,5 @@
 /**
- * Works as any function
+ * Works as any function.
  *
  * Usage:
  *

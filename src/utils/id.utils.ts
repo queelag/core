@@ -18,7 +18,7 @@ export class IDUtils {
   }
 
   /**
-   * Generates an unique ID excluding the IDs in the blacklist
+   * Generates an unique ID excluding the IDs in the blacklist.
    */
   static unique(blacklist: ID[] = []): string {
     let id: string

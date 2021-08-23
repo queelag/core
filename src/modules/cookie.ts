@@ -1,7 +1,8 @@
 import Cookies, { CookieAttributes } from 'js-cookie'
-import { StringObject } from '../definitions/interfaces'
+import { AnyObject } from '../definitions/interfaces'
 import { StringUtils } from '../utils/string.utils'
 import { Logger } from './logger'
+import { rc } from './rc'
 import { tc } from './tc'
 
 /**
@@ -50,12 +51,12 @@ export class Cookie {
   constructor() {}
 
   /**
-   * Sets a value for each key in keys found in the cookies prefixed by the name
+   * Sets a value for each key in keys found in the cookies prefixed by the name.
    *
-   * @template T The store interface which extends {@link StringObject}
+   * @template T The store interface which extends {@link AnyObject}.
    */
-  static get<T extends StringObject>(name: string, store: T, keys: (keyof T)[] = Object.keys(store)): boolean {
-    let json: StringObject | Error, value: string
+  static get<T extends AnyObject>(name: string, store: T, keys: (keyof T)[] = Object.keys(store)): boolean {
+    let json: AnyObject | Error, value: string
 
     json = tc(() => Cookies.getJSON())
     if (json instanceof Error) return false
@@ -63,8 +64,8 @@ export class Cookie {
     Logger.debug('Cookie', 'get', `The cookies have been parsed as JSON.`, json)
 
     keys.forEach((k: keyof T) => {
-      value = (json as StringObject)[StringUtils.concat(name, k as string)]
-      if (!value) return Logger.error('Cookie', 'get', `The JSON does not contain the key ${k}.`, json)
+      value = (json as AnyObject)[StringUtils.concat(name, k as string)]
+      if (!value) return Logger.warn('Cookie', 'get', `The JSON does not contain the key ${k}.`, json)
 
       store[k] = value as any
       Logger.debug('Cookie', 'get', `The key ${k} has been set with value ${value}.`)
@@ -74,18 +75,18 @@ export class Cookie {
   }
 
   /**
-   * Sets a cookie for each key in keys prefixed by the name
+   * Sets a cookie for each key in keys prefixed by the name.
    *
-   * @template T The store interface which extends {@link StringObject}
+   * @template T The store interface which extends {@link AnyObject}.
    */
-  static set<T extends StringObject>(name: string, store: T, keys: (keyof T)[] = Object.keys(store), attributes: CookieAttributes = {}): boolean {
+  static set<T extends AnyObject>(name: string, store: T, keys: (keyof T)[] = Object.keys(store), attributes: CookieAttributes = {}): boolean {
     let sets: boolean[]
 
     sets = keys.map((k: keyof T) => {
       let set: string | undefined | Error
 
       set = tc(() => Cookies.set(StringUtils.concat(name, k as string), store[k], attributes))
-      if (set instanceof Error || !set) return false
+      if (set instanceof Error || !set) return rc(() => Logger.error('Cookie', 'set', `Failed to set the key ${k} with value ${store[k]}.`), false)
 
       Logger.debug('Cookie', 'set', `The key ${k} has been set with value ${store[k]}.`)
 
@@ -96,12 +97,12 @@ export class Cookie {
   }
 
   /**
-   * Removes a cookie for each key in keys prefixed by the name
+   * Removes a cookie for each key in keys prefixed by the name.
 
-  * @template T The store interface which extends {@link StringObject}
+  * @template T The store interface which extends {@link AnyObject}.
    */
-  static remove<T extends StringObject>(name: string, store: T, keys: (keyof T)[] = Object.keys(store)): boolean {
-    let json: StringObject | Error, removes: boolean[]
+  static remove<T extends AnyObject>(name: string, store: T, keys: (keyof T)[] = Object.keys(store)): boolean {
+    let json: AnyObject | Error, removes: boolean[]
 
     json = tc(() => Cookies.getJSON())
     if (json instanceof Error) return false

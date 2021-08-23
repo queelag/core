@@ -1,7 +1,8 @@
 import { BooleanValue, LoggerLevel } from '../definitions/enums'
+import { Environment } from './environment'
 
 /**
- * A module to print prettier logs
+ * A module to print prettier logs.
  *
  * Usage:
  *
@@ -16,11 +17,11 @@ import { BooleanValue, LoggerLevel } from '../definitions/enums'
  */
 export class Logger {
   /**
-   * A {@link LoggerLevel} which determines the logs that are printed
+   * A {@link LoggerLevel} which determines the logs that are printed.
    */
-  static level: LoggerLevel = LoggerLevel.DEBUG
+  static level: LoggerLevel = Environment.isProduction ? LoggerLevel.ERROR : LoggerLevel.DEBUG
   /**
-   * A {@link BooleanValue}
+   * A {@link BooleanValue}.
    */
   static status: BooleanValue = BooleanValue.TRUE
 
@@ -28,42 +29,42 @@ export class Logger {
   constructor() {}
 
   /**
-   * Logs a debug message to the console
+   * Logs a debug message to the console.
    */
   static debug(...args: any[]): void {
     this.isEnabled && this.level <= LoggerLevel.DEBUG && console.debug(...this.format(args))
   }
 
   /**
-   * Logs an info message to the console
+   * Logs an info message to the console.
    */
   static info(...args: any[]): void {
     this.isEnabled && this.level <= LoggerLevel.INFO && console.info(...this.format(args))
   }
 
   /**
-   * Logs a warn message to the console
+   * Logs a warn message to the console.
    */
   static warn(...args: any[]): void {
     this.isEnabled && this.level <= LoggerLevel.WARN && console.warn(...this.format(args))
   }
 
   /**
-   * Logs an error message to the console
+   * Logs an error message to the console.
    */
   static error(...args: any[]): void {
     this.isEnabled && this.level <= LoggerLevel.ERROR && console.error(...this.format(args))
   }
 
   /**
-   * Disables debug, info, warn and error logs
+   * Disables debug, info, warn and error logs.
    */
   static disable(): void {
     this.status = BooleanValue.FALSE
   }
 
   /**
-   * Enables debug, info, warn and error logs
+   * Enables debug, info, warn and error logs.
    */
   static enable(): void {
     this.status = BooleanValue.TRUE
@@ -72,20 +73,20 @@ export class Logger {
   /** @internal */
   private static format(args: any[] = []): any[] {
     return [
-      args.filter((v: any) => ['boolean', 'number', 'string'].includes(typeof v)).join(' -> '),
+      args.filter((v: any) => ['boolean', 'number', 'string'].includes(typeof v) && v.toString().length > 0).join(' -> '),
       ...args.filter((v: any) => !['boolean', 'number', 'string'].includes(typeof v))
     ]
   }
 
   /**
-   * Checks if logs are disabled
+   * Checks if logs are disabled.
    */
   static get isDisabled(): boolean {
     return this.status === BooleanValue.FALSE
   }
 
   /**
-   * Checks if logs are enabled
+   * Checks if logs are enabled.
    */
   static get isEnabled(): boolean {
     return this.status === BooleanValue.TRUE

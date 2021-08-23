@@ -2,7 +2,7 @@ import { LocalizationPack, LocalizationPackData } from '../definitions/interface
 import { ObjectUtils } from '../utils/object.utils'
 
 /**
- * A module to handle simple localization
+ * A module to handle simple localization.
  *
  * Usage:
  *
@@ -32,11 +32,11 @@ import { ObjectUtils } from '../utils/object.utils'
  */
 class Localization {
   /**
-   * A {@link LocalizationPackData} object
+   * A {@link LocalizationPackData} object.
    */
   static data: LocalizationPackData = {}
   /**
-   * A string which determines the current language
+   * A string which determines the current language.
    */
   static language: string = 'en'
 
@@ -44,14 +44,14 @@ class Localization {
   constructor() {}
 
   /**
-   * Adds n {@link LocalizationPack} to the {@link Localization.data}
+   * Adds n {@link LocalizationPack} to the {@link Localization.data}.
    */
   static add(...packs: LocalizationPack[]): void {
     packs.forEach((v: LocalizationPack) => (this.data[v.language] = Object.assign({}, ObjectUtils.get(this.data, v.language, {}), v.data)))
   }
 
   /**
-   * Returns a string localized to the current {@link Localization.language}
+   * Returns a string localized to the current {@link Localization.language}.
    */
   static get(path: string, inject: any[] = ['']): string {
     return inject.reduce(
@@ -61,7 +61,7 @@ class Localization {
   }
 
   /**
-   * Checks whether a path is localizable or not
+   * Checks whether a path is localizable or not.
    */
   static has(path: string): boolean {
     return ObjectUtils.has(this.data, [this.language, path].join('.'))

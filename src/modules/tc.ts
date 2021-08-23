@@ -1,5 +1,5 @@
 /**
- * Try catches a fn, returning both T and U
+ * Try catches a fn, returning both T and U.
  *
  * Usage:
  *
@@ -31,14 +31,17 @@
  * main()
  * ```
  *
- * @template T The return interface or type
- * @template U The error interface which extends Error
+ * @template T The return interface or type.
+ * @template U The error interface which extends Error.
  */
-export function tc<T, U extends Error = Error>(fn: () => T, v: boolean = true): T | U {
+export function tc<T, U extends Error = Error>(fn: () => T, verbose: boolean = true): T | U {
   try {
     return fn()
   } catch (e: any) {
-    v && console.error(e)
+    if (verbose) {
+      console.error(e)
+    }
+
     return e
   }
 }

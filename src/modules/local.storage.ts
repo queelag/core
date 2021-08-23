@@ -3,7 +3,9 @@ import { Logger } from './logger'
 import { tc } from './tc'
 
 /**
- * @ignore
+ * A module to handle local storage operations through a store.
+ *
+ * @category Module
  */
 export class LocalStorage {
   /** @hidden */
@@ -12,7 +14,7 @@ export class LocalStorage {
   /**
    * Sets a value for each key in keys from the local storage.
    *
-   * @template T The store interface which extends {@link AnyObject}
+   * @template T The store interface which extends {@link AnyObject}.
    */
   static get<T extends AnyObject>(name: string, store: T, keys: (keyof T)[] = Object.keys(store), all: boolean = false): boolean {
     let item: T | Error, value: string
@@ -43,7 +45,7 @@ export class LocalStorage {
   /**
    * Sets a stringified JSON for each key in keys.
    *
-   * @template T The store interface which extends {@link AnyObject}
+   * @template T The store interface which extends {@link AnyObject}.
    */
   static set<T extends AnyObject>(name: string, store: T, keys: (keyof T)[] = Object.keys(store)): boolean {
     let item: T | Error, set: void | Error
@@ -65,7 +67,7 @@ export class LocalStorage {
   /**
    * Removes each key in keys.
    *
-   * @template T The store interface which extends {@link AnyObject}
+   * @template T The store interface which extends {@link AnyObject}.
    */
   static remove<T extends AnyObject>(name: string, store: T, keys: (keyof T)[] = Object.keys(store)): boolean {
     if (keys.length === Object.keys(store).length) {

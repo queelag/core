@@ -1,5 +1,5 @@
 /**
- * Try catches an asynchronous fn, returning both T and U
+ * Try catches an asynchronous fn, returning both T and U.
  *
  * Usage:
  *
@@ -31,14 +31,17 @@
  * main()
  * ```
  *
- * @template T The return interface or type
- * @template U The error interface which extends Error
+ * @template T The return interface or type.
+ * @template U The error interface which extends Error.
  */
 export async function tcp<T, U extends Error = Error>(fn: () => Promise<T>, verbose: boolean = true): Promise<T | U> {
   try {
     return await fn()
   } catch (e: any) {
-    verbose && console.error(e)
+    if (verbose) {
+      console.error(e)
+    }
+
     return e
   }
 }

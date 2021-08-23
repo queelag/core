@@ -2,7 +2,7 @@ import { Logger } from './logger'
 import { tc } from './tc'
 
 /**
- * A module to safely handle intervals with a name
+ * A module to safely handle intervals with a name.
  *
  * Usage:
  *
@@ -29,7 +29,7 @@ export class Interval {
   constructor() {}
 
   /**
-   * Starts an interval
+   * Starts an interval.
    */
   static start(name: string, fn: () => any, ms: number): void {
     clearInterval(this.data.get(name) as any)
@@ -43,7 +43,7 @@ export class Interval {
   }
 
   /**
-   * Stops an interval
+   * Stops an interval.
    */
   static stop(name: string): void {
     let potential: NodeJS.Timeout | number | undefined
@@ -55,10 +55,11 @@ export class Interval {
     Logger.debug('Interval', 'stop', `The interval with name ${name} has been cleared.`)
 
     this.data.delete(name)
+    Logger.debug('Interval', 'stop', `The interval with name ${name} has been deleted.`)
   }
 
   /**
-   * Checks whether an interval is running or not
+   * Checks whether an interval is running or not.
    */
   static isRunning(name: string): boolean {
     return this.data.has(name)
