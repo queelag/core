@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>Cookie | @queelag/core - v1.0.10</title>
+	<title>LocalStorage | @queelag/core - v1.0.10</title>
 	<meta name="description" content="Documentation for @queelag/core - v1.0.10">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -55,10 +55,10 @@
 					<a href="../index.html">@queelag/core - v1.0.10</a>
 				</li>
 				<li>
-					<a href="Cookie.html">Cookie</a>
+					<a href="LocalStorage.html">LocalStorage</a>
 				</li>
 			</ul>
-			<h1>Class Cookie</h1>
+			<h1>Class LocalStorage</h1>
 		</div>
 	</div>
 </header>
@@ -68,48 +68,15 @@
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>A module to handle cookies through a store.</p>
+						<p>A module to handle local storage operations through a store.</p>
 					</div>
-					<p>Usage:</p>
-					<pre><code class="language-typescript"><span style="color: #D73A49">import</span><span style="color: #24292E"> { Cookie } </span><span style="color: #D73A49">from</span><span style="color: #24292E"> </span><span style="color: #032F62">&#039;@queelag/core&#039;</span>
-
-<span style="color: #D73A49">interface</span><span style="color: #24292E"> </span><span style="color: #6F42C1">AuthData</span><span style="color: #24292E"> {</span>
-<span style="color: #24292E">  </span><span style="color: #E36209">token</span><span style="color: #D73A49">:</span><span style="color: #24292E"> </span><span style="color: #005CC5">string</span>
-<span style="color: #24292E">}</span>
-
-<span style="color: #D73A49">class</span><span style="color: #24292E"> </span><span style="color: #6F42C1">AuthStore</span><span style="color: #24292E"> {</span>
-<span style="color: #24292E">  </span><span style="color: #E36209">data</span><span style="color: #D73A49">:</span><span style="color: #24292E"> </span><span style="color: #6F42C1">AuthData</span>
-
-<span style="color: #24292E">  </span><span style="color: #D73A49">constructor</span><span style="color: #24292E">() {</span>
-<span style="color: #24292E">    </span><span style="color: #005CC5">this</span><span style="color: #24292E">.data </span><span style="color: #D73A49">=</span><span style="color: #24292E"> { token: </span><span style="color: #032F62">&#039;&#039;</span><span style="color: #24292E"> }</span>
-<span style="color: #24292E">    Cookie.</span><span style="color: #6F42C1">get</span><span style="color: #24292E">(</span><span style="color: #005CC5">this</span><span style="color: #24292E">.name, </span><span style="color: #005CC5">this</span><span style="color: #24292E">.data)</span>
-<span style="color: #24292E">  }</span>
-
-<span style="color: #24292E">  </span><span style="color: #6F42C1">login</span><span style="color: #24292E">()</span><span style="color: #D73A49">:</span><span style="color: #24292E"> </span><span style="color: #005CC5">void</span><span style="color: #24292E"> {</span>
-<span style="color: #24292E">    </span><span style="color: #D73A49">let</span><span style="color: #24292E"> response</span><span style="color: #D73A49">:</span><span style="color: #24292E"> </span><span style="color: #005CC5">string</span>
-
-<span style="color: #24292E">    response </span><span style="color: #D73A49">=</span><span style="color: #24292E"> </span><span style="color: #032F62">&#039;token&#039;</span>
-<span style="color: #24292E">    </span><span style="color: #005CC5">this</span><span style="color: #24292E">.token </span><span style="color: #D73A49">=</span><span style="color: #24292E"> response</span>
-
-<span style="color: #24292E">    Cookie.</span><span style="color: #6F42C1">set</span><span style="color: #24292E">(</span><span style="color: #005CC5">this</span><span style="color: #24292E">.name, </span><span style="color: #005CC5">this</span><span style="color: #24292E">.data, [</span><span style="color: #032F62">&#039;token&#039;</span><span style="color: #24292E">], { secure: </span><span style="color: #005CC5">true</span><span style="color: #24292E"> })</span>
-<span style="color: #24292E">  }</span>
-
-<span style="color: #24292E">  </span><span style="color: #6F42C1">logout</span><span style="color: #24292E">()</span><span style="color: #D73A49">:</span><span style="color: #24292E"> </span><span style="color: #005CC5">void</span><span style="color: #24292E"> {</span>
-<span style="color: #24292E">    Cookie.</span><span style="color: #6F42C1">remove</span><span style="color: #24292E">(</span><span style="color: #005CC5">this</span><span style="color: #24292E">.name, </span><span style="color: #005CC5">this</span><span style="color: #24292E">.data)</span>
-<span style="color: #24292E">  }</span>
-
-<span style="color: #24292E">  </span><span style="color: #D73A49">get</span><span style="color: #24292E"> </span><span style="color: #6F42C1">name</span><span style="color: #24292E">()</span><span style="color: #D73A49">:</span><span style="color: #24292E"> </span><span style="color: #005CC5">string</span><span style="color: #24292E"> {</span>
-<span style="color: #24292E">    </span><span style="color: #D73A49">return</span><span style="color: #24292E"> </span><span style="color: #032F62">&#039;auth&#039;</span>
-<span style="color: #24292E">  }</span>
-<span style="color: #24292E">}</span>
-</code></pre>
 				</div>
 			</section>
 			<section class="tsd-panel tsd-hierarchy">
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">Cookie</span>
+						<span class="target">LocalStorage</span>
 					</li>
 				</ul>
 			</section>
@@ -120,9 +87,9 @@
 						<section class="tsd-index-section ">
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-static"><a href="Cookie.html#get" class="tsd-kind-icon">get</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-static"><a href="Cookie.html#remove" class="tsd-kind-icon">remove</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-static"><a href="Cookie.html#set" class="tsd-kind-icon">set</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-static"><a href="LocalStorage.html#get" class="tsd-kind-icon">get</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-static"><a href="LocalStorage.html#remove" class="tsd-kind-icon">remove</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-static"><a href="LocalStorage.html#set" class="tsd-kind-icon">set</a></li>
 							</ul>
 						</section>
 					</div>
@@ -134,18 +101,18 @@
 					<a name="get" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagStatic">Static</span> get</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-static">
-						<li class="tsd-signature tsd-kind-icon">get&lt;T&gt;<span class="tsd-signature-symbol">(</span>name<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, store<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span>, keys<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-symbol">keyof </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+						<li class="tsd-signature tsd-kind-icon">get&lt;T&gt;<span class="tsd-signature-symbol">(</span>name<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, store<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span>, keys<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-symbol">keyof </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">[]</span>, all<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/queelag/core/blob/70acfbb/src/modules/cookie.ts#L58">src/modules/cookie.ts:58</a></li>
+									<li>Defined in <a href="https://github.com/queelag/core/blob/70acfbb/src/modules/local.storage.ts#L19">src/modules/local.storage.ts:19</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Sets a value for each key in keys found in the cookies prefixed by the name.</p>
+									<p>Sets a value for each key in keys from the local storage.</p>
 								</div>
 							</div>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -168,6 +135,9 @@
 								<li>
 									<h5>keys: <span class="tsd-signature-symbol">keyof </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> = ...</span></h5>
 								</li>
+								<li>
+									<h5>all: <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> = false</span></h5>
+								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
 						</li>
@@ -183,12 +153,12 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/queelag/core/blob/70acfbb/src/modules/cookie.ts#L104">src/modules/cookie.ts:104</a></li>
+									<li>Defined in <a href="https://github.com/queelag/core/blob/70acfbb/src/modules/local.storage.ts#L72">src/modules/local.storage.ts:72</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Removes a cookie for each key in keys prefixed by the name.</p>
+									<p>Removes each key in keys.</p>
 								</div>
 							</div>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -220,18 +190,18 @@
 					<a name="set" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagStatic">Static</span> set</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-static">
-						<li class="tsd-signature tsd-kind-icon">set&lt;T&gt;<span class="tsd-signature-symbol">(</span>name<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, store<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span>, keys<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-symbol">keyof </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">[]</span>, attributes<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">CookieAttributes</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+						<li class="tsd-signature tsd-kind-icon">set&lt;T&gt;<span class="tsd-signature-symbol">(</span>name<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, store<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span>, keys<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-symbol">keyof </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/queelag/core/blob/70acfbb/src/modules/cookie.ts#L82">src/modules/cookie.ts:82</a></li>
+									<li>Defined in <a href="https://github.com/queelag/core/blob/70acfbb/src/modules/local.storage.ts#L50">src/modules/local.storage.ts:50</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Sets a cookie for each key in keys prefixed by the name.</p>
+									<p>Sets a stringified JSON for each key in keys.</p>
 								</div>
 							</div>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -254,9 +224,6 @@
 								<li>
 									<h5>keys: <span class="tsd-signature-symbol">keyof </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> = ...</span></h5>
 								</li>
-								<li>
-									<h5>attributes: <span class="tsd-signature-type">CookieAttributes</span><span class="tsd-signature-symbol"> = {}</span></h5>
-								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
 						</li>
@@ -277,16 +244,16 @@
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-class">
-						<a href="Cookie.html" class="tsd-kind-icon">Cookie</a>
+						<a href="LocalStorage.html" class="tsd-kind-icon">Local<wbr>Storage</a>
 						<ul>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-static">
-								<a href="Cookie.html#get" class="tsd-kind-icon">get</a>
+								<a href="LocalStorage.html#get" class="tsd-kind-icon">get</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-static">
-								<a href="Cookie.html#remove" class="tsd-kind-icon">remove</a>
+								<a href="LocalStorage.html#remove" class="tsd-kind-icon">remove</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-static">
-								<a href="Cookie.html#set" class="tsd-kind-icon">set</a>
+								<a href="LocalStorage.html#set" class="tsd-kind-icon">set</a>
 							</li>
 						</ul>
 					</li>
