@@ -57,35 +57,35 @@ export class Status {
 
   /** @internal */
   private get(keys: string[]): string {
-    return this.data.get(this.transformer(keys)) || this.IDLE
+    return this.data.get(this.transformer(keys)) || Status.IDLE
   }
 
   /**
    * Sets the transformed key to IDLE.
    */
   idle(...keys: string[]): void {
-    this.set(keys, this.IDLE)
+    this.set(keys, Status.IDLE)
   }
 
   /**
    * Sets the transformed key to PENDING.
    */
   pending(...keys: string[]): void {
-    this.set(keys, this.PENDING)
+    this.set(keys, Status.PENDING)
   }
 
   /**
    * Sets the transformed key to SUCCESS.
    */
   success(...keys: string[]): void {
-    this.set(keys, this.SUCCESS)
+    this.set(keys, Status.SUCCESS)
   }
 
   /**
    * Sets the transformed key to ERROR.
    */
   error(...keys: string[]): void {
-    this.set(keys, this.ERROR)
+    this.set(keys, Status.ERROR)
   }
 
   /** @internal */
@@ -99,7 +99,7 @@ export class Status {
    */
   clear(): void {
     this.data.clear()
-    Logger.debug('Status', 'clear', `Every status has been set to ${this.IDLE}.`)
+    Logger.debug('Status', 'clear', `Every status has been set to ${Status.IDLE}.`)
   }
 
   /** @internal */
@@ -111,28 +111,28 @@ export class Status {
    * Checks whether the transformed key is IDLE.
    */
   isIdle(...keys: string[]): boolean {
-    return this.get(keys) === this.IDLE
+    return this.get(keys) === Status.IDLE
   }
 
   /**
    * Checks whether the transformed key is PENDING.
    */
   isPending(...keys: string[]): boolean {
-    return this.get(keys) === this.PENDING
+    return this.get(keys) === Status.PENDING
   }
 
   /**
    * Checks whether the transformed key is SUCCESS.
    */
   isSuccess(...keys: string[]): boolean {
-    return this.get(keys) === this.SUCCESS
+    return this.get(keys) === Status.SUCCESS
   }
 
   /**
    * Checks whether the transformed key is ERROR.
    */
   isError(...keys: string[]): boolean {
-    return this.get(keys) === this.ERROR
+    return this.get(keys) === Status.ERROR
   }
 
   /**
@@ -191,23 +191,19 @@ export class Status {
     return keys.some((v: string[]) => this.isError(...v))
   }
 
-  /** @internal */
-  private get IDLE(): string {
+  static get IDLE(): string {
     return 'IDLE'
   }
 
-  /** @internal */
-  private get PENDING(): string {
+  static get PENDING(): string {
     return 'PENDING'
   }
 
-  /** @internal */
-  private get SUCCESS(): string {
+  static get SUCCESS(): string {
     return 'SUCCESS'
   }
 
-  /** @internal */
-  private get ERROR(): string {
+  static get ERROR(): string {
     return 'ERROR'
   }
 

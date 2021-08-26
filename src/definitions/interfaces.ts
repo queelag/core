@@ -31,6 +31,17 @@ export interface StringObject {
   [k: string]: string
 }
 
+export interface Timestamp<T> {
+  create: T
+  delete: T
+  read: T
+  update: T
+}
+
 export interface WithIdentity {
   id: ID
+}
+
+export interface WithTimestamp<T, K extends keyof Timestamp<T>> {
+  timestamp: Pick<Timestamp<T>, K>
 }
