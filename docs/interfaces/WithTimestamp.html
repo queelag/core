@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>GraphQLAPIResponseBody | @queelag/core - v1.0.11</title>
+	<title>WithTimestamp | @queelag/core - v1.0.11</title>
 	<meta name="description" content="Documentation for @queelag/core - v1.0.11">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -55,10 +55,10 @@
 					<a href="../index.html">@queelag/core - v1.0.11</a>
 				</li>
 				<li>
-					<a href="GraphQLAPIResponseBody.html">GraphQLAPIResponseBody</a>
+					<a href="WithTimestamp.html">WithTimestamp</a>
 				</li>
 			</ul>
-			<h1>Interface GraphQLAPIResponseBody&lt;T&gt;</h1>
+			<h1>Interface WithTimestamp&lt;T, K&gt;</h1>
 		</div>
 	</div>
 </header>
@@ -69,7 +69,10 @@
 				<h3>Type parameters</h3>
 				<ul class="tsd-type-parameters">
 					<li>
-						<h4>T = <span class="tsd-signature-type">any</span></h4>
+						<h4>T</h4>
+					</li>
+					<li>
+						<h4>K<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">keyof </span><a href="Timestamp.html" class="tsd-signature-type" data-tsd-kind="Interface">Timestamp</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span></h4>
 					</li>
 				</ul>
 			</section>
@@ -77,7 +80,7 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">GraphQLAPIResponseBody</span>
+						<span class="target">WithTimestamp</span>
 					</li>
 				</ul>
 			</section>
@@ -88,8 +91,7 @@
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="GraphQLAPIResponseBody.html#data" class="tsd-kind-icon">data</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="GraphQLAPIResponseBody.html#errors" class="tsd-kind-icon">errors</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="WithTimestamp.html#timestamp" class="tsd-kind-icon">timestamp</a></li>
 							</ul>
 						</section>
 					</div>
@@ -98,22 +100,12 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="data" class="tsd-anchor"></a>
-					<h3>data</h3>
-					<div class="tsd-signature tsd-kind-icon">data<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">T</span></div>
+					<a name="timestamp" class="tsd-anchor"></a>
+					<h3>timestamp</h3>
+					<div class="tsd-signature tsd-kind-icon">timestamp<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Pick</span><span class="tsd-signature-symbol">&lt;</span><a href="Timestamp.html" class="tsd-signature-type" data-tsd-kind="Interface">Timestamp</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">K</span><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/queelag/core/blob/8716b54/src/definitions/interfaces.ts#L13">src/definitions/interfaces.ts:13</a></li>
-						</ul>
-					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="errors" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> errors</h3>
-					<div class="tsd-signature tsd-kind-icon">errors<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/queelag/core/blob/8716b54/src/definitions/interfaces.ts#L14">src/definitions/interfaces.ts:14</a></li>
+							<li>Defined in <a href="https://github.com/queelag/core/blob/8716b54/src/definitions/interfaces.ts#L46">src/definitions/interfaces.ts:46</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -132,13 +124,10 @@
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-interface tsd-has-type-parameter">
-						<a href="GraphQLAPIResponseBody.html" class="tsd-kind-icon">GraphQLAPIResponse<wbr>Body</a>
+						<a href="WithTimestamp.html" class="tsd-kind-icon">With<wbr>Timestamp</a>
 						<ul>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="GraphQLAPIResponseBody.html#data" class="tsd-kind-icon">data</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="GraphQLAPIResponseBody.html#errors" class="tsd-kind-icon">errors</a>
+								<a href="WithTimestamp.html#timestamp" class="tsd-kind-icon">timestamp</a>
 							</li>
 						</ul>
 					</li>
