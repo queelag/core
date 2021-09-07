@@ -55,8 +55,7 @@ export class Status {
     this.transformer = transformer
   }
 
-  /** @internal */
-  private get(keys: string[]): string {
+  get(keys: string[]): string {
     return this.data.get(this.transformer(keys)) || Status.IDLE
   }
 
@@ -88,8 +87,7 @@ export class Status {
     this.set(keys, Status.ERROR)
   }
 
-  /** @internal */
-  private set(keys: string[], status: string): void {
+  set(keys: string[], status: string): void {
     this.data.set(this.transformer(keys), status)
     Logger.debug('Status', 'set', `The status for the key ${this.transformer(keys)} has been set to ${status}.`)
   }

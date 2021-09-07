@@ -1,5 +1,6 @@
-import Axios, { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios'
+import Axios, { AxiosError, AxiosInstance, AxiosResponse } from 'axios'
 import { APIMethod, WriteMode } from '../definitions/enums'
+import { APIConfig } from '../definitions/interfaces'
 import { URLUtils } from '../utils/url.utils'
 import { rc } from './rc'
 import { Status } from './status'
@@ -87,10 +88,10 @@ import { tcp } from './tcp'
  * ```
  *
  * @category Module
- * @template T The configuration interface which extends the AxiosRequestConfig one
+ * @template T The configuration interface which extends the APIConfig one
  * @template U The default Error interface
  */
-export class API<T extends AxiosRequestConfig = AxiosRequestConfig, U = undefined> {
+export class API<T extends APIConfig = APIConfig, U = undefined> {
   /**
    * A string used as a prefix for all requests made by the instance.
    */
@@ -109,7 +110,7 @@ export class API<T extends AxiosRequestConfig = AxiosRequestConfig, U = undefine
   readonly status: Status
 
   /**
-   * @template T The configuration interface which extends the AxiosRequestConfig one.
+   * @template T The configuration interface which extends the APIConfig one.
    * @template U The default Error interface.
    */
   constructor(baseURL: string = '', config: T = API.dummyConfig) {
@@ -137,6 +138,17 @@ export class API<T extends AxiosRequestConfig = AxiosRequestConfig, U = undefine
    */
   async get<V, W = U>(path: string, config: T = API.dummyConfig): Promise<AxiosResponse<V> | AxiosError<W>> {
     return this.handle<V, any, W>(APIMethod.GET, path, undefined, config)
+  }
+
+  /**
+   * Performs a PATCH request.
+   *
+   * @template V The response data interface.
+   * @template W The body interface.
+   * @template X The error data interface, defaults to U.
+   */
+  async patch<V, W, X = U>(path: string, body?: W, config: T = API.dummyConfig): Promise<AxiosResponse<V> | AxiosError<X>> {
+    return this.handle<V, W, X>(APIMethod.PATCH, path, body, config)
   }
 
   /**
@@ -181,10 +193,10 @@ export class API<T extends AxiosRequestConfig = AxiosRequestConfig, U = undefine
   private async handle<V, W, X = U>(method: APIMethod, path: string, body?: W, config: T = API.dummyConfig): Promise<AxiosResponse<V> | AxiosError<X>> {
     let handled: boolean, response: AxiosResponse<V> | AxiosError<X>
 
-    this.status.pending(method, path)
+    this.setCallStatus(method, path, config, Status.PENDING)
 
     handled = await this.handlePending(method, path, body, config)
-    if (!handled) return rc(() => this.status.error(method, path), new Error() as AxiosError<X>)
+    if (!handled) return rc(() => this.setCallStatus(method, path, config, Status.ERROR), new Error() as AxiosError<X>)
 
     switch (method) {
       case APIMethod.DELETE:
@@ -192,6 +204,9 @@ export class API<T extends AxiosRequestConfig = AxiosRequestConfig, U = undefine
         break
       case APIMethod.GET:
         response = await tcp<AxiosResponse<V>, AxiosError<X>>(() => this.instance.get<V>(path, config))
+        break
+      case APIMethod.PATCH:
+        response = await tcp<AxiosResponse<V>, AxiosError<X>>(() => this.instance.patch<V>(path, body, config))
         break
       case APIMethod.POST:
         response = await tcp<AxiosResponse<V>, AxiosError<X>>(() => this.instance.post<V>(path, body, config))
@@ -203,15 +218,15 @@ export class API<T extends AxiosRequestConfig = AxiosRequestConfig, U = undefine
 
     if (response instanceof Error) {
       handled = await this.handleError(method, path, body, config, response)
-      if (!handled) return rc(() => this.status.error(method, path), response)
+      if (!handled) return rc(() => this.setCallStatus(method, path, config, Status.ERROR), response)
 
-      return rc(() => this.status.success(method, path), response)
+      return rc(() => this.setCallStatus(method, path, config, Status.SUCCESS), response)
     }
 
     handled = await this.handleSuccess(method, path, body, config, response)
-    if (!handled) return rc(() => this.status.error(method, path), new Error() as AxiosError<X>)
+    if (!handled) return rc(() => this.setCallStatus(method, path, config, Status.ERROR), new Error() as AxiosError<X>)
 
-    return rc(() => this.status.success(method, path), response)
+    return rc(() => this.setCallStatus(method, path, config, Status.SUCCESS), response)
   }
 
   /**
@@ -241,6 +256,16 @@ export class API<T extends AxiosRequestConfig = AxiosRequestConfig, U = undefine
    */
   async handleSuccess<V, W>(method: APIMethod, path: string, body: W | undefined, config: T, response: AxiosResponse<V>): Promise<boolean> {
     return true
+  }
+
+  private setCallStatus(method: APIMethod, path: string, config: T, status: string): void {
+    if (this.isConfigStatusSettable(config, status)) {
+      this.status.set([method, path], status)
+    }
+  }
+
+  private isConfigStatusSettable(config: APIConfig, status: string): boolean {
+    return config.status?.blacklist ? !config.status.blacklist.includes(status) : config.status?.whitelist ? config.status.whitelist.includes(status) : true
   }
 
   /** @internal */

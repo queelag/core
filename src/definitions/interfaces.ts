@@ -1,8 +1,15 @@
-import type { AxiosResponse } from 'axios'
+import type { AxiosRequestConfig, AxiosResponse } from 'axios'
 import { ID } from './types'
 
 export interface AnyObject {
   [k: string]: any
+}
+
+export interface APIConfig extends AxiosRequestConfig {
+  status?: {
+    blacklist?: string[]
+    whitelist?: string[]
+  }
 }
 
 export interface ElementTagNameMap extends HTMLElementTagNameMap, Pick<SVGElementTagNameMap, 'svg'> {}
