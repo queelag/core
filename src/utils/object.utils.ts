@@ -27,7 +27,7 @@ export class ObjectUtils {
    * @template T The object interface.
    * @template U The value interface or type.
    */
-  static get<T extends object, U extends any>(object: T, key: string | keyof T, fallback?: U): U | undefined {
+  static get<T extends object, U extends any>(object: T, key: string | keyof T, fallback: U, verbose: boolean = false): U {
     switch (typeof key) {
       case 'number':
       case 'symbol':
@@ -36,13 +36,24 @@ export class ObjectUtils {
         if (key.includes('.')) {
           let value: U | Error
 
-          value = tc(() => key.split('.').reduce((r: any, k: string) => r[k.replace(/[\[\]]/g, '')], object))
+          value = tc(
+            () =>
+              key.split('.').reduce((r: any, k: string) => {
+                let key: string
+
+                key = k.replace(/[\[\]]/g, '')
+                if (Object.keys(r).includes(key)) return r[key]
+
+                throw new Error(`The object does not include the key ${key}.`)
+              }, object),
+            verbose
+          )
           if (value instanceof Error) return fallback
 
           return value
         }
 
-        return object[key as keyof T] as U
+        return Object.keys(object).includes(key) ? (object[key as keyof T] as U) : fallback
     }
   }
 
