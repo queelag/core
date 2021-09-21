@@ -70,15 +70,15 @@ class Localization {
   static get<T extends object>(path: string, inject: T = {} as T): string {
     let localized: string, matches: RegExpMatchArray | null
 
-    localized = ObjectUtils.get(this.pack.data, path, path, false)
+    localized = ObjectUtils.get(this.pack.data, path, path)
     if (localized === path) return localized
 
-    matches = localized.match(/@[a-zA-Z_.]+/gm)
+    matches = localized.match(/@([a-zA-Z_]+|->|)+[a-zA-Z]/gm)
     if (!matches) return localized
 
     return matches
       .sort((a: string, b: string) => b.length - a.length)
-      .reduce((r: string, v: string) => r.replace(v, ObjectUtils.get(inject, v.slice(1), v, false)), localized)
+      .reduce((r: string, v: string) => r.replace(v, ObjectUtils.get(inject, v.slice(1).replace(/->/gm, '.'), v)), localized)
   }
 
   /**
