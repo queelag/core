@@ -32,7 +32,7 @@ export class LocalStorage {
     } else {
       keys.forEach((k: keyof T) => {
         value = (item as T)[k]
-        if (!value) return Logger.error('LocalStorage', 'get', `The JSON does not contain the key ${k}.`, item)
+        if (!Object.keys(item).includes(k.toString())) return Logger.error('LocalStorage', 'get', `The JSON does not contain the key ${k}.`, item)
 
         store[k] = value as any
         Logger.debug('LocalStorage', 'get', `The key ${k} has been set.`, value)
