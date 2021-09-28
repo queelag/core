@@ -18,6 +18,10 @@ export enum LoggerLevel {
   ERROR = 3
 }
 
+export enum StorageName {
+  LOCALIZATION = 'LOCALIZATION'
+}
+
 export enum WriteMode {
   CREATE = 'CREATE',
   UPDATE = 'UPDATE'

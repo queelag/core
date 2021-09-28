@@ -1,6 +1,10 @@
+import { StorageName } from '../definitions/enums'
 import { LocalizationPack } from '../definitions/interfaces'
 import { Logger } from '../modules/logger'
 import { ObjectUtils } from '../utils/object.utils'
+import { Environment } from './environment'
+import { LocalStorage } from './local.storage'
+import { Storage } from './storage'
 
 /**
  * A module to handle simple localization.
@@ -31,23 +35,41 @@ import { ObjectUtils } from '../utils/object.utils'
  *
  * @category Module
  */
-class Localization {
+class _ {
   /**
    * A string which determines the current language.
    */
-  static language: string = 'en'
+  language: string
   /**
    * An array of {@link LocalizationPack} objects.
    */
-  static packs: LocalizationPack[] = []
+  packs: LocalizationPack[]
+  /**
+   * A {@link Storage} instance.
+   */
+  storage: Storage
 
-  /** @hidden */
-  constructor() {}
+  constructor() {
+    this.language = Environment.isWindowDefined ? window.navigator.language.slice(0, 2) : 'en'
+    this.packs = []
+    this.storage = LocalStorage
+  }
+
+  async initialize(): Promise<boolean> {
+    return this.storage.get(StorageName.LOCALIZATION, this, ['language'])
+  }
+
+  async setLanguage(language: string): Promise<boolean> {
+    this.language = language
+    Logger.debug('Localization', 'setLanguage', `The language has been set to ${this.language}.`)
+
+    return this.storage.set(StorageName.LOCALIZATION, this, ['language'])
+  }
 
   /**
    * Adds n {@link LocalizationPack} to the {@link Localization.data}.
    */
-  static add(...packs: LocalizationPack[]): void {
+  add(...packs: LocalizationPack[]): void {
     packs.forEach((v: LocalizationPack) => {
       let potential: LocalizationPack
 
@@ -67,7 +89,7 @@ class Localization {
   /**
    * Returns a string localized to the current {@link Localization.language}.
    */
-  static get<T extends object>(path: string, inject: T = {} as T): string {
+  get<T extends object>(path: string, inject: T = {} as T): string {
     let localized: string, matches: RegExpMatchArray | null
 
     localized = ObjectUtils.get(this.pack.data, path, path)
@@ -84,17 +106,17 @@ class Localization {
   /**
    * Checks whether a path is localizable or not.
    */
-  static has(path: string): boolean {
+  has(path: string): boolean {
     return ObjectUtils.has(this.pack.data, path)
   }
 
-  static findPackByLanguage(language: string): LocalizationPack {
+  findPackByLanguage(language: string): LocalizationPack {
     return this.packs.find((v: LocalizationPack) => v.language === language) || { data: {}, language: '' }
   }
 
-  static get pack(): LocalizationPack {
+  get pack(): LocalizationPack {
     return this.findPackByLanguage(this.language)
   }
 }
 
-export { Localization }
+export const Localization = new _()
