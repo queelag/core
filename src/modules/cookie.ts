@@ -1,5 +1,6 @@
-import Cookies, { CookieAttributes } from 'js-cookie'
-import { AnyObject } from '../definitions/interfaces'
+import { CookieSerializeOptions, parse, serialize } from 'cookie'
+import { AnyObject, StringObject } from '../definitions/interfaces'
+import { Environment } from '../modules/environment'
 import { StringUtils } from '../utils/string.utils'
 import { Logger } from './logger'
 import { rc } from './rc'
@@ -56,16 +57,21 @@ export class Cookie {
    * @template T The store interface which extends {@link AnyObject}.
    */
   static get<T extends AnyObject>(name: string, store: T, keys: (keyof T)[] = Object.keys(store)): boolean {
-    let json: AnyObject | Error, value: string
+    let parsed: StringObject | Error, value: string
 
-    json = tc(() => Cookies.getJSON())
-    if (json instanceof Error) return false
+    if (Environment.isWindowNotDefined) {
+      Logger.warn('Cookie', 'get', `The window interface is not defined.`)
+      return true
+    }
 
-    Logger.debug('Cookie', 'get', `The cookies have been parsed as JSON.`, json)
+    parsed = this.parse(document.cookie)
+    if (parsed instanceof Error) return false
+
+    Logger.debug('Cookie', 'get', `The cookies have been parsed as JSON.`, parsed)
 
     keys.forEach((k: keyof T) => {
-      value = (json as AnyObject)[StringUtils.concat(name, k as string)]
-      if (!value) return Logger.warn('Cookie', 'get', `The JSON does not contain the key ${k}.`, json)
+      value = (parsed as StringObject)[StringUtils.concat(name, k as string)]
+      if (!value) return Logger.warn('Cookie', 'get', `The JSON does not contain the key ${k}.`, parsed)
 
       store[k] = value as any
       Logger.debug('Cookie', 'get', `The key ${k} has been set with value ${value}.`)
@@ -79,21 +85,25 @@ export class Cookie {
    *
    * @template T The store interface which extends {@link AnyObject}.
    */
-  static set<T extends AnyObject>(name: string, store: T, keys: (keyof T)[] = Object.keys(store), attributes: CookieAttributes = {}): boolean {
-    let sets: boolean[]
-
-    sets = keys.map((k: keyof T) => {
-      let set: string | undefined | Error
-
-      set = tc(() => Cookies.set(StringUtils.concat(name, k as string), store[k], attributes))
-      if (set instanceof Error || !set) return rc(() => Logger.error('Cookie', 'set', `Failed to set the key ${k} with value ${store[k]}.`), false)
-
-      Logger.debug('Cookie', 'set', `The key ${k} has been set with value ${store[k]}.`)
-
+  static set<T extends AnyObject>(name: string, store: T, keys: (keyof T)[] = Object.keys(store), options: CookieSerializeOptions = {}): boolean {
+    if (Environment.isWindowNotDefined) {
+      Logger.warn('Cookie', 'set', `The window interface is not defined.`)
       return true
-    })
+    }
 
-    return sets.every((v: boolean) => v)
+    return keys
+      .map((k: keyof T) => {
+        let serialized: string | Error
+
+        serialized = this.serialize(StringUtils.concat(name, k as string), store[k], options)
+        if (serialized instanceof Error) return rc(() => Logger.error('Cookie', 'set', `Failed to set the key ${k} with value ${store[k]}.`, options), false)
+
+        document.cookie = serialized
+        Logger.debug('Cookie', 'set', `The key ${k} has been set with value ${store[k]}.`, options)
+
+        return true
+      })
+      .every((v: boolean) => v)
   }
 
   /**
@@ -102,24 +112,31 @@ export class Cookie {
   * @template T The store interface which extends {@link AnyObject}.
    */
   static remove<T extends AnyObject>(name: string, store: T, keys: (keyof T)[] = Object.keys(store)): boolean {
-    let json: AnyObject | Error, removes: boolean[]
-
-    json = tc(() => Cookies.getJSON())
-    if (json instanceof Error) return false
-
-    Logger.debug('Cookie', 'remove', `The cookies have been parsed as JSON.`, json)
-
-    removes = keys.map((k: keyof T) => {
-      let removed: void | Error
-
-      removed = tc(() => Cookies.remove(StringUtils.concat(name, k as string)))
-      if (removed instanceof Error) return false
-
-      Logger.debug('Cookie', 'remove', `The key ${k} has been removed.`)
-
+    if (Environment.isWindowNotDefined) {
+      Logger.warn('Cookie', 'remove', `The window interface is not defined.`)
       return true
-    })
+    }
 
-    return removes.every((v: boolean) => v)
+    return keys
+      .map((k: keyof T) => {
+        let serialized: string | Error
+
+        serialized = this.serialize(StringUtils.concat(name, k as string), store[k], { expires: new Date(0) })
+        if (serialized instanceof Error) return rc(() => Logger.error('Cookie', 'set', `Failed to set the key ${k} with value ${store[k]}.`), false)
+
+        document.cookie = serialized
+        Logger.debug('Cookie', 'remove', `The key ${k} has been removed.`)
+
+        return true
+      })
+      .every((v: boolean) => v)
+  }
+
+  static parse(cookie: string): StringObject | Error {
+    return tc(() => parse(cookie))
+  }
+
+  static serialize(key: string, value: string, options?: CookieSerializeOptions): string | Error {
+    return tc(() => serialize(key, value, options))
   }
 }

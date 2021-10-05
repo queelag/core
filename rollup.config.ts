@@ -2,7 +2,7 @@ import typescript from '@rollup/plugin-typescript'
 import { terser } from 'rollup-plugin-terser'
 
 export default {
-  external: ['axios', 'js-cookie', 'nanoid', 'rfc4648'],
+  external: ['axios', 'cookie', 'nanoid', 'rfc4648'],
   input: 'src/index.ts',
   output: [
     {

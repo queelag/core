@@ -2,7 +2,7 @@
   "author": "Dario Sechi",
   "dependencies": {
     "axios": "^0.21.1",
-    "js-cookie": "^2.2.1",
+    "cookie": "^0.4.1",
     "nanoid": "^3.1.23",
     "rfc4648": "^1.5.0"
   },
@@ -10,8 +10,8 @@
     "@microsoft/api-extractor": "^7.18.4",
     "@rollup/plugin-typescript": "^8.2.3",
     "@types/axios": "^0.14.0",
+    "@types/cookie": "^0.4.1",
     "@types/jest": "^26.0.24",
-    "@types/js-cookie": "^2.2.7",
     "jest": "^27.0.6",
     "prettier": "^2.3.2",
     "rollup": "^2.53.2",
