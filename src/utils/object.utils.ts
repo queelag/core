@@ -109,7 +109,7 @@ export class ObjectUtils {
    * @template T The object interface.
    * @template U The value interface or type.
    */
-  static delete<T extends object, U extends any>(object: T, key: string | keyof T, value: U): void {
+  static delete<T extends object>(object: T, key: string | keyof T): void {
     switch (typeof key) {
       case 'number':
       case 'symbol':
