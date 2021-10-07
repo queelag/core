@@ -75,7 +75,21 @@ export class ObjectUtils {
 
           keys = key.split('.')
 
-          parent = tc(() => keys.reduce((r: any, k: string, i: number) => (i < keys.length - 1 ? r[k] : r), object))
+          parent = tc(() =>
+            keys.reduce((r: any, k: string, i: number) => {
+              if (i >= keys.length - 1) return r
+
+              switch (typeof r[k]) {
+                case 'object':
+                  return r[k]
+                case 'undefined':
+                  r[k] = {}
+                  return r[k]
+                default:
+                  throw new Error(`The value type is nor undefined nor object.`)
+              }
+            }, object)
+          )
           if (parent instanceof Error) return
 
           parent[keys[keys.length - 1]] = value
