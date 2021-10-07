@@ -104,6 +104,38 @@ export class ObjectUtils {
   }
 
   /**
+   * Deletes a key from an object, supports dot notation.
+   *
+   * @template T The object interface.
+   * @template U The value interface or type.
+   */
+  static delete<T extends object, U extends any>(object: T, key: string | keyof T, value: U): void {
+    switch (typeof key) {
+      case 'number':
+      case 'symbol':
+        delete object[key]
+        break
+      case 'string':
+        if (key.includes('.')) {
+          let keys: string[], parent: any | Error
+
+          keys = key.split('.')
+
+          parent = tc(() => keys.reduce((r: any, k: string, i: number) => (i < keys.length - 1 ? r[k] : r), object))
+          if (parent instanceof Error) return
+
+          delete parent[keys[keys.length - 1]]
+
+          return
+        }
+
+        delete object[key as keyof T]
+
+        break
+    }
+  }
+
+  /**
    * Creates a new object with only the picked keys of T.
    *
    * @template T The object interface.
