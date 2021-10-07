@@ -109,11 +109,11 @@ export class ObjectUtils {
    *
    * @template T The object interface.
    */
-  static pickToArray<T extends object>(object: T, keys: (keyof T)[]): Pick<T, keyof T>[] {
+  static pickToArray<T extends object, K extends keyof T>(object: T, keys: K[]): Pick<T, K>[] {
     let output: Pick<T, keyof T>[]
 
     output = []
-    Object.entries(object).forEach((v: [string, any]) => keys.includes(v[0] as keyof T) && output.push(v[1]))
+    Object.entries(object).forEach((v: [string, any]) => keys.includes(v[0] as any) && output.push(v[1]))
 
     return output
   }
@@ -123,7 +123,7 @@ export class ObjectUtils {
    *
    * @template T The object interface.
    */
-  static omit<T extends object>(object: T, keys: (keyof T)[]): Omit<T, keyof T> {
+  static omit<T extends object, K extends keyof T>(object: T, keys: K[]): Omit<T, K> {
     let clone: T
 
     clone = { ...object }
