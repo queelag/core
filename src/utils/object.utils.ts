@@ -140,12 +140,14 @@ export class ObjectUtils {
    *
    * @template T The object interface.
    */
-  static pick<T extends object>(object: T, keys: (keyof T)[]): Pick<T, keyof T> {
-    let output: Pick<T, keyof T>
+  static pick<T extends object, K extends keyof T>(object: T, keys: K[]): Pick<T, K> {
+    let output: Pick<T, K>
 
-    // @ts-ignore
-    output = {}
-    keys.forEach((k: keyof T) => object[k])
+    output = {} as any
+    keys.forEach((k: keyof T) => {
+      // @ts-ignore
+      output[k] = object[k]
+    })
 
     return output
   }
