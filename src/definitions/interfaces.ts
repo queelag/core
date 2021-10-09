@@ -1,4 +1,5 @@
 import type { AxiosRequestConfig, AxiosResponse } from 'axios'
+import { WriteMode } from './enums'
 import { ID } from './types'
 
 export interface AnyObject {
@@ -51,4 +52,10 @@ export interface WithIdentity {
 
 export interface WithTimestamp<T, K extends keyof Timestamp<T>> {
   timestamp: Pick<Timestamp<T>, K>
+}
+
+export interface WithWriteMode {
+  isModeCreate?: boolean
+  isModeUpdate?: boolean
+  mode?: WriteMode
 }
