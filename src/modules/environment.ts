@@ -1,3 +1,5 @@
+import { tc } from './tc'
+
 /**
  * A module to handle environment conditions.
  *
@@ -18,14 +20,14 @@ export class Environment {
    * Checks if the NODE_ENV variable is equal to 'development'.
    */
   static get isDevelopment(): boolean {
-    return this.isProcessDefined && process.env.NODE_ENV === 'development'
+    return this.NODE_ENV === 'development'
   }
 
   /**
    * Checks if the NODE_ENV variable is equal to 'production'.
    */
   static get isProduction(): boolean {
-    return this.isProcessDefined && process.env.NODE_ENV === 'production'
+    return this.NODE_ENV === 'production'
   }
 
   /**
@@ -54,5 +56,14 @@ export class Environment {
    */
   static get isWindowNotDefined(): boolean {
     return typeof window === 'undefined'
+  }
+
+  static get NODE_ENV(): string {
+    let NODE_ENV: string | undefined | Error
+
+    NODE_ENV = tc(() => process.env.NODE_ENV, false)
+    if (NODE_ENV instanceof Error) return ''
+
+    return NODE_ENV || ''
   }
 }

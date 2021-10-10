@@ -1,5 +1,5 @@
 import { StorageName } from '../definitions/enums'
-import { LocalizationPack } from '../definitions/interfaces'
+import { AnyObject, LocalizationPack } from '../definitions/interfaces'
 import { Logger } from '../modules/logger'
 import { ObjectUtils } from '../utils/object.utils'
 import { Environment } from './environment'
@@ -37,6 +37,10 @@ import { Storage } from './storage'
  */
 class _ {
   /**
+   * An object which contains global injection variables.
+   */
+  inject: AnyObject
+  /**
    * A string which determines the current language.
    */
   language: string
@@ -50,6 +54,7 @@ class _ {
   storage: Storage
 
   constructor() {
+    this.inject = {}
     this.language = Environment.isWindowDefined ? window.navigator.language.slice(0, 2) : 'en'
     this.packs = []
     this.storage = LocalStorage
@@ -75,7 +80,7 @@ class _ {
 
       potential = this.findPackByLanguage(v.language)
       if (potential.language) {
-        potential.data = Object.assign({}, potential.data, v.data)
+        potential.data = ObjectUtils.merge(potential.data, v.data)
         Logger.debug('Localization', 'add', `The pack data has been merged for the language ${v.language}.`, [potential.data])
 
         return
@@ -90,7 +95,7 @@ class _ {
    * Returns a string localized to the current {@link Localization.language}.
    */
   get<T extends object>(path: string, inject: T = {} as T): string {
-    let localized: string, matches: RegExpMatchArray | null
+    let localized: string, matches: RegExpMatchArray | null, source: AnyObject
 
     localized = ObjectUtils.get(this.pack.data, path, path)
     if (localized === path) return localized
@@ -98,9 +103,21 @@ class _ {
     matches = localized.match(/@([a-zA-Z_]+|->|)+[a-zA-Z]/gm)
     if (!matches) return localized
 
-    return matches
+    source = ObjectUtils.merge(this.pack.data, this.inject, inject)
+    if (Object.keys(source).length <= 0) return localized
+
+    matches
       .sort((a: string, b: string) => b.length - a.length)
-      .reduce((r: string, v: string) => r.replace(v, ObjectUtils.get(inject, v.slice(1).replace(/->/gm, '.'), v)), localized)
+      .forEach((v: string) => {
+        let key: string, value: string
+
+        key = v.slice(1).replace(/->/gm, '.')
+        value = ObjectUtils.get(source, key, v)
+
+        localized = localized.replace(v, value)
+      })
+
+    return localized
   }
 
   /**

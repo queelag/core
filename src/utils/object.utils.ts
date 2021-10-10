@@ -1,3 +1,4 @@
+import { AnyObject } from '..'
 import { tc } from '../modules/tc'
 
 /**
@@ -181,6 +182,49 @@ export class ObjectUtils {
   }
 
   /**
+   * Merges multiple objects without touching the target.
+   *
+   * @template T the object interface.
+   */
+  static merge<T extends object>(target: T, ...sources: object[]): T {
+    let clone: AnyObject, callback: ([k, v]: [string, any]) => void
+
+    clone = {}
+
+    callback = ([k, v]: [string, any]) => {
+      switch (typeof v) {
+        case 'bigint':
+        case 'boolean':
+        case 'function':
+        case 'number':
+        case 'string':
+        case 'symbol':
+        case 'undefined':
+          clone[k] = v
+          break
+        case 'object':
+          if (Array.isArray(v)) {
+            clone[k] = v
+            break
+          }
+
+          sources.forEach((source: object) => {
+            clone[k] = this.merge(this.get(clone, k, {}), this.get(target, k, {}), this.get(source, k, {}))
+          })
+
+          break
+      }
+
+      return clone
+    }
+
+    Object.entries(target).forEach(callback)
+    sources.forEach((v: object) => Object.entries(v).forEach(callback))
+
+    return clone as T
+  }
+
+  /**
    * Checks whether the object has the key or not.
    *
    * @template T The object interface.
@@ -205,5 +249,9 @@ export class ObjectUtils {
    */
   static hasValues<T extends object>(object: T): boolean {
     return Object.values(object).length > 0
+  }
+
+  static is(value: any): value is object {
+    return typeof value === 'object' && !Array.isArray(value)
   }
 }
