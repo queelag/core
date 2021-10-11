@@ -1,4 +1,4 @@
-import { AnyObject } from '..'
+import { AnyObject } from '../definitions/interfaces'
 import { tc } from '../modules/tc'
 
 /**
