@@ -146,8 +146,10 @@ export class ObjectUtils {
 
     output = {} as any
     keys.forEach((k: keyof T) => {
-      // @ts-ignore
-      output[k] = object[k]
+      if (this.has(object, k)) {
+        // @ts-ignore
+        output[k] = object[k]
+      }
     })
 
     return output
