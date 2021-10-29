@@ -1,4 +1,4 @@
-import type { AxiosRequestConfig, AxiosResponse } from 'axios'
+import { FetchResponse } from '../classes/fetch.response'
 import { WriteMode } from './enums'
 import { ID } from './types'
 
@@ -6,7 +6,7 @@ export interface AnyObject {
   [k: string]: any
 }
 
-export interface APIConfig extends AxiosRequestConfig {
+export interface APIConfig<T = void> extends FetchRequestInit<T> {
   status?: {
     blacklist?: string[]
     whitelist?: string[]
@@ -15,7 +15,11 @@ export interface APIConfig extends AxiosRequestConfig {
 
 export interface ElementTagNameMap extends HTMLElementTagNameMap, Pick<SVGElementTagNameMap, 'svg'> {}
 
-export interface GraphQLAPIAxiosResponse<T = any> extends AxiosResponse<GraphQLAPIResponseBody<T>> {}
+export interface FetchRequestInit<T = void> extends Omit<RequestInit, 'body'> {
+  body?: T
+}
+
+export interface GraphQLAPIAxiosResponse<T = any> extends FetchResponse<GraphQLAPIResponseBody<T>> {}
 
 export interface GraphQLAPIResponseBody<T = any> {
   data: T

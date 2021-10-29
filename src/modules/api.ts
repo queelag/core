@@ -1,10 +1,11 @@
-import Axios, { AxiosError, AxiosInstance, AxiosResponse } from 'axios'
+import { FetchError } from '../classes/fetch.error'
+import { FetchResponse } from '../classes/fetch.response'
 import { APIMethod, WriteMode } from '../definitions/enums'
-import { APIConfig } from '../definitions/interfaces'
+import { APIConfig, FetchRequestInit } from '../definitions/interfaces'
 import { URLUtils } from '../utils/url.utils'
+import { Fetch } from './fetch'
 import { rc } from './rc'
 import { Status } from './status'
-import { tcp } from './tcp'
 
 /**
  * A module to smartly handle API calls and observe their status through the {@link Status} module.
@@ -24,7 +25,7 @@ import { tcp } from './tcp'
  *
  * ```typescript
  * import { APIMethod, tcp } from '@queelag/core'
- * import { AxiosError, AxiosResponse } from 'axios'
+ * import { FetchError, FetchResponse } from 'axios'
  * import { ServiceAPI } from './service.api'
  *
  * interface Book {
@@ -32,7 +33,7 @@ import { tcp } from './tcp'
  * }
  *
  * async function getBooks(): Promise<Book[]> {
- *   let response: AxiosResponse<Book[]> | AxiosError
+ *   let response: FetchResponse<Book[]> | FetchError
  *
  *   response = await tcp(() => ServiceAPI.get('books'))
  *   if (response instanceof Error) return []
@@ -46,7 +47,7 @@ import { tcp } from './tcp'
  * ```typescript
  * import React, { Fragment, useEffect, useState } from 'react'
  * import { API, APIMethod } from '@queelag/core'
- * import { AxiosError, AxiosResponse } from 'axios'
+ * import { FetchError, FetchResponse } from 'axios'
  * import { makeObservable, observable, observer } from 'mobx'
  *
  * interface Book {
@@ -68,7 +69,7 @@ import { tcp } from './tcp'
  *
  *   useEffect(() => {
  *     ServiceAPI.get('books')
- *       .then((v: AxiosResponse<Book[]> | AxiosError) => (v instanceof Error ? setError(v.code) : setBooks(v.data)))
+ *       .then((v: FetchResponse<Book[]> | FetchError) => (v instanceof Error ? setError(v.code) : setBooks(v.data)))
  *   }, [])
  *
  *   if (ServiceAPI.status.isPending(APIMethod.GET, 'books')) {
@@ -91,7 +92,7 @@ import { tcp } from './tcp'
  * @template T The configuration interface which extends the APIConfig one
  * @template U The default Error interface
  */
-export class API<T extends APIConfig = APIConfig, U = undefined> {
+export class API<T extends FetchRequestInit = APIConfig, U = undefined> {
   /**
    * A string used as a prefix for all requests made by the instance.
    */
@@ -100,10 +101,6 @@ export class API<T extends APIConfig = APIConfig, U = undefined> {
    * A config based on the T interface.
    */
   readonly config: T
-  /**
-   * An AxiosInstance created with the baseURL and config variables.
-   */
-  readonly instance: AxiosInstance
   /**
    * A Status module initialized with a custom transformer.
    */
@@ -116,7 +113,6 @@ export class API<T extends APIConfig = APIConfig, U = undefined> {
   constructor(baseURL: string = '', config: T = API.dummyConfig) {
     this.baseURL = baseURL
     this.config = config
-    this.instance = Axios.create({ baseURL: baseURL, ...config })
     this.status = new Status(API.defaultStatusTransformer)
   }
 
@@ -126,7 +122,7 @@ export class API<T extends APIConfig = APIConfig, U = undefined> {
    * @template V The response data interface.
    * @template W The error data interface, defaults to U.
    */
-  async delete<V, W = U>(path: string, config: T = API.dummyConfig): Promise<AxiosResponse<V> | AxiosError<W>> {
+  async delete<V, W = U>(path: string, config: T = API.dummyConfig): Promise<FetchResponse<V> | FetchError<W>> {
     return this.handle<V, any, W>(APIMethod.DELETE, path, undefined, config)
   }
 
@@ -136,7 +132,7 @@ export class API<T extends APIConfig = APIConfig, U = undefined> {
    * @template V The response data interface.
    * @template W The error data interface, defaults to U.
    */
-  async get<V, W = U>(path: string, config: T = API.dummyConfig): Promise<AxiosResponse<V> | AxiosError<W>> {
+  async get<V, W = U>(path: string, config: T = API.dummyConfig): Promise<FetchResponse<V> | FetchError<W>> {
     return this.handle<V, any, W>(APIMethod.GET, path, undefined, config)
   }
 
@@ -147,7 +143,7 @@ export class API<T extends APIConfig = APIConfig, U = undefined> {
    * @template W The body interface.
    * @template X The error data interface, defaults to U.
    */
-  async patch<V, W, X = U>(path: string, body?: W, config: T = API.dummyConfig): Promise<AxiosResponse<V> | AxiosError<X>> {
+  async patch<V, W, X = U>(path: string, body?: W, config: T = API.dummyConfig): Promise<FetchResponse<V> | FetchError<X>> {
     return this.handle<V, W, X>(APIMethod.PATCH, path, body, config)
   }
 
@@ -158,7 +154,7 @@ export class API<T extends APIConfig = APIConfig, U = undefined> {
    * @template W The body interface.
    * @template X The error data interface, defaults to U.
    */
-  async post<V, W, X = U>(path: string, body?: W, config: T = API.dummyConfig): Promise<AxiosResponse<V> | AxiosError<X>> {
+  async post<V, W, X = U>(path: string, body?: W, config: T = API.dummyConfig): Promise<FetchResponse<V> | FetchError<X>> {
     return this.handle<V, W, X>(APIMethod.POST, path, body, config)
   }
 
@@ -169,7 +165,7 @@ export class API<T extends APIConfig = APIConfig, U = undefined> {
    * @template W The body interface.
    * @template X The error data interface, defaults to U.
    */
-  async put<V, W, X = U>(path: string, body?: W, config: T = API.dummyConfig): Promise<AxiosResponse<V> | AxiosError<X>> {
+  async put<V, W, X = U>(path: string, body?: W, config: T = API.dummyConfig): Promise<FetchResponse<V> | FetchError<X>> {
     return this.handle<V, W, X>(APIMethod.PUT, path, body, config)
   }
 
@@ -180,7 +176,7 @@ export class API<T extends APIConfig = APIConfig, U = undefined> {
    * @template W The body interface.
    * @template X The error data interface, defaults to U.
    */
-  async write<V, W, X = U>(mode: WriteMode, path: string, body?: W, config: T = API.dummyConfig): Promise<AxiosResponse<V> | AxiosError<X>> {
+  async write<V, W, X = U>(mode: WriteMode, path: string, body?: W, config: T = API.dummyConfig): Promise<FetchResponse<V> | FetchError<X>> {
     switch (mode) {
       case WriteMode.CREATE:
         return this.post(path, body, config)
@@ -190,32 +186,15 @@ export class API<T extends APIConfig = APIConfig, U = undefined> {
   }
 
   /** @internal */
-  private async handle<V, W, X = U>(method: APIMethod, path: string, body?: W, config: T = API.dummyConfig): Promise<AxiosResponse<V> | AxiosError<X>> {
-    let handled: boolean, response: AxiosResponse<V> | AxiosError<X>
+  private async handle<V, W, X = U>(method: APIMethod, path: string, body?: W, config: T = API.dummyConfig): Promise<FetchResponse<V> | FetchError<X>> {
+    let handled: boolean, response: FetchResponse<V> | FetchError<X>
 
     this.setCallStatus(method, path, config, Status.PENDING)
 
     handled = await this.handlePending(method, path, body, config)
-    if (!handled) return rc(() => this.setCallStatus(method, path, config, Status.ERROR), new Error() as AxiosError<X>)
+    if (!handled) return rc(() => this.setCallStatus(method, path, config, Status.ERROR), new Error() as FetchError<X>)
 
-    switch (method) {
-      case APIMethod.DELETE:
-        response = await tcp<AxiosResponse<V>, AxiosError<X>>(() => this.instance.delete<V>(path, config))
-        break
-      case APIMethod.GET:
-        response = await tcp<AxiosResponse<V>, AxiosError<X>>(() => this.instance.get<V>(path, config))
-        break
-      case APIMethod.PATCH:
-        response = await tcp<AxiosResponse<V>, AxiosError<X>>(() => this.instance.patch<V>(path, body, config))
-        break
-      case APIMethod.POST:
-        response = await tcp<AxiosResponse<V>, AxiosError<X>>(() => this.instance.post<V>(path, body, config))
-        break
-      case APIMethod.PUT:
-        response = await tcp<AxiosResponse<V>, AxiosError<X>>(() => this.instance.put<V>(path, body, config))
-        break
-    }
-
+    response = await Fetch.handle(URLUtils.concat(this.baseURL, path), { method })
     if (response instanceof Error) {
       handled = await this.handleError(method, path, body, config, response)
       if (!handled) return rc(() => this.setCallStatus(method, path, config, Status.ERROR), response)
@@ -224,7 +203,7 @@ export class API<T extends APIConfig = APIConfig, U = undefined> {
     }
 
     handled = await this.handleSuccess(method, path, body, config, response)
-    if (!handled) return rc(() => this.setCallStatus(method, path, config, Status.ERROR), new Error() as AxiosError<X>)
+    if (!handled) return rc(() => this.setCallStatus(method, path, config, Status.ERROR), new Error() as FetchError<X>)
 
     return rc(() => this.setCallStatus(method, path, config, Status.SUCCESS), response)
   }
@@ -235,7 +214,7 @@ export class API<T extends APIConfig = APIConfig, U = undefined> {
    * @template V The body interface.
    * @template W The error data interface, defaults to U.
    */
-  async handleError<V, W = U>(method: APIMethod, path: string, body: V | undefined, config: T, error: AxiosError<W>): Promise<boolean> {
+  async handleError<V, W = U>(method: APIMethod, path: string, body: V | undefined, config: T, error: FetchError<W>): Promise<boolean> {
     return false
   }
 
@@ -254,7 +233,7 @@ export class API<T extends APIConfig = APIConfig, U = undefined> {
    * @template V The response data interface.
    * @template W The body interface.
    */
-  async handleSuccess<V, W>(method: APIMethod, path: string, body: W | undefined, config: T, response: AxiosResponse<V>): Promise<boolean> {
+  async handleSuccess<V, W>(method: APIMethod, path: string, body: W | undefined, config: T, response: FetchResponse<V>): Promise<boolean> {
     return true
   }
 

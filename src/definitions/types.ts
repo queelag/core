@@ -15,4 +15,6 @@ export type ID = string
 //   export type Shallow<T> = keyof T
 // }
 
+export type FetchRequestInfo = Request | string
+
 export type StatusTransformer = (keys: string[]) => string

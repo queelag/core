@@ -1,19 +1,18 @@
-import Axios, { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios'
-import { GraphQLAPIResponseBody } from '../definitions/interfaces'
+import { FetchError } from '../classes/fetch.error'
+import { FetchResponse } from '../classes/fetch.response'
+import { APIConfig, FetchRequestInit, GraphQLAPIResponseBody } from '../definitions/interfaces'
+import { Fetch } from './fetch'
 import { rc } from './rc'
 import { Status } from './status'
-import { tcp } from './tcp'
 
-export class GraphQLAPI<T extends AxiosRequestConfig = AxiosRequestConfig, U = undefined> {
+export class GraphQLAPI<T extends FetchRequestInit = APIConfig, U = undefined> {
   readonly baseURL: string
   readonly config: T
-  readonly instance: AxiosInstance
   readonly status: Status
 
   constructor(url: string = '', config: T = GraphQLAPI.dummyConfig) {
     this.baseURL = url
     this.config = config
-    this.instance = Axios.create({ baseURL: url, ...config })
     this.status = new Status()
   }
 
@@ -21,15 +20,15 @@ export class GraphQLAPI<T extends AxiosRequestConfig = AxiosRequestConfig, U = u
     query: string,
     variables?: W,
     config: T = GraphQLAPI.dummyConfig
-  ): Promise<AxiosResponse<V> | AxiosError<X>> {
-    let handled: boolean, response: AxiosResponse<V> | AxiosError<X>
+  ): Promise<FetchResponse<V> | FetchError<X>> {
+    let handled: boolean, response: FetchResponse<V> | FetchError<X>
 
     this.status.pending(query)
 
     handled = await this.handlePending(query, variables, config)
-    if (!handled) return rc(() => this.status.error(query), new Error() as AxiosError<X>)
+    if (!handled) return rc(() => this.status.error(query), new Error() as FetchError<X>)
 
-    response = await tcp<AxiosResponse<V>, AxiosError<X>>(() => this.instance.post<V>('', { query, variables }, config))
+    response = await Fetch.post(this.baseURL, { query, variables }, config)
     if (response instanceof Error) return response
 
     if (response instanceof Error || response.data.errors) {
@@ -40,12 +39,12 @@ export class GraphQLAPI<T extends AxiosRequestConfig = AxiosRequestConfig, U = u
     }
 
     handled = await this.handleSuccess(query, variables, config, response)
-    if (!handled) return rc(() => this.status.error(query), new Error() as AxiosError<X>)
+    if (!handled) return rc(() => this.status.error(query), new Error() as FetchError<X>)
 
     return rc(() => this.status.success(query), response)
   }
 
-  async handleError<V, W = U>(query: string, variables: V | undefined, config: T, error: AxiosError<W>): Promise<boolean> {
+  async handleError<V, W = U>(query: string, variables: V | undefined, config: T, error: FetchError<W>): Promise<boolean> {
     return false
   }
 
@@ -53,7 +52,7 @@ export class GraphQLAPI<T extends AxiosRequestConfig = AxiosRequestConfig, U = u
     return true
   }
 
-  async handleSuccess<V extends GraphQLAPIResponseBody, W>(query: string, variables: W | undefined, config: T, response: AxiosResponse<V>): Promise<boolean> {
+  async handleSuccess<V extends GraphQLAPIResponseBody, W>(query: string, variables: W | undefined, config: T, response: FetchResponse<V>): Promise<boolean> {
     return true
   }
 
