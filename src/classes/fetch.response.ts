@@ -1,4 +1,14 @@
+import { Environment } from '../modules/environment'
 import { Logger } from '../modules/logger'
+
+if (Environment.isWindowNotDefined) {
+  const fetch = require('node-fetch')
+
+  global.fetch = fetch
+  global.Response = fetch.Response
+  global.Headers = fetch.Headers
+  global.Request = fetch.Request
+}
 
 export class FetchResponse<T = void> extends Response {
   // @ts-ignore
