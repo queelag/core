@@ -5,8 +5,8 @@ import { Logger } from '../modules/logger'
  * Use node-fetch on node environments.
  */
 if (Environment.isWindowNotDefined) {
-  const Blob = require('fetch-blob')
-  const fetch = require('node-fetch')
+  const Blob = Environment.require('fetch-blob')
+  const fetch = Environment.require('node-fetch')
 
   global.fetch = fetch
   global.Blob = Blob

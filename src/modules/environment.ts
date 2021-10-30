@@ -1,3 +1,4 @@
+import { noop } from './noop'
 import { tc } from './tc'
 
 /**
@@ -16,6 +17,14 @@ import { tc } from './tc'
  * @category Module
  */
 export class Environment {
+  /**
+   * Returns a webpack safe require.
+   */
+  static get require(): NodeRequire {
+    // @ts-ignore
+    return typeof __webpack_require__ === 'function' ? __non_webpack_require__ : typeof require === 'function' ? require : noop
+  }
+
   /**
    * Checks if the NODE_ENV variable is equal to 'development'.
    */
