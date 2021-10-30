@@ -2,6 +2,8 @@
   "author": "Dario Sechi",
   "dependencies": {
     "cookie": "^0.4.1",
+    "encoding": "^0.1.13",
+    "fetch-blob": "2.1.2",
     "nanoid": "^3.1.30",
     "node-fetch": "^2.6.5",
     "rfc4648": "^1.5.0"

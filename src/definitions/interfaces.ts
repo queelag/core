@@ -19,7 +19,9 @@ export interface FetchRequestInit<T = void> extends Omit<RequestInit, 'body'> {
   body?: T
 }
 
-export interface GraphQLAPIAxiosResponse<T = any> extends FetchResponse<GraphQLAPIResponseBody<T>> {}
+export interface GraphQLAPIConfig<T = void> extends APIConfig<T> {}
+
+export interface GraphQLAPIResponse<T = any> extends FetchResponse<GraphQLAPIResponseBody<T>> {}
 
 export interface GraphQLAPIResponseBody<T = any> {
   data: T

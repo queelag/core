@@ -1,15 +1,25 @@
 import { Environment } from '../modules/environment'
 import { Logger } from '../modules/logger'
 
+/**
+ * Use node-fetch on node environments.
+ */
 if (Environment.isWindowNotDefined) {
+  const Blob = require('fetch-blob')
   const fetch = require('node-fetch')
 
   global.fetch = fetch
-  global.Response = fetch.Response
+  global.Blob = Blob
   global.Headers = fetch.Headers
   global.Request = fetch.Request
+  global.Response = fetch.Response
 }
 
+/**
+ * A class which extends the default Response one, it includes a parse method.
+ *
+ * @category Class
+ */
 export class FetchResponse<T = void> extends Response {
   // @ts-ignore
   data: T
@@ -43,7 +53,7 @@ export class FetchResponse<T = void> extends Response {
         Logger.debug('FetchResponse', 'parse', `The data has been parsed as JSON.`, this.data)
 
         break
-      case type.startsWith('multipart/form-data'):
+      case Environment.isWindowDefined && type.startsWith('multipart/form-data'):
         this.data = (await this.formData()) as any
         Logger.debug('FetchResponse', 'parse', `The data has been parsed as FormData.`, this.data)
 

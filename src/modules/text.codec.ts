@@ -1,3 +1,8 @@
+/**
+ * A module to have both TextDecoder and TextEncoder already initialized.
+ *
+ * @category Module
+ */
 export class TextCodec {
   private static decoder: TextDecoder = new TextDecoder()
   private static encoder: TextEncoder = new TextEncoder()

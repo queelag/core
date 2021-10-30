@@ -9,6 +9,5 @@
  * window.addEventListener('scroll', noop)
  * // does nothing
  * ```
- *
  */
 export function noop(...args: any): any {}

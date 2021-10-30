@@ -2,6 +2,8 @@ import { base64 } from 'rfc4648'
 
 /**
  * A module to handle base64 decoding and encoding.
+ *
+ * @category Module
  */
 export class Base64 {
   /**
