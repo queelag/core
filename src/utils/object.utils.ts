@@ -1,5 +1,6 @@
 import { AnyObject } from '../definitions/interfaces'
 import { tc } from '../modules/tc'
+import { ArrayUtils } from './array.utils'
 
 /**
  * Utils for anything related to objects.
@@ -19,7 +20,63 @@ export class ObjectUtils {
    * @template T The object interface.
    */
   static clone<T extends object>(object: T): T {
-    return JSON.parse(JSON.stringify(object))
+    return Object.entries(object).reduce((r: AnyObject, [k, v]: [string, any]) => {
+      switch (typeof v) {
+        case 'bigint':
+        case 'boolean':
+        case 'function':
+        case 'number':
+        case 'string':
+        case 'symbol':
+        case 'undefined':
+          r[k] = v
+          break
+        case 'object':
+          if (Array.isArray(v)) {
+            r[k] = ArrayUtils.clone(v)
+            break
+          }
+
+          // @ts-ignore
+          r[k] = this.clone(object[k])
+
+          break
+      }
+
+      return r
+    }, {}) as T
+  }
+
+  /**
+   * Deletes a key from an object, supports dot notation.
+   *
+   * @template T The object interface.
+   * @template U The value interface or type.
+   */
+  static delete<T extends object>(object: T, key: string | keyof T): void {
+    switch (typeof key) {
+      case 'number':
+      case 'symbol':
+        delete object[key]
+        break
+      case 'string':
+        if (key.includes('.')) {
+          let keys: string[], parent: any | Error
+
+          keys = key.split('.')
+
+          parent = tc(() => keys.reduce((r: any, k: string, i: number) => (i < keys.length - 1 ? r[k] : r), object))
+          if (parent instanceof Error) return
+
+          delete parent[keys[keys.length - 1]]
+
+          return
+        }
+
+        delete object[key as keyof T]
+
+        break
+    }
   }
 
   /**
@@ -56,6 +113,96 @@ export class ObjectUtils {
 
         return Object.keys(object).includes(key) ? (object[key as keyof T] as U) : fallback
     }
+  }
+
+  /**
+   * Merges multiple objects without touching the target.
+   *
+   * @template T the object interface.
+   */
+  static merge<T extends object>(target: T, ...sources: object[]): T {
+    let clone: AnyObject, callback: ([k, v]: [string, any]) => void
+
+    clone = {}
+
+    callback = ([k, v]: [string, any]) => {
+      switch (typeof v) {
+        case 'bigint':
+        case 'boolean':
+        case 'function':
+        case 'number':
+        case 'string':
+        case 'symbol':
+        case 'undefined':
+          clone[k] = v
+          break
+        case 'object':
+          if (Array.isArray(v)) {
+            clone[k] = v
+            break
+          }
+
+          sources.forEach((source: object) => {
+            clone[k] = this.merge(this.get(clone, k, {}), this.get(target, k, {}), this.get(source, k, {}))
+          })
+
+          break
+      }
+
+      return clone
+    }
+
+    Object.entries(target).forEach(callback)
+    sources.forEach((v: object) => Object.entries(v).forEach(callback))
+
+    return clone as T
+  }
+
+  /**
+   * Creates a new object without the omitted keys of T.
+   *
+   * @template T The object interface.
+   */
+  static omit<T extends object, K extends keyof T>(object: T, keys: K[]): Omit<T, K> {
+    let clone: T
+
+    clone = { ...object }
+    keys.forEach((k: keyof T) => delete clone[k])
+
+    return clone
+  }
+
+  /**
+   * Creates a new object with only the picked keys of T.
+   *
+   * @template T The object interface.
+   */
+  static pick<T extends object, K extends keyof T>(object: T, keys: K[]): Pick<T, K> {
+    let output: Pick<T, K>
+
+    output = {} as any
+    keys.forEach((k: keyof T) => {
+      if (this.has(object, k)) {
+        // @ts-ignore
+        output[k] = object[k]
+      }
+    })
+
+    return output
+  }
+
+  /**
+   * Creates an array of values of picked keys of T.
+   *
+   * @template T The object interface.
+   */
+  static pickToArray<T extends object, K extends keyof T>(object: T, keys: K[]): Pick<T, K>[] {
+    let output: Pick<T, keyof T>[]
+
+    output = []
+    Object.entries(object).forEach((v: [string, any]) => keys.includes(v[0] as any) && output.push(v[1]))
+
+    return output
   }
 
   /**
@@ -102,128 +249,6 @@ export class ObjectUtils {
 
         break
     }
-  }
-
-  /**
-   * Deletes a key from an object, supports dot notation.
-   *
-   * @template T The object interface.
-   * @template U The value interface or type.
-   */
-  static delete<T extends object>(object: T, key: string | keyof T): void {
-    switch (typeof key) {
-      case 'number':
-      case 'symbol':
-        delete object[key]
-        break
-      case 'string':
-        if (key.includes('.')) {
-          let keys: string[], parent: any | Error
-
-          keys = key.split('.')
-
-          parent = tc(() => keys.reduce((r: any, k: string, i: number) => (i < keys.length - 1 ? r[k] : r), object))
-          if (parent instanceof Error) return
-
-          delete parent[keys[keys.length - 1]]
-
-          return
-        }
-
-        delete object[key as keyof T]
-
-        break
-    }
-  }
-
-  /**
-   * Creates a new object with only the picked keys of T.
-   *
-   * @template T The object interface.
-   */
-  static pick<T extends object, K extends keyof T>(object: T, keys: K[]): Pick<T, K> {
-    let output: Pick<T, K>
-
-    output = {} as any
-    keys.forEach((k: keyof T) => {
-      if (this.has(object, k)) {
-        // @ts-ignore
-        output[k] = object[k]
-      }
-    })
-
-    return output
-  }
-
-  /**
-   * Creates an array of values of picked keys of T.
-   *
-   * @template T The object interface.
-   */
-  static pickToArray<T extends object, K extends keyof T>(object: T, keys: K[]): Pick<T, K>[] {
-    let output: Pick<T, keyof T>[]
-
-    output = []
-    Object.entries(object).forEach((v: [string, any]) => keys.includes(v[0] as any) && output.push(v[1]))
-
-    return output
-  }
-
-  /**
-   * Creates a new object without the omitted keys of T.
-   *
-   * @template T The object interface.
-   */
-  static omit<T extends object, K extends keyof T>(object: T, keys: K[]): Omit<T, K> {
-    let clone: T
-
-    clone = { ...object }
-    keys.forEach((k: keyof T) => delete clone[k])
-
-    return clone
-  }
-
-  /**
-   * Merges multiple objects without touching the target.
-   *
-   * @template T the object interface.
-   */
-  static merge<T extends object>(target: T, ...sources: object[]): T {
-    let clone: AnyObject, callback: ([k, v]: [string, any]) => void
-
-    clone = {}
-
-    callback = ([k, v]: [string, any]) => {
-      switch (typeof v) {
-        case 'bigint':
-        case 'boolean':
-        case 'function':
-        case 'number':
-        case 'string':
-        case 'symbol':
-        case 'undefined':
-          clone[k] = v
-          break
-        case 'object':
-          if (Array.isArray(v)) {
-            clone[k] = v
-            break
-          }
-
-          sources.forEach((source: object) => {
-            clone[k] = this.merge(this.get(clone, k, {}), this.get(target, k, {}), this.get(source, k, {}))
-          })
-
-          break
-      }
-
-      return clone
-    }
-
-    Object.entries(target).forEach(callback)
-    sources.forEach((v: object) => Object.entries(v).forEach(callback))
-
-    return clone as T
   }
 
   /**
