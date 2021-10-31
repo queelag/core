@@ -28,6 +28,14 @@ export interface GraphQLAPIResponseBody<T = any> {
   errors?: any[]
 }
 
+export interface HistoryDataValue<T> {
+  index: number
+  path: keyof T
+  size: number
+  store: T
+  versions: any[]
+}
+
 export interface LocalizationPack {
   data: LocalizationPackData
   language: string

@@ -6,35 +6,6 @@ import { Environment } from './environment'
 import { LocalStorage } from './local.storage'
 import { Storage } from './storage'
 
-/**
- * A module to handle simple localization.
- *
- * Usage:
- *
- * ```typescript
- * import { Localization } from '@queelag/core'
- *
- * Localization.add(
- *   { data: { 'message': 'Hello __0!' }, language: 'en' },
- *   { data: { 'message': 'Ciao __0!' }, language: 'it' }
- * )
- *
- * console.log(Localization.get('message'))
- * // logs 'Hello __0!'
- *
- * console.log(Localization.get('message', ['John']))
- * // logs 'Hello John!'
- *
- * Localization.language = 'it'
- * console.log(Localization.get('message', ['John']))
- * // logs 'Ciao John!'
- *
- * console.log(Localization.has('message'))
- * // logs true
- * ```
- *
- * @category Module
- */
 class _ {
   /**
    * An object which contains global injection variables.
@@ -136,4 +107,33 @@ class _ {
   }
 }
 
+/**
+ * A module to handle simple localization.
+ *
+ * Usage:
+ *
+ * ```typescript
+ * import { Localization } from '@queelag/core'
+ *
+ * Localization.add(
+ *   { data: { 'message': 'Hello __0!' }, language: 'en' },
+ *   { data: { 'message': 'Ciao __0!' }, language: 'it' }
+ * )
+ *
+ * console.log(Localization.get('message'))
+ * // logs 'Hello __0!'
+ *
+ * console.log(Localization.get('message', ['John']))
+ * // logs 'Hello John!'
+ *
+ * Localization.language = 'it'
+ * console.log(Localization.get('message', ['John']))
+ * // logs 'Ciao John!'
+ *
+ * console.log(Localization.has('message'))
+ * // logs true
+ * ```
+ *
+ * @category Module
+ */
 export const Localization = new _()
