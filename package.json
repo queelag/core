@@ -4,6 +4,7 @@
     "cookie": "^0.4.1",
     "encoding": "^0.1.13",
     "fetch-blob": "2.1.2",
+    "lodash": "^4.17.21",
     "nanoid": "^3.1.30",
     "node-fetch": "^2.6.5",
     "rfc4648": "^1.5.0"
@@ -13,6 +14,7 @@
     "@rollup/plugin-typescript": "^8.3.0",
     "@types/cookie": "^0.4.1",
     "@types/jest": "^27.0.2",
+    "@types/lodash": "^4.14.176",
     "jest": "^27.3.1",
     "prettier": "^2.4.1",
     "rollup": "^2.58.3",

@@ -1,6 +1,6 @@
-import { AnyObject } from '../definitions/interfaces'
+import cloneDeep from 'lodash/cloneDeep'
+import merge from 'lodash/merge'
 import { tc } from '../modules/tc'
-import { ArrayUtils } from './array.utils'
 
 /**
  * Utils for anything related to objects.
@@ -20,31 +20,7 @@ export class ObjectUtils {
    * @template T The object interface.
    */
   static clone<T extends object>(object: T): T {
-    return Object.entries(object).reduce((r: AnyObject, [k, v]: [string, any]) => {
-      switch (typeof v) {
-        case 'bigint':
-        case 'boolean':
-        case 'function':
-        case 'number':
-        case 'string':
-        case 'symbol':
-        case 'undefined':
-          r[k] = v
-          break
-        case 'object':
-          if (Array.isArray(v)) {
-            r[k] = ArrayUtils.clone(v)
-            break
-          }
-
-          // @ts-ignore
-          r[k] = this.clone(object[k])
-
-          break
-      }
-
-      return r
-    }, {}) as T
+    return cloneDeep(object)
   }
 
   /**
@@ -121,41 +97,7 @@ export class ObjectUtils {
    * @template T the object interface.
    */
   static merge<T extends object>(target: T, ...sources: object[]): T {
-    let clone: AnyObject, callback: ([k, v]: [string, any]) => void
-
-    clone = {}
-
-    callback = ([k, v]: [string, any]) => {
-      switch (typeof v) {
-        case 'bigint':
-        case 'boolean':
-        case 'function':
-        case 'number':
-        case 'string':
-        case 'symbol':
-        case 'undefined':
-          clone[k] = v
-          break
-        case 'object':
-          if (Array.isArray(v)) {
-            clone[k] = v
-            break
-          }
-
-          sources.forEach((source: object) => {
-            clone[k] = this.merge(this.get(clone, k, {}), this.get(target, k, {}), this.get(source, k, {}))
-          })
-
-          break
-      }
-
-      return clone
-    }
-
-    Object.entries(target).forEach(callback)
-    sources.forEach((v: object) => Object.entries(v).forEach(callback))
-
-    return clone as T
+    return merge(target, ...sources)
   }
 
   /**
