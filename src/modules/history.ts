@@ -33,7 +33,7 @@ class _ {
 
   undo<T>(name: string): void {
     if (this.isNotUndoable(name)) {
-      return Logger.warn('History', 'undo', `The value with name ${name} is not redoable.`)
+      return Logger.warn('History', 'undo', `The value with name ${name} is not undoable.`)
     }
 
     this.setIndex<T>(name, -1)
