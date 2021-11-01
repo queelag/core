@@ -45,6 +45,11 @@ class _ {
     value = this.data.get(name)
     if (!value) return Logger.warn('History', 'push', `The value with name ${name} does not exist.`)
 
+    if (this.isRedoable(name)) {
+      value.versions = []
+      Logger.debug('History', 'push', `The value versions have been reset.`)
+    }
+
     value.versions = [...value.versions, ObjectUtils.clone(value.store[value.path] as any)].slice(0, value.size)
     value.index = value.versions.length - 1
 
