@@ -1,5 +1,5 @@
-import { FetchResponse } from '../classes/fetch.response'
-import { WriteMode } from './enums'
+import type { FetchResponse } from '../classes/fetch.response'
+import type { WriteMode } from './enums'
 import { ID } from './types'
 
 export interface AnyObject {
