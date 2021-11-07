@@ -1,5 +1,5 @@
 import { StatusTransformer } from '../definitions/types'
-import { Logger } from './logger'
+import { ModuleLogger } from '../loggers/module.logger'
 
 /**
  * A module to keep track of status changes.
@@ -89,7 +89,7 @@ export class Status {
 
   set(keys: string[], status: string): void {
     this.data.set(this.transformer(keys), status)
-    Logger.debug('Status', 'set', `The status for the key ${this.transformer(keys)} has been set to ${status}.`)
+    ModuleLogger.debug('Status', 'set', `The status for the key ${this.transformer(keys)} has been set to ${status}.`)
   }
 
   /**
@@ -97,7 +97,7 @@ export class Status {
    */
   clear(): void {
     this.data.clear()
-    Logger.debug('Status', 'clear', `Every status has been set to ${Status.IDLE}.`)
+    ModuleLogger.debug('Status', 'clear', `Every status has been set to ${Status.IDLE}.`)
   }
 
   /** @internal */

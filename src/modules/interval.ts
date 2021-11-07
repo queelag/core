@@ -1,4 +1,4 @@
-import { Logger } from './logger'
+import { ModuleLogger } from '../loggers/module.logger'
 import { tc } from './tc'
 
 /**
@@ -33,13 +33,13 @@ export class Interval {
    */
   static start(name: string, fn: () => any, ms: number): void {
     clearInterval(this.data.get(name) as any)
-    Logger.debug('Interval', 'start', `The interval with name ${name} has been cleared.`)
+    ModuleLogger.debug('Interval', 'start', `The interval with name ${name} has been cleared.`)
 
     tc(() => fn())
-    Logger.debug('Interval', 'start', `The interval with name ${name} has been executed.`)
+    ModuleLogger.debug('Interval', 'start', `The interval with name ${name} has been executed.`)
 
     this.data.set(name, setInterval(fn, ms))
-    Logger.debug('Interval', 'start', `The interval with name ${name} has been set.`)
+    ModuleLogger.debug('Interval', 'start', `The interval with name ${name} has been set.`)
   }
 
   /**
@@ -49,13 +49,13 @@ export class Interval {
     let potential: NodeJS.Timeout | number | undefined
 
     potential = this.data.get(name)
-    if (!potential) return Logger.warn('Interval', 'stop', `No interval with name ${name} has been set.`)
+    if (!potential) return ModuleLogger.warn('Interval', 'stop', `No interval with name ${name} has been set.`)
 
     clearInterval(potential as any)
-    Logger.debug('Interval', 'stop', `The interval with name ${name} has been cleared.`)
+    ModuleLogger.debug('Interval', 'stop', `The interval with name ${name} has been cleared.`)
 
     this.data.delete(name)
-    Logger.debug('Interval', 'stop', `The interval with name ${name} has been deleted.`)
+    ModuleLogger.debug('Interval', 'stop', `The interval with name ${name} has been deleted.`)
   }
 
   /**

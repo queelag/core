@@ -1,5 +1,5 @@
+import { UtilLogger } from '../loggers/util.logger'
 import { Cache } from '../modules/cache'
-import { Logger } from '../modules/logger'
 
 /**
  * Utils for anything related to images.
@@ -46,7 +46,7 @@ export class ImageUtils {
 
               element.onerror = (event: string | Event) => {
                 element.remove()
-                Logger.error('ImageUtils', 'preload', `The image with source ${v} failed to load.`, event)
+                UtilLogger.error('ImageUtils', 'preload', `The image with source ${v} failed to load.`, event)
 
                 resolve(false)
               }
@@ -54,7 +54,7 @@ export class ImageUtils {
                 Cache.images.set(v, this.toBase64(element))
 
                 element.remove()
-                Logger.debug('ImageUtils', 'preload', `The image with source ${v} has been cached and loaded.`)
+                UtilLogger.debug('ImageUtils', 'preload', `The image with source ${v} has been cached and loaded.`)
 
                 resolve(true)
               }

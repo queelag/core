@@ -1,6 +1,6 @@
-import { StorageName } from '../definitions/enums'
+import { CoreStorageName } from '../definitions/enums'
 import { AnyObject, LocalizationPack } from '../definitions/interfaces'
-import { Logger } from '../modules/logger'
+import { ModuleLogger } from '../loggers/module.logger'
 import { ObjectUtils } from '../utils/object.utils'
 import { Environment } from './environment'
 import { LocalStorage } from './local.storage'
@@ -32,14 +32,14 @@ class _ {
   }
 
   async initialize(): Promise<boolean> {
-    return this.storage.get(StorageName.LOCALIZATION, this, ['language'])
+    return this.storage.get(CoreStorageName.LOCALIZATION, this, ['language'])
   }
 
   async setLanguage(language: string): Promise<boolean> {
     this.language = language
-    Logger.debug('Localization', 'setLanguage', `The language has been set to ${this.language}.`)
+    ModuleLogger.debug('Localization', 'setLanguage', `The language has been set to ${this.language}.`)
 
-    return this.storage.set(StorageName.LOCALIZATION, this, ['language'])
+    return this.storage.set(CoreStorageName.LOCALIZATION, this, ['language'])
   }
 
   /**
@@ -52,13 +52,13 @@ class _ {
       potential = this.findPackByLanguage(v.language)
       if (potential.language) {
         potential.data = ObjectUtils.merge(potential.data, v.data)
-        Logger.debug('Localization', 'add', `The pack data has been merged for the language ${v.language}.`, [potential.data])
+        ModuleLogger.debug('Localization', 'add', `The pack data has been merged for the language ${v.language}.`, [potential.data])
 
         return
       }
 
       this.packs.push(v)
-      Logger.debug('Localization', 'add', `The pack for the language ${v.language} has been pushed.`, [v])
+      ModuleLogger.debug('Localization', 'add', `The pack for the language ${v.language} has been pushed.`, [v])
     })
   }
 

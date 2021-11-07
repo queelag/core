@@ -1,4 +1,4 @@
-import { Logger } from './logger'
+import { ModuleLogger } from '../loggers/module.logger'
 
 /**
  * A module to safely handle timeouts.
@@ -30,7 +30,7 @@ export class Timeout {
    */
   static set(name: string, fn: () => any, ms: number): void {
     this.data.set(name, setTimeout(fn, ms))
-    Logger.debug('Timeout', 'start', `The timeout with name ${name} has been set.`)
+    ModuleLogger.debug('Timeout', 'start', `The timeout with name ${name} has been set.`)
   }
 
   /**
@@ -40,9 +40,9 @@ export class Timeout {
     let potential: NodeJS.Timeout | number | undefined
 
     potential = this.data.get(name)
-    if (!potential) return Logger.error('Timeout', 'stop', `No timeout with name ${name} has been set.`)
+    if (!potential) return ModuleLogger.error('Timeout', 'stop', `No timeout with name ${name} has been set.`)
 
     clearTimeout(potential as any)
-    Logger.debug('Timeout', 'stop', `The timeout with name ${name} has been cleared.`)
+    ModuleLogger.debug('Timeout', 'stop', `The timeout with name ${name} has been cleared.`)
   }
 }

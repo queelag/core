@@ -1,5 +1,5 @@
 import { AnyObject } from '../definitions/interfaces'
-import { Logger } from './logger'
+import { ModuleLogger } from '../loggers/module.logger'
 import { tcp } from './tcp'
 
 /**
@@ -34,20 +34,20 @@ export class Storage {
     item = await tcp(async () => JSON.parse((await this._get(name)) || '{}'))
     if (item instanceof Error) return false
 
-    Logger.debug(this.name, 'get', `The item has been parsed as JSON.`, item)
+    ModuleLogger.debug(this.name, 'get', `The item has been parsed as JSON.`, item)
 
     if (all) {
       Object.entries(item).forEach((v: [string, any]) => {
         store[v[0] as keyof T] = v[1]
-        Logger.debug(this.name, 'get', `The key ${v[0]} has been set.`, v[1])
+        ModuleLogger.debug(this.name, 'get', `The key ${v[0]} has been set.`, v[1])
       })
     } else {
       keys.forEach((k: keyof T) => {
         value = (item as T)[k]
-        if (!Object.keys(item).includes(k.toString())) return Logger.error(this.name, 'get', `The JSON does not contain the key ${k}.`, item)
+        if (!Object.keys(item).includes(k.toString())) return ModuleLogger.error(this.name, 'get', `The JSON does not contain the key ${k}.`, item)
 
         store[k] = value as any
-        Logger.debug(this.name, 'get', `The key ${k} has been set.`, value)
+        ModuleLogger.debug(this.name, 'get', `The key ${k} has been set.`, value)
       })
     }
 
@@ -73,11 +73,11 @@ export class Storage {
       item = await tcp(async () => JSON.parse((await this._get(name)) || '{}'))
       if (item instanceof Error) return false
 
-      Logger.debug(this.name, 'remove', `The item has been parsed as JSON.`, item)
+      ModuleLogger.debug(this.name, 'remove', `The item has been parsed as JSON.`, item)
 
       keys.forEach((k: keyof T) => {
         delete store[k]
-        Logger.debug(this.name, 'remove', `The key ${k} has been removed.`)
+        ModuleLogger.debug(this.name, 'remove', `The key ${k} has been removed.`)
       })
 
       set = await tcp(() => this._set(name, JSON.stringify(item)))
@@ -100,7 +100,7 @@ export class Storage {
 
     keys.forEach((k: keyof T) => {
       ;(item as T)[k] = store[k]
-      Logger.debug(this.name, 'set', `The key ${k} has been set.`, store[k])
+      ModuleLogger.debug(this.name, 'set', `The key ${k} has been set.`, store[k])
     })
 
     set = await tcp(() => this._set(name, JSON.stringify(item)))

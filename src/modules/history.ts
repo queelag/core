@@ -1,6 +1,6 @@
 import { HistoryDataValue } from '../definitions/interfaces'
+import { ModuleLogger } from '../loggers/module.logger'
 import { ObjectUtils } from '../utils/object.utils'
-import { Logger } from './logger'
 
 class _ {
   data: Map<string, HistoryDataValue<any>>
@@ -25,7 +25,7 @@ class _ {
 
   redo<T>(name: string): void {
     if (this.isNotRedoable(name)) {
-      return Logger.warn('History', 'redo', `The value with name ${name} is not redoable.`)
+      return ModuleLogger.warn('History', 'redo', `The value with name ${name} is not redoable.`)
     }
 
     this.setIndex<T>(name, 1)
@@ -33,7 +33,7 @@ class _ {
 
   undo<T>(name: string): void {
     if (this.isNotUndoable(name)) {
-      return Logger.warn('History', 'undo', `The value with name ${name} is not undoable.`)
+      return ModuleLogger.warn('History', 'undo', `The value with name ${name} is not undoable.`)
     }
 
     this.setIndex<T>(name, -1)
@@ -43,11 +43,11 @@ class _ {
     let value: HistoryDataValue<T> | undefined
 
     value = this.data.get(name)
-    if (!value) return Logger.warn('History', 'push', `The value with name ${name} does not exist.`)
+    if (!value) return ModuleLogger.warn('History', 'push', `The value with name ${name} does not exist.`)
 
     if (this.isRedoable(name)) {
       value.versions = []
-      Logger.debug('History', 'push', `The value versions have been reset.`)
+      ModuleLogger.debug('History', 'push', `The value versions have been reset.`)
     }
 
     value.versions = [...value.versions, ObjectUtils.clone(value.store[value.path] as any)].slice(0, value.size)
@@ -58,14 +58,14 @@ class _ {
 
   private set<T>(name: string, value: HistoryDataValue<T>): void {
     this.data.set(name, value)
-    Logger.debug('History', 'set', `The value with name ${name} has been set.`, value)
+    ModuleLogger.debug('History', 'set', `The value with name ${name} has been set.`, value)
   }
 
   private setIndex<T>(name: string, offset: number): void {
     let value: HistoryDataValue<T> | undefined
 
     value = this.data.get(name)
-    if (!value) return Logger.warn('History', 'redo', `The value with name ${name} does not exist.`)
+    if (!value) return ModuleLogger.warn('History', 'redo', `The value with name ${name} does not exist.`)
 
     value.index = value.index + offset
     value.store[value.path] = ObjectUtils.clone(value.versions[value.index])

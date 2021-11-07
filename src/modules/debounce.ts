@@ -29,9 +29,9 @@ export class Debounce {
    */
   static handle(name: string, fn: () => any, ms: number): void {
     clearTimeout(this.data.get(name) as any)
-    // Logger.debug('Debounce', 'handle', `The timeout with name ${name} has been cleared.`)
+    // ModuleLogger.debug('Debounce', 'handle', `The timeout with name ${name} has been cleared.`)
 
     this.data.set(name, setTimeout(fn, ms))
-    // Logger.debug('Debounce', 'handle', `The timeout with name ${name} has been memorized.`)
+    // ModuleLogger.debug('Debounce', 'handle', `The timeout with name ${name} has been memorized.`)
   }
 }
