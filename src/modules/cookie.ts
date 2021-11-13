@@ -60,7 +60,7 @@ export class Cookie {
     let parsed: StringObject | Error, value: string
 
     if (Environment.isWindowNotDefined) {
-      ModuleLogger.warn('Cookie', 'get', `The window interface is not defined.`)
+      ModuleLogger.warn('Cookie', 'get', `The window is not defined.`)
       return true
     }
 
@@ -87,7 +87,7 @@ export class Cookie {
    */
   static set<T extends AnyObject>(name: string, store: T, keys: (keyof T)[] = Object.keys(store), options: CookieSerializeOptions = {}): boolean {
     if (Environment.isWindowNotDefined) {
-      ModuleLogger.warn('Cookie', 'set', `The window interface is not defined.`)
+      ModuleLogger.warn('Cookie', 'set', `The window is not defined.`)
       return true
     }
 
@@ -114,7 +114,7 @@ export class Cookie {
    */
   static remove<T extends AnyObject>(name: string, store: T, keys: (keyof T)[] = Object.keys(store)): boolean {
     if (Environment.isWindowNotDefined) {
-      ModuleLogger.warn('Cookie', 'remove', `The window interface is not defined.`)
+      ModuleLogger.warn('Cookie', 'remove', `The window is not defined.`)
       return true
     }
 

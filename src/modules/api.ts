@@ -2,6 +2,7 @@ import { FetchError } from '../classes/fetch.error'
 import { FetchResponse } from '../classes/fetch.response'
 import { RequestMethod, WriteMode } from '../definitions/enums'
 import { APIConfig, FetchRequestInit } from '../definitions/interfaces'
+import { ObjectUtils } from '../utils/object.utils'
 import { URLUtils } from '../utils/url.utils'
 import { Fetch } from './fetch'
 import { rc } from './rc'
@@ -198,7 +199,7 @@ export class API<T extends FetchRequestInit = APIConfig, U = undefined> {
     handled = await this.handlePending(method, path, body, config)
     if (!handled) return rc(() => this.setCallStatus(method, path, config, Status.ERROR), FetchError.from())
 
-    response = await Fetch.handle(URLUtils.concat(this.baseURL, path), { method })
+    response = await Fetch.handle(URLUtils.concat(this.baseURL, path), { body, method, ...ObjectUtils.merge(this.config, config) })
     if (response instanceof Error) {
       handled = await this.handleError(method, path, body, config, response)
       if (!handled) return rc(() => this.setCallStatus(method, path, config, Status.ERROR), response)

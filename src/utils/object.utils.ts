@@ -97,7 +97,7 @@ export class ObjectUtils {
    * @template T the object interface.
    */
   static merge<T extends object>(target: T, ...sources: object[]): T {
-    return merge(target, ...sources)
+    return merge({}, target, ...sources)
   }
 
   /**
