@@ -34,6 +34,11 @@ export class FetchUtils {
 
         record[name] = value
         break
+      default:
+        init.headers = new Headers()
+        init.headers.set(name, value)
+
+        break
     }
   }
 
