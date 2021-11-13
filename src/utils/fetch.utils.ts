@@ -8,7 +8,7 @@ import { ObjectUtils } from './object.utils'
  * @category Utility
  */
 export class FetchUtils {
-  static setRequestInitHeaderOnlyIfUnset<V>(init: FetchRequestInit<V>, name: string, value: string): void {
+  static setRequestInitHeaderOnlyIfUnset(init: RequestInit, name: string, value: string): void {
     switch (true) {
       case init.headers instanceof Headers:
         let headers: Headers
@@ -34,7 +34,7 @@ export class FetchUtils {
 
         record[name] = value
         break
-      default:
+      case typeof init.headers === 'undefined':
         init.headers = new Headers()
         init.headers.set(name, value)
 
@@ -52,12 +52,12 @@ export class FetchUtils {
       case init.body instanceof ArrayBuffer:
       case init.body instanceof Blob:
         clone.body = init.body as ArrayBuffer | Blob
-        this.setRequestInitHeaderOnlyIfUnset(init, 'content-type', 'application/octet-stream')
+        this.setRequestInitHeaderOnlyIfUnset(clone, 'content-type', 'application/octet-stream')
 
         break
       case Environment.isWindowDefined && init.body instanceof FormData:
         clone.body = init.body as FormData
-        this.setRequestInitHeaderOnlyIfUnset(init, 'content-type', 'multipart/form-data')
+        this.setRequestInitHeaderOnlyIfUnset(clone, 'content-type', 'multipart/form-data')
 
         break
       default:
@@ -69,12 +69,12 @@ export class FetchUtils {
           case 'string':
           case 'symbol':
             clone.body = init.body.toString()
-            this.setRequestInitHeaderOnlyIfUnset(init, 'content-type', 'text/plain')
+            this.setRequestInitHeaderOnlyIfUnset(clone, 'content-type', 'text/plain')
 
             break
           case 'object':
             clone.body = JSON.stringify(init.body)
-            this.setRequestInitHeaderOnlyIfUnset(init, 'content-type', 'application/json')
+            this.setRequestInitHeaderOnlyIfUnset(clone, 'content-type', 'application/json')
 
             break
           case 'undefined':
