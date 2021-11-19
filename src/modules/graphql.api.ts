@@ -1,7 +1,7 @@
-import { ObjectUtils } from '..'
 import { FetchError } from '../classes/fetch.error'
 import { FetchResponse } from '../classes/fetch.response'
 import { FetchRequestInit, GraphQLAPIConfig, GraphQLAPIResponseBody } from '../definitions/interfaces'
+import { ObjectUtils } from '../utils/object.utils'
 import { Fetch } from './fetch'
 import { rc } from './rc'
 import { Status } from './status'
