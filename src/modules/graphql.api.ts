@@ -1,3 +1,4 @@
+import { ObjectUtils } from '..'
 import { FetchError } from '../classes/fetch.error'
 import { FetchResponse } from '../classes/fetch.response'
 import { FetchRequestInit, GraphQLAPIConfig, GraphQLAPIResponseBody } from '../definitions/interfaces'
@@ -55,7 +56,7 @@ export class GraphQLAPI<T extends FetchRequestInit = GraphQLAPIConfig, U = undef
     handled = await this.handlePending(query, variables, config)
     if (!handled) return rc(() => this.setCallStatus(query, config, Status.ERROR), FetchError.from())
 
-    response = await Fetch.post(this.baseURL, { query, variables }, config)
+    response = await Fetch.post(this.baseURL, { query, variables }, ObjectUtils.merge(this.config, config))
     if (response instanceof Error) {
       handled = await this.handleError(query, variables, config, response)
       if (!handled) return rc(() => this.setCallStatus(query, config, Status.ERROR), response)
