@@ -19,8 +19,8 @@ export class ObjectUtils {
    *
    * @template T The object interface.
    */
-  static clone<T extends object>(object: T): T {
-    return cloneDeep(object)
+  static clone<T extends object>(object: T, native: boolean = true): T {
+    return native ? JSON.parse(JSON.stringify(object)) : cloneDeep(object)
   }
 
   /**
