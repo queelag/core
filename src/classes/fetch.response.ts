@@ -1,3 +1,4 @@
+import { tcp } from '..'
 import { ClassLogger } from '../loggers/class.logger'
 import { Environment } from '../modules/environment'
 
@@ -44,27 +45,52 @@ export class FetchResponse<T = void> extends Response {
 
     switch (true) {
       case type.startsWith('application/octet-stream'):
-        this.data = (await this.blob()) as any
+        let blob: Blob | Error
+
+        blob = await tcp(() => this.blob())
+        if (blob instanceof Error) return
+
+        this.data = blob as any
         ClassLogger.debug('FetchResponse', 'parse', `The data has been parsed as Blob.`, this.data)
 
         break
       case type.startsWith('application/json'):
-        this.data = await this.json()
+        let json: object | Error
+
+        json = await tcp(() => this.json())
+        if (json instanceof Error) return
+
+        this.data = json as any
         ClassLogger.debug('FetchResponse', 'parse', `The data has been parsed as JSON.`, this.data)
 
         break
       case Environment.isWindowDefined && type.startsWith('multipart/form-data'):
-        this.data = (await this.formData()) as any
+        let form: FormData | Error
+
+        form = await tcp(() => this.formData())
+        if (form instanceof Error) return
+
+        this.data = form as any
         ClassLogger.debug('FetchResponse', 'parse', `The data has been parsed as FormData.`, this.data)
 
         break
       case type.startsWith('text/'):
-        this.data = (await this.text()) as any
+        let text: string | Error
+
+        text = await tcp(() => this.text())
+        if (text instanceof Error) return
+
+        this.data = text as any
         ClassLogger.debug('FetchResponse', 'parse', `The data has been parsed as text.`, [this.data])
 
         break
       default:
-        this.data = (await this.arrayBuffer()) as any
+        let buffer: ArrayBuffer | Error
+
+        buffer = await tcp(() => this.arrayBuffer())
+        if (buffer instanceof Error) return
+
+        this.data = buffer as any
         ClassLogger.debug('FetchResponse', 'parse', `The data has been parsed as ArrayBuffer.`, this.data)
 
         break
