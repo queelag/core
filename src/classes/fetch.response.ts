@@ -1,6 +1,6 @@
-import { tcp } from '..'
 import { ClassLogger } from '../loggers/class.logger'
 import { Environment } from '../modules/environment'
+import { tcp } from '../modules/tcp'
 
 /**
  * Use node-fetch on node environments.
