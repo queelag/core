@@ -31,9 +31,14 @@ export class Logger {
    */
   status: BooleanValue = BooleanValue.TRUE
 
-  constructor(name: string, level: LoggerLevel = Environment.isProduction ? LoggerLevel.ERROR : LoggerLevel.DEBUG) {
+  constructor(
+    name: string,
+    level: LoggerLevel = Environment.isProduction ? LoggerLevel.ERROR : LoggerLevel.DEBUG,
+    status: BooleanValue = Environment.isTest ? BooleanValue.FALSE : BooleanValue.TRUE
+  ) {
     this.level = level
     this.name = name
+    this.status = status
   }
 
   /**

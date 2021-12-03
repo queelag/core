@@ -40,6 +40,13 @@ export class Environment {
   }
 
   /**
+   * Checks if the NODE_ENV variable is equal to 'test'.
+   */
+  static get isTest(): boolean {
+    return this.NODE_ENV === 'test'
+  }
+
+  /**
    * Checks if the process module is defined.
    */
   static get isProcessDefined(): boolean {
