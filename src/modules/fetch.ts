@@ -4,7 +4,22 @@ import { RequestMethod } from '../definitions/enums'
 import { FetchRequestInit } from '../definitions/interfaces'
 import { FetchRequestInfo } from '../definitions/types'
 import { FetchUtils } from '../utils/fetch.utils'
+import { Environment } from './environment'
 import { tcp } from './tcp'
+
+/**
+ * Use node-fetch on node environments.
+ */
+if (Environment.isWindowNotDefined) {
+  const Blob = Environment.require('fetch-blob')
+  const fetch = Environment.require('node-fetch')
+
+  global.fetch = fetch
+  global.Blob = Blob
+  global.Headers = fetch.Headers
+  global.Request = fetch.Request
+  global.Response = fetch.Response
+}
 
 /**
  * A module to use the native fetch in a more fashionable way.

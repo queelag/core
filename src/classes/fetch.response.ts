@@ -1,32 +1,45 @@
 import { ClassLogger } from '../loggers/class.logger'
 import { Environment } from '../modules/environment'
+import { noop } from '../modules/noop'
 import { tcp } from '../modules/tcp'
-
-/**
- * Use node-fetch on node environments.
- */
-if (Environment.isWindowNotDefined) {
-  const Blob = Environment.require('fetch-blob')
-  const fetch = Environment.require('node-fetch')
-
-  global.fetch = fetch
-  global.Blob = Blob
-  global.Headers = fetch.Headers
-  global.Request = fetch.Request
-  global.Response = fetch.Response
-}
 
 /**
  * A class which extends the default Response one, it includes a parse method.
  *
  * @category Class
  */
-export class FetchResponse<T = void> extends Response {
-  // @ts-ignore
+export class FetchResponse<T = void> implements Response {
+  readonly body: ReadableStream<Uint8Array> | null
+  readonly bodyUsed: boolean
   data: T
+  readonly headers: Headers
+  readonly ok: boolean
+  readonly redirected: boolean
+  private readonly response: Response
+  readonly status: number
+  readonly statusText: string
+  readonly type: ResponseType
+  readonly url: string
 
   constructor(response: Response) {
-    super(response.body, response)
+    this.body = response.body
+    this.bodyUsed = response.bodyUsed
+    this.data = undefined as any
+    this.headers = response.headers
+    this.ok = response.ok
+    this.redirected = response.redirected
+    this.response = response
+    this.status = response.status
+    this.statusText = response.statusText
+    this.type = response.type
+    this.url = response.type
+
+    this.arrayBuffer = response.arrayBuffer
+    this.blob = response.blob
+    this.clone = response.clone
+    this.formData = response.formData
+    this.json = response.json
+    this.text = response.text
   }
 
   async parse(): Promise<void> {
@@ -47,7 +60,7 @@ export class FetchResponse<T = void> extends Response {
       case type.startsWith('application/octet-stream'):
         let blob: Blob | Error
 
-        blob = await tcp(() => this.blob())
+        blob = await tcp(() => this.response.blob())
         if (blob instanceof Error) return
 
         this.data = blob as any
@@ -57,7 +70,7 @@ export class FetchResponse<T = void> extends Response {
       case type.startsWith('application/json'):
         let json: object | Error
 
-        json = await tcp(() => this.json())
+        json = await tcp(() => this.response.json())
         if (json instanceof Error) return
 
         this.data = json as any
@@ -67,7 +80,7 @@ export class FetchResponse<T = void> extends Response {
       case Environment.isWindowDefined && type.startsWith('multipart/form-data'):
         let form: FormData | Error
 
-        form = await tcp(() => this.formData())
+        form = await tcp(() => this.response.formData())
         if (form instanceof Error) return
 
         this.data = form as any
@@ -77,7 +90,7 @@ export class FetchResponse<T = void> extends Response {
       case type.startsWith('text/'):
         let text: string | Error
 
-        text = await tcp(() => this.text())
+        text = await tcp(() => this.response.text())
         if (text instanceof Error) return
 
         this.data = text as any
@@ -87,7 +100,7 @@ export class FetchResponse<T = void> extends Response {
       default:
         let buffer: ArrayBuffer | Error
 
-        buffer = await tcp(() => this.arrayBuffer())
+        buffer = await tcp(() => this.response.arrayBuffer())
         if (buffer instanceof Error) return
 
         this.data = buffer as any
@@ -95,5 +108,29 @@ export class FetchResponse<T = void> extends Response {
 
         break
     }
+  }
+
+  arrayBuffer(): Promise<ArrayBuffer> {
+    return noop()
+  }
+
+  blob(): Promise<Blob> {
+    return noop()
+  }
+
+  clone(): Response {
+    return noop()
+  }
+
+  formData(): Promise<FormData> {
+    return noop()
+  }
+
+  json(): Promise<any> {
+    return noop()
+  }
+
+  text(): Promise<string> {
+    return noop()
   }
 }
