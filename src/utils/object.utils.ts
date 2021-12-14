@@ -220,6 +220,9 @@ export class ObjectUtils {
     return Object.values(object).length > 0
   }
 
+  /**
+   * Checks whether the object is really an object or not.
+   */
   static is(value: any): value is object {
     return typeof value === 'object' && !Array.isArray(value)
   }

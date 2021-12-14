@@ -46,12 +46,7 @@ export class Interval {
    * Stops an interval.
    */
   static stop(name: string): void {
-    let potential: NodeJS.Timeout | number | undefined
-
-    potential = this.data.get(name)
-    if (!potential) return ModuleLogger.warn('Interval', 'stop', `No interval with name ${name} has been set.`)
-
-    clearInterval(potential as any)
+    clearInterval(this.data.get(name) as any)
     ModuleLogger.debug('Interval', 'stop', `The interval with name ${name} has been cleared.`)
 
     this.data.delete(name)

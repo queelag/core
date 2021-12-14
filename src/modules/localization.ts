@@ -32,14 +32,24 @@ class _ {
   }
 
   async initialize(): Promise<boolean> {
-    return this.storage.get(CoreStorageName.LOCALIZATION, this, ['language'])
+    let storage: Pick<this, 'language'> | Error
+
+    storage = await this.storage.get(CoreStorageName.LOCALIZATION, this, ['language'])
+    if (storage instanceof Error) return false
+
+    return true
   }
 
   async setLanguage(language: string): Promise<boolean> {
+    let storage: void | Error
+
     this.language = language
     ModuleLogger.debug('Localization', 'setLanguage', `The language has been set to ${this.language}.`)
 
-    return this.storage.set(CoreStorageName.LOCALIZATION, this, ['language'])
+    storage = await this.storage.set(CoreStorageName.LOCALIZATION, this, ['language'])
+    if (storage instanceof Error) return false
+
+    return true
   }
 
   /**

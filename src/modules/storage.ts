@@ -12,7 +12,7 @@ export class Storage {
 
   constructor(
     name: string,
-    get: (key: string) => Promise<null | string>,
+    get: <T extends AnyObject>(key: string) => Promise<T>,
     remove: (key: string) => Promise<void>,
     set: (key: string, value: string) => Promise<void>
   ) {
@@ -28,30 +28,29 @@ export class Storage {
    *
    * @template T The store interface which extends {@link AnyObject}.
    */
-  async get<T extends AnyObject>(name: string, store: T, keys: (keyof T)[] = Object.keys(store), all: boolean = false): Promise<boolean> {
-    let item: T | Error, value: string
+  async get<T extends AnyObject>(key: string): Promise<T | Error>
+  async get<T extends AnyObject, U extends keyof T>(name: string, store: T, keys?: U[]): Promise<Pick<T, U> | Error>
+  async get<T extends AnyObject>(...args: any[]): Promise<T | Error> {
+    let name: string, store: T, keys: (keyof T)[], item: T | Error, value: string
 
-    item = await tcp(async () => JSON.parse((await this._get(name)) || '{}'))
-    if (item instanceof Error) return false
+    name = args[0]
+    store = args[1] || {}
+    keys = args[2] || Object.keys(store)
+
+    item = await tcp(async () => this._get(name))
+    if (item instanceof Error) return item
 
     ModuleLogger.debug(this.name, 'get', `The item has been parsed as JSON.`, item)
 
-    if (all) {
-      Object.entries(item).forEach((v: [string, any]) => {
-        store[v[0] as keyof T] = v[1]
-        ModuleLogger.debug(this.name, 'get', `The key ${v[0]} has been set.`, v[1])
-      })
-    } else {
-      keys.forEach((k: keyof T) => {
-        value = (item as T)[k]
-        if (!Object.keys(item).includes(k.toString())) return ModuleLogger.error(this.name, 'get', `The JSON does not contain the key ${k}.`, item)
+    keys.forEach((k: keyof T) => {
+      value = (item as T)[k]
+      if (!Object.keys(item).includes(k.toString())) return ModuleLogger.error(this.name, 'get', `The JSON does not contain the key ${k}.`, item)
 
-        store[k] = value as any
-        ModuleLogger.debug(this.name, 'get', `The key ${k} has been set.`, value)
-      })
-    }
+      store[k] = value as any
+      ModuleLogger.debug(this.name, 'get', `The key ${k} has been set.`, value)
+    })
 
-    return true
+    return item
   }
 
   /**
@@ -59,32 +58,38 @@ export class Storage {
    *
    * @template T The store interface which extends {@link AnyObject}.
    */
-  async remove<T extends AnyObject>(name: string, store: T, keys: (keyof T)[] = Object.keys(store)): Promise<boolean> {
+  async remove<T extends AnyObject>(key: string): Promise<void | Error>
+  async remove<T extends AnyObject>(name: string, store: T, keys?: (keyof T)[]): Promise<void | Error>
+  async remove<T extends AnyObject>(...args: any[]): Promise<void | Error> {
+    let name: string, store: T, keys: (keyof T)[], item: AnyObject | Error, set: void | Error
+
+    name = args[0]
+    store = args[1] || {}
+    keys = args[2] || Object.keys(store)
+
     if (keys.length === Object.keys(store).length) {
       let removed: void | Error
 
       removed = await tcp(() => this._remove(name))
-      if (removed instanceof Error) return false
+      if (removed instanceof Error) return removed
 
-      return true
-    } else {
-      let item: AnyObject | Error, set: void | Error
-
-      item = await tcp(async () => JSON.parse((await this._get(name)) || '{}'))
-      if (item instanceof Error) return false
-
-      ModuleLogger.debug(this.name, 'remove', `The item has been parsed as JSON.`, item)
-
-      keys.forEach((k: keyof T) => {
-        delete store[k]
-        ModuleLogger.debug(this.name, 'remove', `The key ${k} has been removed.`)
-      })
-
-      set = await tcp(() => this._set(name, JSON.stringify(item)))
-      if (set instanceof Error) return false
-
-      return true
+      return
     }
+
+    item = await tcp(async () => this._get(name))
+    if (item instanceof Error) return item
+
+    ModuleLogger.debug(this.name, 'remove', `The item has been parsed as JSON.`, item)
+
+    keys.forEach((k: keyof T) => {
+      delete store[k]
+      ModuleLogger.debug(this.name, 'remove', `The key ${k} has been removed.`)
+    })
+
+    set = await tcp(() => this._set(name, JSON.stringify(item)))
+    if (set instanceof Error) return set
+
+    return
   }
 
   /**
@@ -92,11 +97,17 @@ export class Storage {
    *
    * @template T The store interface which extends {@link AnyObject}.
    */
-  async set<T extends AnyObject>(name: string, store: T, keys: (keyof T)[] = Object.keys(store)): Promise<boolean> {
-    let item: T | Error, set: void | Error
+  async set<T extends AnyObject>(key: string): Promise<void | Error>
+  async set<T extends AnyObject>(name: string, store: T, keys?: (keyof T)[]): Promise<void | Error>
+  async set<T extends AnyObject>(...args: any[]): Promise<void | Error> {
+    let name: string, store: T, keys: (keyof T)[], item: T | Error, set: void | Error
 
-    item = await tcp(async () => JSON.parse((await this._get(name)) || '{}'))
-    if (item instanceof Error) return false
+    name = args[0]
+    store = args[1] || {}
+    keys = args[2] || Object.keys(store)
+
+    item = await tcp(async () => this._get(name))
+    if (item instanceof Error) return item
 
     keys.forEach((k: keyof T) => {
       ;(item as T)[k] = store[k]
@@ -104,14 +115,14 @@ export class Storage {
     })
 
     set = await tcp(() => this._set(name, JSON.stringify(item)))
-    if (set instanceof Error) return false
+    if (set instanceof Error) return set
 
-    return true
+    return
   }
 
   /** @hidden */
-  private async _get(key: string): Promise<null | string> {
-    return ''
+  private async _get<T extends AnyObject>(key: string): Promise<T> {
+    return {} as T
   }
 
   /** @hidden */

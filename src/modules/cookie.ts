@@ -2,7 +2,6 @@ import { CookieSerializeOptions, parse, serialize } from 'cookie'
 import { AnyObject, StringObject } from '../definitions/interfaces'
 import { ModuleLogger } from '../loggers/module.logger'
 import { Environment } from '../modules/environment'
-import { StringUtils } from '../utils/string.utils'
 import { rc } from './rc'
 import { tc } from './tc'
 
@@ -70,7 +69,7 @@ export class Cookie {
     ModuleLogger.debug('Cookie', 'get', `The cookies have been parsed as JSON.`, parsed)
 
     keys.forEach((k: keyof T) => {
-      value = (parsed as StringObject)[StringUtils.concat(name, k as string)]
+      value = (parsed as StringObject)[name + '_' + k]
       if (!value) return ModuleLogger.warn('Cookie', 'get', `The JSON does not contain the key ${k}.`, parsed)
 
       store[k] = value as any
@@ -95,7 +94,7 @@ export class Cookie {
       .map((k: keyof T) => {
         let serialized: string | Error
 
-        serialized = this.serialize(StringUtils.concat(name, k as string), store[k], options)
+        serialized = this.serialize(name + '_' + k, store[k], options)
         if (serialized instanceof Error)
           return rc(() => ModuleLogger.error('Cookie', 'set', `Failed to set the key ${k} with value ${store[k]}.`, options), false)
 
@@ -122,7 +121,7 @@ export class Cookie {
       .map((k: keyof T) => {
         let serialized: string | Error
 
-        serialized = this.serialize(StringUtils.concat(name, k as string), store[k], { expires: new Date(0) })
+        serialized = this.serialize(name + '_' + k, store[k], { expires: new Date(0) })
         if (serialized instanceof Error) return rc(() => ModuleLogger.error('Cookie', 'set', `Failed to set the key ${k} with value ${store[k]}.`), false)
 
         document.cookie = serialized

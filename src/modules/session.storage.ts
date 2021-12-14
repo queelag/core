@@ -7,7 +7,7 @@ import { Storage } from './storage'
  */
 export const SessionStorage: Storage = new Storage(
   'SessionStorage',
-  async (key: string) => window.sessionStorage.getItem(key),
+  async (key: string) => JSON.parse(window.sessionStorage.getItem(key) || ''),
   async (key: string) => window.sessionStorage.removeItem(key),
   async (key: string, value: string) => window.sessionStorage.setItem(key, value)
 )
