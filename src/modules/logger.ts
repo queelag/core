@@ -95,7 +95,8 @@ export class Logger {
     return [
       ...(Environment.isWindowNotDefined ? [this.findTerminalColorByLevel(level)] : []),
       args.filter((v: any) => ['boolean', 'number', 'string'].includes(typeof v) && v.toString().length > 0).join(' -> '),
-      ...args.filter((v: any) => !['boolean', 'number', 'string'].includes(typeof v))
+      ...(Environment.isWindowNotDefined ? ['\x1b[0m'] : []),
+      ...args.filter((v: any) => ['bigint', 'function', 'object', 'symbol', 'undefined'].includes(typeof v))
     ]
   }
 
@@ -121,10 +122,6 @@ export class Logger {
 
   get isEnabled(): boolean {
     return this.status === BooleanValue.TRUE
-  }
-
-  get isLevelLowerThan(): boolean {
-    return this.level <= LoggerLevel.VERBOSE
   }
 
   get isLevelLowerThanVerbose(): boolean {
