@@ -10,7 +10,7 @@ import { tcp } from './tcp'
 /**
  * Use node-fetch on node environments.
  */
-if (Environment.isWindowNotDefined) {
+if (Environment.isFetchNotDefined) {
   const Blob = Environment.require('fetch-blob')
   const fetch = Environment.require('node-fetch')
 

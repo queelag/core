@@ -33,6 +33,27 @@ export class Environment {
   }
 
   /**
+   * Checks if the NODE_ENV variable is not equal to 'development'.
+   */
+  static get isNotDevelopment(): boolean {
+    return this.NODE_ENV !== 'development'
+  }
+
+  /**
+   * Checks if fetch is defined.
+   */
+  static get isFetchDefined(): boolean {
+    return typeof fetch !== 'undefined'
+  }
+
+  /**
+   * Checks if fetch is not defined.
+   */
+  static get isFetchNotDefined(): boolean {
+    return typeof fetch === 'undefined'
+  }
+
+  /**
    * Checks if the NODE_ENV variable is equal to 'production'.
    */
   static get isProduction(): boolean {
@@ -40,9 +61,23 @@ export class Environment {
   }
 
   /**
+   * Checks if the NODE_ENV variable is not equal to 'production'.
+   */
+  static get isNotProduction(): boolean {
+    return this.NODE_ENV !== 'production'
+  }
+
+  /**
    * Checks if the NODE_ENV variable is equal to 'test'.
    */
   static get isTest(): boolean {
+    return this.NODE_ENV === 'test'
+  }
+
+  /**
+   * Checks if the NODE_ENV variable is not equal to 'test'.
+   */
+  static get isNotTest(): boolean {
     return this.NODE_ENV === 'test'
   }
 

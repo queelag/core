@@ -1,6 +1,8 @@
-import { ID, StringUtils } from '..'
+import { ID } from '../definitions/types'
 import { ModuleLogger } from '../loggers/module.logger'
+import { StringUtils } from '../utils/string.utils'
 import { noop } from './noop'
+import { tc } from './tc'
 
 /**
  * A module to handle in an easier way web sockets.
@@ -53,18 +55,22 @@ class _ {
   /**
    * Closes the connection.
    */
-  async close(): Promise<boolean> {
-    this.instance.close()
+  async close(): Promise<void | Error> {
+    let close: void | Error
+
+    close = tc(() => this.instance.close())
+    if (close instanceof Error) return close
+
     ModuleLogger.debug(this.id, 'close', `The web socket is closing the connection.`)
 
     return new Promise((r) =>
       window.setInterval(() => {
         switch (true) {
           case this.isReadyStateClosed:
-            return r(true)
+            return r()
           case this.isReadyStateConnecting:
           case this.isReadyStateOpen:
-            return r(false)
+            return r()
         }
       }, 100)
     )
@@ -73,8 +79,13 @@ class _ {
   /**
    * Opens the connection.
    */
-  async open(): Promise<boolean> {
-    this.instance = new WebSocket(this.url, this.protocols)
+  async open(): Promise<void | Error> {
+    let socket: WebSocket | Error
+
+    socket = tc(() => new WebSocket(this.url, this.protocols))
+    if (socket instanceof Error) return socket
+
+    this.instance = socket
     this.instance.onclose = this.onClose
     this.instance.onerror = this.onError
     this.instance.onmessage = this.onMessage
@@ -85,9 +96,9 @@ class _ {
         switch (true) {
           case this.isReadyStateClosed:
           case this.isReadyStateClosing:
-            return r(false)
+            return r()
           case this.isReadyStateOpen:
-            return r(true)
+            return r()
         }
       }, 100)
     )
@@ -96,36 +107,29 @@ class _ {
   /**
    * Sends a message.
    */
-  send<T extends object>(data: T | ArrayBufferLike | ArrayBufferView | Blob | string): void {
+  send<T extends object>(data: T | ArrayBufferLike | ArrayBufferView | Blob | string): void | Error {
+    let transformed: T | ArrayBufferLike | ArrayBufferView | Blob | string, send: void | Error
+
     if (this.isReadyStateNotOpen) {
       ModuleLogger.warn(this.id, 'send', `The web socket ready state is not open, this message can't be sent.`)
       return
     }
 
-    switch (true) {
-      case data instanceof ArrayBuffer:
-      // case data instanceof SharedArrayBuffer:
-      case data instanceof Blob:
-        this.instance.send(data as any)
-        ModuleLogger.debug(this.id, 'send', `The message has been sent.`, data)
+    switch (typeof data) {
+      case 'object':
+        transformed = JSON.stringify(data)
+        ModuleLogger.debug(this.id, 'send', `The data has been transformed.`, [transformed])
 
         break
       default:
-        switch (typeof data) {
-          case 'object':
-            this.instance.send(JSON.stringify(data))
-            ModuleLogger.debug(this.id, 'send', `The message has been sent.`, data)
-
-            break
-          case 'string':
-            this.instance.send(data)
-            ModuleLogger.debug(this.id, 'send', `The message has been sent.`, [data])
-
-            break
-        }
-
+        transformed = data
         break
     }
+
+    send = tc(() => this.instance.send(transformed as any))
+    if (send instanceof Error) return send
+
+    return
   }
 
   get onClose(): (event: CloseEvent) => any {
@@ -202,8 +206,7 @@ class _ {
 
       switch (true) {
         case StringUtils.isJSON(event.data):
-          // @ts-ignore
-          event.data = JSON.parse(event.data)
+          event = { ...event, data: JSON.parse(event.data) }
           ModuleLogger.debug(this.id, 'onMessage', `The message has been JSON parsed.`, event.data)
 
           break

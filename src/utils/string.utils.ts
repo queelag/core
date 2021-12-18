@@ -1,4 +1,4 @@
-import { tc } from '..'
+import { tc } from '../modules/tc'
 
 /**
  * Utils for anything related to strings.
