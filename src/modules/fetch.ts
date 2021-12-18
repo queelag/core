@@ -3,22 +3,31 @@ import { FetchResponse } from '../classes/fetch.response'
 import { RequestMethod } from '../definitions/enums'
 import { FetchRequestInit } from '../definitions/interfaces'
 import { FetchRequestInfo } from '../definitions/types'
+import { ModuleLogger } from '../loggers/module.logger'
 import { FetchUtils } from '../utils/fetch.utils'
 import { Environment } from './environment'
 import { tcp } from './tcp'
 
 /**
+ * Use fetch-blob on node environments.
+ */
+if (Environment.isBlobNotDefined) {
+  global.Blob = Environment.require('fetch-blob')
+  ModuleLogger.debug('Fetch', `The Blob object has been polyfilled with fetch-blob.`)
+}
+
+/**
  * Use node-fetch on node environments.
  */
 if (Environment.isFetchNotDefined) {
-  const Blob = Environment.require('fetch-blob')
   const fetch = Environment.require('node-fetch')
 
   global.fetch = fetch
-  global.Blob = Blob
   global.Headers = fetch.Headers
   global.Request = fetch.Request
   global.Response = fetch.Response
+
+  ModuleLogger.debug('Fetch', `The Fetch API has been polyfilled with node-fetch.`)
 }
 
 /**

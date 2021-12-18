@@ -1,5 +1,5 @@
-import { ID } from '..'
 import { IndexedDatabaseError } from '../classes/indexed.database.error'
+import { ID } from '../definitions/types'
 import { ModuleLogger } from '../loggers/module.logger'
 import { IndexedDatabaseTable } from './indexed.database.table'
 

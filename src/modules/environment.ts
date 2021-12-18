@@ -26,6 +26,20 @@ export class Environment {
   }
 
   /**
+   * Checks if Blob is defined.
+   */
+  static get isBlobDefined(): boolean {
+    return typeof Blob !== 'undefined'
+  }
+
+  /**
+   * Checks if Blob is not defined.
+   */
+  static get isBlobNotDefined(): boolean {
+    return typeof Blob === 'undefined'
+  }
+
+  /**
    * Checks if the NODE_ENV variable is equal to 'development'.
    */
   static get isDevelopment(): boolean {
@@ -51,6 +65,20 @@ export class Environment {
    */
   static get isFetchNotDefined(): boolean {
     return typeof fetch === 'undefined'
+  }
+
+  /**
+   * Checks if FormData is defined.
+   */
+  static get isFormDataDefined(): boolean {
+    return typeof FormData !== 'undefined'
+  }
+
+  /**
+   * Checks if FormData is not defined.
+   */
+  static get isFormDataNotDefined(): boolean {
+    return typeof FormData === 'undefined'
   }
 
   /**

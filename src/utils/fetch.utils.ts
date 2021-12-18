@@ -50,12 +50,12 @@ export class FetchUtils {
 
     switch (true) {
       case init.body instanceof ArrayBuffer:
-      case init.body instanceof Blob:
+      case Environment.isBlobDefined && init.body instanceof Blob:
         clone.body = init.body as ArrayBuffer | Blob
         this.setRequestInitHeaderOnlyIfUnset(clone, 'content-type', 'application/octet-stream')
 
         break
-      case Environment.isWindowDefined && init.body instanceof FormData:
+      case Environment.isFormDataDefined && init.body instanceof FormData:
         clone.body = init.body as FormData
         this.setRequestInitHeaderOnlyIfUnset(clone, 'content-type', 'multipart/form-data')
 
