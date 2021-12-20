@@ -1,7 +1,7 @@
 import type { Struct, StructError } from 'superstruct'
 import { IndexedDatabaseTableError } from '../classes/indexed.database.table.error'
 import { WriteMode } from '../definitions/enums'
-import { IndexedDatabaseTableIndex } from '../definitions/types'
+import { IndexedDatabaseTableIndex, IndexedDatabaseTableQuery } from '../definitions/types'
 import { ModuleLogger } from '../loggers/module.logger'
 import { ErrorUtils } from '../utils/error.utils'
 
@@ -47,11 +47,30 @@ export class IndexedDatabaseTable<T extends object> {
     ModuleLogger.debug(this.id, 'delete', `The table has been deleted.`)
   }
 
+  async countRecords(query?: IndexedDatabaseTableQuery): Promise<number | IndexedDatabaseTableError> {
+    return new Promise((resolve) => {
+      let transaction: IDBTransaction, store: IDBObjectStore, request: IDBRequest
+
+      transaction = this.database.transaction([this.name], 'readonly')
+      store = transaction.objectStore(this.name)
+
+      request = store.count(query)
+      request.onerror = (event: Event) => {
+        ModuleLogger.error(this.id, 'countRecords', `Failed to count the records.`, query, request.error)
+        resolve(IndexedDatabaseTableError.from(event, request))
+      }
+      request.onsuccess = (event: Event) => {
+        ModuleLogger.debug(this.id, 'countRecords', `The records have been counted.`, query, request.result)
+        resolve(request.result)
+      }
+    })
+  }
+
   async createRecord(record: T): Promise<Event | IndexedDatabaseTableError> {
     return this.writeRecord(WriteMode.CREATE, record)
   }
 
-  async deleteRecord(query: IDBValidKey | IDBKeyRange, indexn?: string): Promise<Event | IndexedDatabaseTableError> {
+  async deleteRecord(query: IndexedDatabaseTableQuery, indexn?: string): Promise<Event | IndexedDatabaseTableError> {
     return new Promise((resolve) => {
       let transaction: IDBTransaction, store: IDBObjectStore, index: IDBIndex, request: IDBRequest
 
@@ -76,7 +95,7 @@ export class IndexedDatabaseTable<T extends object> {
     })
   }
 
-  async readRecord(query: IDBValidKey | IDBKeyRange, indexn?: string): Promise<T | IndexedDatabaseTableError> {
+  async readRecord(query: IndexedDatabaseTableQuery, indexn?: string): Promise<T | IndexedDatabaseTableError> {
     return new Promise((resolve) => {
       let transaction: IDBTransaction, store: IDBObjectStore, index: IDBIndex, request: IDBRequest
 
@@ -104,6 +123,10 @@ export class IndexedDatabaseTable<T extends object> {
         resolve(IndexedDatabaseTableError.from(event, request))
       }
     })
+  }
+
+  async size(): Promise<number | IndexedDatabaseTableError> {
+    return this.countRecords()
   }
 
   async updateRecord(record: T): Promise<Event | IndexedDatabaseTableError> {
@@ -152,7 +175,7 @@ export class IndexedDatabaseTable<T extends object> {
     })
   }
 
-  async hasRecord(query: IDBValidKey | IDBKeyRange, indexn?: string): Promise<boolean> {
+  async hasRecord(query: IndexedDatabaseTableQuery, indexn?: string): Promise<boolean> {
     return ErrorUtils.isNot(await this.readRecord(query, indexn))
   }
 

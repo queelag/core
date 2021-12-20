@@ -1,6 +1,7 @@
 export type ID = string
 
 export type IndexedDatabaseTableIndex = [string | string[]] | [string | string[], IDBIndexParameters]
+export type IndexedDatabaseTableQuery = IDBValidKey | IDBKeyRange
 
 // export namespace KeyOf {
 //   type DeepJoin<K, P> = K extends string | number ? (P extends string | number ? `${K}${'' extends P ? '' : '.'}${P}` : never) : never
