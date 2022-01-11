@@ -57,7 +57,7 @@ export class FetchResponse<T = void> implements Response {
     }
 
     switch (true) {
-      case Environment.isBlobDefined && type.startsWith('application/octet-stream'):
+      case Environment.isBlobDefined && type.startsWith('application/') && type.includes('octet-stream'):
         let blob: Blob | Error
 
         blob = await tcp(() => this.response.blob())
@@ -67,7 +67,7 @@ export class FetchResponse<T = void> implements Response {
         ClassLogger.debug('FetchResponse', 'parse', `The data has been parsed as Blob.`, this.data)
 
         break
-      case type.startsWith('application/json'):
+      case type.startsWith('application/') && type.includes('json'):
         let json: object | Error
 
         json = await tcp(() => this.response.json())
@@ -77,7 +77,7 @@ export class FetchResponse<T = void> implements Response {
         ClassLogger.debug('FetchResponse', 'parse', `The data has been parsed as JSON.`, this.data)
 
         break
-      case Environment.isFormDataDefined && type.startsWith('multipart/form-data'):
+      case Environment.isFormDataDefined && type.startsWith('multipart/') && type.includes('form-data'):
         let form: FormData | Error
 
         form = await tcp(() => this.response.formData())

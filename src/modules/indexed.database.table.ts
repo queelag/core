@@ -37,7 +37,7 @@ export class IndexedDatabaseTable<T extends object> {
     ModuleLogger.debug(this.id, 'create', `The table has been created.`, store)
 
     indexes.forEach((v: IndexedDatabaseTableIndex) => {
-      index = store.createIndex(typeof v[0] === 'string' ? v[0] : (v[0] as string[]).join('.'), v[0], v[1])
+      index = store.createIndex(typeof v[0] === 'string' ? v[0] : v[0].join('.'), v[0], v[1])
       ModuleLogger.debug(this.id, 'create', `The index ${v[0]} has been created.`, v, index)
     })
   }
