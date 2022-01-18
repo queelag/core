@@ -42,69 +42,66 @@ export class FetchResponse<T = void> implements Response {
     this.text = response.text
   }
 
-  async parse(): Promise<void> {
-    let type: string | null
+  async parse(): Promise<void | Error> {
+    let type: string
 
     if (this.body === null) {
       ClassLogger.warn('FetchResponse', 'parse', `The body is null.`, this.body)
       return
     }
 
-    type = this.headers.get('response-type') || this.headers.get('content-type')
-    if (!type) {
-      ClassLogger.warn('FetchResponse', 'parse', `The content type and response type header are not defined.`, [...this.headers.entries()])
-      return
-    }
+    type = this.headers.get('content-type') || ''
+    if (!type) ClassLogger.warn('FetchResponse', 'parse', `The content-type header is not defined.`, this.headers)
 
     switch (true) {
       case Environment.isBlobDefined && type.startsWith('application/') && type.includes('octet-stream'):
         let blob: Blob | Error
 
         blob = await tcp(() => this.response.blob())
-        if (blob instanceof Error) return
+        if (blob instanceof Error) return blob
 
         this.data = blob as any
-        ClassLogger.debug('FetchResponse', 'parse', `The data has been parsed as Blob.`, this.data)
+        ClassLogger.debug('FetchResponse', 'parse', `The data has been parsed as Blob.`, blob)
 
         break
       case type.startsWith('application/') && type.includes('json'):
         let json: object | Error
 
         json = await tcp(() => this.response.json())
-        if (json instanceof Error) return
+        if (json instanceof Error) return json
 
         this.data = json as any
-        ClassLogger.debug('FetchResponse', 'parse', `The data has been parsed as JSON.`, this.data)
+        ClassLogger.debug('FetchResponse', 'parse', `The data has been parsed as JSON.`, json)
 
         break
       case Environment.isFormDataDefined && type.startsWith('multipart/') && type.includes('form-data'):
         let form: FormData | Error
 
         form = await tcp(() => this.response.formData())
-        if (form instanceof Error) return
+        if (form instanceof Error) return form
 
         this.data = form as any
-        ClassLogger.debug('FetchResponse', 'parse', `The data has been parsed as FormData.`, this.data)
+        ClassLogger.debug('FetchResponse', 'parse', `The data has been parsed as FormData.`, [...form.entries()])
 
         break
       case type.startsWith('text/'):
         let text: string | Error
 
         text = await tcp(() => this.response.text())
-        if (text instanceof Error) return
+        if (text instanceof Error) return text
 
         this.data = text as any
-        ClassLogger.debug('FetchResponse', 'parse', `The data has been parsed as text.`, [this.data])
+        ClassLogger.debug('FetchResponse', 'parse', `The data has been parsed as text.`, [text])
 
         break
       default:
         let buffer: ArrayBuffer | Error
 
         buffer = await tcp(() => this.response.arrayBuffer())
-        if (buffer instanceof Error) return
+        if (buffer instanceof Error) return buffer
 
         this.data = buffer as any
-        ClassLogger.debug('FetchResponse', 'parse', `The data has been parsed as ArrayBuffer.`, this.data)
+        ClassLogger.debug('FetchResponse', 'parse', `The data has been parsed as ArrayBuffer.`, buffer)
 
         break
     }

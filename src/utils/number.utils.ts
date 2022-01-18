@@ -1,3 +1,5 @@
+import { tc } from '../modules/tc'
+
 /**
  * Utils for anything related to numbers.
  *
@@ -29,10 +31,38 @@ export class NumberUtils {
   }
 
   /**
+   * Parses any value to a BigInt safely.
+   */
+  static parseBigInt(value: any, fallback: number = 0): BigInt {
+    let parsed: BigInt | Error
+
+    parsed = tc(() => BigInt(value))
+    if (parsed instanceof Error) return BigInt(fallback)
+
+    return parsed
+  }
+
+  /**
    * Parses any value to a float safely.
    */
   static parseFloat(value: any, fallback: number = 0): number {
     return this.isParseable(value) ? parseFloat(value) : fallback
+  }
+
+  /**
+   * Parses any value to a int safely.
+   */
+  static parseInt(value: any, fallback: number = 0): number {
+    return this.isParseable(value) ? parseInt(value) : fallback
+  }
+
+  /**
+   * Picks the highest number in the array.
+   */
+  static pickHighest(values: number[]): number
+  static pickHighest(...values: number[]): number
+  static pickHighest(...args: any[]): number {
+    return (args.length > 1 ? args : args[0]).reduce((r: number, v: number) => (v > r ? v : r), Number.MAX_SAFE_INTEGER)
   }
 
   /**
@@ -69,7 +99,7 @@ export class NumberUtils {
    * Checks whether value is parseable to a float.
    */
   static isParseable(value: any): boolean {
-    return !isNaN(parseFloat(value))
+    return !isNaN(parseInt(value))
   }
 
   /**

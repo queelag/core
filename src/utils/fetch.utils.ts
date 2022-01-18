@@ -1,5 +1,6 @@
 import { FetchRequestInit } from '../definitions/interfaces'
 import { Environment } from '../modules/environment'
+import { FormDataUtils } from '../utils/form.data.utils'
 import { ObjectUtils } from './object.utils'
 
 /**
@@ -42,7 +43,7 @@ export class FetchUtils {
     }
   }
 
-  static async toRequestInit<V extends unknown>(init: FetchRequestInit<V>): Promise<RequestInit> {
+  static async toNativeRequestInit<V extends unknown>(init: FetchRequestInit<V>): Promise<RequestInit> {
     let clone: RequestInit
 
     clone = ObjectUtils.omit(init, ['body'])
@@ -57,7 +58,7 @@ export class FetchUtils {
         break
       case Environment.isFormDataDefined && init.body instanceof FormData:
         clone.body = init.body as FormData
-        this.setRequestInitHeaderOnlyIfUnset(clone, 'content-type', 'multipart/form-data')
+        // this.setRequestInitHeaderOnlyIfUnset(clone, 'content-type', 'multipart/form-data')
 
         break
       default:
@@ -81,6 +82,36 @@ export class FetchUtils {
             break
         }
 
+        break
+    }
+
+    return clone
+  }
+
+  static async toLoggableRequestInit<T>(init: FetchRequestInit<T>): Promise<FetchRequestInit<T>> {
+    let clone: FetchRequestInit<T>
+
+    clone = ObjectUtils.omit(init, ['body'])
+    if (!init.body) return clone
+
+    switch (true) {
+      case Environment.isFormDataDefined && init.body instanceof FormData:
+        clone.body = FormDataUtils.toObject(init.body as any) as any
+        break
+    }
+
+    return clone
+  }
+
+  static async toLoggableNativeRequestInit(init: RequestInit): Promise<RequestInit> {
+    let clone: RequestInit
+
+    clone = ObjectUtils.omit(init, ['body'])
+    if (!init.body) return clone
+
+    switch (true) {
+      case Environment.isFormDataDefined && init.body instanceof FormData:
+        clone.body = FormDataUtils.toObject(init.body as FormData) as any
         break
     }
 

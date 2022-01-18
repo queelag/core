@@ -2,6 +2,7 @@ import { FetchError } from '../classes/fetch.error'
 import { FetchResponse } from '../classes/fetch.response'
 import { RequestMethod, WriteMode } from '../definitions/enums'
 import { APIConfig, FetchRequestInit } from '../definitions/interfaces'
+import { ModuleLogger } from '../loggers/module.logger'
 import { ObjectUtils } from '../utils/object.utils'
 import { URLUtils } from '../utils/url.utils'
 import { Fetch } from './fetch'
@@ -191,26 +192,38 @@ export class API<T extends FetchRequestInit = APIConfig, U = undefined> {
    * @template W The body interface.
    * @template X The error data interface, defaults to U.
    */
-  private async handle<V, W, X = U>(method: RequestMethod, path: string, body?: W, config: T = API.dummyConfig): Promise<FetchResponse<V> | FetchError<X>> {
-    let handled: boolean, response: FetchResponse<V & X> | FetchError<X>
+  async handle<V, W, X = U>(method: RequestMethod, path: string, body?: W, config: T = API.dummyConfig): Promise<FetchResponse<V> | FetchError<X>> {
+    let tbody: W | undefined, handled: boolean, response: FetchResponse<V & X> | FetchError<X>
 
     this.setCallStatus(method, path, config, Status.PENDING)
 
-    handled = await this.handlePending(method, path, body, config)
+    tbody = await this.transformBody(method, path, body, config)
+    ModuleLogger.debug('API', 'handle', `The body has been transformed.`, tbody)
+
+    handled = await this.handlePending(method, path, tbody, config)
     if (!handled) return rc(() => this.setCallStatus(method, path, config, Status.ERROR), FetchError.from())
 
-    response = await Fetch.handle(URLUtils.concat(this.baseURL, path), { body, method, ...ObjectUtils.merge(this.config, config) })
+    response = await Fetch.handle(URLUtils.concat(this.baseURL, path), { body: tbody, method, ...ObjectUtils.merge(this.config, config) })
     if (response instanceof Error) {
-      handled = await this.handleError(method, path, body, config, response)
+      handled = await this.handleError(method, path, tbody, config, response)
       if (!handled) return rc(() => this.setCallStatus(method, path, config, Status.ERROR), response)
 
       return rc(() => this.setCallStatus(method, path, config, Status.SUCCESS), response)
     }
 
-    handled = await this.handleSuccess(method, path, body, config, response)
+    handled = await this.handleSuccess(method, path, tbody, config, response)
     if (!handled) return rc(() => this.setCallStatus(method, path, config, Status.ERROR), FetchError.from(response))
 
     return rc(() => this.setCallStatus(method, path, config, Status.SUCCESS), response)
+  }
+
+  /**
+   * Transforms the body.
+   *
+   * @template V The body interface.
+   */
+  async transformBody<V>(method: RequestMethod, path: string, body: V | undefined, config: T): Promise<any> {
+    return body
   }
 
   /**

@@ -1,5 +1,6 @@
 import cloneDeep from 'lodash/cloneDeep'
 import merge from 'lodash/merge'
+import { Environment } from '../modules/environment'
 import { tc } from '../modules/tc'
 
 /**
@@ -191,6 +192,48 @@ export class ObjectUtils {
 
         break
     }
+  }
+
+  static toFormData<T extends object>(object: T): FormData {
+    let data: FormData
+
+    data = new FormData()
+
+    Object.entries(object).forEach(([k, v]: [string, any]) => {
+      switch (true) {
+        case Environment.isFileDefined && v instanceof File:
+          data.append(k, v)
+          break
+        default:
+          switch (typeof v) {
+            case 'bigint':
+            case 'boolean':
+            case 'number':
+              data.append(k, v.toString())
+              break
+            case 'function':
+            case 'symbol':
+            case 'undefined':
+              break
+            case 'object':
+              let stringified: string | Error
+
+              stringified = tc(() => JSON.stringify(v))
+              if (stringified instanceof Error) break
+
+              data.append(k, stringified)
+
+              break
+            case 'string':
+              data.append(k, v)
+              break
+          }
+
+          break
+      }
+    })
+
+    return data
   }
 
   /**

@@ -1,4 +1,5 @@
 import { BooleanValue, LoggerLevel } from '../definitions/enums'
+import { FormDataUtils } from '../utils/form.data.utils'
 import { Environment } from './environment'
 
 /**
@@ -96,7 +97,16 @@ export class Logger {
       ...(Environment.isWindowNotDefined ? [this.findTerminalColorByLevel(level)] : []),
       args.filter((v: any) => ['boolean', 'number', 'string'].includes(typeof v) && v.toString().length > 0).join(' -> '),
       ...(Environment.isWindowNotDefined ? ['\x1b[0m'] : []),
-      ...args.filter((v: any) => ['bigint', 'function', 'object', 'symbol', 'undefined'].includes(typeof v))
+      ...args
+        .filter((v: any) => ['bigint', 'function', 'object', 'symbol', 'undefined'].includes(typeof v))
+        .map((v: any) => {
+          switch (true) {
+            case Environment.isFormDataDefined && v instanceof FormData:
+              return FormDataUtils.toObject(v)
+            default:
+              return v
+          }
+        })
     ]
   }
 

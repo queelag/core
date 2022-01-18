@@ -5,30 +5,8 @@ import { FetchRequestInit } from '../definitions/interfaces'
 import { FetchRequestInfo } from '../definitions/types'
 import { ModuleLogger } from '../loggers/module.logger'
 import { FetchUtils } from '../utils/fetch.utils'
-import { Environment } from './environment'
+import { Polyfill } from './polyfill'
 import { tcp } from './tcp'
-
-/**
- * Use fetch-blob on node environments.
- */
-if (Environment.isBlobNotDefined) {
-  global.Blob = Environment.require('fetch-blob')
-  ModuleLogger.debug('Fetch', `The Blob object has been polyfilled with fetch-blob.`)
-}
-
-/**
- * Use node-fetch on node environments.
- */
-if (Environment.isFetchNotDefined) {
-  const fetch = Environment.require('node-fetch')
-
-  global.fetch = fetch
-  global.Headers = fetch.Headers
-  global.Request = fetch.Request
-  global.Response = fetch.Response
-
-  ModuleLogger.debug('Fetch', `The Fetch API has been polyfilled with node-fetch.`)
-}
 
 /**
  * A module to use the native fetch in a more fashionable way.
@@ -69,10 +47,20 @@ export class Fetch {
    * @template V The body interface.
    */
   static async handle<T, U, V>(input: FetchRequestInfo, init: FetchRequestInit<V> = {}): Promise<FetchResponse<T> | FetchError<U>> {
-    let response: FetchResponse<T & U> | Error, parsed: void | Error
+    let ninit: RequestInit, response: FetchResponse<T & U> | Error, parsed: void | Error
 
-    response = await tcp(async () => new FetchResponse(await fetch(input, await FetchUtils.toRequestInit(init))))
+    await Polyfill.blob()
+    await Polyfill.fetch()
+    await Polyfill.file()
+    await Polyfill.formData()
+
+    ninit = await FetchUtils.toNativeRequestInit(init)
+    ModuleLogger.debug('Fetch', 'handle', `The request init has been parsed.`, await FetchUtils.toLoggableNativeRequestInit(ninit))
+
+    response = await tcp(async () => new FetchResponse(await fetch(input, ninit)))
     if (response instanceof Error) return FetchError.from(response)
+
+    ModuleLogger.debug('Fetch', 'handle', `The request has been sent.`, input)
 
     parsed = await tcp(() => (response as FetchResponse<T & U>).parse())
     if (parsed instanceof Error) return FetchError.from(parsed)

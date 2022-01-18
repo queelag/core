@@ -14,7 +14,7 @@ export class QueryParametersUtils {
    */
   static toString<T extends object>(parameters: T): string {
     return Object.entries(parameters)
-      .map((v: [string, string]) => v.join('='))
+      .map((v: [string, any]) => v.join('='))
       .join('&')
   }
 }

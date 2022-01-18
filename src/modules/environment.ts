@@ -18,6 +18,13 @@ import { tc } from './tc'
  */
 export class Environment {
   /**
+   * Returns a webpack safe import.
+   */
+  static get import(): Function {
+    return new Function('path', 'return import(path)')
+  }
+
+  /**
    * Returns a webpack safe require.
    */
   static get require(): NodeRequire {
@@ -65,6 +72,20 @@ export class Environment {
    */
   static get isFetchNotDefined(): boolean {
     return typeof fetch === 'undefined'
+  }
+
+  /**
+   * Checks if File is defined.
+   */
+  static get isFileDefined(): boolean {
+    return typeof File !== 'undefined'
+  }
+
+  /**
+   * Checks if File is not defined.
+   */
+  static get isFileNotDefined(): boolean {
+    return typeof File === 'undefined'
   }
 
   /**

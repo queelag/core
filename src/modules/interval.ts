@@ -1,5 +1,4 @@
 import { ModuleLogger } from '../loggers/module.logger'
-import { tc } from './tc'
 
 /**
  * A module to safely handle intervals with a name.
@@ -35,11 +34,11 @@ export class Interval {
     clearInterval(this.data.get(name) as any)
     ModuleLogger.debug('Interval', 'start', `The interval with name ${name} has been cleared.`)
 
-    tc(() => fn())
-    ModuleLogger.debug('Interval', 'start', `The interval with name ${name} has been executed.`)
+    // tc(() => fn())
+    // ModuleLogger.debug('Interval', 'start', `The interval with name ${name} has been executed.`)
 
     this.data.set(name, setInterval(fn, ms))
-    ModuleLogger.debug('Interval', 'start', `The interval with name ${name} has been set.`)
+    ModuleLogger.debug('Interval', 'start', `The interval with name ${name} has been set to run every ${ms}ms.`)
   }
 
   /**
