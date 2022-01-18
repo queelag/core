@@ -2,7 +2,6 @@ import { FetchError } from '../classes/fetch.error'
 import { FetchResponse } from '../classes/fetch.response'
 import { RequestMethod, WriteMode } from '../definitions/enums'
 import { APIConfig, FetchRequestInit } from '../definitions/interfaces'
-import { ModuleLogger } from '../loggers/module.logger'
 import { ObjectUtils } from '../utils/object.utils'
 import { URLUtils } from '../utils/url.utils'
 import { Fetch } from './fetch'
@@ -198,7 +197,7 @@ export class API<T extends FetchRequestInit = APIConfig, U = undefined> {
     this.setCallStatus(method, path, config, Status.PENDING)
 
     tbody = await this.transformBody(method, path, body, config)
-    ModuleLogger.debug('API', 'handle', `The body has been transformed.`, tbody)
+    // ModuleLogger.debug('API', 'handle', `The body has been transformed.`, tbody)
 
     handled = await this.handlePending(method, path, tbody, config)
     if (!handled) return rc(() => this.setCallStatus(method, path, config, Status.ERROR), FetchError.from())
