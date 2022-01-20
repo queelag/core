@@ -98,7 +98,7 @@ export class ObjectUtils {
    * @template T the object interface.
    */
   static merge<T extends object>(target: T, ...sources: object[]): T {
-    return merge({}, target, ...sources)
+    return merge(this.clone(target), ...sources.map((v: object) => this.clone(v)))
   }
 
   /**
@@ -109,7 +109,7 @@ export class ObjectUtils {
   static omit<T extends object, K extends keyof T>(object: T, keys: K[]): Omit<T, K> {
     let clone: T
 
-    clone = { ...object }
+    clone = this.clone(object)
     keys.forEach((k: keyof T) => delete clone[k])
 
     return clone
