@@ -9,31 +9,16 @@ import { ObjectUtils } from './object.utils'
  * @category Utility
  */
 export class FetchUtils {
-  static setRequestInitHeaderOnlyIfUnset(init: RequestInit, name: string, value: string): void {
+  static setRequestInitHeader<V extends unknown>(init: FetchRequestInit<V> | RequestInit, name: string, value: string): void {
     switch (true) {
       case init.headers instanceof Headers:
-        let headers: Headers
-
-        headers = init.headers as Headers
-        if (headers.has(name)) return
-
-        headers.set(name, value)
+        ;(init.headers as Headers).set(name, value)
         break
       case Array.isArray(init.headers):
-        let array: string[][]
-
-        array = init.headers as string[][]
-        if (array.some((v: string[]) => v[0] === name)) return
-
-        array.push([name, value])
+        ;(init.headers as string[][]).push([name, value])
         break
       case typeof init.headers === 'object':
-        let record: Record<string, string>
-
-        record = init.headers as Record<string, string>
-        if (record[name]) return
-
-        record[name] = value
+        ;(init.headers as Record<string, string>)[name] = value
         break
       case typeof init.headers === 'undefined':
         init.headers = new Headers()
@@ -43,7 +28,48 @@ export class FetchUtils {
     }
   }
 
-  static async toNativeRequestInit<V extends unknown>(init: FetchRequestInit<V>): Promise<RequestInit> {
+  static setRequestInitHeaderOnlyIfUnset<V extends unknown>(init: FetchRequestInit<V> | RequestInit, name: string, value: string): void {
+    if (this.hasRequestInitHeader(init, name)) {
+      return
+    }
+
+    this.setRequestInitHeader(init, name, value)
+  }
+
+  static mergeRequestInits<V extends unknown>(target: FetchRequestInit<V>, ...sources: FetchRequestInit<V>[]): FetchRequestInit<V> {
+    let merged: FetchRequestInit<V>
+
+    merged = ObjectUtils.merge(target, ...sources)
+    merged.headers = target.headers
+
+    sources.forEach((v: FetchRequestInit<V>) => {
+      switch (typeof v.headers?.entries) {
+        case 'function':
+          ;[...v.headers.entries()].forEach(([k, v]: [number, string[]] | [string, string]) => {
+            switch (typeof v) {
+              case 'object':
+                this.setRequestInitHeader(merged, v[0], v[1])
+                break
+              case 'string':
+                this.setRequestInitHeader(merged, k as string, v)
+                break
+            }
+          })
+
+          break
+        case 'undefined':
+          break
+      }
+    })
+
+    if (typeof merged.headers === 'undefined') {
+      delete merged.headers
+    }
+
+    return merged
+  }
+
+  static toNativeRequestInit<V extends unknown>(init: FetchRequestInit<V>): RequestInit {
     let clone: RequestInit
 
     clone = ObjectUtils.omit(init, ['body'])
@@ -88,7 +114,7 @@ export class FetchUtils {
     return clone
   }
 
-  static async toLoggableRequestInit<T>(init: FetchRequestInit<T>): Promise<FetchRequestInit<T>> {
+  static toLoggableRequestInit<T>(init: FetchRequestInit<T>): FetchRequestInit<T> {
     let clone: FetchRequestInit<T>
 
     clone = ObjectUtils.omit(init, ['body'])
@@ -103,7 +129,7 @@ export class FetchUtils {
     return clone
   }
 
-  static async toLoggableNativeRequestInit(init: RequestInit): Promise<RequestInit> {
+  static toLoggableNativeRequestInit(init: RequestInit): RequestInit {
     let clone: RequestInit
 
     clone = ObjectUtils.omit(init, ['body'])
@@ -116,5 +142,16 @@ export class FetchUtils {
     }
 
     return clone
+  }
+
+  static hasRequestInitHeader<V extends unknown>(init: FetchRequestInit<V> | RequestInit, name: string): boolean {
+    switch (typeof init.headers?.keys) {
+      case 'function':
+        return [...init.headers?.keys()].includes(name)
+      case 'string':
+        return init.headers.keys.includes(name)
+      case 'undefined':
+        return false
+    }
   }
 }

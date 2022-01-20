@@ -54,8 +54,8 @@ export class Fetch {
     await Polyfill.file()
     await Polyfill.formData()
 
-    ninit = await FetchUtils.toNativeRequestInit(init)
-    ModuleLogger.debug('Fetch', 'handle', `The request init has been parsed.`, await FetchUtils.toLoggableNativeRequestInit(ninit))
+    ninit = FetchUtils.toNativeRequestInit(init)
+    ModuleLogger.debug('Fetch', 'handle', `The request init has been parsed.`, FetchUtils.toLoggableNativeRequestInit(ninit))
 
     response = await tcp(async () => new FetchResponse(await fetch(input, ninit)))
     if (response instanceof Error) return FetchError.from(response)
