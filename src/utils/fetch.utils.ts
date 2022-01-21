@@ -40,7 +40,7 @@ export class FetchUtils {
     let merged: FetchRequestInit<V>
 
     merged = ObjectUtils.merge(target, ...sources)
-    merged.headers = target.headers
+    merged.headers = target.headers ? ObjectUtils.clone(target.headers) : undefined
 
     sources.forEach((v: FetchRequestInit<V>) => {
       switch (typeof v.headers?.entries) {
