@@ -73,18 +73,38 @@ class _ {
   }
 
   /**
-   * Returns a string localized to the current {@link Localization.language}.
+   * Returns a localized string.
    */
-  get<T extends object>(path: string, inject: T = {} as T): string {
-    let localized: string, matches: RegExpMatchArray | null, source: AnyObject
+  get<T extends object>(path: string, inject?: T): string
+  get<T extends object>(language: string, path: string, inject?: T): string
+  get<T extends object>(...args: any[]): string {
+    let language: string, path: string, inject: T, pack: LocalizationPack, localized: string, matches: RegExpMatchArray | null, source: AnyObject
 
-    localized = ObjectUtils.get(this.pack.data, path, path)
-    if (localized === path) return localized
+    switch (true) {
+      case typeof args[0] === 'string' && typeof args[1] === 'string':
+        language = args[0]
+        path = args[1]
+        inject = args[2] || {}
+
+        break
+      default:
+        language = this.language
+        path = args[0]
+        inject = args[1] || {}
+
+        break
+    }
+
+    pack = this.findPackByLanguage(language)
+    if (!pack.language) return path
+
+    localized = ObjectUtils.get(pack.data, path, '')
+    if (!localized) return path
 
     matches = localized.match(/@([a-zA-Z_]+|->|)+[a-zA-Z]/gm)
     if (!matches) return localized
 
-    source = ObjectUtils.merge(this.pack.data, this.inject, inject)
+    source = ObjectUtils.merge(pack.data, this.inject, inject)
     if (Object.keys(source).length <= 0) return localized
 
     matches
@@ -105,15 +125,11 @@ class _ {
    * Checks whether a path is localizable or not.
    */
   has(path: string): boolean {
-    return ObjectUtils.has(this.pack.data, path)
+    return this.packs.some((v: LocalizationPack) => ObjectUtils.has(v.data, path))
   }
 
   findPackByLanguage(language: string): LocalizationPack {
     return this.packs.find((v: LocalizationPack) => v.language === language) || { data: {}, language: '' }
-  }
-
-  get pack(): LocalizationPack {
-    return this.findPackByLanguage(this.language)
   }
 }
 
