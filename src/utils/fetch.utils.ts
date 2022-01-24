@@ -40,7 +40,7 @@ export class FetchUtils {
     let merged: FetchRequestInit<V>
 
     merged = ObjectUtils.merge(target, ...sources)
-    merged.headers = target.headers ? ObjectUtils.clone(target.headers) : undefined
+    merged.headers = target.headers ? ObjectUtils.clone(target.headers) : new Headers()
 
     sources.forEach((v: FetchRequestInit<V>) => {
       switch (typeof v.headers?.entries) {
@@ -62,7 +62,7 @@ export class FetchUtils {
       }
     })
 
-    if (typeof merged.headers === 'undefined') {
+    if (typeof merged.headers.entries === 'function' && [...merged.headers.entries()].length <= 0) {
       delete merged.headers
     }
 
