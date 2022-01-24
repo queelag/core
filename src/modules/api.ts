@@ -5,6 +5,7 @@ import { APIConfig, FetchRequestInit } from '../definitions/interfaces'
 import { FetchUtils } from '../utils/fetch.utils'
 import { URLUtils } from '../utils/url.utils'
 import { Fetch } from './fetch'
+import { Polyfill } from './polyfill'
 import { rc } from './rc'
 import { Status } from './status'
 
@@ -193,6 +194,11 @@ export class API<T extends FetchRequestInit = APIConfig, U = undefined> {
    */
   async handle<V, W, X = U>(method: RequestMethod, path: string, body?: W, config: T = API.dummyConfig): Promise<FetchResponse<V> | FetchError<X>> {
     let tbody: W | undefined, handled: boolean, response: FetchResponse<V & X> | FetchError<X>
+
+    await Polyfill.blob()
+    await Polyfill.fetch()
+    await Polyfill.file()
+    await Polyfill.formData()
 
     this.setCallStatus(method, path, config, Status.PENDING)
 

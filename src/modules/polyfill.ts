@@ -16,7 +16,7 @@ export class Polyfill {
   static async blob(): Promise<void> {
     let NodeFetch: any | Error
 
-    if (Environment.isFetchDefined) {
+    if (Environment.isBlobDefined) {
       return
     }
 
@@ -55,7 +55,7 @@ export class Polyfill {
   static async file(): Promise<void> {
     let NodeFetch: any | Error, Blob: any, FormData: any, data: FormData
 
-    if (Environment.isFetchDefined) {
+    if (Environment.isFileDefined) {
       return
     }
 
@@ -79,7 +79,7 @@ export class Polyfill {
   static async formData(): Promise<void> {
     let NodeFetch: any | Error
 
-    if (Environment.isFetchDefined) {
+    if (Environment.isFormDataDefined) {
       return
     }
 
