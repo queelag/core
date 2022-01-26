@@ -20,7 +20,7 @@ export class FetchError<T = void> extends Error {
   static from<T = void>(error: Error): FetchError<T>
   static from<T = void>(error: Error, response: FetchResponse<T>): FetchError<T>
   static from<T = void>(response: FetchResponse<T>): FetchError<T>
-  static from<T = void>(...args: any): FetchError<T> {
+  static from<T = void>(...args: any[]): FetchError<T> {
     switch (true) {
       case args[0] instanceof Error && args[1] instanceof FetchResponse:
         return new FetchError(args[0], args[1])

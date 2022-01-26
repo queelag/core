@@ -12,7 +12,7 @@ class PromiseUtils {
   /**
    * Calls every function of fns synchronously.
    */
-  static async chain(...fns: ((...args: any) => Promise<any>)[]): Promise<void> {
+  static async chain(...fns: ((...args: any[]) => Promise<any>)[]): Promise<void> {
     for (let i = 0; i < fns.length; i++) {
       await tcp(() => fns[i]())
     }
@@ -21,7 +21,7 @@ class PromiseUtils {
   /**
    * Calls every function of fns synchronously and keeps running only if the return value is truthy.
    */
-  static async truthyChain(...fns: ((...args: any) => Promise<any>)[]): Promise<boolean> {
+  static async truthyChain(...fns: ((...args: any[]) => Promise<any>)[]): Promise<boolean> {
     let output: boolean | Error
 
     for (let i = 0; i < fns.length; i++) {

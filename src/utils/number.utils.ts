@@ -59,19 +59,15 @@ export class NumberUtils {
   /**
    * Picks the highest number in the array.
    */
-  static pickHighest(values: number[]): number
-  static pickHighest(...values: number[]): number
-  static pickHighest(...args: any[]): number {
-    return (args.length > 1 ? args : args[0]).reduce((r: number, v: number) => (v > r ? v : r), Number.MAX_SAFE_INTEGER)
+  static pickHighest(values: number[]): number {
+    return values.reduce((r: number, v: number) => (v > r ? v : r), Number.MAX_SAFE_INTEGER)
   }
 
   /**
    * Picks the lowest number in the array.
    */
-  static pickLowest(values: number[]): number
-  static pickLowest(...values: number[]): number
-  static pickLowest(...args: any[]): number {
-    return (args.length > 1 ? args : args[0]).reduce((r: number, v: number) => (v < r ? v : r), Number.MAX_SAFE_INTEGER)
+  static pickLowest(values: number[]): number {
+    return values.reduce((r: number, v: number) => (v < r ? v : r), Number.MAX_SAFE_INTEGER)
   }
 
   /**

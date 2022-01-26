@@ -7,6 +7,7 @@ export interface AnyObject {
 }
 
 export interface APIConfig<T = void> extends FetchRequestInit<T> {
+  query?: object | string
   status?: {
     blacklist?: string[]
     whitelist?: string[]

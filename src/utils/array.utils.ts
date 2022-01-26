@@ -5,6 +5,20 @@
  */
 export class ArrayUtils {
   /**
+   * Returns the symmetric difference between the T arrays.
+   */
+  static difference<T>(arrays: T[][]): T[] {
+    return arrays.reduce((r: T[], v: T[]) => [...r, ...v.filter((v: T) => !r.includes(v) && arrays.filter((w: T[]) => w.includes(v)).length <= 1)], [])
+  }
+
+  /**
+   * Returns the intersection between the T arrays.
+   */
+  static intersection<T>(arrays: T[][]): T[] {
+    return arrays.reduce((r: T[], v: T[]) => [...r, ...v.filter((v: T) => !r.includes(v) && arrays.every((w: T[]) => w.includes(v)))], [])
+  }
+
+  /**
    * Gets the last T item, falls back to dummy if defined and if not returns undefined.
    */
   static last<T>(array: T[], dummy?: T): T | undefined {

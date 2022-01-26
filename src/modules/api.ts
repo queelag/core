@@ -1,8 +1,9 @@
 import { FetchError } from '../classes/fetch.error'
 import { FetchResponse } from '../classes/fetch.response'
 import { RequestMethod, WriteMode } from '../definitions/enums'
-import { APIConfig, FetchRequestInit } from '../definitions/interfaces'
+import { APIConfig } from '../definitions/interfaces'
 import { FetchUtils } from '../utils/fetch.utils'
+import { QueryParametersUtils } from '../utils/query.parameters.utils'
 import { URLUtils } from '../utils/url.utils'
 import { Fetch } from './fetch'
 import { Polyfill } from './polyfill'
@@ -92,7 +93,7 @@ import { Status } from './status'
  * @template T The configuration interface which extends the {@link APIConfig} one
  * @template U The default Error interface
  */
-export class API<T extends FetchRequestInit = APIConfig, U = undefined> {
+export class API<T extends APIConfig = APIConfig, U = undefined> {
   /**
    * A string used as a prefix for all requests made by the instance.
    */
@@ -193,7 +194,7 @@ export class API<T extends FetchRequestInit = APIConfig, U = undefined> {
    * @template X The error data interface, defaults to U.
    */
   async handle<V, W, X = U>(method: RequestMethod, path: string, body?: W, config: T = API.dummyConfig): Promise<FetchResponse<V> | FetchError<X>> {
-    let tbody: W | undefined, handled: boolean, response: FetchResponse<V & X> | FetchError<X>
+    let tbody: W | undefined, query: string, handled: boolean, response: FetchResponse<V & X> | FetchError<X>
 
     await Polyfill.blob()
     await Polyfill.fetch()
@@ -203,12 +204,17 @@ export class API<T extends FetchRequestInit = APIConfig, U = undefined> {
     this.setCallStatus(method, path, config, Status.PENDING)
 
     tbody = await this.transformBody(method, path, body, config)
-    // ModuleLogger.debug('API', 'handle', `The body has been transformed.`, tbody)
+    query = await this.transformQueryParameters(method, path, body, config)
 
     handled = await this.handlePending(method, path, tbody, config)
     if (!handled) return rc(() => this.setCallStatus(method, path, config, Status.ERROR), FetchError.from())
 
-    response = await Fetch.handle(URLUtils.concat(this.baseURL, path), { body: tbody, method, ...FetchUtils.mergeRequestInits(this.config, config) })
+    response = await Fetch.handle(URLUtils.appendSearchParams(URLUtils.concat(this.baseURL, path), query), {
+      body: tbody,
+      method,
+      ...FetchUtils.mergeRequestInits(this.config, config)
+    })
+
     if (response instanceof Error) {
       handled = await this.handleError(method, path, tbody, config, response)
       if (!handled) return rc(() => this.setCallStatus(method, path, config, Status.ERROR), response)
@@ -229,6 +235,15 @@ export class API<T extends FetchRequestInit = APIConfig, U = undefined> {
    */
   async transformBody<V>(method: RequestMethod, path: string, body: V | undefined, config: T): Promise<any> {
     return body
+  }
+
+  /**
+   * Transforms the query parameters.
+   *
+   * @template V The body interface.
+   */
+  async transformQueryParameters<V>(method: RequestMethod, path: string, body: V | undefined, config: T): Promise<string> {
+    return typeof config.query === 'object' ? QueryParametersUtils.toString(config.query) : typeof config.query === 'string' ? config.query : ''
   }
 
   /**
