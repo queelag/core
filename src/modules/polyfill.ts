@@ -70,7 +70,7 @@ export class Polyfill {
 
     global.File = data.get('a')?.constructor as any
 
-    ModuleLogger.debug('Polyfill', 'formData', `The FormData object has been polyfilled with node-fetch.`)
+    ModuleLogger.debug('Polyfill', 'file', `The File object has been polyfilled with node-fetch.`)
   }
 
   /**

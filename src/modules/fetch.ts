@@ -47,7 +47,7 @@ export class Fetch {
    * @template V The body interface.
    */
   static async handle<T, U, V>(input: FetchRequestInfo, init: FetchRequestInit<V> = {}): Promise<FetchResponse<T> | FetchError<U>> {
-    let ninit: RequestInit, response: FetchResponse<T & U> | Error, parsed: void | Error
+    let ninit: RequestInit, response: FetchResponse<T & U> | Error
 
     await Polyfill.blob()
     await Polyfill.fetch()
@@ -62,8 +62,7 @@ export class Fetch {
 
     ModuleLogger.debug('Fetch', 'handle', `The request has been sent.`, input)
 
-    parsed = await tcp(() => (response as FetchResponse<T & U>).parse())
-    if (parsed instanceof Error) return FetchError.from(parsed)
+    await tcp(() => (response as FetchResponse<T & U>).parse())
 
     if (response.ok === true) {
       return response

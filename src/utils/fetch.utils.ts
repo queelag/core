@@ -2,6 +2,7 @@ import { FetchRequestInit } from '../definitions/interfaces'
 import { Environment } from '../modules/environment'
 import { FormDataUtils } from '../utils/form.data.utils'
 import { ObjectUtils } from './object.utils'
+import { StringUtils } from './string.utils'
 
 /**
  * Utils for anything related to fetch.
@@ -138,6 +139,21 @@ export class FetchUtils {
     switch (true) {
       case Environment.isFormDataDefined && init.body instanceof FormData:
         clone.body = FormDataUtils.toObject(init.body as FormData) as any
+        break
+      default:
+        switch (typeof init.body) {
+          case 'string':
+            if (StringUtils.isJSON(init.body)) {
+              clone.body = JSON.parse(init.body)
+              break
+            }
+
+            clone.body = init.body
+            break
+          default:
+            clone.body = init.body
+            break
+        }
         break
     }
 

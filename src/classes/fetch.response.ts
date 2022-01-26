@@ -1,6 +1,4 @@
 import { ClassLogger } from '../loggers/class.logger'
-import { Environment } from '../modules/environment'
-import { noop } from '../modules/noop'
 import { tcp } from '../modules/tcp'
 
 /**
@@ -32,75 +30,58 @@ export class FetchResponse<T = void> implements Response {
     this.status = response.status
     this.statusText = response.statusText
     this.type = response.type
-    this.url = response.type
-
-    this.arrayBuffer = response.arrayBuffer
-    this.blob = response.blob
-    this.clone = response.clone
-    this.formData = response.formData
-    this.json = response.json
-    this.text = response.text
+    this.url = response.url
   }
 
-  async parse(): Promise<void | Error> {
-    let type: string
-
-    if (this.body === null) {
-      ClassLogger.warn('FetchResponse', 'parse', `The body is null.`, this.body)
-      return
-    }
-
-    type = this.headers.get('content-type') || ''
-    if (!type) ClassLogger.warn('FetchResponse', 'parse', `The content-type header is not defined.`, this.headers)
-
+  async parse(): Promise<void> {
     switch (true) {
-      case Environment.isBlobDefined && type.startsWith('application/') && type.includes('octet-stream'):
+      case this.ContentType.startsWith('application/') && this.ContentType.includes('octet-stream'):
         let blob: Blob | Error
 
-        blob = await tcp(() => this.response.blob())
-        if (blob instanceof Error) return blob
+        blob = await tcp(() => this.blob())
+        if (blob instanceof Error) return this.setData(new Blob([]))
 
-        this.data = blob as any
+        this.setData(blob)
         ClassLogger.debug('FetchResponse', 'parse', `The data has been parsed as Blob.`, blob)
 
         break
-      case type.startsWith('application/') && type.includes('json'):
+      case this.ContentType.startsWith('application/') && this.ContentType.includes('json'):
         let json: object | Error
 
-        json = await tcp(() => this.response.json())
-        if (json instanceof Error) return json
+        json = await tcp(() => this.json())
+        if (json instanceof Error) return this.setData({})
 
-        this.data = json as any
+        this.setData(json)
         ClassLogger.debug('FetchResponse', 'parse', `The data has been parsed as JSON.`, json)
 
         break
-      case Environment.isFormDataDefined && type.startsWith('multipart/') && type.includes('form-data'):
+      case this.ContentType.startsWith('multipart/') && this.ContentType.includes('form-data'):
         let form: FormData | Error
 
-        form = await tcp(() => this.response.formData())
-        if (form instanceof Error) return form
+        form = await tcp(() => this.formData())
+        if (form instanceof Error) return this.setData(new FormData())
 
-        this.data = form as any
+        this.setData(form)
         ClassLogger.debug('FetchResponse', 'parse', `The data has been parsed as FormData.`, [...form.entries()])
 
         break
-      case type.startsWith('text/'):
+      case this.ContentType.startsWith('text/'):
         let text: string | Error
 
-        text = await tcp(() => this.response.text())
-        if (text instanceof Error) return text
+        text = await tcp(() => this.text())
+        if (text instanceof Error) return this.setData('')
 
-        this.data = text as any
+        this.setData(text)
         ClassLogger.debug('FetchResponse', 'parse', `The data has been parsed as text.`, [text])
 
         break
       default:
         let buffer: ArrayBuffer | Error
 
-        buffer = await tcp(() => this.response.arrayBuffer())
-        if (buffer instanceof Error) return buffer
+        buffer = await tcp(() => this.arrayBuffer())
+        if (buffer instanceof Error) return this.setData(new ArrayBuffer(0))
 
-        this.data = buffer as any
+        this.setData(buffer)
         ClassLogger.debug('FetchResponse', 'parse', `The data has been parsed as ArrayBuffer.`, buffer)
 
         break
@@ -108,26 +89,34 @@ export class FetchResponse<T = void> implements Response {
   }
 
   arrayBuffer(): Promise<ArrayBuffer> {
-    return noop()
+    return this.response.arrayBuffer()
   }
 
   blob(): Promise<Blob> {
-    return noop()
+    return this.response.blob()
   }
 
   clone(): Response {
-    return noop()
+    return this.response.clone()
   }
 
   formData(): Promise<FormData> {
-    return noop()
+    return this.response.formData()
   }
 
   json(): Promise<any> {
-    return noop()
+    return this.response.json()
   }
 
   text(): Promise<string> {
-    return noop()
+    return this.response.text()
+  }
+
+  private setData(data: any): void {
+    this.data = data
+  }
+
+  private get ContentType(): string {
+    return this.headers.get('content-type') || ''
   }
 }
