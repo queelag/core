@@ -19,10 +19,10 @@ export class FetchResponse<T = void> implements Response {
   readonly type: ResponseType
   readonly url: string
 
-  constructor(response: Response) {
+  constructor(response: Response, data?: T) {
     this.body = response.body
     this.bodyUsed = response.bodyUsed
-    this.data = undefined as any
+    this.data = data as any
     this.headers = response.headers
     this.ok = response.ok
     this.redirected = response.redirected
@@ -114,6 +114,17 @@ export class FetchResponse<T = void> implements Response {
 
   private setData(data: any): void {
     this.data = data
+  }
+
+  static from<T>(data: T): FetchResponse<T>
+  static from<T>(response: Response): FetchResponse<T>
+  static from<T>(...args: any[]): FetchResponse<T> {
+    switch (true) {
+      case args[0] instanceof Response:
+        return new FetchResponse(args[0])
+      default:
+        return new FetchResponse(new Response(), args[0])
+    }
   }
 
   private get ContentType(): string {
