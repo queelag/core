@@ -57,6 +57,13 @@ export class NumberUtils {
   }
 
   /**
+   * Calculates the percentage between partial and total.
+   */
+  static percentage(partial: number, total: number = 100, round: boolean = false): number {
+    return round ? Math.round((partial / total) * 100) : (partial / total) * 100
+  }
+
+  /**
    * Picks the highest number in the array.
    */
   static pickHighest(values: number[]): number {

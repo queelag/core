@@ -2,8 +2,6 @@ import { ModuleLogger } from '../loggers/module.logger'
 import { Environment } from './environment'
 import { tcp } from './tcp'
 
-type PolyfillName = 'blob' | 'fetch' | 'file' | 'formData'
-
 /**
  * A module to inject requirable polyfills.
  *
@@ -23,7 +21,7 @@ export class Polyfill {
     NodeFetch = await tcp(() => Environment.import('node-fetch'))
     if (NodeFetch instanceof Error) return
 
-    global.Blob = (await new NodeFetch.Response().blob()).constructor
+    global.Blob = NodeFetch.Blob
 
     ModuleLogger.debug('Polyfill', 'blob', `The Blob object has been polyfilled with node-fetch.`)
   }
@@ -53,7 +51,7 @@ export class Polyfill {
    * Polyfills the File object.
    */
   static async file(): Promise<void> {
-    let NodeFetch: any | Error, Blob: any, FormData: any, data: FormData
+    let NodeFetch: any | Error
 
     if (Environment.isFileDefined) {
       return
@@ -62,13 +60,7 @@ export class Polyfill {
     NodeFetch = await tcp(() => Environment.import('node-fetch'))
     if (NodeFetch instanceof Error) return
 
-    Blob = (await new NodeFetch.Response().blob()).constructor
-    FormData = (await new NodeFetch.Response(new URLSearchParams()).formData()).constructor
-
-    data = new FormData()
-    data.set('a', new Blob())
-
-    global.File = data.get('a')?.constructor as any
+    global.File = NodeFetch.File
 
     ModuleLogger.debug('Polyfill', 'file', `The File object has been polyfilled with node-fetch.`)
   }
@@ -86,7 +78,7 @@ export class Polyfill {
     NodeFetch = await tcp(() => Environment.import('node-fetch'))
     if (NodeFetch instanceof Error) return
 
-    global.FormData = (await new NodeFetch.Response(new URLSearchParams()).formData()).constructor
+    global.FormData = NodeFetch.FormData
 
     ModuleLogger.debug('Polyfill', 'formData', `The FormData object has been polyfilled with node-fetch.`)
   }
