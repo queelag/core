@@ -43,6 +43,16 @@ export class Logger {
   }
 
   /**
+   * Logs a verbose message to the console.
+   */
+  verbose(...args: any[]): void {
+    if (this.isDisabled) return
+    if (this.isLevelVerboseDisabled) return
+
+    console.debug(...this.format(args, LoggerLevel.VERBOSE))
+  }
+
+  /**
    * Logs a debug message to the console.
    */
   debug(...args: any[]): void {
@@ -124,6 +134,8 @@ export class Logger {
         return '\x1b[31m'
       case LoggerLevel.INFO:
         return '\x1b[37m'
+      case LoggerLevel.VERBOSE:
+        return '\x1b[34m'
       case LoggerLevel.WARN:
         return '\x1b[33m'
     }
@@ -153,6 +165,10 @@ export class Logger {
 
   get isEnabled(): boolean {
     return this.status === BooleanValue.TRUE
+  }
+
+  get isLevelVerboseDisabled(): boolean {
+    return [LoggerLevel.DEBUG, LoggerLevel.INFO, LoggerLevel.WARN, LoggerLevel.ERROR].includes(this.level)
   }
 
   get isLevelDebugDisabled(): boolean {

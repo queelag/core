@@ -4,6 +4,7 @@ export enum BooleanValue {
 }
 
 export enum LoggerLevel {
+  VERBOSE = 'VERBOSE',
   DEBUG = 'DEBUG',
   INFO = 'INFO',
   WARN = 'WARN',
