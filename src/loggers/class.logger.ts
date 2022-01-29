@@ -1,3 +1,4 @@
+import { LoggerName } from '../definitions/enums'
 import { Logger } from '../modules/logger'
 
-export const ClassLogger: Logger = new Logger('CoreClass')
+export const ClassLogger = new Logger(LoggerName.CLASS)

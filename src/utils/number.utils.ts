@@ -99,7 +99,7 @@ export class NumberUtils {
   }
 
   /**
-   * Checks whether value is parseable to a float.
+   * Checks whether a value is parseable.
    */
   static isParseable(value: any): boolean {
     return !isNaN(parseInt(value))

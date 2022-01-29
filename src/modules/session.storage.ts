@@ -5,7 +5,7 @@ import { Storage } from './storage'
  *
  * @category Module
  */
-export const SessionStorage: Storage = new Storage(
+export const SessionStorage = new Storage(
   'SessionStorage',
   async (key: string) => JSON.parse(window.sessionStorage.getItem(key) || ''),
   async (key: string) => window.sessionStorage.removeItem(key),

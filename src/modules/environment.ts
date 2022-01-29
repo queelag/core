@@ -18,6 +18,25 @@ import { tc } from './tc'
  */
 export class Environment {
   /**
+   * Gets a key from process.env safely.
+   */
+  static get(key: string): string {
+    let value: string | undefined | Error
+
+    value = tc(() => process.env[key], false)
+    if (value instanceof Error) return ''
+
+    return value || ''
+  }
+
+  /**
+   * Checks if a key is defined inside process.env safely.
+   */
+  static has(key: string): boolean {
+    return this.get(key).length > 0
+  }
+
+  /**
    * Returns a webpack safe import.
    */
   static get import(): Function {

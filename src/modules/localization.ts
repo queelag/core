@@ -1,4 +1,4 @@
-import { CoreStorageName } from '../definitions/enums'
+import { StorageName } from '../definitions/enums'
 import { AnyObject, LocalizationPack } from '../definitions/interfaces'
 import { ModuleLogger } from '../loggers/module.logger'
 import { ObjectUtils } from '../utils/object.utils'
@@ -34,7 +34,7 @@ class _ {
   async initialize(): Promise<boolean> {
     let storage: Pick<this, 'language'> | Error
 
-    storage = await this.storage.get(CoreStorageName.LOCALIZATION, this, ['language'])
+    storage = await this.storage.get(StorageName.LOCALIZATION, this, ['language'])
     if (storage instanceof Error) return false
 
     return true
@@ -46,7 +46,7 @@ class _ {
     this.language = language
     ModuleLogger.debug('Localization', 'setLanguage', `The language has been set to ${this.language}.`)
 
-    storage = await this.storage.set(CoreStorageName.LOCALIZATION, this, ['language'])
+    storage = await this.storage.set(StorageName.LOCALIZATION, this, ['language'])
     if (storage instanceof Error) return false
 
     return true

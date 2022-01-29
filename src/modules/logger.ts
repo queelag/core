@@ -22,7 +22,7 @@ export class Logger {
   /**
    * A {@link LoggerLevel} which determines the logs that are printed.
    */
-  level: LoggerLevel = Environment.isProduction ? LoggerLevel.ERROR : LoggerLevel.DEBUG
+  level: LoggerLevel
   /**
    * A string which determines the name of this ModuleLogger.
    */
@@ -30,12 +30,12 @@ export class Logger {
   /**
    * A {@link BooleanValue}.
    */
-  status: BooleanValue = BooleanValue.TRUE
+  status: BooleanValue
 
   constructor(
     name: string,
-    level: LoggerLevel = Environment.isProduction ? LoggerLevel.ERROR : LoggerLevel.DEBUG,
-    status: BooleanValue = Environment.isTest ? BooleanValue.FALSE : BooleanValue.TRUE
+    level: LoggerLevel = Logger.getLevelFromEnvironment(name) || (Environment.isProduction ? LoggerLevel.ERROR : LoggerLevel.DEBUG),
+    status: BooleanValue = Logger.getStatusFromEnvironment(name) || (Environment.isTest ? BooleanValue.FALSE : BooleanValue.TRUE)
   ) {
     this.level = level
     this.name = name
@@ -43,38 +43,43 @@ export class Logger {
   }
 
   /**
-   * Logs a verbose message to the console.
-   */
-  verbose(...args: any[]): void {
-    this.isEnabled && this.isLevelLowerThanVerbose && console.debug(...this.format(args, LoggerLevel.VERBOSE))
-  }
-
-  /**
    * Logs a debug message to the console.
    */
   debug(...args: any[]): void {
-    this.isEnabled && this.isLevelLowerThanDebug && console.debug(...this.format(args, LoggerLevel.DEBUG))
+    if (this.isDisabled) return
+    if (this.isLevelDebugDisabled) return
+
+    console.debug(...this.format(args, LoggerLevel.DEBUG))
   }
 
   /**
    * Logs an info message to the console.
    */
   info(...args: any[]): void {
-    this.isEnabled && this.isLevelLowerThanInfo && console.info(...this.format(args, LoggerLevel.INFO))
+    if (this.isDisabled) return
+    if (this.isLevelInfoDisabled) return
+
+    console.info(...this.format(args, LoggerLevel.INFO))
   }
 
   /**
    * Logs a warn message to the console.
    */
   warn(...args: any[]): void {
-    this.isEnabled && this.isLevelLowerThanWarn && console.warn(...this.format(args, LoggerLevel.WARN))
+    if (this.isDisabled) return
+    if (this.isLevelWarnDisabled) return
+
+    console.warn(...this.format(args, LoggerLevel.WARN))
   }
 
   /**
    * Logs an error message to the console.
    */
   error(...args: any[]): void {
-    this.isEnabled && this.isLevelLowerThanError && console.error(...this.format(args, LoggerLevel.ERROR))
+    if (this.isDisabled) return
+    if (this.isLevelErrorDisabled) return
+
+    console.error(...this.format(args, LoggerLevel.ERROR))
   }
 
   /**
@@ -94,7 +99,7 @@ export class Logger {
   /** @internal */
   private format(args: any[] = [], level: LoggerLevel): any[] {
     return [
-      ...(Environment.isWindowNotDefined ? [this.findTerminalColorByLevel(level)] : []),
+      ...(Environment.isWindowNotDefined ? [this.getTerminalColorByLevel(level)] : []),
       args.filter((v: any) => ['boolean', 'number', 'string'].includes(typeof v) && v.toString().length > 0).join(' -> '),
       ...(Environment.isWindowNotDefined ? ['\x1b[0m'] : []),
       ...args
@@ -111,7 +116,7 @@ export class Logger {
   }
 
   /** @internal */
-  private findTerminalColorByLevel(level: LoggerLevel): string {
+  private getTerminalColorByLevel(level: LoggerLevel): string {
     switch (level) {
       case LoggerLevel.DEBUG:
         return '\x1b[34m'
@@ -119,11 +124,27 @@ export class Logger {
         return '\x1b[31m'
       case LoggerLevel.INFO:
         return '\x1b[37m'
-      case LoggerLevel.VERBOSE:
-        return '\x1b[34m'
       case LoggerLevel.WARN:
         return '\x1b[33m'
     }
+  }
+
+  static getLevelFromEnvironment(name: string): LoggerLevel | undefined {
+    let value: string
+
+    value = Environment.get(`LOGGER_${name}_LEVEL`)
+    if (!Object.keys(LoggerLevel).includes(value)) return
+
+    return value as LoggerLevel
+  }
+
+  static getStatusFromEnvironment(name: string): BooleanValue | undefined {
+    let value: string
+
+    value = Environment.get(`LOGGER_${name}_STATUS`)
+    if (!Object.keys(BooleanValue).includes(value)) return
+
+    return value as BooleanValue
   }
 
   get isDisabled(): boolean {
@@ -134,23 +155,19 @@ export class Logger {
     return this.status === BooleanValue.TRUE
   }
 
-  get isLevelLowerThanVerbose(): boolean {
-    return this.level <= LoggerLevel.VERBOSE
+  get isLevelDebugDisabled(): boolean {
+    return [LoggerLevel.INFO, LoggerLevel.WARN, LoggerLevel.ERROR].includes(this.level)
   }
 
-  get isLevelLowerThanDebug(): boolean {
-    return this.level <= LoggerLevel.DEBUG
+  get isLevelInfoDisabled(): boolean {
+    return [LoggerLevel.WARN, LoggerLevel.ERROR].includes(this.level)
   }
 
-  get isLevelLowerThanInfo(): boolean {
-    return this.level <= LoggerLevel.INFO
+  get isLevelWarnDisabled(): boolean {
+    return [LoggerLevel.ERROR].includes(this.level)
   }
 
-  get isLevelLowerThanWarn(): boolean {
-    return this.level <= LoggerLevel.WARN
-  }
-
-  get isLevelLowerThanError(): boolean {
-    return this.level <= LoggerLevel.ERROR
+  get isLevelErrorDisabled(): boolean {
+    return false
   }
 }

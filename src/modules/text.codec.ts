@@ -67,4 +67,4 @@ class _ {
  *
  * @category Module
  */
-export const TextCodec: _ = new _()
+export const TextCodec = new _()

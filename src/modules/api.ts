@@ -18,7 +18,7 @@ import { Status } from './status'
  * ```typescript
  * import { API } from '@queelag/core'
  *
- * export const ServiceAPI: API = new API(
+ * export const ServiceAPI = new API(
  *   'https://api.service.com',
  *   { headers: { authorization: 'Bearer token' } }
  * )

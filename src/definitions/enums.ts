@@ -4,11 +4,16 @@ export enum BooleanValue {
 }
 
 export enum LoggerLevel {
-  VERBOSE = 0,
-  DEBUG = 1,
-  INFO = 2,
-  WARN = 3,
-  ERROR = 4
+  DEBUG = 'DEBUG',
+  INFO = 'INFO',
+  WARN = 'WARN',
+  ERROR = 'ERROR'
+}
+
+export enum LoggerName {
+  CLASS = 'CORE_CLASS',
+  MODULE = 'CORE_MODULE',
+  UTIL = 'CORE_UTIL'
 }
 
 export enum RequestMethod {
@@ -23,7 +28,7 @@ export enum RequestMethod {
   TRACE = 'TRACE'
 }
 
-export enum CoreStorageName {
+export enum StorageName {
   LOCALIZATION = 'LOCALIZATION'
 }
 

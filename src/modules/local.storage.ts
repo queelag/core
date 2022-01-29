@@ -5,7 +5,7 @@ import { Storage } from './storage'
  *
  * @category Module
  */
-export const LocalStorage: Storage = new Storage(
+export const LocalStorage = new Storage(
   'LocalStorage',
   async (key: string) => JSON.parse(window.localStorage.getItem(key) || ''),
   async (key: string) => window.localStorage.removeItem(key),
