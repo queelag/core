@@ -109,7 +109,7 @@ export class ObjectUtils {
   static omit<T extends object, K extends keyof T>(object: T, keys: K[]): Omit<T, K> {
     let clone: T
 
-    clone = this.clone(object)
+    clone = { ...object }
     keys.forEach((k: keyof T) => delete clone[k])
 
     return clone
