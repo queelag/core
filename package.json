@@ -41,5 +41,5 @@
     "deploy": "yarn test && yarn build && yarn tarball && yarn publish dist/*.tgz --access public"
   },
   "sideEffects": false,
-  "version": "1.0.69"
+  "version": "1.0.70"
 }
