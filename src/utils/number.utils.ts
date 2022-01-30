@@ -57,10 +57,10 @@ export class NumberUtils {
   }
 
   /**
-   * Calculates the percentage between partial and total.
+   * Calculates the percentage of value between minimum and maximum.
    */
-  static percentage(partial: number, total: number = 100, round: boolean = false): number {
-    return round ? Math.round((partial / total) * 100) : (partial / total) * 100
+  static percentage(value: number, minimum: number = 0, maximum: number = 100, round: boolean = false): number {
+    return round ? Math.round((value / (maximum - minimum)) * 100) : (value / (maximum - minimum)) * 100
   }
 
   /**
