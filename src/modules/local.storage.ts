@@ -7,7 +7,7 @@ import { Storage } from './storage'
  */
 export const LocalStorage = new Storage(
   'LocalStorage',
-  async (key: string) => JSON.parse(window.localStorage.getItem(key) || ''),
+  async (key: string) => JSON.parse(window.localStorage.getItem(key) || '{}'),
   async (key: string) => window.localStorage.removeItem(key),
   async (key: string, value: string) => window.localStorage.setItem(key, value)
 )
