@@ -28,21 +28,34 @@ export class ArrayUtils {
   /**
    * Removes every T item matching the callbackfn result.
    */
-  static remove<T>(array: T[], callbackfn: (v: T) => boolean): void {
-    array.forEach((v: T, k: number) => {
+  static remove<T>(array: T[], callbackfn: (v: T) => boolean): T[] {
+    return array.reduce((r: T[], v: T) => {
       let removable: boolean
 
       removable = callbackfn(v)
-      if (!removable) return
+      if (removable) return r
 
-      array.splice(k, 1)
-    })
+      r.push(v)
+
+      return r
+    }, [])
   }
 
   /**
    * Removes every duplicate using Set.
    */
-  static uniq<T>(array: T[]): T[] {
-    return [...new Set(array)]
+  static uniq<T>(array: T[], callbackfn?: (r: T[], v: T) => boolean): T[] {
+    return callbackfn
+      ? array.reduce((r: T[], v: T) => {
+          let pushed: boolean
+
+          pushed = callbackfn(r, v)
+          if (pushed) return r
+
+          r.push(v)
+
+          return r
+        }, [])
+      : [...new Set(array)]
   }
 }
