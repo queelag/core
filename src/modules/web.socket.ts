@@ -115,14 +115,24 @@ class _ {
       return
     }
 
-    switch (typeof data) {
-      case 'object':
-        transformed = JSON.stringify(data)
-        ModuleLogger.debug(this.id, 'send', `The data has been transformed.`, [transformed])
+    switch (true) {
+      case data instanceof ArrayBuffer:
+      case data instanceof Blob:
+        transformed = data
+        ModuleLogger.debug(this.id, 'send', `The data is an ArrayBuffer or Blob, no transformations are needed.`, [transformed])
 
         break
       default:
-        transformed = data
+        switch (typeof data) {
+          case 'object':
+            transformed = JSON.stringify(data)
+            ModuleLogger.debug(this.id, 'send', `The data has been transformed.`, [transformed])
+
+            break
+          default:
+            transformed = data
+            break
+        }
         break
     }
 
@@ -130,6 +140,11 @@ class _ {
     if (send instanceof Error) return send
 
     return
+  }
+
+  setBinaryType(type: BinaryType): void {
+    this.instance.binaryType = type
+    ModuleLogger.debug(this.id, 'setBinaryType', `The binary type has been set to ${type}.`)
   }
 
   get onClose(): (event: CloseEvent) => any {
@@ -193,7 +208,7 @@ class _ {
   }
 
   set onError(onError: (event: Event) => any) {
-    this._onClose = (event: Event) => {
+    this._onError = (event: Event) => {
       ModuleLogger.debug(this.id, 'onError', `The web socket crashed.`, event)
 
       onError(event)
