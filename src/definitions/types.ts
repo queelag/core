@@ -21,3 +21,5 @@ export type IndexedDatabaseTableQuery = IDBValidKey | IDBKeyRange
 export type FetchRequestInfo = Request | string
 
 export type StatusTransformer = (keys: string[]) => string
+
+export type WebSocketEventData<T extends object> = T | ArrayBufferLike | ArrayBufferView | Blob | string

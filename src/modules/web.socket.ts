@@ -1,4 +1,4 @@
-import { ID } from '../definitions/types'
+import { ID, WebSocketEventData } from '../definitions/types'
 import { ModuleLogger } from '../loggers/module.logger'
 import { StringUtils } from '../utils/string.utils'
 import { noop } from './noop'
@@ -107,8 +107,8 @@ class _ {
   /**
    * Sends a message.
    */
-  send<T extends object>(data: T | ArrayBufferLike | ArrayBufferView | Blob | string): void | Error {
-    let transformed: T | ArrayBufferLike | ArrayBufferView | Blob | string, send: void | Error
+  send<T extends object>(data: WebSocketEventData<T>): void | Error {
+    let tdata: WebSocketEventData<T>, send: void | Error
 
     if (this.isReadyStateNotOpen) {
       ModuleLogger.warn(this.id, 'send', `The web socket ready state is not open, this message can't be sent.`)
@@ -118,28 +118,38 @@ class _ {
     switch (true) {
       case data instanceof ArrayBuffer:
       case data instanceof Blob:
-        transformed = data
-        ModuleLogger.debug(this.id, 'send', `The data is an ArrayBuffer or Blob, no transformations are needed.`, [transformed])
+        tdata = data
+        ModuleLogger.debug(this.id, 'send', `The data is an ArrayBuffer or Blob, no transformations are needed.`, tdata)
 
         break
       default:
         switch (typeof data) {
           case 'object':
-            transformed = JSON.stringify(data)
-            ModuleLogger.debug(this.id, 'send', `The data has been transformed.`, [transformed])
+            tdata = JSON.stringify(data)
+            ModuleLogger.debug(this.id, 'send', `The data has been transformed.`, [tdata])
 
             break
           default:
-            transformed = data
+            tdata = data
             break
         }
         break
     }
 
-    send = tc(() => this.instance.send(transformed as any))
+    tdata = this.transformOutgoingData(data)
+
+    send = tc(() => this.instance.send(tdata as any))
     if (send instanceof Error) return send
 
     return
+  }
+
+  transformIncomingData<T extends object>(data: WebSocketEventData<T>): WebSocketEventData<T> {
+    return data
+  }
+
+  transformOutgoingData<T extends object>(data: WebSocketEventData<T>): WebSocketEventData<T> {
+    return data
   }
 
   setBinaryType(type: BinaryType): void {
@@ -226,6 +236,8 @@ class _ {
 
           break
       }
+
+      event = { ...event, data: this.transformIncomingData(event.data) }
 
       onMessage(event)
     }
