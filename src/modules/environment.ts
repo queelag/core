@@ -40,6 +40,10 @@ export class Environment {
    * Returns a webpack safe import.
    */
   static get import(): Function {
+    if (Environment.isJest) {
+      return (path: string) => import(path)
+    }
+
     return new Function('path', 'return import(path)')
   }
 
@@ -119,6 +123,20 @@ export class Environment {
    */
   static get isFormDataNotDefined(): boolean {
     return typeof FormData === 'undefined'
+  }
+
+  /**
+   * Checks if the JEST_WORKER_ID variable is defined.
+   */
+  static get isJest(): boolean {
+    return typeof tc(() => process.env.JEST_WORKER_ID, false) === 'string'
+  }
+
+  /**
+   * Checks if the JEST_WORKER_ID variable is not defined.
+   */
+  static get isNotJest(): boolean {
+    return typeof tc(() => process.env.JEST_WORKER_ID, false) !== 'string'
   }
 
   /**

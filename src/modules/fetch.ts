@@ -62,7 +62,9 @@ export class Fetch {
 
     ModuleLogger.debug('Fetch', 'handle', `The request has been sent.`, input)
 
-    await tcp(() => (response as FetchResponse<T & U>).parse())
+    if (init.parse !== false) {
+      await tcp(() => (response as FetchResponse<T & U>).parse())
+    }
 
     if (response.ok === true) {
       return response

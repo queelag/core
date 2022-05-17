@@ -44,7 +44,7 @@ export class Storage {
 
     keys.forEach((k: keyof T) => {
       value = (item as T)[k]
-      if (!Object.keys(item).includes(k.toString())) return ModuleLogger.error(this.name, 'get', `The JSON does not contain the key ${k}.`, item)
+      if (!Object.keys(item).includes(k.toString())) return ModuleLogger.debug(this.name, 'get', `The JSON does not contain the key ${k}.`, item)
 
       store[k] = value as any
       ModuleLogger.debug(this.name, 'get', `The key ${k} has been set.`, value)

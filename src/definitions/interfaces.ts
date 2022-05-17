@@ -18,6 +18,7 @@ export interface ElementTagNameMap extends HTMLElementTagNameMap, Pick<SVGElemen
 
 export interface FetchRequestInit<T = void> extends Omit<RequestInit, 'body'> {
   body?: T
+  parse?: boolean
 }
 
 export interface GraphQLAPIConfig<T = void> extends APIConfig<T> {}
