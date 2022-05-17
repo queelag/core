@@ -25,7 +25,11 @@ export class Polyfill {
   static async blob(): Promise<void> {
     let NodeFetch: NodeFetch | Error
 
-    if (Environment.isBlobDefined || Environment.isWindowDefined) {
+    if (Environment.isBlobDefined) {
+      return
+    }
+
+    if (Environment.isNotJest && Environment.isWindowDefined) {
       return
     }
 
@@ -43,7 +47,11 @@ export class Polyfill {
   static async fetch(): Promise<void> {
     let NodeFetch: NodeFetch | Error
 
-    if (Environment.isFetchDefined || Environment.isWindowDefined) {
+    if (Environment.isFetchDefined) {
+      return
+    }
+
+    if (Environment.isNotJest && Environment.isWindowDefined) {
       return
     }
 
@@ -64,7 +72,11 @@ export class Polyfill {
   static async file(): Promise<void> {
     let NodeFetch: NodeFetch | Error
 
-    if (Environment.isFileDefined || Environment.isWindowDefined) {
+    if (Environment.isFileDefined) {
+      return
+    }
+
+    if (Environment.isNotJest && Environment.isWindowDefined) {
       return
     }
 
@@ -82,7 +94,11 @@ export class Polyfill {
   static async formData(): Promise<void> {
     let NodeFetch: NodeFetch | Error
 
-    if (Environment.isFormDataDefined || Environment.isWindowDefined) {
+    if (Environment.isFormDataDefined) {
+      return
+    }
+
+    if (Environment.isNotJest && Environment.isWindowDefined) {
       return
     }
 
