@@ -110,7 +110,7 @@ export class Polyfill {
     ModuleLogger.debug('Polyfill', 'formData', `The FormData object has been polyfilled with node-fetch.`)
   }
 
-  static async getNodeFetch(): Promise<NodeFetch | Error> {
+  private static async getNodeFetch(): Promise<NodeFetch | Error> {
     switch (true) {
       case Environment.isJest:
         return tc(() => Environment.require('node-fetch-cjs'))
