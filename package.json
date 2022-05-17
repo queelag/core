@@ -4,7 +4,8 @@
     "cookie": "^0.4.1",
     "lodash": "^4.17.21",
     "nanoid": "^3.2.0",
-    "node-fetch": "^3.2.0",
+    "node-fetch": "^3.2.4",
+    "node-fetch-cjs": "^3.2.4",
     "rfc4648": "^1.5.1"
   },
   "devDependencies": {

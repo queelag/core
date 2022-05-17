@@ -1,6 +1,17 @@
 import { ModuleLogger } from '../loggers/module.logger'
 import { Environment } from './environment'
+import { tc } from './tc'
 import { tcp } from './tcp'
+
+interface NodeFetch {
+  default: any
+  Blob: any
+  File: any
+  FormData: any
+  Headers: any
+  Request: any
+  Response: any
+}
 
 /**
  * A module to inject requirable polyfills.
@@ -12,13 +23,13 @@ export class Polyfill {
    * Polyfills the Blob object.
    */
   static async blob(): Promise<void> {
-    let NodeFetch: any | Error
+    let NodeFetch: NodeFetch | Error
 
-    if (Environment.isBlobDefined) {
+    if (Environment.isBlobDefined || Environment.isWindowDefined) {
       return
     }
 
-    NodeFetch = await tcp(() => Environment.import('node-fetch'))
+    NodeFetch = await this.getNodeFetch()
     if (NodeFetch instanceof Error) return
 
     global.Blob = NodeFetch.Blob
@@ -30,13 +41,13 @@ export class Polyfill {
    * Polyfills the Fetch API.
    */
   static async fetch(): Promise<void> {
-    let NodeFetch: any | Error
+    let NodeFetch: NodeFetch | Error
 
-    if (Environment.isFetchDefined) {
+    if (Environment.isFetchDefined || Environment.isWindowDefined) {
       return
     }
 
-    NodeFetch = await tcp(() => Environment.import('node-fetch'))
+    NodeFetch = await this.getNodeFetch()
     if (NodeFetch instanceof Error) return
 
     global.fetch = NodeFetch.default
@@ -51,13 +62,13 @@ export class Polyfill {
    * Polyfills the File object.
    */
   static async file(): Promise<void> {
-    let NodeFetch: any | Error
+    let NodeFetch: NodeFetch | Error
 
-    if (Environment.isFileDefined) {
+    if (Environment.isFileDefined || Environment.isWindowDefined) {
       return
     }
 
-    NodeFetch = await tcp(() => Environment.import('node-fetch'))
+    NodeFetch = await this.getNodeFetch()
     if (NodeFetch instanceof Error) return
 
     global.File = NodeFetch.File
@@ -69,17 +80,26 @@ export class Polyfill {
    * Polyfills the FormData object.
    */
   static async formData(): Promise<void> {
-    let NodeFetch: any | Error
+    let NodeFetch: NodeFetch | Error
 
-    if (Environment.isFormDataDefined) {
+    if (Environment.isFormDataDefined || Environment.isWindowDefined) {
       return
     }
 
-    NodeFetch = await tcp(() => Environment.import('node-fetch'))
+    NodeFetch = await this.getNodeFetch()
     if (NodeFetch instanceof Error) return
 
     global.FormData = NodeFetch.FormData
 
     ModuleLogger.debug('Polyfill', 'formData', `The FormData object has been polyfilled with node-fetch.`)
+  }
+
+  static async getNodeFetch(): Promise<NodeFetch | Error> {
+    switch (true) {
+      case Environment.isJest:
+        return tc(() => Environment.require('node-fetch-cjs'))
+      default:
+        return tcp(() => Environment.import('node-fetch'))
+    }
   }
 }
