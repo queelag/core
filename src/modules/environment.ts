@@ -40,10 +40,6 @@ export class Environment {
    * Returns a webpack safe import.
    */
   static get import(): Function {
-    if (Environment.isJest) {
-      return (path: string) => import(path)
-    }
-
     return new Function('path', 'return import(path)')
   }
 
