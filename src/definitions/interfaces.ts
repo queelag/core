@@ -14,6 +14,17 @@ export interface APIConfig<T = void> extends FetchRequestInit<T> {
   }
 }
 
+export interface ConfigurationData {
+  module: {
+    tc: {
+      onCatch: <T extends Error>(error: T, verbose: boolean) => any
+    }
+    tcp: {
+      onCatch: <T extends Error>(error: T, verbose: boolean) => any
+    }
+  }
+}
+
 export interface ElementTagNameMap extends HTMLElementTagNameMap, Pick<SVGElementTagNameMap, 'svg'> {}
 
 export interface FetchRequestInit<T = void> extends Omit<RequestInit, 'body'> {

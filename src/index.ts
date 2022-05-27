@@ -3,7 +3,25 @@ export * from './classes/fetch.response'
 export * from './classes/indexed.database.error'
 export * from './classes/indexed.database.table.error'
 export { BooleanValue, LoggerLevel, LoggerName as CoreLoggerName, RequestMethod, StorageName as CoreStorageName, WriteMode } from './definitions/enums'
-export * from './definitions/interfaces'
+export {
+  AnyObject,
+  APIConfig,
+  ConfigurationData as CoreConfigurationData,
+  ElementTagNameMap,
+  FetchRequestInit,
+  GraphQLAPIConfig,
+  GraphQLAPIResponse,
+  GraphQLAPIResponseBody,
+  HistoryDataValue,
+  LocalizationPack,
+  LocalizationPackData,
+  PrimitiveObject,
+  StringObject,
+  Timestamp,
+  WithIdentity,
+  WithTimestamp,
+  WithWriteMode
+} from './definitions/interfaces'
 export * from './definitions/types'
 export { ClassLogger as CoreClassLogger } from './loggers/class.logger'
 export { ModuleLogger as CoreModuleLogger } from './loggers/module.logger'
@@ -13,6 +31,7 @@ export * from './modules/base16'
 export * from './modules/base32'
 export * from './modules/base64'
 export * from './modules/cache'
+export { Configuration as CoreConfiguration } from './modules/configuration'
 export * from './modules/cookie'
 export * from './modules/debounce'
 export * from './modules/deferred.promise'

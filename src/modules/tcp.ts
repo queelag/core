@@ -1,3 +1,5 @@
+import { Configuration } from './configuration'
+
 /**
  * Try catches an asynchronous fn, returning both T and U.
  *
@@ -37,11 +39,13 @@
 export async function tcp<T, U extends Error = Error>(fn: () => Promise<T>, verbose: boolean = true): Promise<T | U> {
   try {
     return await fn()
-  } catch (e: any) {
+  } catch (error: any) {
     if (verbose) {
-      console.error(e)
+      console.error(error)
     }
 
-    return e
+    Configuration.data.module.tcp.onCatch<U>(error, verbose)
+
+    return error
   }
 }

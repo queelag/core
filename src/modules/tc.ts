@@ -1,3 +1,5 @@
+import { Configuration } from './configuration'
+
 /**
  * Try catches a fn, returning both T and U.
  *
@@ -37,11 +39,13 @@
 export function tc<T, U extends Error = Error>(fn: () => T, verbose: boolean = true): T | U {
   try {
     return fn()
-  } catch (e: any) {
+  } catch (error: any) {
     if (verbose) {
-      console.error(e)
+      console.error(error)
     }
 
-    return e
+    Configuration.data.module.tc.onCatch<U>(error, verbose)
+
+    return error
   }
 }
