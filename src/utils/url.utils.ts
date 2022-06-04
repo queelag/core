@@ -14,7 +14,6 @@ export class URLUtils {
     return chunks
       .join('/')
       .replace(/\/{2,}/g, '/')
-      .replace(/\/$/, '')
       .replace(':/', '://')
   }
 
