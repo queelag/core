@@ -1,6 +1,6 @@
-import { ConfigurationData } from '../definitions/interfaces'
-import { Dummy } from './dummy'
+import { DEFAULT_CONFIGURATION_MODULE } from '@/definitions/constants'
+import { ConfigurationModule } from '@/definitions/interfaces'
 
 export class Configuration {
-  static data: ConfigurationData = Dummy.configurationData
+  static module: ConfigurationModule = DEFAULT_CONFIGURATION_MODULE()
 }

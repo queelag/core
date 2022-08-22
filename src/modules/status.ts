@@ -1,46 +1,8 @@
-import { StatusTransformer } from '../definitions/types'
-import { ModuleLogger } from '../loggers/module.logger'
+import { StatusTransformer } from '@/definitions/types'
+import { ModuleLogger } from '@/loggers/module.logger'
 
 /**
  * A module to keep track of status changes.
- *
- * Usage:
- *
- * ```typescript
- * import { Sleep, Status } from '@queelag/core'
- *
- * const status = new Status()
- *
- * async function willError() {
- *   status.pending('will_error')
- *   await Sleep.for(1000)
- *   status.error('will_error')
- * }
- *
- * async function willSucceed() {
- *   status.pending('will_succeed')
- *   await Sleep.for(1000)
- *   status.error('will_succeed')
- * }
- *
- * console.log(status.isIdle('will_error'))
- * console.log(status.isIdle('will_succeed'))
- * // both log true
- *
- * willError().then(() => {
- *   console.log(status.isError('will_error'))
- *   // logs true
- * })
- *
- * willSucceed().then(() => {
- *   console.log(status.isSuccess('will_succeed'))
- *   // logs true
- * })
- *
- * console.log(status.isPending('will_error'))
- * console.log(status.isPending('will_succeed'))
- * // both log true
- * ```
  *
  * @category Module
  */
@@ -51,11 +13,11 @@ export class Status {
   readonly data: Map<string, string> = new Map()
 
   /** @hidden */
-  constructor(transformer: StatusTransformer = Status.defaultTransformer) {
+  constructor(transformer: StatusTransformer = Status.DEFAULT_TRANSFORMER) {
     this.transformer = transformer
   }
 
-  get(keys: string[]): string {
+  get(...keys: string[]): string {
     return this.data.get(this.transformer(keys)) || Status.IDLE
   }
 
@@ -109,28 +71,28 @@ export class Status {
    * Checks whether the transformed key is IDLE.
    */
   isIdle(...keys: string[]): boolean {
-    return this.get(keys) === Status.IDLE
+    return this.get(...keys) === Status.IDLE
   }
 
   /**
    * Checks whether the transformed key is PENDING.
    */
   isPending(...keys: string[]): boolean {
-    return this.get(keys) === Status.PENDING
+    return this.get(...keys) === Status.PENDING
   }
 
   /**
    * Checks whether the transformed key is SUCCESS.
    */
   isSuccess(...keys: string[]): boolean {
-    return this.get(keys) === Status.SUCCESS
+    return this.get(...keys) === Status.SUCCESS
   }
 
   /**
    * Checks whether the transformed key is ERROR.
    */
   isError(...keys: string[]): boolean {
-    return this.get(keys) === Status.ERROR
+    return this.get(...keys) === Status.ERROR
   }
 
   /**
@@ -206,7 +168,7 @@ export class Status {
   }
 
   /** @internal */
-  static get defaultTransformer(): StatusTransformer {
+  static get DEFAULT_TRANSFORMER(): StatusTransformer {
     return (keys: string[]) => keys.join('_')
   }
 }

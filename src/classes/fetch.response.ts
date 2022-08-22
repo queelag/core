@@ -1,5 +1,5 @@
-import { ClassLogger } from '../loggers/class.logger'
-import { tcp } from '../modules/tcp'
+import { tcp } from '@/functions/tcp'
+import { ClassLogger } from '@/loggers/class.logger'
 
 /**
  * A class which extends the default Response one, it includes a parse method.

@@ -1,24 +1,13 @@
-import { ElementTagNameMap } from '../definitions/interfaces'
-import { Environment } from '../modules/environment'
+import { Environment } from '@/modules/environment'
 
 /**
- * Utils for anything related to the DOM document.
- *
- * @category Utility
+ * Creates a K element if the DOM is available otherwise an empty object is returned.
  */
-export class DocumentUtils {
-  /**
-   * Adds an event listener and returns a function that removes it, useful with react hooks.
-   */
-  static addEventListenerAndReturnRemover(type: keyof DocumentEventMap, listener: (...args: any[]) => any): () => void {
-    document.addEventListener(type, listener)
-    return () => document.removeEventListener(type, listener)
-  }
-
-  /**
-   * Creates a K element if the DOM is available otherwise an empty object is returned.
-   */
-  static createElement<K extends keyof ElementTagNameMap>(tagName: K, options?: ElementCreationOptions): ElementTagNameMap[K] {
-    return Environment.isWindowDefined ? document.createElement(tagName, options) : ({} as any)
-  }
+export function createDocumentElement<K extends keyof HTMLElementTagNameMap>(tagName: K, options?: ElementCreationOptions): HTMLElementTagNameMap[K]
+export function createDocumentElement<K extends keyof SVGElementTagNameMap>(tagName: K, options?: ElementCreationOptions): SVGElementTagNameMap[K]
+export function createDocumentElement<K1 extends keyof HTMLElementTagNameMap, K2 extends keyof SVGElementTagNameMap>(
+  tagName: K1 | K2,
+  options?: ElementCreationOptions
+): HTMLElementTagNameMap[K1] | SVGElementTagNameMap[K2] {
+  return Environment.isWindowDefined ? document.createElement(tagName, options) : ({} as any)
 }

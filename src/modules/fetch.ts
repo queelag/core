@@ -1,40 +1,15 @@
-import { FetchError } from '../classes/fetch.error'
-import { FetchResponse } from '../classes/fetch.response'
-import { RequestMethod } from '../definitions/enums'
-import { FetchRequestInit } from '../definitions/interfaces'
-import { FetchRequestInfo } from '../definitions/types'
-import { ModuleLogger } from '../loggers/module.logger'
-import { FetchUtils } from '../utils/fetch.utils'
+import { FetchError } from '@/classes/fetch.error'
+import { FetchResponse } from '@/classes/fetch.response'
+import { RequestMethod } from '@/definitions/enums'
+import { FetchRequestInit } from '@/definitions/interfaces'
+import { FetchRequestInfo } from '@/definitions/types'
+import { tcp } from '@/functions/tcp'
+import { ModuleLogger } from '@/loggers/module.logger'
+import { toLoggableNativeFetchRequestInit, toNativeFetchRequestInit } from '@/utils/fetch.utils'
 import { Polyfill } from './polyfill'
-import { tcp } from './tcp'
 
 /**
  * A module to use the native fetch in a more fashionable way.
- *
- * Usage:
- *
- * ```typescript
- * import { Fetch, FetchError, FetchResponse, RequestMethod, tcp } from '@queelag/core'
- *
- * interface Book {
- *   title: string
- * }
- *
- * interface GetBookError {
- *   message: string
- * }
- *
- * async function getBooks(): Promise<Book[]> {
- *   let response: FetchResponse<Book[]> | FetchError<GetBookError>
- *
- *   response = await Fetch.get('https://somewhere.com/books')
- *   if (response instanceof Error) {
- *     console.error(response.response.data.message)
- *     return []
- *   }
- *
- *   return response.data
- * }
  *
  * @category Module
  */
@@ -54,8 +29,8 @@ export class Fetch {
     await Polyfill.file()
     await Polyfill.formData()
 
-    ninit = FetchUtils.toNativeRequestInit(init)
-    ModuleLogger.debug('Fetch', 'handle', `The request init has been parsed.`, FetchUtils.toLoggableNativeRequestInit(ninit))
+    ninit = toNativeFetchRequestInit(init)
+    ModuleLogger.debug('Fetch', 'handle', `The request init has been parsed.`, toLoggableNativeFetchRequestInit(ninit))
 
     response = await tcp(async () => new FetchResponse(await fetch(input, ninit)))
     if (response instanceof Error) return FetchError.from(response)

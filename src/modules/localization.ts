@@ -1,16 +1,16 @@
-import { StorageName } from '../definitions/enums'
-import { AnyObject, LocalizationPack } from '../definitions/interfaces'
-import { ModuleLogger } from '../loggers/module.logger'
-import { ObjectUtils } from '../utils/object.utils'
-import { Environment } from './environment'
+import { StorageName } from '@/definitions/enums'
+import { LocalizationPack, LocalizationVariables } from '@/definitions/interfaces'
+import { ModuleLogger } from '@/loggers/module.logger'
+import { getObjectProperty, hasObjectProperty, mergeObjects } from '@/utils/object.utils'
 import { LocalStorage } from './local.storage'
 import { Storage } from './storage'
 
-class _ {
-  /**
-   * An object which contains global injection variables.
-   */
-  inject: AnyObject
+/**
+ * A module to handle simple localization.
+ *
+ * @category Module
+ */
+export class Localization {
   /**
    * A string which determines the current language.
    */
@@ -23,12 +23,16 @@ class _ {
    * A {@link Storage} instance.
    */
   storage: Storage
+  /**
+   * An object which contains global variables.
+   */
+  variables: LocalizationVariables
 
-  constructor() {
-    this.inject = {}
-    this.language = Environment.isWindowDefined ? window.navigator.language.slice(0, 2) : 'en'
-    this.packs = []
-    this.storage = LocalStorage
+  constructor(language: string, packs: LocalizationPack[], variables: LocalizationVariables = {}, storage: Storage = LocalStorage) {
+    this.language = language
+    this.packs = packs
+    this.storage = storage
+    this.variables = variables
   }
 
   async initialize(): Promise<boolean> {
@@ -59,9 +63,9 @@ class _ {
     packs.forEach((v: LocalizationPack) => {
       let potential: LocalizationPack
 
-      potential = this.findPackByLanguage(v.language)
+      potential = this.getPackByLanguage(v.language)
       if (potential.language) {
-        potential.data = ObjectUtils.merge(potential.data, v.data)
+        potential.data = mergeObjects(potential.data, v.data)
         ModuleLogger.debug('Localization', 'add', `The pack data has been merged for the language ${v.language}.`, [potential.data])
 
         return
@@ -75,10 +79,10 @@ class _ {
   /**
    * Returns a localized string.
    */
-  get<T extends object>(path: string, inject?: T): string
-  get<T extends object>(language: string, path: string, inject?: T): string
+  get<T extends object>(path: string, variables?: LocalizationVariables): string
+  get<T extends object>(language: string, path: string, variables: LocalizationVariables): string
   get<T extends object>(...args: any[]): string {
-    let language: string, path: string, inject: T, pack: LocalizationPack, localized: string, matches: RegExpMatchArray | null, source: AnyObject
+    let language: string, path: string, inject: T, pack: LocalizationPack, localized: string, matches: RegExpMatchArray | null, source: Record<string, any>
 
     switch (true) {
       case typeof args[0] === 'string' && typeof args[1] === 'string':
@@ -95,16 +99,16 @@ class _ {
         break
     }
 
-    pack = this.findPackByLanguage(language)
+    pack = this.getPackByLanguage(language)
     if (!pack.language) return path
 
-    localized = ObjectUtils.get(pack.data, path, '')
+    localized = getObjectProperty(pack.data, path, '')
     if (!localized) return path
 
     matches = localized.match(/@([a-zA-Z_]+|->|)+[a-zA-Z]/gm)
     if (!matches) return localized
 
-    source = ObjectUtils.merge(pack.data, this.inject, inject)
+    source = mergeObjects(pack.data, this.variables, inject)
     if (Object.keys(source).length <= 0) return localized
 
     matches
@@ -113,7 +117,7 @@ class _ {
         let key: string, value: string
 
         key = v.slice(1).replace(/->/gm, '.')
-        value = ObjectUtils.get(source, key, v)
+        value = getObjectProperty(source, key, v)
 
         localized = localized.replace(v, value)
       })
@@ -125,41 +129,10 @@ class _ {
    * Checks whether a path is localizable or not.
    */
   has(path: string): boolean {
-    return this.packs.some((v: LocalizationPack) => ObjectUtils.has(v.data, path))
+    return this.packs.some((v: LocalizationPack) => hasObjectProperty(v.data, path))
   }
 
-  findPackByLanguage(language: string): LocalizationPack {
+  getPackByLanguage(language: string): LocalizationPack {
     return this.packs.find((v: LocalizationPack) => v.language === language) || { data: {}, language: '' }
   }
 }
-
-/**
- * A module to handle simple localization.
- *
- * Usage:
- *
- * ```typescript
- * import { Localization } from '@queelag/core'
- *
- * Localization.add(
- *   { data: { 'message': 'Hello __0!' }, language: 'en' },
- *   { data: { 'message': 'Ciao __0!' }, language: 'it' }
- * )
- *
- * console.log(Localization.get('message'))
- * // logs 'Hello __0!'
- *
- * console.log(Localization.get('message', ['John']))
- * // logs 'Hello John!'
- *
- * Localization.language = 'it'
- * console.log(Localization.get('message', ['John']))
- * // logs 'Ciao John!'
- *
- * console.log(Localization.has('message'))
- * // logs true
- * ```
- *
- * @category Module
- */
-export const Localization = new _()

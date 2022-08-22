@@ -1,10 +1,5 @@
-import type { FetchResponse } from '../classes/fetch.response'
+import type { FetchResponse } from '@/classes/fetch.response'
 import type { WriteMode } from './enums'
-import { ID } from './types'
-
-export interface AnyObject {
-  [k: string]: any
-}
 
 export interface APIConfig<T = void> extends FetchRequestInit<T> {
   query?: object | string
@@ -14,18 +9,14 @@ export interface APIConfig<T = void> extends FetchRequestInit<T> {
   }
 }
 
-export interface ConfigurationData {
-  module: {
-    tc: {
-      onCatch: <T extends Error>(error: T, verbose: boolean) => any
-    }
-    tcp: {
-      onCatch: <T extends Error>(error: T, verbose: boolean) => any
-    }
+export interface ConfigurationModule {
+  tc: {
+    onCatch: <T extends Error>(error: T, verbose: boolean) => any
+  }
+  tcp: {
+    onCatch: <T extends Error>(error: T, verbose: boolean) => any
   }
 }
-
-export interface ElementTagNameMap extends HTMLElementTagNameMap, Pick<SVGElementTagNameMap, 'svg'> {}
 
 export interface FetchRequestInit<T = void> extends Omit<RequestInit, 'body'> {
   body?: T
@@ -34,6 +25,11 @@ export interface FetchRequestInit<T = void> extends Omit<RequestInit, 'body'> {
 
 export interface GraphQLAPIConfig<T = void> extends APIConfig<T> {}
 
+export interface GraphQLAPIRequestBody<T = object> {
+  query: string
+  variables?: T
+}
+
 export interface GraphQLAPIResponse<T = any> extends FetchResponse<GraphQLAPIResponseBody<T>> {}
 
 export interface GraphQLAPIResponseBody<T = any> {
@@ -41,12 +37,22 @@ export interface GraphQLAPIResponseBody<T = any> {
   errors?: any[]
 }
 
-export interface HistoryDataValue<T> {
+export interface HistoryData<T extends object = object, U extends object = object> {
   index: number
-  path: keyof T
+  key: keyof T
   size: number
-  store: T
-  versions: any[]
+  target: T
+  versions: U[]
+}
+
+export interface IDGenerateOptions {
+  alphabet?: string
+  blacklist?: string[]
+  prefix?: string
+  random?: (bytes: number) => Uint8Array
+  separator?: string
+  size?: number
+  suffix?: string
 }
 
 export interface LocalizationPack {
@@ -58,27 +64,12 @@ export interface LocalizationPackData {
   [key: string]: string | LocalizationPackData
 }
 
-export interface PrimitiveObject {
-  [k: string]: boolean | null | number | string | undefined
-}
+export interface LocalizationVariables extends Record<number | string, string> {}
 
-export interface StringObject {
-  [k: string]: string
-}
+export interface StorageData extends Record<string, any> {}
 
-export interface Timestamp<T> {
-  create: T
-  delete: T
-  read: T
-  update: T
-}
-
-export interface WithIdentity {
-  id: ID
-}
-
-export interface WithTimestamp<T, K extends keyof Timestamp<T>> {
-  timestamp: Pick<Timestamp<T>, K>
+export interface WithID<T = string> {
+  id: T
 }
 
 export interface WithWriteMode {

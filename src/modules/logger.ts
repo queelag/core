@@ -1,20 +1,9 @@
-import { BooleanValue, LoggerLevel } from '../definitions/enums'
-import { FormDataUtils } from '../utils/form.data.utils'
+import { LoggerLevel, LoggerStatus } from '@/definitions/enums'
+import { convertFormDataToObject } from '@/utils/form.data.utils'
 import { Environment } from './environment'
 
 /**
  * A module to print prettier logs.
- *
- * Usage:
- *
- * ```typescript
- * import { Logger, LoggerLevel } from '@queelag/core'
- *
- * const AppLogger = new Logger('App', LoggerLevel.INFO)
- *
- * AppLogger.debug('context', 'method', 'Something happened.')
- * // logs 'context -> method -> Something happened.'
- * ```
  *
  * @category Module
  */
@@ -28,14 +17,14 @@ export class Logger {
    */
   name: string
   /**
-   * A {@link BooleanValue}.
+   * A {@link LoggerStatus}.
    */
-  status: BooleanValue
+  status: LoggerStatus
 
   constructor(
     name: string,
-    level: LoggerLevel = Logger.getLevelFromEnvironment(name) || (Environment.isProduction ? LoggerLevel.ERROR : LoggerLevel.DEBUG),
-    status: BooleanValue = Logger.getStatusFromEnvironment(name) || (Environment.isTest ? BooleanValue.FALSE : BooleanValue.TRUE)
+    level: LoggerLevel = Logger.getLevelFromEnvironment(name) || (Environment.isProduction ? LoggerLevel.ERROR : LoggerLevel.WARN),
+    status: LoggerStatus = Logger.getStatusFromEnvironment(name) || (Environment.isTest ? LoggerStatus.OFF : LoggerStatus.ON)
   ) {
     this.level = level
     this.name = name
@@ -96,14 +85,14 @@ export class Logger {
    * Disables verbose, debug, info, warn and error logs.
    */
   disable(): void {
-    this.status = BooleanValue.FALSE
+    this.status = LoggerStatus.OFF
   }
 
   /**
    * Enables verbose, debug, info, warn and error logs.
    */
   enable(): void {
-    this.status = BooleanValue.TRUE
+    this.status = LoggerStatus.ON
   }
 
   /** @internal */
@@ -117,7 +106,7 @@ export class Logger {
         .map((v: any) => {
           switch (true) {
             case Environment.isFormDataDefined && v instanceof FormData:
-              return FormDataUtils.toObject(v)
+              return convertFormDataToObject(v)
             default:
               return v
           }
@@ -150,21 +139,21 @@ export class Logger {
     return value as LoggerLevel
   }
 
-  static getStatusFromEnvironment(name: string): BooleanValue | undefined {
+  static getStatusFromEnvironment(name: string): LoggerStatus | undefined {
     let value: string
 
     value = Environment.get(`LOGGER_${name}_STATUS`)
-    if (!Object.keys(BooleanValue).includes(value)) return
+    if (!Object.keys(LoggerStatus).includes(value)) return
 
-    return value as BooleanValue
+    return value as LoggerStatus
   }
 
   get isDisabled(): boolean {
-    return this.status === BooleanValue.FALSE
+    return this.status === LoggerStatus.OFF
   }
 
   get isEnabled(): boolean {
-    return this.status === BooleanValue.TRUE
+    return this.status === LoggerStatus.ON
   }
 
   get isLevelVerboseDisabled(): boolean {

@@ -1,20 +1,7 @@
-import { ModuleLogger } from '../loggers/module.logger'
+import { ModuleLogger } from '@/loggers/module.logger'
 
 /**
  * A module to safely handle timeouts.
- *
- * Usage:
- *
- * ```typescript
- * import { Timeout } from '@queelag/core'
- *
- * Timeout.set('DELAYED_OPERATION', () => {
- *   // do something
- * }, 1000)
- *
- * Timeout.clear('DELAYED_OPERATION')
- * // or maybe do not
- * ```
  *
  * @category Module
  */

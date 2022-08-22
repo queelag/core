@@ -1,22 +1,7 @@
-import { ModuleLogger } from '../loggers/module.logger'
+import { ModuleLogger } from '@/loggers/module.logger'
 
 /**
  * A module to safely handle intervals with a name.
- *
- * Usage:
- *
- * ```typescript
- * import { Interval } from '@queelag/core'
- *
- * Interval.start('ACTIVITY', () => {
- *   // do something
- * }, 5000)
- *
- * console.log(Interval.isRunning('ACTIVITY'))
- * // logs true
- *
- * setTimeout(() => Interval.stop('ACTIVITY'), 10000)
- * ```
  *
  * @category Module
  */

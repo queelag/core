@@ -1,18 +1,8 @@
-import { noop } from './noop'
-import { tc } from './tc'
+import { noop } from '@/functions/noop'
+import { tc } from '@/functions/tc'
 
 /**
  * A module to handle environment conditions.
- *
- * Usage:
- *
- * ```typescript
- *   import { Environment } from '@queelag/core'
- *
- *   if (Environment.isProduction) {
- *     console.log('You are on production.')
- *   }
- * ```
  *
  * @category Module
  */

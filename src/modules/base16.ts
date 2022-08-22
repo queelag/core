@@ -7,16 +7,16 @@ import { base16 } from 'rfc4648'
  */
 export class Base16 {
   /**
-   * Decodes a base16 string to an Uint8Array.
+   * Decodes a base16 string to a Uint8Array.
    */
   static decode(string: string): Uint8Array {
     return base16.parse(string)
   }
 
   /**
-   * Encodes an array buffer to a base16 string.
+   * Encodes a Uint8Array to a base16 string.
    */
-  static encode(buffer: ArrayBuffer): string {
-    return base16.stringify(buffer instanceof Uint8Array ? buffer : new Uint8Array(buffer))
+  static encode(array: Uint8Array): string {
+    return base16.stringify(array)
   }
 }

@@ -1,48 +1,11 @@
+import { rc } from '@/functions/rc'
+import { tc } from '@/functions/tc'
+import { ModuleLogger } from '@/loggers/module.logger'
+import { Environment } from '@/modules/environment'
 import { CookieSerializeOptions, parse, serialize } from 'cookie'
-import { AnyObject, StringObject } from '../definitions/interfaces'
-import { ModuleLogger } from '../loggers/module.logger'
-import { Environment } from '../modules/environment'
-import { rc } from './rc'
-import { tc } from './tc'
 
 /**
  * A module to handle cookies through a store.
- *
- * Usage:
- *
- * ```typescript
- * import { Cookie } from '@queelag/core'
- *
- * interface AuthData {
- *   token: string
- * }
- *
- * class AuthStore {
- *   data: AuthData
- *
- *   constructor() {
- *     this.data = { token: '' }
- *     Cookie.get(this.name, this.data)
- *   }
- *
- *   login(): void {
- *     let response: string
- *
- *     response = 'token'
- *     this.token = response
- *
- *     Cookie.set(this.name, this.data, ['token'], { secure: true })
- *   }
- *
- *   logout(): void {
- *     Cookie.remove(this.name, this.data)
- *   }
- *
- *   get name(): string {
- *     return 'auth'
- *   }
- * }
- * ```
  *
  * @category Module
  */

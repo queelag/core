@@ -1,14 +1,14 @@
-export enum BooleanValue {
-  FALSE = 'FALSE',
-  TRUE = 'TRUE'
-}
-
 export enum LoggerLevel {
   VERBOSE = 'VERBOSE',
   DEBUG = 'DEBUG',
   INFO = 'INFO',
   WARN = 'WARN',
   ERROR = 'ERROR'
+}
+
+export enum LoggerStatus {
+  OFF = 'OFF',
+  ON = 'ON'
 }
 
 export enum LoggerName {

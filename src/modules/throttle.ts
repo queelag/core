@@ -1,18 +1,7 @@
-import { tc } from './tc'
+import { tc } from '@/functions/tc'
 
 /**
  * A module to handle functions throttling.
- *
- * Usage:
- *
- * ```typescript
- * import { Throttle } from '@queelag/core'
- *
- * window.addEventListener('scroll', () => Throttle.handle('WINDOW_SCROLL', () => {
- *   // do something
- * }, 250))
- * // now the scroll listener will only be called if 250 milliseconds have passed since its last execution
- * ```
  *
  * @category Module
  */

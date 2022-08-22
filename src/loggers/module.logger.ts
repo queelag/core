@@ -1,4 +1,4 @@
-import { LoggerName } from '../definitions/enums'
-import { Logger } from '../modules/logger'
+import { LoggerName } from '@/definitions/enums'
+import { Logger } from '@/modules/logger'
 
-export const ModuleLogger = new Logger(LoggerName.MODULE)
+export const ModuleLogger: Logger = new Logger(LoggerName.MODULE)

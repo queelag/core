@@ -1,6 +1,6 @@
-import { AnyObject } from '../definitions/interfaces'
-import { ModuleLogger } from '../loggers/module.logger'
-import { tcp } from './tcp'
+import { StorageData } from '@/definitions/interfaces'
+import { tcp } from '@/functions/tcp'
+import { ModuleLogger } from '@/loggers/module.logger'
 
 /**
  * A module to handle any storage operations through a store.
@@ -12,7 +12,7 @@ export class Storage {
 
   constructor(
     name: string,
-    get: <T extends AnyObject>(key: string) => Promise<T>,
+    get: <T extends StorageData>(key: string) => Promise<T>,
     remove: (key: string) => Promise<void>,
     set: (key: string, value: string) => Promise<void>
   ) {
@@ -26,11 +26,11 @@ export class Storage {
   /**
    * Sets a value for each key in keys from the local storage.
    *
-   * @template T The store interface which extends {@link AnyObject}.
+   * @template T The store interface which extends {@link StorageData}.
    */
-  async get<T extends AnyObject>(key: string): Promise<T | Error>
-  async get<T extends AnyObject, U extends keyof T>(name: string, store: T, keys?: U[]): Promise<Pick<T, U> | Error>
-  async get<T extends AnyObject>(...args: any[]): Promise<T | Error> {
+  async get<T extends StorageData>(key: string): Promise<T | Error>
+  async get<T extends StorageData, U extends keyof T>(name: string, store: T, keys?: U[]): Promise<Pick<T, U> | Error>
+  async get<T extends StorageData>(...args: any[]): Promise<T | Error> {
     let name: string, store: T, keys: (keyof T)[], item: T | Error, value: string
 
     name = args[0]
@@ -56,12 +56,12 @@ export class Storage {
   /**
    * Removes each key in keys.
    *
-   * @template T The store interface which extends {@link AnyObject}.
+   * @template T The store interface which extends {@link StorageData}.
    */
-  async remove<T extends AnyObject>(key: string): Promise<void | Error>
-  async remove<T extends AnyObject>(name: string, store: T, keys?: (keyof T)[]): Promise<void | Error>
-  async remove<T extends AnyObject>(...args: any[]): Promise<void | Error> {
-    let name: string, store: T, keys: (keyof T)[], item: AnyObject | Error, set: void | Error
+  async remove<T extends StorageData>(key: string): Promise<void | Error>
+  async remove<T extends StorageData>(name: string, store: T, keys?: (keyof T)[]): Promise<void | Error>
+  async remove<T extends StorageData>(...args: any[]): Promise<void | Error> {
+    let name: string, store: T, keys: (keyof T)[], item: StorageData | Error, set: void | Error
 
     name = args[0]
     store = args[1] || {}
@@ -95,11 +95,11 @@ export class Storage {
   /**
    * Sets a stringified JSON for each key in keys.
    *
-   * @template T The store interface which extends {@link AnyObject}.
+   * @template T The store interface which extends {@link StorageData}.
    */
-  async set<T extends AnyObject>(key: string): Promise<void | Error>
-  async set<T extends AnyObject>(name: string, store: T, keys?: (keyof T)[]): Promise<void | Error>
-  async set<T extends AnyObject>(...args: any[]): Promise<void | Error> {
+  async set<T extends StorageData>(key: string): Promise<void | Error>
+  async set<T extends StorageData>(name: string, store: T, keys?: (keyof T)[]): Promise<void | Error>
+  async set<T extends StorageData>(...args: any[]): Promise<void | Error> {
     let name: string, store: T, keys: (keyof T)[], item: T | Error, set: void | Error
 
     name = args[0]
@@ -121,7 +121,7 @@ export class Storage {
   }
 
   /** @hidden */
-  private async _get<T extends AnyObject>(key: string): Promise<T> {
+  private async _get<T extends StorageData>(key: string): Promise<T> {
     return {} as T
   }
 

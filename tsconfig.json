@@ -10,6 +10,14 @@
     "module": "ESNext",
     "moduleResolution": "node",
     "outDir": "dist",
+    "paths": {
+      "@/classes/*": ["src/classes/*"],
+      "@/definitions/*": ["src/definitions/*"],
+      "@/functions/*": ["src/functions/*"],
+      "@/loggers/*": ["src/loggers/*"],
+      "@/modules/*": ["src/modules/*"],
+      "@/utils/*": ["src/utils/*"]
+    },
     "resolveJsonModule": true,
     "strict": true,
     "target": "ESNext"

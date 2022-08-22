@@ -1,8 +1,8 @@
-import { ID, WebSocketEventData } from '../definitions/types'
-import { ModuleLogger } from '../loggers/module.logger'
-import { StringUtils } from '../utils/string.utils'
-import { noop } from './noop'
-import { tc } from './tc'
+import { WebSocketEventData } from '@/definitions/types'
+import { noop } from '@/functions/noop'
+import { tc } from '@/functions/tc'
+import { ModuleLogger } from '@/loggers/module.logger'
+import { isStringJSON } from '@/utils/string.utils'
 
 /**
  * A module to handle in an easier way web sockets.
@@ -173,7 +173,7 @@ class _ {
     return this._onOpen
   }
 
-  get id(): ID {
+  get id(): string {
     return 'WEB_SOCKET_' + this.name
   }
 
@@ -230,7 +230,7 @@ class _ {
       ModuleLogger.debug(this.id, 'onMessage', `The web socket received a message.`, event)
 
       switch (true) {
-        case StringUtils.isJSON(event.data):
+        case isStringJSON(event.data):
           event = { ...event, data: JSON.parse(event.data) }
           ModuleLogger.debug(this.id, 'onMessage', `The message has been JSON parsed.`, event.data)
 

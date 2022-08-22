@@ -1,16 +1,6 @@
 /**
- * Utils for anything related to dates.
- *
- * @category Utility
+ * Returns the stored time value in milliseconds since midnight, January 1, 1970 UTC.
  */
-export class DateUtils {
-  /** @hidden */
-  constructor() {}
-
-  /**
-   * Converts any parsable value by Date to milliseconds.
-   */
-  static toMilliseconds(value: any): number {
-    return new Date(value).valueOf()
-  }
+export function getDateInMilliseconds(date: string | number | Date): number {
+  return new Date(date).valueOf()
 }
