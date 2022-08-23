@@ -1,4 +1,4 @@
-import type { FetchResponse } from '@/classes/fetch.response'
+import type { FetchResponse } from '../classes/fetch.response'
 import type { WriteMode } from './enums'
 
 export interface APIConfig<T = void> extends FetchRequestInit<T> {
@@ -8,6 +8,9 @@ export interface APIConfig<T = void> extends FetchRequestInit<T> {
     whitelist?: string[]
   }
 }
+
+export interface CookieObject extends Record<string, string> {}
+export interface CookieValue extends Record<PropertyKey, any> {}
 
 export interface ConfigurationModule {
   tc: {
@@ -37,12 +40,14 @@ export interface GraphQLAPIResponseBody<T = any> {
   errors?: any[]
 }
 
-export interface HistoryData<T extends object = object, U extends object = object> {
+export interface HistoryDataTarget extends Record<PropertyKey, any> {}
+
+export interface HistoryData<T extends HistoryDataTarget = HistoryDataTarget, K extends keyof T = keyof T> {
   index: number
   key: keyof T
   size: number
   target: T
-  versions: U[]
+  versions: T[K][]
 }
 
 export interface IDGenerateOptions {
@@ -66,7 +71,8 @@ export interface LocalizationPackData {
 
 export interface LocalizationVariables extends Record<number | string, string> {}
 
-export interface StorageData extends Record<string, any> {}
+export interface StorageTarget extends Record<PropertyKey, any> {}
+export interface StorageValue extends Record<PropertyKey, any> {}
 
 export interface WithID<T = string> {
   id: T

@@ -1,21 +1,21 @@
-import { DEFAULT_HISTORY_DATA } from '@/definitions/constants'
-import { HistoryData } from '@/definitions/interfaces'
-import { ModuleLogger } from '@/loggers/module.logger'
-import { cloneObject } from '@/utils/object.utils'
+import { DEFAULT_HISTORY_DATA } from '../definitions/constants'
+import { HistoryData, HistoryDataTarget } from '../definitions/interfaces'
+import { ModuleLogger } from '../loggers/module.logger'
+import { cloneObject } from '../utils/object.utils'
 
 /**
  * A module to handle history changes.
  *
  * @category Module
  */
-export class History<T extends object = object, U extends object = object> {
-  data: HistoryData<T, U>
+export class History<T extends HistoryDataTarget = HistoryDataTarget> {
+  data: HistoryData<T>
 
   constructor(key: keyof T, target: T) {
     this.data = DEFAULT_HISTORY_DATA()
     this.data.key = key
     this.data.target = target
-    this.data.versions.push(cloneObject(this.data.target[this.data.key] as any))
+    this.data.versions.push(cloneObject(this.data.target[this.data.key]))
   }
 
   redo(): void {
@@ -40,13 +40,13 @@ export class History<T extends object = object, U extends object = object> {
       ModuleLogger.debug('History', 'push', `The value versions have been reset.`)
     }
 
-    this.data.versions = [...this.data.versions, cloneObject(this.data.target[this.data.key] as any)].slice(0, this.data.size)
+    this.data.versions = [...this.data.versions, cloneObject(this.data.target[this.data.key])].slice(0, this.data.size)
     this.data.index = this.data.versions.length - 1
   }
 
   private setIndex(offset: number): void {
     this.data.index = this.data.index + offset
-    this.data.target[this.data.key] = cloneObject(this.data.versions[this.data.index]) as any
+    this.data.target[this.data.key] = cloneObject(this.data.versions[this.data.index])
   }
 
   get isRedoable(): boolean {

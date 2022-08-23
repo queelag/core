@@ -1,4 +1,4 @@
-import { tc } from '@/functions/tc'
+import { tc } from '../functions/tc'
 
 /**
  * Capitalizes the first letter in a string, if lowercase is set to true the other characters will be lowercased.

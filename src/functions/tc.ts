@@ -1,4 +1,4 @@
-import { Configuration } from '@/modules/configuration'
+import { Configuration } from '../modules/configuration'
 
 /**
  * Try catches a fn, returning both T and U.
@@ -14,7 +14,7 @@ export function tc<T, U extends Error = Error>(fn: () => T, verbose: boolean = t
       console.error(error)
     }
 
-    Configuration.data.module.tc.onCatch<U>(error, verbose)
+    Configuration.module.tc.onCatch<U>(error, verbose)
 
     return error
   }

@@ -1,4 +1,4 @@
-import { ModuleLogger } from '@/loggers/module.logger'
+import { ModuleLogger } from '../loggers/module.logger'
 
 /**
  * A module to safely handle timeouts.

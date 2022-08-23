@@ -1,7 +1,7 @@
-import { FetchError } from '@/classes/fetch.error'
-import { FetchResponse } from '@/classes/fetch.response'
-import { RequestMethod } from '@/definitions/enums'
-import { GraphQLAPIConfig, GraphQLAPIRequestBody } from '@/definitions/interfaces'
+import { FetchError } from '../classes/fetch.error'
+import { FetchResponse } from '../classes/fetch.response'
+import { RequestMethod } from '../definitions/enums'
+import { GraphQLAPIConfig, GraphQLAPIRequestBody } from '../definitions/interfaces'
 import { API } from './api'
 import { Status } from './status'
 

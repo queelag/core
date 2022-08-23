@@ -1,7 +1,7 @@
-import { tc } from '@/functions/tc'
-import { Environment } from '@/modules/environment'
 import cloneDeep from 'lodash/cloneDeep'
 import merge from 'lodash/merge'
+import { tc } from '../functions/tc'
+import { Environment } from '../modules/environment'
 
 /**
  * Clones an object.

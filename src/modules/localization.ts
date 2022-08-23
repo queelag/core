@@ -1,7 +1,7 @@
-import { StorageName } from '@/definitions/enums'
-import { LocalizationPack, LocalizationVariables } from '@/definitions/interfaces'
-import { ModuleLogger } from '@/loggers/module.logger'
-import { getObjectProperty, hasObjectProperty, mergeObjects } from '@/utils/object.utils'
+import { StorageName } from '../definitions/enums'
+import { LocalizationPack, LocalizationVariables } from '../definitions/interfaces'
+import { ModuleLogger } from '../loggers/module.logger'
+import { getObjectProperty, hasObjectProperty, mergeObjects } from '../utils/object.utils'
 import { LocalStorage } from './local.storage'
 import { Storage } from './storage'
 
@@ -36,9 +36,9 @@ export class Localization {
   }
 
   async initialize(): Promise<boolean> {
-    let storage: Pick<this, 'language'> | Error
+    let storage: void | Error
 
-    storage = await this.storage.get(StorageName.LOCALIZATION, this, ['language'])
+    storage = await this.storage.synchronize(StorageName.LOCALIZATION, this, ['language'])
     if (storage instanceof Error) return false
 
     return true

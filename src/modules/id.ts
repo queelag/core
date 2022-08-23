@@ -1,6 +1,6 @@
-import { ALPHABET_ALPHANUMERIC } from '@/definitions/constants'
-import { IDGenerateOptions } from '@/definitions/interfaces'
 import { customRandom, random } from 'nanoid'
+import { ALPHABET_ALPHANUMERIC } from '../definitions/constants'
+import { IDGenerateOptions } from '../definitions/interfaces'
 
 export class ID {
   static alphabet: string = ALPHABET_ALPHANUMERIC

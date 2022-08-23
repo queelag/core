@@ -1,4 +1,4 @@
-import { noop } from '@/functions/noop'
+import { noop } from '../functions/noop'
 import { ConfigurationModule, HistoryData } from './interfaces'
 
 export const ALPHABET_LOWERCASE: string = 'abcdefghijklmnopqrstuvwxyz'

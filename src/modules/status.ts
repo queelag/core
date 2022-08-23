@@ -1,5 +1,5 @@
-import { StatusTransformer } from '@/definitions/types'
-import { ModuleLogger } from '@/loggers/module.logger'
+import { StatusTransformer } from '../definitions/types'
+import { ModuleLogger } from '../loggers/module.logger'
 
 /**
  * A module to keep track of status changes.

@@ -1,5 +1,5 @@
-import { UtilLogger } from '@/loggers/util.logger'
-import { Cache } from '@/modules/cache'
+import { UtilLogger } from '../loggers/util.logger'
+import { Cache } from '../modules/cache'
 
 /**
  * Utils for anything related to images.

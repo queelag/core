@@ -1,4 +1,4 @@
-import { tc } from '@/functions/tc'
+import { tc } from '../functions/tc'
 
 /**
  * A module to handle functions throttling.

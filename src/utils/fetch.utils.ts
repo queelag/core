@@ -1,6 +1,6 @@
-import { FetchRequestInit } from '@/definitions/interfaces'
-import { Environment } from '@/modules/environment'
-import { convertFormDataToObject } from '@/utils/form.data.utils'
+import { FetchRequestInit } from '../definitions/interfaces'
+import { Environment } from '../modules/environment'
+import { convertFormDataToObject } from '../utils/form.data.utils'
 import { cloneObject, mergeObjects, omitObjectProperties } from './object.utils'
 import { isStringJSON } from './string.utils'
 

@@ -1,5 +1,5 @@
-import { LoggerLevel, LoggerStatus } from '@/definitions/enums'
-import { convertFormDataToObject } from '@/utils/form.data.utils'
+import { LoggerLevel, LoggerStatus } from '../definitions/enums'
+import { convertFormDataToObject } from '../utils/form.data.utils'
 import { Environment } from './environment'
 
 /**

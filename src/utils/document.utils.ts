@@ -1,4 +1,4 @@
-import { Environment } from '@/modules/environment'
+import { Environment } from '../modules/environment'
 
 /**
  * Creates a K element if the DOM is available otherwise an empty object is returned.

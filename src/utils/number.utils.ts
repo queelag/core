@@ -1,4 +1,4 @@
-import { tc } from '@/functions/tc'
+import { tc } from '../functions/tc'
 
 /**
  * Returns an always positive number.

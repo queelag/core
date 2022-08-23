@@ -1,5 +1,5 @@
-import { noop } from '@/functions/noop'
-import { tc } from '@/functions/tc'
+import { noop } from '../functions/noop'
+import { tc } from '../functions/tc'
 
 /**
  * A module to handle environment conditions.

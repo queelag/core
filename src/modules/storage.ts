@@ -1,6 +1,7 @@
-import { StorageData } from '@/definitions/interfaces'
-import { tcp } from '@/functions/tcp'
-import { ModuleLogger } from '@/loggers/module.logger'
+import { StorageTarget, StorageValue } from '../definitions/interfaces'
+import { tcp } from '../functions/tcp'
+import { ModuleLogger } from '../loggers/module.logger'
+import { pickObjectProperties } from '../utils/object.utils'
 
 /**
  * A module to handle any storage operations through a store.
@@ -12,9 +13,9 @@ export class Storage {
 
   constructor(
     name: string,
-    get: <T extends StorageData>(key: string) => Promise<T>,
+    get: <T extends StorageValue>(key: string) => Promise<T>,
     remove: (key: string) => Promise<void>,
-    set: (key: string, value: string) => Promise<void>
+    set: <T extends StorageValue>(key: string, value: T) => Promise<void>
   ) {
     this.name = name
 
@@ -24,104 +25,110 @@ export class Storage {
   }
 
   /**
-   * Sets a value for each key in keys from the local storage.
+   * Gets an item.
    *
-   * @template T The store interface which extends {@link StorageData}.
+   * @template T The value interface which extends {@link StorageValue}.
    */
-  async get<T extends StorageData>(key: string): Promise<T | Error>
-  async get<T extends StorageData, U extends keyof T>(name: string, store: T, keys?: U[]): Promise<Pick<T, U> | Error>
-  async get<T extends StorageData>(...args: any[]): Promise<T | Error> {
-    let name: string, store: T, keys: (keyof T)[], item: T | Error, value: string
+  async get<T extends StorageValue>(key: string): Promise<T | Error> {
+    let value: T | Error
 
-    name = args[0]
-    store = args[1] || {}
-    keys = args[2] || Object.keys(store)
+    value = await tcp(async () => this._get(key))
+    if (value instanceof Error) return value
 
-    item = await tcp(async () => this._get(name))
-    if (item instanceof Error) return item
+    ModuleLogger.debug(this.name, 'get', `The value ${key} has been retrieved.`, value)
 
-    ModuleLogger.debug(this.name, 'get', `The item has been parsed as JSON.`, item)
-
-    keys.forEach((k: keyof T) => {
-      value = (item as T)[k]
-      if (!Object.keys(item).includes(k.toString())) return ModuleLogger.debug(this.name, 'get', `The JSON does not contain the key ${k}.`, item)
-
-      store[k] = value as any
-      ModuleLogger.debug(this.name, 'get', `The key ${k} has been set.`, value)
-    })
-
-    return item
+    return value
   }
 
   /**
-   * Removes each key in keys.
+   * Removes an item, if keys are defined it will only remove those keys of the item.
    *
-   * @template T The store interface which extends {@link StorageData}.
+   * @template T The store interface which extends {@link StorageValue}.
    */
-  async remove<T extends StorageData>(key: string): Promise<void | Error>
-  async remove<T extends StorageData>(name: string, store: T, keys?: (keyof T)[]): Promise<void | Error>
-  async remove<T extends StorageData>(...args: any[]): Promise<void | Error> {
-    let name: string, store: T, keys: (keyof T)[], item: StorageData | Error, set: void | Error
+  async remove<T extends StorageValue, K extends keyof T = keyof T>(key: string, keys?: K[]): Promise<void | Error> {
+    let value: T | Error, set: void | Error
 
-    name = args[0]
-    store = args[1] || {}
-    keys = args[2] || Object.keys(store)
-
-    if (keys.length === Object.keys(store).length) {
+    if (typeof keys === 'undefined') {
       let removed: void | Error
 
-      removed = await tcp(() => this._remove(name))
+      removed = await tcp(() => this._remove(key))
       if (removed instanceof Error) return removed
+
+      ModuleLogger.debug(this.name, 'remove', `The value ${key} has been removed.`)
 
       return
     }
 
-    item = await tcp(async () => this._get(name))
-    if (item instanceof Error) return item
+    value = await tcp(async () => this._get(key))
+    if (value instanceof Error) return value
 
-    ModuleLogger.debug(this.name, 'remove', `The item has been parsed as JSON.`, item)
+    for (let k of keys) {
+      delete value[k]
+      ModuleLogger.debug(this.name, 'remove', `The key ${String(k)} has been removed from the value ${key}.`, keys)
+    }
 
-    keys.forEach((k: keyof T) => {
-      delete store[k]
-      ModuleLogger.debug(this.name, 'remove', `The key ${k} has been removed.`)
-    })
-
-    set = await tcp(() => this._set(name, JSON.stringify(item)))
+    set = await tcp(() => this._set(key, value))
     if (set instanceof Error) return set
+
+    ModuleLogger.debug(this.name, 'remove', `The value ${key} has been set.`)
 
     return
   }
 
   /**
-   * Sets a stringified JSON for each key in keys.
+   * Sets an item.
    *
-   * @template T The store interface which extends {@link StorageData}.
+   * @template T The store interface which extends {@link StorageValue}.
    */
-  async set<T extends StorageData>(key: string): Promise<void | Error>
-  async set<T extends StorageData>(name: string, store: T, keys?: (keyof T)[]): Promise<void | Error>
-  async set<T extends StorageData>(...args: any[]): Promise<void | Error> {
-    let name: string, store: T, keys: (keyof T)[], item: T | Error, set: void | Error
+  async set<T extends StorageValue, K extends keyof T>(key: string, value: T, keys?: K[]): Promise<void | Error> {
+    let picked: Pick<T, K> | Error, set: void | Error
 
-    name = args[0]
-    store = args[1] || {}
-    keys = args[2] || Object.keys(store)
+    if (keys) {
+      picked = await tcp(async () => this._get(key))
+      if (value instanceof Error) return value
 
-    item = await tcp(async () => this._get(name))
-    if (item instanceof Error) return item
+      picked = pickObjectProperties(value, keys)
+      ModuleLogger.debug(this.name, 'set', `The keys not in keys have been omitted from the value ${key}.`, keys)
+    }
 
-    keys.forEach((k: keyof T) => {
-      ;(item as T)[k] = store[k]
-      ModuleLogger.debug(this.name, 'set', `The key ${k} has been set.`, store[k])
-    })
-
-    set = await tcp(() => this._set(name, JSON.stringify(item)))
+    set = await tcp(() => this._set(key, picked || value))
     if (set instanceof Error) return set
+
+    ModuleLogger.debug(this.name, 'set', `The value ${key} has been set.`, value)
+
+    return
+  }
+
+  /**
+   * Synchronizes an item to a target property.
+   *
+   * @template T The store interface which extends {@link StorageValue}.
+   */
+  async synchronize<T extends StorageValue, K extends keyof T, U extends StorageTarget>(key: string, target: U, keys?: K[]): Promise<void | Error> {
+    let value: T | Error
+
+    value = await tcp(async () => this._get(key))
+    if (value instanceof Error) return value
+
+    ModuleLogger.debug(this.name, 'get', `The value ${key} has been retrieved.`, value)
+
+    if (typeof keys === 'undefined') {
+      for (let k in value) {
+        target[k] = value[k]
+      }
+
+      return
+    }
+
+    for (let k of keys) {
+      target[k] = value[k]
+    }
 
     return
   }
 
   /** @hidden */
-  private async _get<T extends StorageData>(key: string): Promise<T> {
+  private async _get<T extends StorageValue>(key: string): Promise<T> {
     return {} as T
   }
 
@@ -129,5 +136,5 @@ export class Storage {
   private async _remove(key: string): Promise<void> {}
 
   /** @hidden */
-  private async _set(key: string, value: string): Promise<void> {}
+  private async _set<T extends StorageValue>(key: string, value: T): Promise<void> {}
 }
