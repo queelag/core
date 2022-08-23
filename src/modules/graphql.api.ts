@@ -1,7 +1,7 @@
 import { FetchError } from '../classes/fetch.error'
 import { FetchResponse } from '../classes/fetch.response'
 import { RequestMethod } from '../definitions/enums'
-import { GraphQLAPIConfig, GraphQLAPIRequestBody } from '../definitions/interfaces'
+import { GraphQLAPIConfig, GraphQLAPIRequestBody, GraphQLAPIResponse } from '../definitions/interfaces'
 import { API } from './api'
 import { Status } from './status'
 
@@ -38,7 +38,7 @@ export class GraphQLAPI<T extends GraphQLAPIConfig = GraphQLAPIConfig, U = undef
    * @template V The response data interface.
    * @template W The error data interface, defaults to U.
    */
-  async mutation<V, W, X = U>(mutation: string, variables?: W, config?: T): Promise<FetchResponse<V> | FetchError<X>> {
+  async mutation<V, W extends object, X = U>(mutation: string, variables?: W, config?: T): Promise<GraphQLAPIResponse<V> | FetchError<X>> {
     return this.post(mutation, variables, config)
   }
 
@@ -48,7 +48,7 @@ export class GraphQLAPI<T extends GraphQLAPIConfig = GraphQLAPIConfig, U = undef
    * @template V The response data interface.
    * @template W The error data interface, defaults to U.
    */
-  async query<V, W, X = U>(query: string, variables?: W, config?: T): Promise<FetchResponse<V> | FetchError<X>> {
+  async query<V, W extends object, X = U>(query: string, variables?: W, config?: T): Promise<GraphQLAPIResponse<V> | FetchError<X>> {
     return this.post(query, variables, config)
   }
 }

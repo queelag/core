@@ -6,15 +6,15 @@ import { Configuration } from '../modules/configuration'
  * @template T The return interface or type.
  * @template U The error interface which extends Error.
  */
-export async function tcp<T, U extends Error = Error>(fn: () => Promise<T>, verbose: boolean = true): Promise<T | U> {
+export async function tcp<T, U extends Error = Error>(fn: () => Promise<T>, log: boolean = Configuration.module.tcp.log): Promise<T | U> {
   try {
     return await fn()
   } catch (error: any) {
-    if (verbose) {
+    if (log) {
       console.error(error)
     }
 
-    Configuration.module.tcp.onCatch<U>(error, verbose)
+    Configuration.module.tcp.onCatch<U>(error, log)
 
     return error
   }

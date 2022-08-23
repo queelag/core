@@ -6,15 +6,15 @@ import { Configuration } from '../modules/configuration'
  * @template T The return interface or type.
  * @template U The error interface which extends Error.
  */
-export function tc<T, U extends Error = Error>(fn: () => T, verbose: boolean = true): T | U {
+export function tc<T, U extends Error = Error>(fn: () => T, log: boolean = Configuration.module.tc.log): T | U {
   try {
     return fn()
   } catch (error: any) {
-    if (verbose) {
+    if (log) {
       console.error(error)
     }
 
-    Configuration.module.tc.onCatch<U>(error, verbose)
+    Configuration.module.tc.onCatch<U>(error, log)
 
     return error
   }

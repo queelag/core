@@ -8,7 +8,7 @@ export class ID {
   static separator: string = '_'
   static size: number = 32
 
-  static generate(options: IDGenerateOptions): string {
+  static generate(options: IDGenerateOptions = {}): string {
     let alphabet: string, blacklist: string[], random: (bytes: number) => Uint8Array, separator: string, size: number, id: string
 
     blacklist = options.blacklist || []
@@ -18,7 +18,7 @@ export class ID {
     size = options.size || ID.size
 
     while (true) {
-      id = [options.prefix, customRandom(alphabet, size, random), options.suffix].filter(Boolean).join(options.separator || '_')
+      id = [options.prefix, customRandom(alphabet, size, random)(), options.suffix].filter(Boolean).join(options.separator || '_')
       if (!blacklist.includes(id)) break
     }
 

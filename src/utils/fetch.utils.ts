@@ -1,7 +1,7 @@
 import { FetchRequestInit } from '../definitions/interfaces'
 import { Environment } from '../modules/environment'
 import { convertFormDataToObject } from '../utils/form.data.utils'
-import { cloneObject, mergeObjects, omitObjectProperties } from './object.utils'
+import { cloneDeepObject, mergeObjects, omitObjectProperties } from './object.utils'
 import { isStringJSON } from './string.utils'
 
 export function setFetchRequestInitHeader<T extends unknown>(init: FetchRequestInit<T> | RequestInit, name: string, value: string): void {
@@ -35,7 +35,7 @@ export function mergeFetchRequestInits<V extends unknown>(target: FetchRequestIn
   let merged: FetchRequestInit<V>
 
   merged = mergeObjects(target, ...sources)
-  merged.headers = target.headers ? cloneObject(target.headers) : new Headers()
+  merged.headers = target.headers ? cloneDeepObject(target.headers) : new Headers()
 
   sources.forEach((v: FetchRequestInit<V>) => {
     switch (typeof v.headers?.entries) {

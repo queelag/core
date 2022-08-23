@@ -7,7 +7,7 @@ import { ModuleLogger } from '../loggers/module.logger'
  */
 export class Debounce {
   /** @internal */
-  private static data: Map<string, NodeJS.Timeout | number> = new Map()
+  private static data: Map<Function, NodeJS.Timeout | number> = new Map()
 
   /** @hidden */
   constructor() {}
@@ -15,11 +15,11 @@ export class Debounce {
   /**
    * Lets fn run only if it hasn't be called again for ms time.
    */
-  static handle(name: string, fn: () => any, ms: number): void {
-    clearTimeout(this.data.get(name) as any)
-    ModuleLogger.verbose('Debounce', 'handle', `The timeout with name ${name} has been cleared.`)
+  static handle(fn: () => any, ms: number): void {
+    clearTimeout(this.data.get(fn) as any)
+    ModuleLogger.verbose('Debounce', 'handle', `The timeout has been cleared.`, fn)
 
-    this.data.set(name, setTimeout(fn, ms))
-    ModuleLogger.verbose('Debounce', 'handle', `The timeout with name ${name} has been set.`)
+    this.data.set(fn, setTimeout(fn, ms))
+    ModuleLogger.verbose('Debounce', 'handle', `The timeout has been set.`, fn)
   }
 }

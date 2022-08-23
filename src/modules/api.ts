@@ -1,11 +1,12 @@
 import { FetchError } from '../classes/fetch.error'
 import { FetchResponse } from '../classes/fetch.response'
+import { DEFAULT_API_STATUS_TRANSFORMER, EMPTY_OBJECT } from '../definitions/constants'
 import { RequestMethod, WriteMode } from '../definitions/enums'
 import { APIConfig } from '../definitions/interfaces'
 import { rc } from '../functions/rc'
 import { mergeFetchRequestInits } from '../utils/fetch.utils'
 import { convertQueryParametersObjectToString } from '../utils/query.parameters.utils'
-import { appendSearchParamsToURL, concatURL, removeSearchParamsFromURL } from '../utils/url.utils'
+import { appendSearchParamsToURL, concatURL } from '../utils/url.utils'
 import { Fetch } from './fetch'
 import { Polyfill } from './polyfill'
 import { Status } from './status'
@@ -35,10 +36,52 @@ export class API<T extends APIConfig = APIConfig, U = undefined> {
    * @template T The configuration interface which extends the {@link APIConfig} one.
    * @template U The default Error interface.
    */
-  constructor(baseURL: string = '', config: T = API.DUMMY_CONFIG) {
+  constructor(baseURL: string = '', config: T = EMPTY_OBJECT()) {
     this.baseURL = baseURL
     this.config = config
-    this.status = new Status(API.DEFAULT_STATUS_TRANSFORMER)
+    this.status = new Status(DEFAULT_API_STATUS_TRANSFORMER)
+  }
+
+  /**
+   * Performs any request.
+   *
+   * @template V The response data interface.
+   * @template W The body interface.
+   * @template X The error data interface, defaults to U.
+   */
+  async handle<V, W, X = U>(method: RequestMethod, path: string, body?: W, config: T = EMPTY_OBJECT()): Promise<FetchResponse<V> | FetchError<X>> {
+    let tbody: W | undefined, query: string, handled: boolean, response: FetchResponse<V & X> | FetchError<X>
+
+    this.setCallStatus(method, path, config, Status.PENDING)
+
+    await Polyfill.blob()
+    await Polyfill.fetch()
+    await Polyfill.file()
+    await Polyfill.formData()
+
+    tbody = await this.transformBody(method, path, body, config)
+    query = await this.transformQueryParameters(method, path, body, config)
+
+    handled = await this.handlePending(method, path, tbody, config)
+    if (!handled) return rc(() => this.setCallStatus(method, path, config, Status.ERROR), FetchError.from())
+
+    response = await Fetch.handle(appendSearchParamsToURL(concatURL(this.baseURL, path), query), {
+      body: tbody,
+      method,
+      ...mergeFetchRequestInits(this.config, config)
+    })
+
+    if (response instanceof Error) {
+      handled = await this.handleError(method, path, tbody, config, response)
+      if (!handled) return rc(() => this.setCallStatus(method, path, config, Status.ERROR), response)
+
+      return rc(() => this.setCallStatus(method, path, config, Status.SUCCESS), response)
+    }
+
+    handled = await this.handleSuccess(method, path, tbody, config, response)
+    if (!handled) return rc(() => this.setCallStatus(method, path, config, Status.ERROR), FetchError.from(response))
+
+    return rc(() => this.setCallStatus(method, path, config, Status.SUCCESS), response)
   }
 
   /**
@@ -145,48 +188,6 @@ export class API<T extends APIConfig = APIConfig, U = undefined> {
   }
 
   /**
-   * Performs any request.
-   *
-   * @template V The response data interface.
-   * @template W The body interface.
-   * @template X The error data interface, defaults to U.
-   */
-  async handle<V, W, X = U>(method: RequestMethod, path: string, body?: W, config: T = API.DUMMY_CONFIG): Promise<FetchResponse<V> | FetchError<X>> {
-    let tbody: W | undefined, query: string, handled: boolean, response: FetchResponse<V & X> | FetchError<X>
-
-    await Polyfill.blob()
-    await Polyfill.fetch()
-    await Polyfill.file()
-    await Polyfill.formData()
-
-    this.setCallStatus(method, path, config, Status.PENDING)
-
-    tbody = await this.transformBody(method, path, body, config)
-    query = await this.transformQueryParameters(method, path, body, config)
-
-    handled = await this.handlePending(method, path, tbody, config)
-    if (!handled) return rc(() => this.setCallStatus(method, path, config, Status.ERROR), FetchError.from())
-
-    response = await Fetch.handle(appendSearchParamsToURL(concatURL(this.baseURL, path), query), {
-      body: tbody,
-      method,
-      ...mergeFetchRequestInits(this.config, config)
-    })
-
-    if (response instanceof Error) {
-      handled = await this.handleError(method, path, tbody, config, response)
-      if (!handled) return rc(() => this.setCallStatus(method, path, config, Status.ERROR), response)
-
-      return rc(() => this.setCallStatus(method, path, config, Status.SUCCESS), response)
-    }
-
-    handled = await this.handleSuccess(method, path, tbody, config, response)
-    if (!handled) return rc(() => this.setCallStatus(method, path, config, Status.ERROR), FetchError.from(response))
-
-    return rc(() => this.setCallStatus(method, path, config, Status.SUCCESS), response)
-  }
-
-  /**
    * Transforms the body.
    *
    * @template V The body interface.
@@ -201,7 +202,11 @@ export class API<T extends APIConfig = APIConfig, U = undefined> {
    * @template V The body interface.
    */
   async transformQueryParameters<V>(method: RequestMethod, path: string, body: V | undefined, config: T): Promise<string> {
-    return typeof config.query === 'object' ? convertQueryParametersObjectToString(config.query) : typeof config.query === 'string' ? config.query : ''
+    if (typeof config.query === 'object') {
+      return convertQueryParametersObjectToString(config.query)
+    }
+
+    return config.query || ''
   }
 
   /**
@@ -243,15 +248,5 @@ export class API<T extends APIConfig = APIConfig, U = undefined> {
   /** @internal */
   private isConfigStatusSettable(config: APIConfig, status: string): boolean {
     return config.status?.blacklist ? !config.status.blacklist.includes(status) : config.status?.whitelist ? config.status.whitelist.includes(status) : true
-  }
-
-  /** @internal */
-  static get DEFAULT_STATUS_TRANSFORMER(): (keys: string[]) => string {
-    return (keys: string[]) => keys[0] + '_' + removeSearchParamsFromURL(keys[1])
-  }
-
-  /** @internal */
-  static get DUMMY_CONFIG(): any {
-    return {}
   }
 }

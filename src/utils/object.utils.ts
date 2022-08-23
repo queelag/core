@@ -8,8 +8,21 @@ import { Environment } from '../modules/environment'
  *
  * @template T The object interface.
  */
-export function cloneObject<T extends object>(object: T, native: boolean = true): T {
-  return native ? JSON.parse(JSON.stringify(object)) : cloneDeep(object)
+export function cloneObject<T extends object>(object: T): T {
+  return { ...object }
+}
+
+/**
+ * Clones an object deeply.
+ *
+ * @template T The object interface.
+ */
+export function cloneDeepObject<T extends object>(object: T, native: boolean = true): T {
+  if (native) {
+    return JSON.parse(JSON.stringify(object))
+  }
+
+  return cloneDeep(object)
 }
 
 /**

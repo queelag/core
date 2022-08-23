@@ -10,14 +10,22 @@ export interface APIConfig<T = void> extends FetchRequestInit<T> {
 }
 
 export interface CookieObject extends Record<string, string> {}
+
+export interface CookieTarget {
+  get: () => string
+  set: (string: string) => void
+}
+
 export interface CookieValue extends Record<PropertyKey, any> {}
 
 export interface ConfigurationModule {
   tc: {
-    onCatch: <T extends Error>(error: T, verbose: boolean) => any
+    log: boolean
+    onCatch: <T extends Error>(error: T, log: boolean) => any
   }
   tcp: {
-    onCatch: <T extends Error>(error: T, verbose: boolean) => any
+    log: boolean
+    onCatch: <T extends Error>(error: T, log: boolean) => any
   }
 }
 
@@ -30,7 +38,7 @@ export interface GraphQLAPIConfig<T = void> extends APIConfig<T> {}
 
 export interface GraphQLAPIRequestBody<T = object> {
   query: string
-  variables?: T
+  variables?: T | null
 }
 
 export interface GraphQLAPIResponse<T = any> extends FetchResponse<GraphQLAPIResponseBody<T>> {}
@@ -41,14 +49,6 @@ export interface GraphQLAPIResponseBody<T = any> {
 }
 
 export interface HistoryDataTarget extends Record<PropertyKey, any> {}
-
-export interface HistoryData<T extends HistoryDataTarget = HistoryDataTarget, K extends keyof T = keyof T> {
-  index: number
-  key: keyof T
-  size: number
-  target: T
-  versions: T[K][]
-}
 
 export interface IDGenerateOptions {
   alphabet?: string

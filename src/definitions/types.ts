@@ -13,6 +13,9 @@
 //   export type Shallow<T> = keyof T
 // }
 
+export type IntervalMapKey = Function | string
+export type IntervalMapValue = NodeJS.Timeout | number | string | undefined
+
 export type FetchRequestInfo = Request | string
 
 export type StatusTransformer = (keys: string[]) => string

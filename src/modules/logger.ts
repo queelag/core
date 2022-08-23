@@ -95,6 +95,13 @@ export class Logger {
     this.status = LoggerStatus.ON
   }
 
+  /**
+   * Sets the level.
+   */
+  setLevel(level: LoggerLevel): void {
+    this.level = level
+  }
+
   /** @internal */
   private format(args: any[] = [], level: LoggerLevel): any[] {
     return [

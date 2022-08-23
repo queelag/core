@@ -1,21 +1,26 @@
-import { DEFAULT_HISTORY_DATA } from '../definitions/constants'
-import { HistoryData, HistoryDataTarget } from '../definitions/interfaces'
+import { DEFAULT_HISTORY_SIZE } from '../definitions/constants'
+import { HistoryDataTarget } from '../definitions/interfaces'
 import { ModuleLogger } from '../loggers/module.logger'
-import { cloneObject } from '../utils/object.utils'
+import { cloneDeepObject } from '../utils/object.utils'
 
 /**
  * A module to handle history changes.
  *
  * @category Module
  */
-export class History<T extends HistoryDataTarget = HistoryDataTarget> {
-  data: HistoryData<T>
+export class History<T extends HistoryDataTarget = HistoryDataTarget, K extends keyof T = keyof T> {
+  index: number
+  key: K
+  size: number
+  target: T
+  versions: T[K][]
 
-  constructor(key: keyof T, target: T) {
-    this.data = DEFAULT_HISTORY_DATA()
-    this.data.key = key
-    this.data.target = target
-    this.data.versions.push(cloneObject(this.data.target[this.data.key]))
+  constructor(target: T, key: K, size: number = DEFAULT_HISTORY_SIZE) {
+    this.index = 0
+    this.key = key
+    this.size = size
+    this.target = target
+    this.versions = [cloneDeepObject(this.target[this.key])]
   }
 
   redo(): void {
@@ -35,22 +40,30 @@ export class History<T extends HistoryDataTarget = HistoryDataTarget> {
   }
 
   push(): void {
-    if (this.isRedoable) {
-      this.data.versions = []
-      ModuleLogger.debug('History', 'push', `The value versions have been reset.`)
+    if (this.isNotPushable) {
+      this.versions = this.versions.slice(1, this.size)
+      ModuleLogger.debug('History', 'push', `The first version has been removed.`)
     }
 
-    this.data.versions = [...this.data.versions, cloneObject(this.data.target[this.data.key])].slice(0, this.data.size)
-    this.data.index = this.data.versions.length - 1
+    this.versions = [...this.versions, cloneDeepObject(this.target[this.key])]
+    this.index = this.versions.length - 1
   }
 
   private setIndex(offset: number): void {
-    this.data.index = this.data.index + offset
-    this.data.target[this.data.key] = cloneObject(this.data.versions[this.data.index])
+    this.index = this.index + offset
+    this.target[this.key] = cloneDeepObject(this.versions[this.index])
+  }
+
+  get isPushable(): boolean {
+    return this.versions.length < this.size
+  }
+
+  get isNotPushable(): boolean {
+    return this.isPushable === false
   }
 
   get isRedoable(): boolean {
-    return this.data.index < this.data.versions.length - 1
+    return this.index < this.versions.length - 1
   }
 
   get isNotRedoable(): boolean {
@@ -58,7 +71,7 @@ export class History<T extends HistoryDataTarget = HistoryDataTarget> {
   }
 
   get isUndoable(): boolean {
-    return this.data.index > 0 && this.data.versions.length > 1
+    return this.index > 0
   }
 
   get isNotUndoable(): boolean {

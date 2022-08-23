@@ -13,6 +13,7 @@ export enum LoggerStatus {
 
 export enum LoggerName {
   CLASS = 'CORE_CLASS',
+  FUNCTION = 'CORE_FUNCTION',
   MODULE = 'CORE_MODULE',
   UTIL = 'CORE_UTIL'
 }

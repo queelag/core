@@ -8,19 +8,22 @@ export {
   GraphQLAPIConfig,
   GraphQLAPIResponse,
   GraphQLAPIResponseBody,
-  HistoryData,
+  HistoryDataTarget,
   LocalizationPack,
   LocalizationPackData,
   WithWriteMode
 } from './definitions/interfaces'
 export * from './definitions/types'
+export * from './functions/gql'
 export * from './functions/noop'
 export * from './functions/rc'
 export * from './functions/rcp'
 export * from './functions/rv'
+export * from './functions/rvp'
 export * from './functions/sleep'
 export * from './functions/tc'
 export * from './functions/tcp'
+export * from './functions/tie'
 export { ClassLogger as CoreClassLogger } from './loggers/class.logger'
 export { ModuleLogger as CoreModuleLogger } from './loggers/module.logger'
 export { UtilLogger as CoreUtilLogger } from './loggers/util.logger'

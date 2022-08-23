@@ -1,6 +1,7 @@
 import { StorageName } from '../definitions/enums'
 import { LocalizationPack, LocalizationVariables } from '../definitions/interfaces'
 import { ModuleLogger } from '../loggers/module.logger'
+import { isNotError } from '../utils/error.utils'
 import { getObjectProperty, hasObjectProperty, mergeObjects } from '../utils/object.utils'
 import { LocalStorage } from './local.storage'
 import { Storage } from './storage'
@@ -28,7 +29,7 @@ export class Localization {
    */
   variables: LocalizationVariables
 
-  constructor(language: string, packs: LocalizationPack[], variables: LocalizationVariables = {}, storage: Storage = LocalStorage) {
+  constructor(language: string, packs: LocalizationPack[] = [], variables: LocalizationVariables = {}, storage: Storage = LocalStorage) {
     this.language = language
     this.packs = packs
     this.storage = storage
@@ -36,30 +37,13 @@ export class Localization {
   }
 
   async initialize(): Promise<boolean> {
-    let storage: void | Error
-
-    storage = await this.storage.synchronize(StorageName.LOCALIZATION, this, ['language'])
-    if (storage instanceof Error) return false
-
-    return true
-  }
-
-  async setLanguage(language: string): Promise<boolean> {
-    let storage: void | Error
-
-    this.language = language
-    ModuleLogger.debug('Localization', 'setLanguage', `The language has been set to ${this.language}.`)
-
-    storage = await this.storage.set(StorageName.LOCALIZATION, this, ['language'])
-    if (storage instanceof Error) return false
-
-    return true
+    return isNotError(await this.storage.synchronize(StorageName.LOCALIZATION, this, ['language']))
   }
 
   /**
-   * Adds n {@link LocalizationPack} to the {@link Localization.data}.
+   * Pushes n {@link LocalizationPack} to the {@link Localization.data}.
    */
-  add(...packs: LocalizationPack[]): void {
+  push(...packs: LocalizationPack[]): void {
     packs.forEach((v: LocalizationPack) => {
       let potential: LocalizationPack
 
@@ -80,24 +64,15 @@ export class Localization {
    * Returns a localized string.
    */
   get<T extends object>(path: string, variables?: LocalizationVariables): string
-  get<T extends object>(language: string, path: string, variables: LocalizationVariables): string
+  get<T extends object>(language: string, path: string, variables?: LocalizationVariables): string
   get<T extends object>(...args: any[]): string {
-    let language: string, path: string, inject: T, pack: LocalizationPack, localized: string, matches: RegExpMatchArray | null, source: Record<string, any>
+    let language: string, path: string, variables: T, pack: LocalizationPack, localized: string, matches: RegExpMatchArray | null, source: Record<string, any>
 
-    switch (true) {
-      case typeof args[0] === 'string' && typeof args[1] === 'string':
-        language = args[0]
-        path = args[1]
-        inject = args[2] || {}
+    language = typeof args[1] === 'string' ? args[0] : this.language
+    path = typeof args[1] === 'string' ? args[1] : args[0]
 
-        break
-      default:
-        language = this.language
-        path = args[0]
-        inject = args[1] || {}
-
-        break
-    }
+    variables = typeof args[1] === 'string' ? args[2] : args[1]
+    variables = variables || {}
 
     pack = this.getPackByLanguage(language)
     if (!pack.language) return path
@@ -108,7 +83,7 @@ export class Localization {
     matches = localized.match(/@([a-zA-Z_]+|->|)+[a-zA-Z]/gm)
     if (!matches) return localized
 
-    source = mergeObjects(pack.data, this.variables, inject)
+    source = mergeObjects(pack.data, this.variables, variables)
     if (Object.keys(source).length <= 0) return localized
 
     matches
@@ -123,6 +98,18 @@ export class Localization {
       })
 
     return localized
+  }
+
+  async storeLanguage(language: string): Promise<boolean> {
+    this.language = language
+    ModuleLogger.debug('Localization', 'storeLanguage', `The language has been set to ${this.language}.`)
+
+    return isNotError(await this.storage.set(StorageName.LOCALIZATION, this, ['language']))
+  }
+
+  setLanguage(language: string): void {
+    this.language = language
+    ModuleLogger.debug('Localization', 'setLanguage', `The language has been set to ${this.language}.`)
   }
 
   /**

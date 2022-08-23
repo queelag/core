@@ -1,9 +1,9 @@
-import { CookieSerializeOptions, parse, serialize } from 'cookie'
-import { CookieObject, CookieValue } from '../definitions/interfaces'
+import { CookieParseOptions, CookieSerializeOptions, parse, serialize } from 'cookie'
+import { DEFAULT_COOKIE_TARGET } from '../definitions/constants'
+import { CookieObject, CookieTarget, CookieValue } from '../definitions/interfaces'
 import { rc } from '../functions/rc'
 import { tc } from '../functions/tc'
 import { ModuleLogger } from '../loggers/module.logger'
-import { Environment } from '../modules/environment'
 import { setObjectProperty } from '../utils/object.utils'
 
 /**
@@ -12,6 +12,8 @@ import { setObjectProperty } from '../utils/object.utils'
  * @category Module
  */
 export class Cookie {
+  static target: CookieTarget = DEFAULT_COOKIE_TARGET()
+
   /** @hidden */
   constructor() {}
 
@@ -20,15 +22,10 @@ export class Cookie {
    *
    * @template T The value interface which extends {@link CookieValue}.
    */
-  static get<T extends CookieValue>(key: string): T | Error {
+  static get<T extends CookieValue>(key: string, target: CookieTarget = Cookie.target): T | Error {
     let parsed: CookieObject | Error, value: T
 
-    if (Environment.isWindowNotDefined) {
-      ModuleLogger.warn('Cookie', 'get', `The window object is not defined.`)
-      return new Error('The window object is not defined.')
-    }
-
-    parsed = this.parse(document.cookie)
+    parsed = Cookie.parse(target.get())
     if (parsed instanceof Error) return parsed
 
     ModuleLogger.debug('Cookie', 'get', `The cookies have been parsed.`, parsed)
@@ -41,7 +38,7 @@ export class Cookie {
         continue
       }
 
-      setObjectProperty(value[k], k.replace(key + '_', ''), parsed[k])
+      setObjectProperty(value, k.replace(key + '_', ''), parsed[k])
       ModuleLogger.debug('Cookie', 'get', `The key ${k} has been set to the value.`, value)
     }
 
@@ -53,16 +50,11 @@ export class Cookie {
 
   * @template T The store interface which extends {@link AnyObject}.
    */
-  static remove<T extends CookieValue, K extends keyof T>(key: string, keys?: K[]): void | Error {
-    if (Environment.isWindowNotDefined) {
-      ModuleLogger.warn('Cookie', 'remove', `The window object is not defined.`)
-      return new Error('The window object is not defined.')
-    }
-
+  static remove<T extends CookieValue, K extends keyof T = keyof T>(key: string, keys?: K[], target: CookieTarget = Cookie.target): void | Error {
     if (typeof keys === 'undefined') {
       let parsed: CookieObject | Error
 
-      parsed = this.parse(document.cookie)
+      parsed = Cookie.parse(target.get())
       if (parsed instanceof Error) return parsed
 
       keys = []
@@ -81,10 +73,10 @@ export class Cookie {
     for (let k of keys) {
       let serialized: string | Error
 
-      serialized = this.serialize(key + '_' + String(k), '', { expires: new Date(0) })
-      if (serialized instanceof Error) return rc(() => ModuleLogger.error('Cookie', 'set', `Failed to remove the key ${String(k)}.`), serialized)
+      serialized = Cookie.serialize(key + '_' + String(k), '', { expires: new Date(0) })
+      if (serialized instanceof Error) return rc(() => ModuleLogger.error('Cookie', 'set', `Failed to serialize the key ${String(k)}.`), serialized)
 
-      document.cookie = serialized
+      target.set(serialized)
       ModuleLogger.debug('Cookie', 'remove', `The key ${String(k)} has been removed.`)
 
       return
@@ -96,12 +88,13 @@ export class Cookie {
    *
    * @template T The value interface which extends {@link CookieValue}.
    */
-  static set<T extends CookieValue, K extends keyof T>(key: string, value: T, keys?: K[], options: CookieSerializeOptions = {}): void | Error {
-    if (Environment.isWindowNotDefined) {
-      ModuleLogger.warn('Cookie', 'set', `The window object is not defined.`)
-      return new Error('The window object is not defined.')
-    }
-
+  static set<T extends CookieValue, K extends keyof T = keyof T>(
+    key: string,
+    value: T,
+    options: CookieSerializeOptions = {},
+    keys?: K[],
+    target: CookieTarget = Cookie.target
+  ): void | Error {
     if (typeof keys === 'undefined') {
       keys = Object.keys(value) as K[]
       ModuleLogger.debug('Cookie', 'set', `The keys have been derived from the value.`, keys)
@@ -111,19 +104,25 @@ export class Cookie {
       let serialized: string | Error
 
       serialized = this.serialize(key + '_' + String(k), value[k], options)
-      if (serialized instanceof Error) return rc(() => ModuleLogger.error('Cookie', 'set', `Failed to set the key ${String(k)}.`, value, options), serialized)
+      if (serialized instanceof Error)
+        return rc(() => ModuleLogger.error('Cookie', 'set', `Failed to serialize the key ${String(k)}.`, value, options), serialized)
 
-      document.cookie = serialized
-      ModuleLogger.debug('Cookie', 'set', `The key ${String(k)} has been set.`, document.cookie, options)
-
-      return
+      target.set(serialized)
+      ModuleLogger.debug('Cookie', 'set', `The key ${String(k)} has been set.`, target.get(), options)
     }
   }
 
-  static parse(cookie: string): CookieObject | Error {
-    return tc(() => parse(cookie))
+  /**
+   * Parse an HTTP Cookie header string and returning an object of all cookie
+   * name-value pairs.
+   */
+  static parse(cookie: string, options?: CookieParseOptions): CookieObject | Error {
+    return tc(() => parse(cookie, options))
   }
 
+  /**
+   * Serialize a cookie name-value pair into a `Set-Cookie` header string.
+   */
   static serialize(key: string, value: string, options?: CookieSerializeOptions): string | Error {
     return tc(() => serialize(key, value, options))
   }

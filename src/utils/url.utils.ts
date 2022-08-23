@@ -1,11 +1,11 @@
 /**
  * Joins a set of URL chunks without making syntax errors.
  */
-export function concatURL(...chunks: string[]): string {
+export function concatURL(...chunks: Partial<string>[]): string {
   return chunks
+    .filter(Boolean)
     .join('/')
-    .replace(/\/{2,}/g, '/')
-    .replace(':/', '://')
+    .replace(/:?\/{2,}/g, (substring: string) => (substring.includes(':') ? substring : '/'))
 }
 
 /**
