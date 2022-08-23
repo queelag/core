@@ -1,6 +1,7 @@
 {
   "author": "Dario Sechi",
   "dependencies": {
+    "@types/cookie": "^0.5.1",
     "cookie": "^0.5.0",
     "lodash": "^4.17.21",
     "nanoid": "^3.3.4",
@@ -11,15 +12,14 @@
   "devDependencies": {
     "@microsoft/api-extractor": "^7.24.0",
     "@rollup/plugin-typescript": "^8.3.2",
-    "@types/cookie": "^0.5.1",
     "@types/jest": "^27.5.1",
     "@types/lodash": "^4.14.182",
     "jest": "^28.1.0",
     "prettier": "^2.6.2",
     "rollup": "^2.73.0",
     "rollup-plugin-terser": "^7.0.2",
-    "superstruct": "^0.15.4",
     "ts-jest": "^28.0.2",
+    "ts-node": "^10.9.1",
     "tslib": "^2.4.0",
     "typedoc": "^0.22.15",
     "typescript": "4.6.4"
@@ -28,9 +28,6 @@
   "main": "index.cjs",
   "module": "index.js",
   "name": "@queelag/core",
-  "peerDependencies": {
-    "superstruct": ">= 0.15.0"
-  },
   "publishConfig": {
     "registry": "https://npm.pkg.github.com"
   },
