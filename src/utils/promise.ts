@@ -25,3 +25,11 @@ export async function chainTruthyPromises(...fns: ((...args: any[]) => Promise<a
 
   return true
 }
+
+/**
+ * @deprecated
+ */
+export class PromiseUtils {
+  static chain = chainPromises
+  static truthyChain = chainTruthyPromises
+}

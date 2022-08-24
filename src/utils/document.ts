@@ -11,3 +11,10 @@ export function createDocumentElement<K1 extends keyof HTMLElementTagNameMap, K2
 ): HTMLElementTagNameMap[K1] | SVGElementTagNameMap[K2] {
   return Environment.isWindowDefined ? document.createElement(tagName, options) : ({} as any)
 }
+
+/**
+ * @deprecated
+ */
+export class DocumentUtils {
+  static createElement = createDocumentElement
+}

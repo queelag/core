@@ -2,7 +2,7 @@ import { WebSocketEventData } from '../definitions/types'
 import { noop } from '../functions/noop'
 import { tc } from '../functions/tc'
 import { ModuleLogger } from '../loggers/module.logger'
-import { isStringJSON } from '../utils/string.utils'
+import { isStringJSON } from '../utils/string'
 
 /**
  * A module to handle in an easier way web sockets.

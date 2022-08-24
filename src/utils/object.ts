@@ -4,15 +4,6 @@ import { tc } from '../functions/tc'
 import { Environment } from '../modules/environment'
 
 /**
- * Clones an object.
- *
- * @template T The object interface.
- */
-export function cloneObject<T extends object>(object: T): T {
-  return { ...object }
-}
-
-/**
  * Clones an object deeply.
  *
  * @template T The object interface.
@@ -23,6 +14,15 @@ export function cloneDeepObject<T extends object>(object: T, native: boolean = t
   }
 
   return cloneDeep(object)
+}
+
+/**
+ * Clones an object shallowly.
+ *
+ * @template T The object interface.
+ */
+export function cloneShallowObject<T extends object>(object: T): T {
+  return { ...object }
 }
 
 /**
@@ -63,7 +63,9 @@ export function deleteObjectProperty<T extends object>(object: T, key: string | 
  * @template T The object interface.
  * @template U The value interface or type.
  */
-export function getObjectProperty<T extends object, U extends any>(object: T, key: string | keyof T, fallback: U, verbose: boolean = false): U {
+export function getObjectProperty<T extends object, U extends any>(object: T, key: string | keyof T): U | undefined
+export function getObjectProperty<T extends object, U extends any>(object: T, key: string | keyof T, fallback: U): U
+export function getObjectProperty<T extends object, U extends any>(object: T, key: string | keyof T, fallback?: U): U | undefined {
   switch (typeof key) {
     case 'number':
     case 'symbol':
@@ -82,7 +84,7 @@ export function getObjectProperty<T extends object, U extends any>(object: T, ke
 
               throw new Error(`The object does not include the key ${key}.`)
             }, object),
-          verbose
+          false
         )
         if (value instanceof Error) return fallback
 
@@ -99,7 +101,7 @@ export function getObjectProperty<T extends object, U extends any>(object: T, ke
  * @template T the object interface.
  */
 export function mergeObjects<T extends object>(target: T, ...sources: object[]): T {
-  return merge(cloneObject(target), ...sources.map((v: object) => cloneObject(v)))
+  return merge(cloneDeepObject(target), ...sources.map((v: object) => cloneDeepObject(v)))
 }
 
 /**
@@ -110,7 +112,7 @@ export function mergeObjects<T extends object>(target: T, ...sources: object[]):
 export function omitObjectProperties<T extends object, K extends keyof T>(object: T, keys: K[]): Omit<T, K> {
   let clone: T
 
-  clone = { ...object }
+  clone = cloneShallowObject(object)
 
   for (let key of keys) {
     delete clone[key]
@@ -134,25 +136,6 @@ export function pickObjectProperties<T extends object, K extends keyof T>(object
     if (hasObjectProperty(object, key)) {
       // @ts-ignore
       pick[key] = object[key]
-    }
-  }
-
-  return pick
-}
-
-/**
- * Creates an array of values of picked properties of T.
- *
- * @template T The object interface.
- */
-export function pickObjectPropertiesToArray<T extends object, K extends keyof T>(object: T, keys: K[]): Pick<T, K>[] {
-  let pick: Pick<T, keyof T>[]
-
-  pick = []
-
-  for (let [k, v] of Object.entries(object)) {
-    if (keys.includes(k as K)) {
-      pick.push(v)
     }
   }
 
@@ -282,4 +265,23 @@ export function isObjectValuesPopulated<T extends object>(object: T): boolean {
  */
 export function isObject(value: any): value is object {
   return typeof value === 'object' && !Array.isArray(value)
+}
+
+/**
+ * @deprecated
+ */
+export class ObjectUtils {
+  static cloneDeep = cloneDeepObject
+  static cloneShallow = cloneShallowObject
+  static deleteProperty = deleteObjectProperty
+  static getProperty = getObjectProperty
+  static merge = mergeObjects
+  static omitProperties = omitObjectProperties
+  static pickProperties = pickObjectProperties
+  static setProperty = setObjectProperty
+  static toFormData = convertObjectToFormData
+  static hasProperty = hasObjectProperty
+  static hasKeys = isObjectKeysPopulated
+  static hasValues = isObjectValuesPopulated
+  static is = isObject
 }

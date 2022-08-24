@@ -1,10 +1,11 @@
 import { tc } from '../functions/tc'
+import { isStringFloat, isStringInt } from './string'
 
 /**
  * Returns an always positive number.
  */
 export function getAbsoluteNumber(number: number): number {
-  return number < 0 ? number * -1 : number
+  return number === -0 ? 0 : number < 0 ? number * -1 : number
 }
 
 /**
@@ -31,15 +32,37 @@ export function getNumberPercentage(number: number, minimum: number = 0, maximum
 /**
  * Picks the highest number in the array.
  */
-export function getHighestNumber(numbers: number[]): number {
-  return numbers.reduce((r: number, v: number) => (v > r ? v : r), Number.MIN_SAFE_INTEGER)
+export function getHighestNumber(numbers: number[]): number
+export function getHighestNumber(...numbers: number[]): number
+export function getHighestNumber(...args: any[]): number {
+  let numbers: number[], highest: number
+
+  numbers = typeof args[0] === 'number' ? args : args[0]
+  highest = Number.MIN_SAFE_INTEGER
+
+  for (let number of numbers) {
+    highest = number > highest ? number : highest
+  }
+
+  return highest
 }
 
 /**
  * Picks the lowest number in the array.
  */
-export function getLowestNumber(numbers: number[]): number {
-  return numbers.reduce((r: number, v: number) => (v < r ? v : r), Number.MAX_SAFE_INTEGER)
+export function getLowestNumber(numbers: number[]): number
+export function getLowestNumber(...numbers: number[]): number
+export function getLowestNumber(...args: any[]): number {
+  let numbers: number[], lowest: number
+
+  numbers = typeof args[0] === 'number' ? args : args[0]
+  lowest = Number.MAX_SAFE_INTEGER
+
+  for (let number of numbers) {
+    lowest = number < lowest ? number : lowest
+  }
+
+  return lowest
 }
 
 /**
@@ -82,8 +105,8 @@ export function isNumberEven(number: number): boolean {
 /**
  * Checks whether a number is a multiple of of.
  */
-export function isNumberMultipleOf(number: number, of: number, decimals: number = 0): boolean {
-  return toFixedNumber(number / of, decimals) % 1 === 0
+export function isNumberMultipleOf(number: number, of: number): boolean {
+  return number % of === 0
 }
 
 /**
@@ -94,15 +117,19 @@ export function isNumberOdd(number: number): boolean {
 }
 
 /**
- * Checks whether a value is parsable as float.
+ * @deprecated
  */
-export function isStringFloat(string: string): boolean {
-  return !isNaN(parseFloat(string))
-}
-
-/**
- * Checks whether a value is parsable as int.
- */
-export function isStringInt(string: string): boolean {
-  return !isNaN(parseInt(string))
+export class NumberUtils {
+  absolute = getAbsoluteNumber
+  distance = getNumbersDistance
+  limit = getLimitedNumber
+  percentage = getNumberPercentage
+  max = getHighestNumber
+  min = getLowestNumber
+  parseBigInt = parseBigInt
+  parseNumber = parseNumber
+  toFixed = toFixedNumber
+  isEven = isNumberEven
+  isMultipleOf = isNumberMultipleOf
+  isOdd = isNumberOdd
 }

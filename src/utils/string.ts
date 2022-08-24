@@ -54,3 +54,32 @@ export function isStringJSON(string: string): boolean {
 export function isStringNotJSON(string: string): boolean {
   return !isStringJSON(string)
 }
+
+/**
+ * Checks whether a value is parsable as float.
+ */
+export function isStringFloat(string: string): boolean {
+  return !isNaN(parseFloat(string))
+}
+
+/**
+ * Checks whether a value is parsable as int.
+ */
+export function isStringInt(string: string): boolean {
+  return !isNaN(parseInt(string))
+}
+
+/**
+ * @deprecated
+ */
+export class StringUtils {
+  static capitalize = toCapitalizedString
+  static camelCase = toCamelCaseString
+  static kebabCase = toKebabCaseString
+  static snakeCase = toSnakeCaseString
+  static startCase = toStartCaseString
+  static isJSON = isStringJSON
+  static isNotJSON = isStringNotJSON
+  static isFloat = isStringFloat
+  static isInt = isStringInt
+}

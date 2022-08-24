@@ -5,7 +5,7 @@ import { FetchRequestInit } from '../definitions/interfaces'
 import { FetchRequestInfo } from '../definitions/types'
 import { tcp } from '../functions/tcp'
 import { ModuleLogger } from '../loggers/module.logger'
-import { toLoggableNativeFetchRequestInit, toNativeFetchRequestInit } from '../utils/fetch.utils'
+import { toLoggableNativeFetchRequestInit, toNativeFetchRequestInit } from '../utils/fetch'
 import { Polyfill } from './polyfill'
 
 /**

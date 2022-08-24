@@ -4,7 +4,7 @@ import { CookieObject, CookieTarget, CookieValue } from '../definitions/interfac
 import { rc } from '../functions/rc'
 import { tc } from '../functions/tc'
 import { ModuleLogger } from '../loggers/module.logger'
-import { setObjectProperty } from '../utils/object.utils'
+import { setObjectProperty } from '../utils/object'
 
 /**
  * A module to handle cookies through a store.

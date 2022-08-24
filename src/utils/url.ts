@@ -27,3 +27,12 @@ export function appendSearchParamsToURL(url: string, parameters: string): string
 export function removeSearchParamsFromURL(url: string): string {
   return url.replace(/\?.*/, '').trim()
 }
+
+/**
+ * @deprecated
+ */
+export class URLUtils {
+  static concat = concatURL
+  static appendSearchParams = appendSearchParamsToURL
+  static removeSearchParams = removeSearchParamsFromURL
+}

@@ -1,8 +1,8 @@
 import { noop } from '../functions/noop'
 import { Environment } from '../modules/environment'
-import { removeSearchParamsFromURL } from '../utils/url.utils'
+import { removeSearchParamsFromURL } from '../utils/url'
 import { ConfigurationModule, CookieTarget } from './interfaces'
-import { StatusTransformer } from './types'
+import { ArrayIncludes, ArrayRemoves, IsEqual, StatusTransformer } from './types'
 
 export const ALPHABET_LOWERCASE: string = 'abcdefghijklmnopqrstuvwxyz'
 export const ALPHABET_NO_LOOK_ALIKES_SAFE: string = '6789BCDFGHJKLMNPQRTWbcdfghjkmnpqrtwz'
@@ -17,6 +17,10 @@ export const ALPHABET_HEX_UPPERCASE: string = ALPHABET_NUMBERS + 'ABCDEF'
 export const DEFAULT_API_STATUS_TRANSFORMER: StatusTransformer = (keys: string[]) => {
   return keys[0] + '_' + removeSearchParamsFromURL(keys[1])
 }
+
+export const DEFAULT_ARRAY_INCLUDES: ArrayIncludes<any> = (array: any[], item: any) => array.includes(item)
+
+export const DEFAULT_ARRAY_REMOVES: ArrayRemoves<any> = (array: any[], item: any) => array.includes(item)
 
 export const DEFAULT_COOKIE_TARGET: () => CookieTarget = () => ({
   get: () => {
@@ -47,6 +51,8 @@ export const DEFAULT_CONFIGURATION_MODULE: () => ConfigurationModule = () => ({
 })
 
 export const DEFAULT_HISTORY_SIZE: number = 100
+
+export const DEFAULT_IS_EQUAL: IsEqual<any, any> = (a: any, b: any) => a === b
 
 export const DEFAULT_STATUS_TRANSFORMER: StatusTransformer = (keys: string[]) => keys.join('_')
 

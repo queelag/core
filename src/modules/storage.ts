@@ -1,7 +1,7 @@
 import { StorageTarget, StorageValue } from '../definitions/interfaces'
 import { tcp } from '../functions/tcp'
 import { ModuleLogger } from '../loggers/module.logger'
-import { pickObjectProperties } from '../utils/object.utils'
+import { pickObjectProperties } from '../utils/object'
 
 /**
  * A module to handle any storage operations through a store.

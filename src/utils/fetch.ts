@@ -1,8 +1,8 @@
 import { FetchRequestInit } from '../definitions/interfaces'
 import { Environment } from '../modules/environment'
-import { convertFormDataToObject } from '../utils/form.data.utils'
-import { cloneDeepObject, mergeObjects, omitObjectProperties } from './object.utils'
-import { isStringJSON } from './string.utils'
+import { convertFormDataToObject } from './form.data'
+import { cloneDeepObject, mergeObjects, omitObjectProperties } from './object'
+import { isStringJSON } from './string'
 
 export function setFetchRequestInitHeader<T extends unknown>(init: FetchRequestInit<T> | RequestInit, name: string, value: string): void {
   switch (true) {
@@ -163,4 +163,17 @@ export function hasFetchRequestInitHeader<V extends unknown>(init: FetchRequestI
     case 'undefined':
       return false
   }
+}
+
+/**
+ * @deprecated
+ */
+export class FetchUtils {
+  setRequestInitHeader = setFetchRequestInitHeader
+  setRequestInitHeaderWhenUnset = setFetchRequestInitHeaderWhenUnset
+  mergeRequestInits = mergeFetchRequestInits
+  toNativeRequestInit = toNativeFetchRequestInit
+  toLoggableRequestInit = toLoggableFetchRequestInit
+  toLoggableNativeRequestInit = toLoggableNativeFetchRequestInit
+  hasRequestInitHeader = hasFetchRequestInitHeader
 }

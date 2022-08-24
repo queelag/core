@@ -11,3 +11,11 @@ export function isError<T>(value: T | Error): value is Error {
 export function isNotError<T>(value: T | Error): value is T {
   return !(value instanceof Error)
 }
+
+/**
+ * @deprecated
+ */
+export class ErrorUtils {
+  is = isError
+  isNot = isNotError
+}

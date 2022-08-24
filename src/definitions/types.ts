@@ -13,8 +13,13 @@
 //   export type Shallow<T> = keyof T
 // }
 
+export type ArrayIncludes<T> = (array: T[], item: T) => boolean
+export type ArrayRemoves<T> = (array: T[], item: T) => boolean
+
 export type IntervalMapKey = Function | string
 export type IntervalMapValue = NodeJS.Timeout | number | string | undefined
+
+export type IsEqual<T1, T2> = (a: T1, b: T2) => boolean
 
 export type FetchRequestInfo = Request | string
 

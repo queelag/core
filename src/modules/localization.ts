@@ -1,8 +1,8 @@
 import { StorageName } from '../definitions/enums'
 import { LocalizationPack, LocalizationVariables } from '../definitions/interfaces'
 import { ModuleLogger } from '../loggers/module.logger'
-import { isNotError } from '../utils/error.utils'
-import { getObjectProperty, hasObjectProperty, mergeObjects } from '../utils/object.utils'
+import { isNotError } from '../utils/error'
+import { getObjectProperty, hasObjectProperty, mergeObjects } from '../utils/object'
 import { LocalStorage } from './local.storage'
 import { Storage } from './storage'
 
