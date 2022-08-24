@@ -111,10 +111,12 @@ export class Polyfill {
   }
 
   private static async getNodeFetch(): Promise<NodeFetch | Error> {
+    // istanbul ignore next
     switch (true) {
       case Environment.isJest:
         return tc(() => Environment.require('node-fetch-cjs'))
       default:
+        // istanbul ignore next
         return tcp(() => Environment.import('node-fetch'))
     }
   }

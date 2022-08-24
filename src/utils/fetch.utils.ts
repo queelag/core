@@ -37,10 +37,10 @@ export function mergeFetchRequestInits<V extends unknown>(target: FetchRequestIn
   merged = mergeObjects(target, ...sources)
   merged.headers = target.headers ? cloneDeepObject(target.headers) : new Headers()
 
-  sources.forEach((v: FetchRequestInit<V>) => {
-    switch (typeof v.headers?.entries) {
+  for (let source of sources) {
+    switch (typeof source.headers?.entries) {
       case 'function':
-        ;[...v.headers.entries()].forEach(([k, v]: [number, string[]] | [string, string]) => {
+        for (let [k, v] of [...source.headers.entries()]) {
           switch (typeof v) {
             case 'object':
               setFetchRequestInitHeader(merged, v[0], v[1])
@@ -49,13 +49,13 @@ export function mergeFetchRequestInits<V extends unknown>(target: FetchRequestIn
               setFetchRequestInitHeader(merged, k as string, v)
               break
           }
-        })
+        }
 
         break
       case 'undefined':
         break
     }
-  })
+  }
 
   if (typeof merged.headers.entries === 'function' && [...merged.headers.entries()].length <= 0) {
     delete merged.headers

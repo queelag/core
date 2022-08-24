@@ -1,4 +1,6 @@
+import { ThrottleMapKey } from '../definitions/types'
 import { tc } from '../functions/tc'
+import { ModuleLogger } from '../loggers/module.logger'
 
 /**
  * A module to handle functions throttling.
@@ -7,7 +9,7 @@ import { tc } from '../functions/tc'
  */
 export class Throttle {
   /** @internal */
-  private static data: Map<string, number> = new Map()
+  private static map: Map<ThrottleMapKey, number> = new Map()
 
   /** @hidden */
   constructor() {}
@@ -17,14 +19,28 @@ export class Throttle {
    *
    * @returns
    */
-  static handle(name: string, fn: () => any, ms: number): void {
-    let previous: number
+  static handle(fn: Function, ms: number): void
+  static handle(name: string, fn: Function, ms: number): void
+  static handle(...args: any[]): void {
+    let key: string, fn: Function, ms: number, previous: number
 
-    previous = this.data.get(name) || Date.now() - ms
-    if (Date.now() - previous < ms) return
+    key = args[0]
+    fn = typeof args[0] === 'function' ? args[0] : args[1]
+    ms = typeof args[0] === 'function' ? args[1] : args[2]
+
+    previous = this.map.get(key) || Date.now() - ms
+    if (Date.now() - previous < ms)
+      return ModuleLogger.verbose('Throttle', 'handle', `The current date minus the stored one is greater than or equal to ms`, [
+        Date.now(),
+        previous,
+        Date.now() - previous,
+        ms
+      ])
 
     tc(() => fn())
+    ModuleLogger.verbose('Throttle', 'handle', `The ${key} fn has been executed.`)
 
-    this.data.set(name, Date.now())
+    this.map.set(key, Date.now())
+    ModuleLogger.verbose('Throttle', 'handle', `The ${key} date has been set.`)
   }
 }

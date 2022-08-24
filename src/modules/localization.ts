@@ -44,20 +44,21 @@ export class Localization {
    * Pushes n {@link LocalizationPack} to the {@link Localization.data}.
    */
   push(...packs: LocalizationPack[]): void {
-    packs.forEach((v: LocalizationPack) => {
+    for (let pack of packs) {
       let potential: LocalizationPack
 
-      potential = this.getPackByLanguage(v.language)
+      potential = this.getPackByLanguage(pack.language)
+
       if (potential.language) {
-        potential.data = mergeObjects(potential.data, v.data)
-        ModuleLogger.debug('Localization', 'add', `The pack data has been merged for the language ${v.language}.`, [potential.data])
+        potential.data = mergeObjects(potential.data, pack.data)
+        ModuleLogger.debug('Localization', 'add', `The pack data has been merged for the language ${pack.language}.`, [potential.data])
 
         return
       }
 
-      this.packs.push(v)
-      ModuleLogger.debug('Localization', 'add', `The pack for the language ${v.language} has been pushed.`, [v])
-    })
+      this.packs.push(pack)
+      ModuleLogger.debug('Localization', 'add', `The pack for the language ${pack.language} has been pushed.`, pack)
+    }
   }
 
   /**
@@ -84,18 +85,16 @@ export class Localization {
     if (!matches) return localized
 
     source = mergeObjects(pack.data, this.variables, variables)
-    if (Object.keys(source).length <= 0) return localized
+    matches = matches.sort((a: string, b: string) => b.length - a.length)
 
-    matches
-      .sort((a: string, b: string) => b.length - a.length)
-      .forEach((v: string) => {
-        let key: string, value: string
+    for (let match of matches) {
+      let key: string, value: string
 
-        key = v.slice(1).replace(/->/gm, '.')
-        value = getObjectProperty(source, key, v)
+      key = match.slice(1).replace(/->/gm, '.')
+      value = getObjectProperty(source, key, match)
 
-        localized = localized.replace(v, value)
-      })
+      localized = localized.replace(match, value)
+    }
 
     return localized
   }
@@ -110,6 +109,11 @@ export class Localization {
   setLanguage(language: string): void {
     this.language = language
     ModuleLogger.debug('Localization', 'setLanguage', `The language has been set to ${this.language}.`)
+  }
+
+  setVariables(variables: LocalizationVariables): void {
+    this.variables = variables
+    ModuleLogger.debug('Localization', 'setVariables', `The variables have been set.`, variables)
   }
 
   /**

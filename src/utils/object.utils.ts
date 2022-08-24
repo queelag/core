@@ -111,7 +111,10 @@ export function omitObjectProperties<T extends object, K extends keyof T>(object
   let clone: T
 
   clone = { ...object }
-  keys.forEach((k: keyof T) => delete clone[k])
+
+  for (let key of keys) {
+    delete clone[key]
+  }
 
   return clone
 }
@@ -122,17 +125,19 @@ export function omitObjectProperties<T extends object, K extends keyof T>(object
  * @template T The object interface.
  */
 export function pickObjectProperties<T extends object, K extends keyof T>(object: T, keys: K[]): Pick<T, K> {
-  let output: Pick<T, K>
+  let pick: Pick<T, K>
 
-  output = {} as any
-  keys.forEach((k: keyof T) => {
-    if (hasObjectProperty(object, k)) {
+  // @ts-ignore
+  pick = {}
+
+  for (let key of keys) {
+    if (hasObjectProperty(object, key)) {
       // @ts-ignore
-      output[k] = object[k]
+      pick[key] = object[key]
     }
-  })
+  }
 
-  return output
+  return pick
 }
 
 /**
@@ -141,12 +146,17 @@ export function pickObjectProperties<T extends object, K extends keyof T>(object
  * @template T The object interface.
  */
 export function pickObjectPropertiesToArray<T extends object, K extends keyof T>(object: T, keys: K[]): Pick<T, K>[] {
-  let output: Pick<T, keyof T>[]
+  let pick: Pick<T, keyof T>[]
 
-  output = []
-  Object.entries(object).forEach((v: [string, any]) => keys.includes(v[0] as any) && output.push(v[1]))
+  pick = []
 
-  return output
+  for (let [k, v] of Object.entries(object)) {
+    if (keys.includes(k as K)) {
+      pick.push(v)
+    }
+  }
+
+  return pick
 }
 
 /**
@@ -200,39 +210,37 @@ export function convertObjectToFormData<T extends object>(object: T): FormData {
 
   data = new FormData()
 
-  Object.entries(object).forEach(([k, v]: [string, any]) => {
+  for (let [k, v] of Object.entries(object)) {
     switch (true) {
       case Environment.isFileDefined && v instanceof File:
         data.append(k, v)
-        break
+        continue
       default:
         switch (typeof v) {
           case 'bigint':
           case 'boolean':
           case 'number':
             data.append(k, v.toString())
-            break
+            continue
           case 'function':
           case 'symbol':
           case 'undefined':
-            break
+            continue
           case 'object':
             let stringified: string | Error
 
             stringified = tc(() => JSON.stringify(v))
-            if (stringified instanceof Error) break
+            if (stringified instanceof Error) continue
 
             data.append(k, stringified)
 
-            break
+            continue
           case 'string':
             data.append(k, v)
-            break
+            continue
         }
-
-        break
     }
-  })
+  }
 
   return data
 }

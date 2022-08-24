@@ -51,3 +51,16 @@ export const DEFAULT_HISTORY_SIZE: number = 100
 export const DEFAULT_STATUS_TRANSFORMER: StatusTransformer = (keys: string[]) => keys.join('_')
 
 export const EMPTY_OBJECT: () => Record<PropertyKey, any> = () => ({})
+
+export const STUB_TEXT_DECODER: TextDecoder = {
+  decode: () => '',
+  encoding: '',
+  fatal: false,
+  ignoreBOM: false
+}
+
+export const STUB_TEXT_ENCODER: TextEncoder = {
+  encode: () => new Uint8Array(),
+  encodeInto: () => ({ read: 0, written: 0 }),
+  encoding: ''
+}

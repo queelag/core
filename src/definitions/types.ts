@@ -20,4 +20,9 @@ export type FetchRequestInfo = Request | string
 
 export type StatusTransformer = (keys: string[]) => string
 
+export type ThrottleMapKey = Function | string
+
+export type TimeoutMapKey = Function | string
+export type TimeoutMapValue = NodeJS.Timeout | number | string | undefined
+
 export type WebSocketEventData<T extends object> = T | ArrayBufferLike | ArrayBufferView | Blob | string

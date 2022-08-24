@@ -58,13 +58,14 @@ export class Interval {
   static clear(): void {
     this.map.forEach(clearTimeout)
     ModuleLogger.debug('Interval', 'clear', `The intervals have been cleared.`)
+
+    this.map.clear()
+    ModuleLogger.debug('Interval', 'clear', `The map has been cleared.`)
   }
 
   /**
    * Checks whether an interval is running.
    */
-  static isRunning(fn: Function): boolean
-  static isRunning(name: string): boolean
   static isRunning(key: IntervalMapKey): boolean {
     return this.map.has(key)
   }
@@ -72,9 +73,7 @@ export class Interval {
   /**
    * Checks whether an interval is not running.
    */
-  static isNotRunning(fn: Function): boolean
-  static isNotRunning(name: string): boolean
   static isNotRunning(key: IntervalMapKey): boolean {
-    return !this.map.has(key)
+    return this.isRunning(key) === false
   }
 }
