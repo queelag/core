@@ -20,7 +20,7 @@ describe('GraphQLAPI', () => {
   let address: string, api: GraphQLAPI, response: GraphQLAPIResponse<any> | FetchError<any>
 
   beforeAll(async () => {
-    address = await openServer()
+    address = await openServer(3002)
   })
 
   beforeEach(() => {

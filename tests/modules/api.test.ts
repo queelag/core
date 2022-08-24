@@ -21,7 +21,7 @@ describe('API', () => {
   let address: string, api: API, response: FetchResponse<any> | FetchError<any>
 
   beforeAll(async () => {
-    address = await openServer()
+    address = await openServer(3000)
   })
 
   beforeEach(() => {

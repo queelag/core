@@ -79,8 +79,8 @@ server.put('/any', (req: FastifyRequest, rep: FastifyReply) => {
 /**
  * Functions
  */
-export async function openServer(): Promise<string> {
-  return server.listen({ port: 3000 })
+export async function openServer(port: number): Promise<string> {
+  return server.listen({ port })
 }
 
 export async function closeServer(): Promise<void> {

@@ -5,7 +5,7 @@ describe('Fetch', () => {
   let address: string, response: FetchResponse<any> | FetchError<any>
 
   beforeAll(async () => {
-    address = await openServer()
+    address = await openServer(3001)
   })
 
   afterAll(async () => {
