@@ -1,5 +1,6 @@
-import { LoggerLevel, LoggerStatus } from '../definitions/enums'
-import { convertFormDataToObject } from '../utils/form.data'
+import { DEFAULT_LOGGER_SEPARATOR } from '../definitions/constants'
+import { ANSIColor, LoggerLevel, LoggerStatus } from '../definitions/enums'
+import { convertFormDataToObject } from '../utils/form.data.utils'
 import { Environment } from './environment'
 
 /**
@@ -17,6 +18,10 @@ export class Logger {
    */
   name: string
   /**
+   * A string which separates the logged args.
+   */
+  separator: string
+  /**
    * A {@link LoggerStatus}.
    */
   status: LoggerStatus
@@ -24,10 +29,12 @@ export class Logger {
   constructor(
     name: string,
     level: LoggerLevel = Logger.getLevelFromEnvironment(name) || (Environment.isProduction ? LoggerLevel.ERROR : LoggerLevel.WARN),
-    status: LoggerStatus = Logger.getStatusFromEnvironment(name) || (Environment.isTest ? LoggerStatus.OFF : LoggerStatus.ON)
+    status: LoggerStatus = Logger.getStatusFromEnvironment(name) || (Environment.isTest ? LoggerStatus.OFF : LoggerStatus.ON),
+    separator: string = DEFAULT_LOGGER_SEPARATOR
   ) {
     this.level = level
     this.name = name
+    this.separator = separator
     this.status = status
   }
 
@@ -76,7 +83,7 @@ export class Logger {
    */
   error(...args: any[]): void {
     if (this.isDisabled) return
-    if (this.isLevelErrorDisabled) return
+    // if (this.isLevelErrorDisabled) return
 
     console.error(...this.format(args, LoggerLevel.ERROR))
   }
@@ -102,39 +109,63 @@ export class Logger {
     this.level = level
   }
 
-  /** @internal */
-  private format(args: any[] = [], level: LoggerLevel): any[] {
-    return [
-      ...(Environment.isWindowNotDefined ? [this.getTerminalColorByLevel(level)] : []),
-      args.filter((v: any) => ['boolean', 'number', 'string'].includes(typeof v) && v.toString().length > 0).join(' -> '),
-      ...(Environment.isWindowNotDefined ? ['\x1b[0m'] : []),
-      ...args
-        .filter((v: any) => ['bigint', 'function', 'object', 'symbol', 'undefined'].includes(typeof v))
-        .map((v: any) => {
-          switch (true) {
-            case Environment.isFormDataDefined && v instanceof FormData:
-              return convertFormDataToObject(v)
-            default:
-              return v
-          }
-        })
-    ]
-  }
+  /**
+   * Formats the args to be easier to read.
+   */
+  format(...args: any[]): any[] {
+    let print: any[], primitives: string[]
 
-  /** @internal */
-  private getTerminalColorByLevel(level: LoggerLevel): string {
-    switch (level) {
-      case LoggerLevel.DEBUG:
-        return '\x1b[34m'
-      case LoggerLevel.ERROR:
-        return '\x1b[31m'
-      case LoggerLevel.INFO:
-        return '\x1b[37m'
-      case LoggerLevel.VERBOSE:
-        return '\x1b[34m'
-      case LoggerLevel.WARN:
-        return '\x1b[33m'
+    print = []
+    primitives = []
+
+    for (let arg of args) {
+      switch (typeof arg) {
+        case 'bigint':
+        case 'boolean':
+        case 'function':
+        case 'number':
+        case 'string':
+        case 'symbol':
+        case 'undefined':
+          if (String(arg).length <= 0) {
+            continue
+          }
+
+          primitives.push(String(arg))
+          continue
+        case 'object':
+          if (primitives.length > 0) {
+            if (Environment.isWindowNotDefined) {
+              print.push(this.ANSIColorByLevel)
+            }
+
+            print.push(primitives.join(this.separator))
+            primitives = []
+
+            if (Environment.isWindowNotDefined) {
+              print.push(ANSIColor.RESET)
+            }
+          }
+
+          if (Environment.isFormDataDefined && arg instanceof FormData) {
+            print.push(convertFormDataToObject(arg))
+            continue
+          }
+
+          print.push(arg)
+          continue
+      }
     }
+
+    if (primitives.length > 0) {
+      if (Environment.isWindowNotDefined) {
+        print.push(this.ANSIColorByLevel)
+      }
+
+      print.push(primitives.join(this.separator))
+    }
+
+    return print
   }
 
   static getLevelFromEnvironment(name: string): LoggerLevel | undefined {
@@ -153,6 +184,22 @@ export class Logger {
     if (!Object.keys(LoggerStatus).includes(value)) return
 
     return value as LoggerStatus
+  }
+
+  /** @internal */
+  private get ANSIColorByLevel(): string {
+    switch (this.level) {
+      case LoggerLevel.DEBUG:
+        return ANSIColor.MAGENTA
+      case LoggerLevel.ERROR:
+        return ANSIColor.RED
+      case LoggerLevel.INFO:
+        return ANSIColor.BLUE
+      case LoggerLevel.VERBOSE:
+        return ANSIColor.WHITE
+      case LoggerLevel.WARN:
+        return ANSIColor.YELLOW
+    }
   }
 
   get isDisabled(): boolean {
@@ -177,9 +224,5 @@ export class Logger {
 
   get isLevelWarnDisabled(): boolean {
     return [LoggerLevel.ERROR].includes(this.level)
-  }
-
-  get isLevelErrorDisabled(): boolean {
-    return false
   }
 }

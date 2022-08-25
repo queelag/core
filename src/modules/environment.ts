@@ -23,12 +23,18 @@ export class Environment {
    * Checks if a key is defined inside process.env safely.
    */
   static has(key: string): boolean {
-    return this.get(key).length > 0
+    let value: string | undefined | Error
+
+    value = tc(() => process.env[key], false)
+    if (value instanceof Error || typeof value === 'undefined') return false
+
+    return true
   }
 
   /**
    * Returns a webpack safe import.
    */
+  // istanbul ignore next
   static get import(): Function {
     return new Function('path', 'return import(path)')
   }
@@ -36,6 +42,7 @@ export class Environment {
   /**
    * Returns a webpack safe require.
    */
+  // istanbul ignore next
   static get require(): NodeRequire {
     // @ts-ignore
     return typeof __webpack_require__ === 'function' ? __non_webpack_require__ : typeof require === 'function' ? require : noop
@@ -150,7 +157,7 @@ export class Environment {
    * Checks if the NODE_ENV variable is not equal to 'test'.
    */
   static get isNotTest(): boolean {
-    return this.NODE_ENV === 'test'
+    return this.NODE_ENV !== 'test'
   }
 
   /**

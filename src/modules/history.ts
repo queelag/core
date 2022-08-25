@@ -1,7 +1,7 @@
 import { DEFAULT_HISTORY_SIZE } from '../definitions/constants'
 import { HistoryDataTarget } from '../definitions/interfaces'
 import { ModuleLogger } from '../loggers/module.logger'
-import { cloneDeepObject } from '../utils/object'
+import { cloneDeepObject } from '../utils/object.utils'
 
 /**
  * A module to handle history changes.

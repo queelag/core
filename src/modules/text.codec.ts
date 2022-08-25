@@ -1,4 +1,4 @@
-import { STUB_TEXT_DECODER, STUB_TEXT_ENCODER } from '../definitions/constants'
+import { STUB_TEXT_DECODER, STUB_TEXT_ENCODER } from '../definitions/stubs'
 
 /**
  * A module to have both TextDecoder and TextEncoder already initialized.

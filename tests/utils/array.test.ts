@@ -4,8 +4,8 @@ describe('ArrayUtils', () => {
   let a1: number[], a2: number[], m1: number[][], m2: number[][]
 
   beforeAll(() => {
-    a1 = [0, 1, 2, 3]
-    a2 = [5, 4, 3, 2]
+    a1 = [0, 0, 1, 2, 3]
+    a2 = [5, 5, 4, 3, 2]
     m1 = [[0], [1], [2], [3]]
     m2 = [[5], [4], [3], [2]]
   })
@@ -43,7 +43,7 @@ describe('ArrayUtils', () => {
 
   it('removes items', () => {
     expect(removeArrayItems(a1, [])).toStrictEqual(a1)
-    expect(removeArrayItems(a1, [1, 2])).toStrictEqual([0, 3])
+    expect(removeArrayItems(a1, [1, 2])).toStrictEqual([0, 0, 3])
     expect(removeArrayItems(m1, (array: number[][], item: number[]) => [1, 2].includes(item[0]))).toStrictEqual([[0], [3]])
   })
 })

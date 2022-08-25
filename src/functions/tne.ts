@@ -3,6 +3,6 @@
  *
  * @category Function
  */
-export function te(message?: string, options?: ErrorOptions): void {
+export function tne(message?: string, options?: ErrorOptions): void {
   throw new Error(message, options)
 }

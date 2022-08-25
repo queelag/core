@@ -12,6 +12,7 @@ import {
   parseNumber,
   toFixedNumber
 } from '../../src'
+import { Configuration } from '../../src/modules/configuration'
 
 describe('NumberUtils', () => {
   it('gets the absolute of a number', () => {
@@ -69,7 +70,10 @@ describe('NumberUtils', () => {
     expect(parseBigInt(0n)).toBe(0n)
     expect(parseBigInt(false)).toBe(0n)
     expect(parseBigInt(true)).toBe(1n)
+
+    Configuration.module.tc.log = false
     expect(parseBigInt(NaN)).toBe(0n)
+    Configuration.module.tc.log = true
   })
 
   it('parses int and float', () => {

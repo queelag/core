@@ -1,6 +1,7 @@
 import cloneDeep from 'lodash/cloneDeep'
 import merge from 'lodash/merge'
 import { REGEXP_SQUARE_BRACKETS } from '../definitions/constants'
+import { KeyOf } from '../definitions/types'
 import { tc } from '../functions/tc'
 import { Environment } from '../modules/environment'
 
@@ -27,12 +28,25 @@ export function cloneShallowObject<T extends object>(object: T): T {
 }
 
 /**
+ * Copies a property from an object to another, supports dot notation.
+ *
+ * @template T1 The source object interface.
+ * @template T2 The target object interface.
+ * @template T The source and target object shared interface.
+ */
+export function copyObjectProperty<T1 extends object, T2 extends object, T extends T1 & T2>(source: T, key: KeyOf.Deep<T>, target: T): void | Error
+export function copyObjectProperty<T1 extends object, T2 extends object, T extends T1 & T2>(source: T, key: string, target: T): void | Error
+export function copyObjectProperty<T1 extends object, T2 extends object, T extends T1 & T2>(source: T, key: KeyOf.Deep<T>, target: T): void | Error {
+  return setObjectProperty(target, key, getObjectProperty(source, key))
+}
+
+/**
  * Deletes a property from an object, supports dot notation.
  *
  * @template T The object interface.
  * @template U The value interface or type.
  */
-export function deleteObjectProperty<T extends object>(object: T, key: string | keyof T): void {
+export function deleteObjectProperty<T extends object>(object: T, key: KeyOf.Deep<T>): void {
   switch (typeof key) {
     case 'number':
     case 'symbol':
@@ -53,7 +67,9 @@ export function deleteObjectProperty<T extends object>(object: T, key: string | 
         return
       }
 
-      delete object[key as keyof T]
+      // @ts-ignore
+      delete object[key]
+
       break
   }
 }
@@ -64,9 +80,11 @@ export function deleteObjectProperty<T extends object>(object: T, key: string | 
  * @template T The object interface.
  * @template U The value interface or type.
  */
-export function getObjectProperty<T extends object, U extends any>(object: T, key: string | keyof T): U | undefined
-export function getObjectProperty<T extends object, U extends any>(object: T, key: string | keyof T, fallback: U): U
-export function getObjectProperty<T extends object, U extends any>(object: T, key: string | keyof T, fallback?: U): U | undefined {
+export function getObjectProperty<T extends object, U extends any>(object: T, key: KeyOf.Deep<T>): U | undefined
+export function getObjectProperty<T extends object, U extends any>(object: T, key: KeyOf.Deep<T>, fallback: U): U
+export function getObjectProperty<T extends object, U extends any>(object: T, key: string): U | undefined
+export function getObjectProperty<T extends object, U extends any>(object: T, key: string, fallback: U): U
+export function getObjectProperty<T extends object, U extends any>(object: T, key: KeyOf.Deep<T>, fallback?: U): U | undefined {
   switch (typeof key) {
     case 'number':
     case 'symbol':
@@ -84,7 +102,12 @@ export function getObjectProperty<T extends object, U extends any>(object: T, ke
         return target[lkey]
       }
 
-      return Object.keys(object).includes(key) ? (object[key as keyof T] as U) : fallback
+      if (Object.keys(object).includes(key)) {
+        // @ts-ignore
+        return object[key]
+      }
+
+      return fallback
   }
 }
 
@@ -132,9 +155,7 @@ export function mergeObjects<T extends object>(target: T, ...sources: object[]):
  * @template T The object interface.
  */
 export function omitObjectProperties<T extends object, K extends keyof T>(object: T, keys: K[]): Omit<T, K> {
-  let clone: T
-
-  clone = cloneShallowObject(object)
+  let clone: T = cloneShallowObject(object)
 
   for (let key of keys) {
     delete clone[key]
@@ -149,14 +170,10 @@ export function omitObjectProperties<T extends object, K extends keyof T>(object
  * @template T The object interface.
  */
 export function pickObjectProperties<T extends object, K extends keyof T>(object: T, keys: K[]): Pick<T, K> {
-  let pick: Pick<T, K>
-
-  // @ts-ignore
-  pick = {}
+  let pick: Pick<T, K> = {} as any
 
   for (let key of keys) {
-    if (hasObjectProperty(object, key)) {
-      // @ts-ignore
+    if (key in object) {
       pick[key] = object[key]
     }
   }
@@ -170,11 +187,14 @@ export function pickObjectProperties<T extends object, K extends keyof T>(object
  * @template T The object interface.
  * @template U The value interface or type.
  */
-export function setObjectProperty<T extends object, U extends any>(object: T, key: string | keyof T, value: U): void | Error {
+export function setObjectProperty<T extends object, U extends any>(object: T, key: KeyOf.Deep<T>, value: U): void | Error
+export function setObjectProperty<T extends object, U extends any>(object: T, key: string, value: U): void | Error
+export function setObjectProperty<T extends object, U extends any>(object: T, key: KeyOf.Deep<T>, value: U): void | Error {
   switch (typeof key) {
     case 'number':
     case 'symbol':
-      object[key] = value as any
+      // @ts-ignore
+      object[key] = value
       break
     case 'string':
       if (key.includes('.')) {
@@ -191,7 +211,7 @@ export function setObjectProperty<T extends object, U extends any>(object: T, ke
           }
 
           key = keys[i]
-          key = key.replace(/[\[\]]/g, '').trim()
+          key = key.replace(REGEXP_SQUARE_BRACKETS, '')
 
           switch (typeof target[key]) {
             case 'object':
@@ -207,13 +227,14 @@ export function setObjectProperty<T extends object, U extends any>(object: T, ke
           }
         }
 
-        lkey = keys[keys.length - 1].replace(/[\[\]]/g, '').trim()
+        lkey = keys[keys.length - 1].replace(REGEXP_SQUARE_BRACKETS, '')
         target[lkey] = value
 
         return
       }
 
-      object[key as keyof T] = value as any
+      // @ts-ignore
+      object[key] = value
 
       break
   }
@@ -269,7 +290,9 @@ export function convertObjectToFormData<T extends object>(object: T): FormData {
  *
  * @template T The object interface.
  */
-export function hasObjectProperty<T extends object>(object: T, key: string | keyof T): boolean {
+export function hasObjectProperty<T extends object>(object: T, key: KeyOf.Deep<T>): boolean
+export function hasObjectProperty<T extends object>(object: T, key: string): boolean
+export function hasObjectProperty<T extends object>(object: T, key: KeyOf.Deep<T>): boolean {
   let symbol: symbol
 
   // symbols are always unique

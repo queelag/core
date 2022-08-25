@@ -1,17 +1,4 @@
-// export namespace KeyOf {
-//   type DeepJoin<K, P> = K extends string | number ? (P extends string | number ? `${K}${'' extends P ? '' : '.'}${P}` : never) : never
-//   type DeepPrev = [never, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...0[]]
-
-//   export type Deep<T, D extends number = 10> = [D] extends [never]
-//     ? never
-//     : T extends object
-//     ? {
-//         [K in keyof T]-?: K extends string | number ? `${K}` | DeepJoin<K, Deep<T[K], DeepPrev[D]>> : never
-//       }[keyof T]
-//     : ''
-
-//   export type Shallow<T> = keyof T
-// }
+import { ArrayPath, Path } from './path'
 
 export type ArrayIncludes<T> = (array: T[], item: T) => boolean
 export type ArrayRemoves<T> = (array: T[], item: T) => boolean
@@ -22,6 +9,14 @@ export type IntervalMapValue = NodeJS.Timeout | number | string | undefined
 export type IsEqual<T1, T2> = (a: T1, b: T2) => boolean
 
 export type FetchRequestInfo = Request | string
+
+export namespace KeyOf {
+  export type Deep<T> = keyof T | Path<T>
+  export type DeepArray<T> = ArrayPath<T>
+  export type Shallow<T> = keyof T
+}
+
+export type Primitive = bigint | boolean | null | number | string | symbol | undefined
 
 export type StatusTransformer = (keys: string[]) => string
 

@@ -2,7 +2,9 @@ import { WebSocketEventData } from '../definitions/types'
 import { noop } from '../functions/noop'
 import { tc } from '../functions/tc'
 import { ModuleLogger } from '../loggers/module.logger'
-import { isStringJSON } from '../utils/string'
+import { isStringJSON } from '../utils/string.utils'
+import { DeferredPromise } from './deferred.promise'
+import { Interval } from './interval'
 
 /**
  * A module to handle in an easier way web sockets.
@@ -57,31 +59,34 @@ class _ {
    * Closes the connection.
    */
   async close(): Promise<void | Error> {
-    let close: void | Error
+    let close: void | Error, promise: DeferredPromise<void>
 
     close = tc(() => this.instance.close())
     if (close instanceof Error) return close
 
     ModuleLogger.debug(this.id, 'close', `The web socket is closing the connection.`)
 
-    return new Promise((r) =>
-      window.setInterval(() => {
-        switch (true) {
-          case this.isReadyStateClosed:
-            return r()
-          case this.isReadyStateConnecting:
-          case this.isReadyStateOpen:
-            return r()
+    promise = new DeferredPromise()
+
+    Interval.start(
+      this.name,
+      () => {
+        if (this.isReadyStateClosed) {
+          Interval.stop(this.name)
+          promise.resolve()
         }
-      }, 100)
+      },
+      100
     )
+
+    return promise.instance
   }
 
   /**
    * Opens the connection.
    */
   async open(): Promise<void | Error> {
-    let socket: WebSocket | Error
+    let socket: WebSocket | Error, promise: DeferredPromise<void>
 
     socket = tc(() => new WebSocket(this.url, this.protocols))
     if (socket instanceof Error) return socket
@@ -92,17 +97,20 @@ class _ {
     this.instance.onmessage = this.onMessage
     this.instance.onopen = this.onOpen
 
-    return new Promise((r) =>
-      window.setInterval(() => {
-        switch (true) {
-          case this.isReadyStateClosed:
-          case this.isReadyStateClosing:
-            return r()
-          case this.isReadyStateOpen:
-            return r()
+    promise = new DeferredPromise()
+
+    Interval.start(
+      this.name,
+      () => {
+        if (this.isReadyStateOpen) {
+          Interval.stop(this.name)
+          promise.resolve()
         }
-      }, 100)
+      },
+      100
     )
+
+    return promise.instance
   }
 
   /**

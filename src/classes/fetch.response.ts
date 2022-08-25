@@ -39,7 +39,7 @@ export class FetchResponse<T = void> implements Response {
         let blob: Blob | Error
 
         blob = await tcp(() => this.blob())
-        if (blob instanceof Error) return this.setData(new Blob([]))
+        if (blob instanceof Error) return this.setData(new Blob())
 
         this.setData(blob)
         ClassLogger.debug('FetchResponse', 'parse', `The data has been parsed as Blob.`, blob)
@@ -55,6 +55,7 @@ export class FetchResponse<T = void> implements Response {
         ClassLogger.debug('FetchResponse', 'parse', `The data has been parsed as JSON.`, json)
 
         break
+      // istanbul ignore next
       case this.ContentType.startsWith('multipart/') && this.ContentType.includes('form-data'):
         let form: FormData | Error
 
@@ -100,6 +101,7 @@ export class FetchResponse<T = void> implements Response {
     return this.response.clone()
   }
 
+  // istanbul ignore next
   formData(): Promise<FormData> {
     return this.response.formData()
   }
@@ -119,12 +121,11 @@ export class FetchResponse<T = void> implements Response {
   static from<T>(data: T): FetchResponse<T>
   static from<T>(response: Response): FetchResponse<T>
   static from<T>(...args: any[]): FetchResponse<T> {
-    switch (true) {
-      case args[0] instanceof Response:
-        return new FetchResponse(args[0])
-      default:
-        return new FetchResponse(new Response(), args[0])
+    if (args[0] instanceof Response) {
+      return new FetchResponse(args[0])
     }
+
+    return new FetchResponse(new Response(), args[0])
   }
 
   private get ContentType(): string {

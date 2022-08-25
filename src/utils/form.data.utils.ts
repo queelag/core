@@ -1,4 +1,4 @@
-import { isStringJSON } from './string'
+import { isStringJSON } from './string.utils'
 
 export function convertFormDataToObject<T extends object>(data: FormData): T {
   let object: T

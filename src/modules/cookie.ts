@@ -4,7 +4,7 @@ import { CookieObject, CookieTarget, CookieValue } from '../definitions/interfac
 import { rc } from '../functions/rc'
 import { tc } from '../functions/tc'
 import { ModuleLogger } from '../loggers/module.logger'
-import { setObjectProperty } from '../utils/object'
+import { setObjectProperty } from '../utils/object.utils'
 
 /**
  * A module to handle cookies through a store.
@@ -12,7 +12,7 @@ import { setObjectProperty } from '../utils/object'
  * @category Module
  */
 export class Cookie {
-  static target: CookieTarget = DEFAULT_COOKIE_TARGET()
+  static target: CookieTarget = DEFAULT_COOKIE_TARGET
 
   /** @hidden */
   constructor() {}

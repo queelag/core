@@ -1,8 +1,8 @@
 import { FetchRequestInit } from '../definitions/interfaces'
-import { isArray } from './array'
-import { convertFormDataToObject } from './form.data'
-import { mergeObjects, omitObjectProperties } from './object'
-import { isStringJSON } from './string'
+import { isArray } from './array.utils'
+import { convertFormDataToObject } from './form.data.utils'
+import { mergeObjects, omitObjectProperties } from './object.utils'
+import { isStringJSON } from './string.utils'
 
 export function deleteFetchRequestInitHeader<T extends unknown>(init: FetchRequestInit<T> | RequestInit, name: string): void {
   if (typeof init.headers === 'undefined') {
@@ -182,6 +182,7 @@ export function toLoggableNativeFetchRequestInit(init: RequestInit): RequestInit
 
   if (init.body instanceof FormData) {
     clone.body = convertFormDataToObject(init.body) as any
+    return clone
   }
 
   if (typeof init.body === 'string' && isStringJSON(init.body)) {

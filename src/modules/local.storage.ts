@@ -9,7 +9,9 @@ import { Storage } from './storage'
  */
 export const LocalStorage = new Storage(
   'LocalStorage',
-  async (key: string) => (Environment.isWindowDefined ? JSON.parse(window.localStorage.getItem(key) || '{}') : {}),
-  async (key: string) => (Environment.isWindowDefined ? window.localStorage.removeItem(key) : undefined),
-  async (key: string, value: StorageValue) => (Environment.isWindowDefined ? window.localStorage.setItem(key, JSON.stringify(value)) : undefined)
+  async () => (Environment.isWindowDefined ? localStorage.clear() : undefined),
+  async (key: string) => (Environment.isWindowDefined ? JSON.parse(localStorage.getItem(key) || '{}') : {}),
+  async (key: string) => (Environment.isWindowDefined ? localStorage.getItem(key) !== null : false),
+  async (key: string) => (Environment.isWindowDefined ? localStorage.removeItem(key) : undefined),
+  async (key: string, value: StorageValue) => (Environment.isWindowDefined ? localStorage.setItem(key, JSON.stringify(value)) : undefined)
 )

@@ -1,3 +1,4 @@
+import { DEFAULT_STATUS_TRANSFORMER } from '../definitions/constants'
 import { StatusTransformer } from '../definitions/types'
 import { ModuleLogger } from '../loggers/module.logger'
 
@@ -10,10 +11,11 @@ export class Status {
   /**
    * A map of strings.
    */
-  readonly data: Map<string, string> = new Map()
+  readonly data: Map<string, string>
+  readonly transformer: StatusTransformer
 
-  /** @hidden */
-  constructor(transformer: StatusTransformer = Status.DEFAULT_TRANSFORMER) {
+  constructor(transformer: StatusTransformer = DEFAULT_STATUS_TRANSFORMER) {
+    this.data = new Map()
     this.transformer = transformer
   }
 
@@ -60,11 +62,6 @@ export class Status {
   clear(): void {
     this.data.clear()
     ModuleLogger.debug('Status', 'clear', `Every status has been set to ${Status.IDLE}.`)
-  }
-
-  /** @internal */
-  private transformer(keys: string[]): string {
-    return keys.join('_')
   }
 
   /**
@@ -127,7 +124,7 @@ export class Status {
    * Checks whether some of the transformed keys are IDLE.
    */
   areSomeIdle(...keys: string[][]): boolean {
-    return keys.some((v: string[]) => this.isPending(...v))
+    return keys.some((v: string[]) => this.isIdle(...v))
   }
 
   /**
@@ -165,10 +162,5 @@ export class Status {
 
   static get ERROR(): string {
     return 'ERROR'
-  }
-
-  /** @internal */
-  static get DEFAULT_TRANSFORMER(): StatusTransformer {
-    return (keys: string[]) => keys.join('_')
   }
 }

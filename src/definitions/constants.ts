@@ -1,8 +1,7 @@
 import { noop } from '../functions/noop'
-import { Environment } from '../modules/environment'
-import { removeSearchParamsFromURL } from '../utils/url'
+import { removeSearchParamsFromURL } from '../utils/url.utils'
 import { ConfigurationModule, CookieTarget } from './interfaces'
-import { ArrayIncludes, ArrayRemoves, IsEqual, StatusTransformer } from './types'
+import { ArrayIncludes, ArrayRemoves, StatusTransformer } from './types'
 
 export const ALPHABET_LOWERCASE: string = 'abcdefghijklmnopqrstuvwxyz'
 export const ALPHABET_NO_LOOK_ALIKES_SAFE: string = '6789BCDFGHJKLMNPQRTWbcdfghjkmnpqrtwz'
@@ -22,16 +21,16 @@ export const DEFAULT_ARRAY_INCLUDES: ArrayIncludes<any> = (array: any[], item: a
 
 export const DEFAULT_ARRAY_REMOVES: ArrayRemoves<any> = (array: any[], item: any) => array.includes(item)
 
-export const DEFAULT_COOKIE_TARGET: () => CookieTarget = () => ({
+export const DEFAULT_COOKIE_TARGET: CookieTarget = Object.freeze({
   get: () => {
-    if (Environment.isWindowNotDefined) {
+    if (typeof window !== 'object') {
       return ''
     }
 
     return document.cookie
   },
   set: (string: string) => {
-    if (Environment.isWindowNotDefined) {
+    if (typeof window !== 'object') {
       return
     }
 
@@ -52,7 +51,7 @@ export const DEFAULT_CONFIGURATION_MODULE: () => ConfigurationModule = () => ({
 
 export const DEFAULT_HISTORY_SIZE: number = 100
 
-export const DEFAULT_IS_EQUAL: IsEqual<any, any> = (a: any, b: any) => a === b
+export const DEFAULT_LOGGER_SEPARATOR: string = ' -> '
 
 export const DEFAULT_STATUS_TRANSFORMER: StatusTransformer = (keys: string[]) => keys.join('_')
 
@@ -60,18 +59,5 @@ export const EMPTY_OBJECT: () => Record<PropertyKey, any> = () => ({})
 
 export const REGEXP_NOT_LETTERS: RegExp = /[^a-zA-Z]/
 export const REGEXP_NOT_LOWERCASE_LETTERS: RegExp = /[^a-z]/
-export const REGEXP_SQUARE_BRACKETS: RegExp = /[\[\]]/
+export const REGEXP_SQUARE_BRACKETS: RegExp = /[\[\]]/g
 export const REGEXP_UPPERCASE_LETTERS: RegExp = /[A-Z]/
-
-export const STUB_TEXT_DECODER: TextDecoder = {
-  decode: () => '',
-  encoding: '',
-  fatal: false,
-  ignoreBOM: false
-}
-
-export const STUB_TEXT_ENCODER: TextEncoder = {
-  encode: () => new Uint8Array(),
-  encodeInto: () => ({ read: 0, written: 0 }),
-  encoding: ''
-}

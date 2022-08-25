@@ -2,6 +2,7 @@ import {
   cloneDeepObject,
   cloneShallowObject,
   convertObjectToFormData,
+  copyObjectProperty,
   deleteObjectProperty,
   getObjectProperty,
   hasObjectProperty,
@@ -84,6 +85,12 @@ describe('ObjectUtils', () => {
 
     clone.do1.n1 = 1
     expect(o1.do1.n1).toBe(0)
+  })
+
+  it('copies an object property to another object', () => {
+    o1.snum1 = 1
+    copyObjectProperty(o1, 'snum1', o2)
+    expect(o2.snum1).toBe(1)
   })
 
   it('deletes an object property', () => {
