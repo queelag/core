@@ -8,10 +8,3 @@ export function convertQueryParametersObjectToString<T extends object>(parameter
     .map((v: [string, any]) => v.join('='))
     .join('&')
 }
-
-/**
- * @deprecated
- */
-export class QueryParametersUtils {
-  static toString = convertQueryParametersObjectToString
-}

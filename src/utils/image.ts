@@ -4,6 +4,7 @@ import { Cache } from '../modules/cache'
 /**
  * Draws an already loaded image element to a canvas and exports it as a base64 data URL.
  */
+// istanbul ignore next
 export function getImageElementBase64(image: HTMLImageElement, alpha: boolean = false, quality: number = 0.8): string {
   let canvas: HTMLCanvasElement, context: CanvasRenderingContext2D
 
@@ -20,6 +21,7 @@ export function getImageElementBase64(image: HTMLImageElement, alpha: boolean = 
 /**
  * Preloads a set of image sources and caches them as base64 data URLs.
  */
+// istanbul ignore next
 export async function preloadImages(sources: string[]): Promise<boolean> {
   let loads: boolean[]
 
@@ -59,12 +61,4 @@ export async function preloadImages(sources: string[]): Promise<boolean> {
   )
 
   return loads.every((v: boolean) => v)
-}
-
-/**
- * @deprecated
- */
-export class ImageUtils {
-  preload = preloadImages
-  toBase64 = getImageElementBase64
 }

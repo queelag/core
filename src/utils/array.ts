@@ -107,12 +107,8 @@ export function removeArrayItems<T>(...args: any[]): T[] {
 }
 
 /**
- * @deprecated
+ * Checks whether value is an array.
  */
-export class ArrayUtils {
-  static difference = getArraysDifference
-  static intersection = getArraysIntersection
-  static last = getArrayLastItem
-  static remove = removeArrayItems
-  static uniq = removeArrayDuplicates
+export function isArray<T>(value: any): value is T[] {
+  return Array.isArray(value)
 }

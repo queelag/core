@@ -1,5 +1,6 @@
 import cloneDeep from 'lodash/cloneDeep'
 import merge from 'lodash/merge'
+import { REGEXP_SQUARE_BRACKETS } from '../definitions/constants'
 import { tc } from '../functions/tc'
 import { Environment } from '../modules/environment'
 
@@ -39,26 +40,26 @@ export function deleteObjectProperty<T extends object>(object: T, key: string | 
       break
     case 'string':
       if (key.includes('.')) {
-        let keys: string[], parent: any | Error
+        let target: any | undefined, keys: string[], lkey: string
+
+        target = getObjectPropertyDotKeyTarget(object, key)
+        if (!target) return
 
         keys = key.split('.')
+        lkey = keys[keys.length - 1].replace(REGEXP_SQUARE_BRACKETS, '')
 
-        parent = tc(() => keys.reduce((r: any, k: string, i: number) => (i < keys.length - 1 ? r[k] : r), object))
-        if (parent instanceof Error) return
-
-        delete parent[keys[keys.length - 1]]
+        delete target[lkey]
 
         return
       }
 
       delete object[key as keyof T]
-
       break
   }
 }
 
 /**
- * Gets a key from an object, supports dot notation.
+ * Gets a property from an object, supports dot notation.
  *
  * @template T The object interface.
  * @template U The value interface or type.
@@ -72,27 +73,48 @@ export function getObjectProperty<T extends object, U extends any>(object: T, ke
       return object[key] as U
     case 'string':
       if (key.includes('.')) {
-        let value: U | Error
+        let keys: string[], lkey: string, target: any | undefined
 
-        value = tc(
-          () =>
-            key.split('.').reduce((r: any, k: string) => {
-              let key: string
+        target = getObjectPropertyDotKeyTarget(object, key)
+        if (!target) return fallback
 
-              key = k.replace(/[\[\]]/g, '')
-              if (Object.keys(r).includes(key)) return r[key]
+        keys = key.split('.')
+        lkey = keys[keys.length - 1].replace(REGEXP_SQUARE_BRACKETS, '')
 
-              throw new Error(`The object does not include the key ${key}.`)
-            }, object),
-          false
-        )
-        if (value instanceof Error) return fallback
-
-        return value
+        return target[lkey]
       }
 
       return Object.keys(object).includes(key) ? (object[key as keyof T] as U) : fallback
   }
+}
+
+/**
+ * Gets the target of an object property dot key.
+ *
+ * @template T The object interface.
+ * @template U The parent interface.
+ */
+function getObjectPropertyDotKeyTarget<T extends object, U extends object>(object: T, key: string): U | undefined {
+  let keys: string[], target: any | Error
+
+  keys = key.split('.')
+  target = object
+
+  for (let i = 0; i < keys.length; i++) {
+    let key: string
+
+    if (i >= keys.length - 1) {
+      continue
+    }
+
+    key = keys[i]
+    key = key.replace(REGEXP_SQUARE_BRACKETS, '')
+
+    target = tc(() => target[key])
+    if (target instanceof Error) return undefined
+  }
+
+  return target
 }
 
 /**
@@ -148,7 +170,7 @@ export function pickObjectProperties<T extends object, K extends keyof T>(object
  * @template T The object interface.
  * @template U The value interface or type.
  */
-export function setObjectProperty<T extends object, U extends any>(object: T, key: string | keyof T, value: U): void {
+export function setObjectProperty<T extends object, U extends any>(object: T, key: string | keyof T, value: U): void | Error {
   switch (typeof key) {
     case 'number':
     case 'symbol':
@@ -156,28 +178,37 @@ export function setObjectProperty<T extends object, U extends any>(object: T, ke
       break
     case 'string':
       if (key.includes('.')) {
-        let keys: string[], parent: any | Error
+        let keys: string[], target: any | Error, lkey: string
 
         keys = key.split('.')
+        target = object
 
-        parent = tc(() =>
-          keys.reduce((r: any, k: string, i: number) => {
-            if (i >= keys.length - 1) return r
+        for (let i = 0; i < keys.length; i++) {
+          let key: string
 
-            switch (typeof r[k]) {
-              case 'object':
-                return r[k]
-              case 'undefined':
-                r[k] = {}
-                return r[k]
-              default:
-                throw new Error(`The value type is nor undefined nor object.`)
-            }
-          }, object)
-        )
-        if (parent instanceof Error) return
+          if (i >= keys.length - 1) {
+            continue
+          }
 
-        parent[keys[keys.length - 1]] = value
+          key = keys[i]
+          key = key.replace(/[\[\]]/g, '').trim()
+
+          switch (typeof target[key]) {
+            case 'object':
+              target = target[key]
+              continue
+            case 'undefined':
+              target[key] = keys[i + 1].includes('[') ? [] : {}
+              target = target[key]
+
+              continue
+            default:
+              return new Error(`The value type is nor undefined nor object.`)
+          }
+        }
+
+        lkey = keys[keys.length - 1].replace(/[\[\]]/g, '').trim()
+        target[lkey] = value
 
         return
       }
@@ -194,34 +225,39 @@ export function convertObjectToFormData<T extends object>(object: T): FormData {
   data = new FormData()
 
   for (let [k, v] of Object.entries(object)) {
-    switch (true) {
-      case Environment.isFileDefined && v instanceof File:
-        data.append(k, v)
+    switch (typeof v) {
+      case 'bigint':
+      case 'boolean':
+      case 'number':
+        data.append(k, v.toString())
         continue
-      default:
-        switch (typeof v) {
-          case 'bigint':
-          case 'boolean':
-          case 'number':
-            data.append(k, v.toString())
-            continue
-          case 'function':
-          case 'symbol':
-          case 'undefined':
-            continue
-          case 'object':
-            let stringified: string | Error
+      case 'function':
+      case 'symbol':
+      case 'undefined':
+        continue
+      case 'object':
+        let stringified: string | Error
 
-            stringified = tc(() => JSON.stringify(v))
-            if (stringified instanceof Error) continue
+        if (v === null) {
+          continue
+        }
 
-            data.append(k, stringified)
-
-            continue
-          case 'string':
+        switch (true) {
+          case Environment.isBlobDefined && v instanceof Blob:
+          case Environment.isFileDefined && v instanceof File:
             data.append(k, v)
             continue
         }
+
+        stringified = tc(() => JSON.stringify(v))
+        if (stringified instanceof Error) continue
+
+        data.append(k, stringified)
+
+        continue
+      case 'string':
+        data.append(k, v)
+        continue
     }
   }
 
@@ -263,25 +299,29 @@ export function isObjectValuesPopulated<T extends object>(object: T): boolean {
 /**
  * Checks whether the object is really an object or not.
  */
-export function isObject(value: any): value is object {
-  return typeof value === 'object' && !Array.isArray(value)
+export function isObject<T extends object>(value: any): value is T {
+  if (value === null) {
+    return false
+  }
+
+  if (Array.isArray(value)) {
+    return false
+  }
+
+  return typeof value === 'object'
 }
 
 /**
- * @deprecated
+ * Checks if value is a plain object.
  */
-export class ObjectUtils {
-  static cloneDeep = cloneDeepObject
-  static cloneShallow = cloneShallowObject
-  static deleteProperty = deleteObjectProperty
-  static getProperty = getObjectProperty
-  static merge = mergeObjects
-  static omitProperties = omitObjectProperties
-  static pickProperties = pickObjectProperties
-  static setProperty = setObjectProperty
-  static toFormData = convertObjectToFormData
-  static hasProperty = hasObjectProperty
-  static hasKeys = isObjectKeysPopulated
-  static hasValues = isObjectValuesPopulated
-  static is = isObject
+export function isPlainObject<T extends object>(value: any): value is T {
+  if (typeof value !== 'object') {
+    return false
+  }
+
+  if (typeof value?.toString !== 'function') {
+    return false
+  }
+
+  return value.toString() === '[object Object]'
 }

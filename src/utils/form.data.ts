@@ -16,10 +16,3 @@ export function convertFormDataToObject<T extends object>(data: FormData): T {
 
   return object
 }
-
-/**
- * @deprecated
- */
-export class FormDataUtils {
-  toObject = convertFormDataToObject
-}

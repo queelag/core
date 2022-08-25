@@ -9,6 +9,7 @@ import { isStringJSON } from '../utils/string'
  *
  * @category Module
  */
+// istanbul ignore next
 class _ {
   /**
    * A {@link WebSocket} instance.

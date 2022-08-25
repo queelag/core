@@ -58,6 +58,11 @@ export const DEFAULT_STATUS_TRANSFORMER: StatusTransformer = (keys: string[]) =>
 
 export const EMPTY_OBJECT: () => Record<PropertyKey, any> = () => ({})
 
+export const REGEXP_NOT_LETTERS: RegExp = /[^a-zA-Z]/
+export const REGEXP_NOT_LOWERCASE_LETTERS: RegExp = /[^a-z]/
+export const REGEXP_SQUARE_BRACKETS: RegExp = /[\[\]]/
+export const REGEXP_UPPERCASE_LETTERS: RegExp = /[A-Z]/
+
 export const STUB_TEXT_DECODER: TextDecoder = {
   decode: () => '',
   encoding: '',

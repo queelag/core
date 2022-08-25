@@ -1,26 +1,92 @@
 import { FetchRequestInit } from '../definitions/interfaces'
-import { Environment } from '../modules/environment'
+import { isArray } from './array'
 import { convertFormDataToObject } from './form.data'
-import { cloneDeepObject, mergeObjects, omitObjectProperties } from './object'
+import { mergeObjects, omitObjectProperties } from './object'
 import { isStringJSON } from './string'
 
-export function setFetchRequestInitHeader<T extends unknown>(init: FetchRequestInit<T> | RequestInit, name: string, value: string): void {
-  switch (true) {
-    case init.headers instanceof Headers:
-      ;(init.headers as Headers).set(name, value)
-      break
-    case Array.isArray(init.headers):
-      ;(init.headers as string[][]).push([name, value])
-      break
-    case typeof init.headers === 'object':
-      ;(init.headers as Record<string, string>)[name] = value
-      break
-    case typeof init.headers === 'undefined':
-      init.headers = new Headers()
-      init.headers.set(name, value)
-
-      break
+export function deleteFetchRequestInitHeader<T extends unknown>(init: FetchRequestInit<T> | RequestInit, name: string): void {
+  if (typeof init.headers === 'undefined') {
+    return
   }
+
+  if (init.headers instanceof Headers) {
+    return init.headers.delete(name)
+  }
+
+  if (isArray(init.headers)) {
+    init.headers = init.headers.filter((header: string[]) => header[0] !== name)
+    return
+  }
+
+  delete init.headers[name]
+}
+
+export function getFetchRequestInitHeader<T extends unknown>(init: FetchRequestInit<T> | RequestInit, name: string): string | null {
+  let value: string | undefined
+
+  if (typeof init.headers === 'undefined') {
+    return null
+  }
+
+  if (init.headers instanceof Headers) {
+    return init.headers.get(name)
+  }
+
+  if (isArray(init.headers)) {
+    let duplet: string[] | undefined
+
+    duplet = init.headers.find((v: string[]) => v[0] === name)
+    if (!duplet) return null
+
+    return duplet[1]
+  }
+
+  value = init.headers[name]
+  if (!value) return null
+
+  return value
+}
+
+export function getFetchRequestInitHeadersEntries<T extends unknown>(init: FetchRequestInit<T> | RequestInit): string[][] {
+  if (typeof init.headers === 'undefined') {
+    return []
+  }
+
+  if (init.headers instanceof Headers) {
+    return [...init.headers.entries()]
+  }
+
+  if (isArray(init.headers)) {
+    return init.headers
+  }
+
+  return Object.entries(init.headers)
+}
+
+export function getFetchRequestInitHeadersLength<T extends unknown>(init: FetchRequestInit<T> | RequestInit): number {
+  return getFetchRequestInitHeadersEntries(init).length
+}
+
+export function setFetchRequestInitHeader<T extends unknown>(init: FetchRequestInit<T> | RequestInit, name: string, value: string): void {
+  if (typeof init.headers === 'undefined') {
+    init.headers = new Headers()
+    init.headers.set(name, value)
+
+    return
+  }
+
+  if (init.headers instanceof Headers) {
+    return init.headers.set(name, value)
+  }
+
+  if (isArray(init.headers)) {
+    init.headers = init.headers.filter((header: string[]) => header[0] !== name)
+    init.headers.push([name, value])
+
+    return
+  }
+
+  init.headers[name] = value
 }
 
 export function setFetchRequestInitHeaderWhenUnset<V extends unknown>(init: FetchRequestInit<V> | RequestInit, name: string, value: string): void {
@@ -35,29 +101,19 @@ export function mergeFetchRequestInits<V extends unknown>(target: FetchRequestIn
   let merged: FetchRequestInit<V>
 
   merged = mergeObjects(target, ...sources)
-  merged.headers = target.headers ? cloneDeepObject(target.headers) : new Headers()
+  merged.headers = new Headers()
+
+  for (let [k, v] of getFetchRequestInitHeadersEntries(target)) {
+    setFetchRequestInitHeader(merged, k, v)
+  }
 
   for (let source of sources) {
-    switch (typeof source.headers?.entries) {
-      case 'function':
-        for (let [k, v] of [...source.headers.entries()]) {
-          switch (typeof v) {
-            case 'object':
-              setFetchRequestInitHeader(merged, v[0], v[1])
-              break
-            case 'string':
-              setFetchRequestInitHeader(merged, k as string, v)
-              break
-          }
-        }
-
-        break
-      case 'undefined':
-        break
+    for (let [k, v] of getFetchRequestInitHeadersEntries(source)) {
+      setFetchRequestInitHeader(merged, k, v)
     }
   }
 
-  if (typeof merged.headers.entries === 'function' && [...merged.headers.entries()].length <= 0) {
+  if (getFetchRequestInitHeadersLength(merged) <= 0) {
     delete merged.headers
   }
 
@@ -68,40 +124,36 @@ export function toNativeFetchRequestInit<V extends unknown>(init: FetchRequestIn
   let clone: RequestInit
 
   clone = omitObjectProperties(init, ['body'])
-  if (!init.body) return clone
+  if (init.body === undefined) return clone
 
-  switch (true) {
-    case init.body instanceof ArrayBuffer:
-    case Environment.isBlobDefined && init.body instanceof Blob:
-      clone.body = init.body as ArrayBuffer | Blob
-      setFetchRequestInitHeaderWhenUnset(clone, 'content-type', 'application/octet-stream')
+  if (init.body instanceof ArrayBuffer || init.body instanceof Blob) {
+    clone.body = init.body
+    setFetchRequestInitHeaderWhenUnset(clone, 'content-type', 'application/octet-stream')
+
+    return clone
+  }
+
+  if (init.body instanceof FormData) {
+    clone.body = init.body
+    // this.setRequestInitHeaderOnlyIfUnset(clone, 'content-type', 'multipart/form-data')
+
+    return clone
+  }
+
+  switch (typeof init.body) {
+    case 'bigint':
+    case 'boolean':
+    case 'function':
+    case 'number':
+    case 'string':
+    case 'symbol':
+      clone.body = init.body.toString()
+      setFetchRequestInitHeaderWhenUnset(clone, 'content-type', 'text/plain')
 
       break
-    case Environment.isFormDataDefined && init.body instanceof FormData:
-      clone.body = init.body as FormData
-      // this.setRequestInitHeaderOnlyIfUnset(clone, 'content-type', 'multipart/form-data')
-
-      break
-    default:
-      switch (typeof init.body) {
-        case 'bigint':
-        case 'boolean':
-        case 'function':
-        case 'number':
-        case 'string':
-        case 'symbol':
-          clone.body = init.body.toString()
-          setFetchRequestInitHeaderWhenUnset(clone, 'content-type', 'text/plain')
-
-          break
-        case 'object':
-          clone.body = JSON.stringify(init.body)
-          setFetchRequestInitHeaderWhenUnset(clone, 'content-type', 'application/json')
-
-          break
-        case 'undefined':
-          break
-      }
+    case 'object':
+      clone.body = JSON.stringify(init.body)
+      setFetchRequestInitHeaderWhenUnset(clone, 'content-type', 'application/json')
 
       break
   }
@@ -113,12 +165,10 @@ export function toLoggableFetchRequestInit<T>(init: FetchRequestInit<T>): FetchR
   let clone: FetchRequestInit<T>
 
   clone = omitObjectProperties(init, ['body'])
-  if (!init.body) return clone
+  if (init.body === undefined) return clone
 
-  switch (true) {
-    case Environment.isFormDataDefined && init.body instanceof FormData:
-      clone.body = convertFormDataToObject(init.body as any) as any
-      break
+  if (init.body instanceof FormData) {
+    clone.body = convertFormDataToObject(init.body) as any
   }
 
   return clone
@@ -128,52 +178,22 @@ export function toLoggableNativeFetchRequestInit(init: RequestInit): RequestInit
   let clone: RequestInit
 
   clone = omitObjectProperties(init, ['body'])
-  if (!init.body) return clone
+  if (init.body === undefined) return clone
 
-  switch (true) {
-    case Environment.isFormDataDefined && init.body instanceof FormData:
-      clone.body = convertFormDataToObject(init.body as FormData) as any
-      break
-    default:
-      switch (typeof init.body) {
-        case 'string':
-          if (isStringJSON(init.body)) {
-            clone.body = JSON.parse(init.body)
-            break
-          }
-
-          clone.body = init.body
-          break
-        default:
-          clone.body = init.body
-          break
-      }
-      break
+  if (init.body instanceof FormData) {
+    clone.body = convertFormDataToObject(init.body) as any
   }
+
+  if (typeof init.body === 'string' && isStringJSON(init.body)) {
+    clone.body = JSON.parse(init.body)
+    return clone
+  }
+
+  clone.body = init.body
 
   return clone
 }
 
 export function hasFetchRequestInitHeader<V extends unknown>(init: FetchRequestInit<V> | RequestInit, name: string): boolean {
-  switch (typeof init.headers?.keys) {
-    case 'function':
-      return [...init.headers?.keys()].includes(name)
-    case 'string':
-      return init.headers.keys.includes(name)
-    case 'undefined':
-      return false
-  }
-}
-
-/**
- * @deprecated
- */
-export class FetchUtils {
-  setRequestInitHeader = setFetchRequestInitHeader
-  setRequestInitHeaderWhenUnset = setFetchRequestInitHeaderWhenUnset
-  mergeRequestInits = mergeFetchRequestInits
-  toNativeRequestInit = toNativeFetchRequestInit
-  toLoggableRequestInit = toLoggableFetchRequestInit
-  toLoggableNativeRequestInit = toLoggableNativeFetchRequestInit
-  hasRequestInitHeader = hasFetchRequestInitHeader
+  return getFetchRequestInitHeader(init, name) !== null
 }

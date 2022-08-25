@@ -29,6 +29,7 @@ describe('NumberUtils', () => {
   })
 
   it('limits a number', () => {
+    expect(getLimitedNumber(5)).toBe(5)
     expect(getLimitedNumber(5, 0, 10)).toBe(5)
     expect(getLimitedNumber(5, 4, 10)).toBe(5)
     expect(getLimitedNumber(5, 5, 10)).toBe(5)
@@ -44,16 +45,22 @@ describe('NumberUtils', () => {
     expect(getNumberPercentage(50, 50)).toBe(100)
     expect(getNumberPercentage(50, 0, 80)).toBe(62.5)
     expect(getNumberPercentage(50, 0, 50)).toBe(100)
+    expect(getNumberPercentage(50.4, 0, 100, true)).toBe(50)
+    expect(getNumberPercentage(50.5, 0, 100, true)).toBe(51)
   })
 
   it('gets highest number', () => {
     expect(getHighestNumber(0, 1, 2)).toBe(2)
+    expect(getHighestNumber(2, 1, 0)).toBe(2)
     expect(getHighestNumber([0, 1, 2])).toBe(2)
+    expect(getHighestNumber([2, 1, 0])).toBe(2)
   })
 
   it('gets lowest number', () => {
     expect(getLowestNumber(0, 1, 2)).toBe(0)
+    expect(getLowestNumber(2, 1, 0)).toBe(0)
     expect(getLowestNumber([0, 1, 2])).toBe(0)
+    expect(getLowestNumber([2, 1, 0])).toBe(0)
   })
 
   it('parses bigint', () => {
@@ -62,11 +69,14 @@ describe('NumberUtils', () => {
     expect(parseBigInt(0n)).toBe(0n)
     expect(parseBigInt(false)).toBe(0n)
     expect(parseBigInt(true)).toBe(1n)
+    expect(parseBigInt(NaN)).toBe(0n)
   })
 
   it('parses int and float', () => {
     expect(parseNumber('0')).toBe(0)
     expect(parseNumber('0.1')).toBe(0.1)
+    expect(parseNumber('hello', 0)).toBe(0)
+    expect(parseNumber('hello.', 0.1)).toBe(0.1)
   })
 
   it('gets a number with a fixed amount of decimals', () => {

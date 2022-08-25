@@ -4,8 +4,8 @@ import { tcp } from '../functions/tcp'
  * Calls every fn synchronously.
  */
 export async function chainPromises(...fns: ((...args: any[]) => Promise<any>)[]): Promise<void> {
-  for (let i = 0; i < fns.length; i++) {
-    await tcp(() => fns[i]())
+  for (let fn of fns) {
+    await tcp(() => fn())
   }
 }
 
@@ -15,8 +15,8 @@ export async function chainPromises(...fns: ((...args: any[]) => Promise<any>)[]
 export async function chainTruthyPromises(...fns: ((...args: any[]) => Promise<any>)[]): Promise<boolean> {
   let output: boolean | Error
 
-  for (let i = 0; i < fns.length; i++) {
-    output = await tcp(() => fns[i]())
+  for (let fn of fns) {
+    output = await tcp(() => fn())
     if (output instanceof Error) return false
 
     output = Boolean(output)
@@ -24,12 +24,4 @@ export async function chainTruthyPromises(...fns: ((...args: any[]) => Promise<a
   }
 
   return true
-}
-
-/**
- * @deprecated
- */
-export class PromiseUtils {
-  static chain = chainPromises
-  static truthyChain = chainTruthyPromises
 }

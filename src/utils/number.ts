@@ -19,14 +19,27 @@ export function getNumbersDistance(a: number, b: number): number {
  * Limits a number between a minimum and maximum.
  */
 export function getLimitedNumber(number: number, minimum: number = Number.MIN_SAFE_INTEGER, maximum: number = Number.MAX_SAFE_INTEGER): number {
-  return number >= minimum && number <= maximum ? number : number >= minimum && number > maximum ? maximum : number < minimum && number <= maximum ? minimum : 0
+  if (number >= minimum && number <= maximum) {
+    return number
+  }
+
+  if (number < minimum) {
+    return minimum
+  }
+
+  return maximum
 }
 
 /**
  * Calculates the percentage of a number between minimum and maximum.
  */
 export function getNumberPercentage(number: number, minimum: number = 0, maximum: number = 100, round: boolean = false): number {
-  return round ? Math.round((number / (maximum - minimum)) * 100) : (number / (maximum - minimum)) * 100
+  let percentage: number
+
+  percentage = (number / (maximum - minimum)) * 100
+  percentage = round ? Math.round(percentage) : percentage
+
+  return percentage
 }
 
 /**
@@ -114,22 +127,4 @@ export function isNumberMultipleOf(number: number, of: number): boolean {
  */
 export function isNumberOdd(number: number): boolean {
   return Math.abs(number % 2) == 1
-}
-
-/**
- * @deprecated
- */
-export class NumberUtils {
-  absolute = getAbsoluteNumber
-  distance = getNumbersDistance
-  limit = getLimitedNumber
-  percentage = getNumberPercentage
-  max = getHighestNumber
-  min = getLowestNumber
-  parseBigInt = parseBigInt
-  parseNumber = parseNumber
-  toFixed = toFixedNumber
-  isEven = isNumberEven
-  isMultipleOf = isNumberMultipleOf
-  isOdd = isNumberOdd
 }

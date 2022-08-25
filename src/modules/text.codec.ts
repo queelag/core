@@ -1,17 +1,14 @@
 import { STUB_TEXT_DECODER, STUB_TEXT_ENCODER } from '../definitions/constants'
 
-interface Stub {
-  decoder: TextDecoder
-  encoder: TextEncoder
-}
-
 /**
  * A module to have both TextDecoder and TextEncoder already initialized.
  *
  * @category Module
  */
 export class TextCodec {
+  // istanbul ignore next
   private static decoder: TextDecoder = typeof TextDecoder === 'function' ? new TextDecoder() : STUB_TEXT_DECODER
+  // istanbul ignore next
   private static encoder: TextEncoder = typeof TextEncoder === 'function' ? new TextEncoder() : STUB_TEXT_ENCODER
 
   static decode(input: Uint8Array, options?: TextDecodeOptions): string {

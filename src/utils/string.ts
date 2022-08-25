@@ -1,3 +1,4 @@
+import { REGEXP_NOT_LETTERS, REGEXP_NOT_LOWERCASE_LETTERS, REGEXP_UPPERCASE_LETTERS } from '../definitions/constants'
 import { tc } from '../functions/tc'
 
 /**
@@ -11,34 +12,95 @@ export function toCapitalizedString(string: string, lowercase: boolean = false):
  * Transforms any string to a per word capitalized string but with the first char in lowercase.
  */
 export function toCamelCaseString(string: string): string {
-  return string
-    .split(/[^a-zA-Z]/)
-    .map((v: string, k: number) => (k > 0 ? toCapitalizedString(v, true) : v.toLowerCase()))
-    .join('')
+  let camel: string, ucnlcl: boolean
+
+  camel = ''
+  ucnlcl = false
+
+  for (let i = 0; i < string.length; i++) {
+    if (REGEXP_UPPERCASE_LETTERS.test(string[i])) {
+      camel += i <= 0 ? string[i].toLowerCase() : string[i]
+      continue
+    }
+
+    if (REGEXP_NOT_LOWERCASE_LETTERS.test(string[i])) {
+      ucnlcl = true
+      continue
+    }
+
+    if (ucnlcl) {
+      camel += string[i].toUpperCase()
+      ucnlcl = false
+
+      continue
+    }
+
+    camel += string[i]
+  }
+
+  return camel
+}
+
+function toSymbolSeparatedCaseString(string: string, symbol: string): string {
+  let result: string = ''
+
+  for (let i = 0; i < string.length; i++) {
+    if (REGEXP_UPPERCASE_LETTERS.test(string[i])) {
+      result += (i <= 0 ? '' : symbol) + string[i].toLowerCase()
+      continue
+    }
+
+    if (REGEXP_NOT_LOWERCASE_LETTERS.test(string[i])) {
+      result += symbol
+      continue
+    }
+
+    result += string[i]
+  }
+
+  return result
 }
 
 /**
  * Transforms any string to a word divided string by dashes.
  */
 export function toKebabCaseString(string: string): string {
-  return string.split(/[^a-zA-Z]/).join('-')
+  return toSymbolSeparatedCaseString(string, '-')
 }
 
 /**
  * Transforms any string to a word divided string by underscores.
  */
 export function toSnakeCaseString(string: string): string {
-  return string.split(/[^a-zA-Z]/).join('_')
+  return toSymbolSeparatedCaseString(string, '_')
 }
 
 /**
  * Transforms any string to a per word capitalized string.
  */
 export function toStartCaseString(string: string): string {
-  return string
-    .split(/[^a-zA-Z]/)
-    .map((v: string) => toCapitalizedString(v, true))
-    .join(' ')
+  let start: string, ucnl: boolean
+
+  start = ''
+  ucnl = false
+
+  for (let i = 0; i < string.length; i++) {
+    if (REGEXP_NOT_LETTERS.test(string[i])) {
+      ucnl = true
+      continue
+    }
+
+    if (ucnl) {
+      start += string[i].toUpperCase()
+      ucnl = false
+
+      continue
+    }
+
+    start += string[i]
+  }
+
+  return toCapitalizedString(start)
 }
 
 /**
@@ -52,7 +114,7 @@ export function isStringJSON(string: string): boolean {
  * Checks if a string is not a stringified JSON.
  */
 export function isStringNotJSON(string: string): boolean {
-  return !isStringJSON(string)
+  return tc(() => JSON.parse(string), false) instanceof Error
 }
 
 /**
@@ -66,20 +128,9 @@ export function isStringFloat(string: string): boolean {
  * Checks whether a value is parsable as int.
  */
 export function isStringInt(string: string): boolean {
-  return !isNaN(parseInt(string))
-}
+  if (string.includes('.')) {
+    return false
+  }
 
-/**
- * @deprecated
- */
-export class StringUtils {
-  static capitalize = toCapitalizedString
-  static camelCase = toCamelCaseString
-  static kebabCase = toKebabCaseString
-  static snakeCase = toSnakeCaseString
-  static startCase = toStartCaseString
-  static isJSON = isStringJSON
-  static isNotJSON = isStringNotJSON
-  static isFloat = isStringFloat
-  static isInt = isStringInt
+  return !isNaN(parseInt(string))
 }
