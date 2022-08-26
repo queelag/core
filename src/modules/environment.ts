@@ -2,8 +2,8 @@ import { ProcessEnvValue } from '../definitions/types'
 import { noop } from '../functions/noop'
 import { tc } from '../functions/tc'
 
-declare var __webpack_require__: NodeRequire
-declare var __non_webpack_require__: NodeRequire
+declare const __webpack_require__: NodeRequire
+declare const __non_webpack_require__: NodeRequire
 
 /**
  * A module to handle environment conditions.

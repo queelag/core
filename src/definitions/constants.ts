@@ -90,9 +90,10 @@ export const REGEXP_UPPERCASE_LETTERS: RegExp = /[A-Z]/
 /**
  * URL Utils
  */
+export const REGEXP_URL_AMPERSANDS_AFTER_QUESTION_MARKS: RegExp = /\?+&+/
 export const REGEXP_URL_ENDING_WITH_QUESTION_MARK: RegExp = /\?$/
 export const REGEXP_URL_MULTIPLE_AMPERSANDS: RegExp = /&{2,}/
 export const REGEXP_URL_MULTIPLE_QUESTION_MARKS: RegExp = /\?{2,}/
 export const REGEXP_URL_MULTIPLE_SLASHES: RegExp = /:?\/{2,}/g
 export const REGEXP_URL_QUERY_PARAMETERS: RegExp = /\?.*/
-export const REGEXP_URL_ONE_OR_MORE_QUERY_PARAMETERS: RegExp = /\?([^=]+=[^&]+)+/
+export const REGEXP_URL_QUESTION_MARKS_AFTER_AMPERSANDS: RegExp = /&+\?+/

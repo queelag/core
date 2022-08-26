@@ -1,10 +1,11 @@
 import {
+  REGEXP_URL_AMPERSANDS_AFTER_QUESTION_MARKS,
   REGEXP_URL_ENDING_WITH_QUESTION_MARK,
   REGEXP_URL_MULTIPLE_AMPERSANDS,
   REGEXP_URL_MULTIPLE_QUESTION_MARKS,
   REGEXP_URL_MULTIPLE_SLASHES,
-  REGEXP_URL_ONE_OR_MORE_QUERY_PARAMETERS,
-  REGEXP_URL_QUERY_PARAMETERS
+  REGEXP_URL_QUERY_PARAMETERS,
+  REGEXP_URL_QUESTION_MARKS_AFTER_AMPERSANDS
 } from '../definitions/constants'
 
 /**
@@ -23,11 +24,13 @@ export function concatURL(...chunks: Partial<string>[]): string {
  * Joins a set of search params and safely appends them to the url.
  */
 export function appendSearchParamsToURL(url: string, parameters: string): string {
-  return [url.trim(), parameters.replace('?', '').trim()]
-    .join(url.match(REGEXP_URL_ONE_OR_MORE_QUERY_PARAMETERS) ? '&' : '?')
+  return [url.trim(), parameters.trim()]
+    .join(url.includes('=') ? '&' : '?')
     .replace(REGEXP_URL_ENDING_WITH_QUESTION_MARK, '')
-    .replace(REGEXP_URL_MULTIPLE_QUESTION_MARKS, '?')
     .replace(REGEXP_URL_MULTIPLE_AMPERSANDS, '&')
+    .replace(REGEXP_URL_MULTIPLE_QUESTION_MARKS, '?')
+    .replace(REGEXP_URL_AMPERSANDS_AFTER_QUESTION_MARKS, '?')
+    .replace(REGEXP_URL_QUESTION_MARKS_AFTER_AMPERSANDS, '&')
 }
 
 /**

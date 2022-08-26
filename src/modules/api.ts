@@ -5,7 +5,7 @@ import { RequestMethod, WriteMode } from '../definitions/enums'
 import { APIConfig } from '../definitions/interfaces'
 import { rc } from '../functions/rc'
 import { mergeFetchRequestInits } from '../utils/fetch.utils'
-import { convertQueryParametersObjectToString } from '../utils/query.parameters.utils'
+import { serializeQueryParameters } from '../utils/query.parameters.utils'
 import { appendSearchParamsToURL, concatURL } from '../utils/url.utils'
 import { Fetch } from './fetch'
 import { Polyfill } from './polyfill'
@@ -203,7 +203,7 @@ export class API<T extends APIConfig = APIConfig, U = undefined> {
    */
   async transformQueryParameters<V>(method: RequestMethod, path: string, body: V | undefined, config: T): Promise<string> {
     if (typeof config.query === 'object') {
-      return convertQueryParametersObjectToString(config.query)
+      return serializeQueryParameters(config.query)
     }
 
     return config.query || ''

@@ -118,49 +118,32 @@ export class Logger {
     primitives = []
 
     for (let arg of args) {
-      switch (typeof arg) {
-        case 'bigint':
-        case 'boolean':
-        case 'function':
-        case 'number':
-        case 'string':
-        case 'symbol':
-        case 'undefined':
-          if (String(arg).length <= 0) {
-            continue
-          }
+      if (typeof arg !== 'object') {
+        if (String(arg).length <= 0) continue
 
-          primitives.push(String(arg))
-          continue
-        case 'object':
-          if (primitives.length > 0) {
-            if (Environment.isWindowNotDefined) {
-              print.push(this.ANSIColorByLevel)
-            }
-
-            print.push(primitives.join(this.separator))
-            primitives = []
-
-            if (Environment.isWindowNotDefined) {
-              print.push(ANSIColor.RESET)
-            }
-          }
-
-          if (Environment.isFormDataDefined && arg instanceof FormData) {
-            print.push(convertFormDataToObject(arg))
-            continue
-          }
-
-          print.push(arg)
-          continue
+        primitives.push(String(arg))
+        continue
       }
+
+      if (primitives.length > 0) {
+        Environment.isWindowNotDefined && print.push(this.ANSIColorByLevel)
+
+        print.push(primitives.join(this.separator))
+        primitives = []
+
+        Environment.isWindowNotDefined && print.push(ANSIColor.RESET)
+      }
+
+      if (Environment.isFormDataDefined && arg instanceof FormData) {
+        print.push(convertFormDataToObject(arg))
+        continue
+      }
+
+      print.push(arg)
     }
 
     if (primitives.length > 0) {
-      if (Environment.isWindowNotDefined) {
-        print.push(this.ANSIColorByLevel)
-      }
-
+      Environment.isWindowNotDefined && print.push(this.ANSIColorByLevel)
       print.push(primitives.join(this.separator))
     }
 
