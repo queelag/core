@@ -8,6 +8,7 @@ describe('sleep', () => {
     await sleep(100)
     d2 = Date.now()
 
-    expect(d2 - d1).toBeGreaterThanOrEqual(100)
+    // approximate
+    expect(d2 - d1).toBeGreaterThanOrEqual(90)
   })
 })

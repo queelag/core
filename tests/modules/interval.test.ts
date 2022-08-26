@@ -17,6 +17,7 @@ describe('Interval', () => {
     expect(Interval.isRunning(fn)).toBeTruthy()
 
     await sleep(100)
+    // approximate
     expect(fn).toBeCalled()
 
     Interval.stop(fn)
@@ -28,6 +29,7 @@ describe('Interval', () => {
     expect(Interval.isRunning(name)).toBeTruthy()
 
     await sleep(100)
+    // approximate
     expect(fn).toBeCalled()
 
     Interval.stop(name)
