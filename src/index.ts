@@ -1,5 +1,16 @@
 export * from './classes/fetch.error'
 export * from './classes/fetch.response'
+export {
+  EMPTY_OBJECT,
+  ID_ALPHABET_ALPHANUMERIC,
+  ID_ALPHABET_HEX_LOWERCASE,
+  ID_ALPHABET_HEX_UPPERCASE,
+  ID_ALPHABET_LOWERCASE,
+  ID_ALPHABET_NO_LOOK_ALIKES,
+  ID_ALPHABET_NO_LOOK_ALIKES_SAFE,
+  ID_ALPHABET_NUMBERS,
+  ID_ALPHABET_UPPERCASE
+} from './definitions/constants'
 export { LoggerLevel, LoggerName as CoreLoggerName, LoggerStatus, RequestMethod, StorageName as CoreStorageName, WriteMode } from './definitions/enums'
 export {
   APIConfig,
@@ -15,9 +26,13 @@ export {
 } from './definitions/interfaces'
 export * from './definitions/types'
 export * from './functions/gql'
+export * from './functions/ma'
+export * from './functions/mtc'
+export * from './functions/mtcp'
 export * from './functions/noop'
 export * from './functions/rc'
 export * from './functions/rcp'
+export * from './functions/rne'
 export * from './functions/rv'
 export * from './functions/rvp'
 export * from './functions/sleep'
@@ -37,6 +52,7 @@ export { Configuration as CoreConfiguration } from './modules/configuration'
 export * from './modules/cookie'
 export * from './modules/debounce'
 export * from './modules/deferred.promise'
+export * from './modules/document.cookie'
 export * from './modules/environment'
 export * from './modules/fetch'
 export * from './modules/graphql.api'
@@ -55,6 +71,7 @@ export * from './modules/throttle'
 export * from './modules/timeout'
 export * from './modules/web.socket'
 export * from './utils/array.utils'
+export * from './utils/cookie.utils'
 export * from './utils/date.utils'
 export * from './utils/document.utils'
 export * from './utils/emoji.utils'

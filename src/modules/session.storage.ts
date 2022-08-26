@@ -1,4 +1,4 @@
-import { StorageValue } from '../definitions/interfaces'
+import { StorageItem } from '../definitions/interfaces'
 import { Environment } from './environment'
 import { Storage } from './storage'
 
@@ -13,5 +13,5 @@ export const SessionStorage = new Storage(
   async (key: string) => (Environment.isWindowDefined ? JSON.parse(sessionStorage.getItem(key) || '{}') : {}),
   async (key: string) => (Environment.isWindowDefined ? sessionStorage.getItem(key) !== null : false),
   async (key: string) => (Environment.isWindowDefined ? sessionStorage.removeItem(key) : undefined),
-  async (key: string, value: StorageValue) => (Environment.isWindowDefined ? sessionStorage.setItem(key, JSON.stringify(value)) : undefined)
+  async (key: string, item: StorageItem) => (Environment.isWindowDefined ? sessionStorage.setItem(key, JSON.stringify(item)) : undefined)
 )

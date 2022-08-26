@@ -5,7 +5,15 @@ import { isStringFloat, isStringInt } from './string.utils'
  * Returns an always positive number.
  */
 export function getAbsoluteNumber(number: number): number {
-  return number === -0 ? 0 : number < 0 ? number * -1 : number
+  if (number === -0) {
+    return 0
+  }
+
+  if (number < 0) {
+    return number * -1
+  }
+
+  return number
 }
 
 /**

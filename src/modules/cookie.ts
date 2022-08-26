@@ -1,9 +1,10 @@
-import { CookieParseOptions, CookieSerializeOptions, parse, serialize } from 'cookie'
-import { DEFAULT_COOKIE_TARGET } from '../definitions/constants'
-import { CookieObject, CookieTarget, CookieValue } from '../definitions/interfaces'
-import { rc } from '../functions/rc'
-import { tc } from '../functions/tc'
+import { CookieParseOptions, CookieSerializeOptions } from 'cookie'
+import { DEFAULT_COOKIE_SEPARATOR } from '../definitions/constants'
+import { CookieItem, CookieObject } from '../definitions/interfaces'
+import { KeyOf, Primitive } from '../definitions/types'
+import { mtcp } from '../functions/mtcp'
 import { ModuleLogger } from '../loggers/module.logger'
+import { deserializeCookie, serializeCookie } from '../utils/cookie.utils'
 import { setObjectProperty } from '../utils/object.utils'
 
 /**
@@ -12,37 +13,68 @@ import { setObjectProperty } from '../utils/object.utils'
  * @category Module
  */
 export class Cookie {
-  static target: CookieTarget = DEFAULT_COOKIE_TARGET
+  name: string
+  separator: string = DEFAULT_COOKIE_SEPARATOR
 
-  /** @hidden */
-  constructor() {}
+  private readonly _get: () => Promise<string | Error>
+  private readonly _set: (cookies: string) => Promise<void | Error>
+
+  constructor(name: string, get: () => Promise<string>, set: (cookies: string) => Promise<void>, separator: string = DEFAULT_COOKIE_SEPARATOR) {
+    this.name = name
+    this.separator = separator
+
+    this._get = mtcp(get)
+    this._set = mtcp(set)
+  }
+
+  /**
+   * Clears all cookies.
+   */
+  async clear(): Promise<void | Error> {
+    let object: CookieObject | Error
+
+    object = await this.deserialize()
+    if (object instanceof Error) return object
+
+    for (let key in object) {
+      let serialized: string | Error, set: void | Error
+
+      serialized = this.serialize(key, '', { expires: new Date(0) })
+      if (serialized instanceof Error) return serialized
+
+      set = await this._set(serialized)
+      if (set instanceof Error) return set
+
+      ModuleLogger.debug(this.name, 'remove', `The cookie ${key} has been removed.`)
+    }
+  }
 
   /**
    * Gets an item.
    *
-   * @template T The value interface which extends {@link CookieValue}.
+   * @template T The item interface which extends {@link CookieItem}.
    */
-  static get<T extends CookieValue>(key: string, target: CookieTarget = Cookie.target): T | Error {
-    let parsed: CookieObject | Error, value: T
+  async get<T extends CookieItem>(key: string): Promise<T | Error> {
+    let object: CookieObject | Error, item: T
 
-    parsed = Cookie.parse(target.get())
-    if (parsed instanceof Error) return parsed
+    object = await this.deserialize()
+    if (object instanceof Error) return object
 
-    ModuleLogger.debug('Cookie', 'get', `The cookies have been parsed.`, parsed)
+    ModuleLogger.debug(this.name, 'get', `The cookies have been parsed.`, object)
 
-    value = {} as T
+    item = {} as T
 
-    for (let k in parsed) {
-      if (!k.startsWith(key)) {
-        ModuleLogger.debug('Cookie', 'get', `The key ${k} has been skipped.`)
+    for (let k in object) {
+      if (!k.startsWith(key + this.separator)) {
+        ModuleLogger.debug(this.name, 'get', `The cookie ${k} has been skipped.`)
         continue
       }
 
-      setObjectProperty(value, k.replace(key + '_', ''), parsed[k])
-      ModuleLogger.debug('Cookie', 'get', `The key ${k} has been set to the value.`, value)
+      setObjectProperty(item, this.toCookieItemKey(key, k), object[k])
+      ModuleLogger.debug(this.name, 'get', `The cookie ${k} has been set to the item.`, item)
     }
 
-    return value
+    return item
   }
 
   /**
@@ -50,34 +82,36 @@ export class Cookie {
 
   * @template T The store interface which extends {@link AnyObject}.
    */
-  static remove<T extends CookieValue, K extends keyof T = keyof T>(key: string, keys?: K[], target: CookieTarget = Cookie.target): void | Error {
+  async remove<T extends CookieItem>(key: string, keys?: KeyOf.Shallow<T>[]): Promise<void | Error> {
     if (typeof keys === 'undefined') {
-      let parsed: CookieObject | Error
+      let object: CookieObject | Error
 
-      parsed = Cookie.parse(target.get())
-      if (parsed instanceof Error) return parsed
+      object = await this.deserialize()
+      if (object instanceof Error) return object
 
       keys = []
 
-      for (let k in parsed) {
+      for (let k in object) {
         if (!k.startsWith(key)) {
-          ModuleLogger.debug('Cookie', 'get', `The key ${k} has been skipped.`)
+          ModuleLogger.debug(this.name, 'get', `The key ${k} has been skipped.`)
           continue
         }
 
-        keys.push(k.replace(key + '_', '') as K)
-        ModuleLogger.debug('Cookie', 'get', `The key ${k} has been pushed to the keys.`, keys)
+        keys.push(this.toCookieItemKey(key, k))
+        ModuleLogger.debug(this.name, 'get', `The key ${k} has been pushed to the keys.`, keys)
       }
     }
 
     for (let k of keys) {
-      let serialized: string | Error
+      let serialized: string | Error, set: void | Error
 
-      serialized = Cookie.serialize(key + '_' + String(k), '', { expires: new Date(0) })
-      if (serialized instanceof Error) return rc(() => ModuleLogger.error('Cookie', 'set', `Failed to serialize the key ${String(k)}.`), serialized)
+      serialized = this.serialize(key, k, '', { expires: new Date(0) })
+      if (serialized instanceof Error) return serialized
 
-      target.set(serialized)
-      ModuleLogger.debug('Cookie', 'remove', `The key ${String(k)} has been removed.`)
+      set = await this._set(serialized)
+      if (set instanceof Error) return set
+
+      ModuleLogger.debug(this.name, 'remove', `The key ${String(k)} has been removed.`)
 
       return
     }
@@ -86,44 +120,132 @@ export class Cookie {
   /**
    * Sets an item.
    *
-   * @template T The value interface which extends {@link CookieValue}.
+   * @template T The item interface which extends {@link CookieItem}.
    */
-  static set<T extends CookieValue, K extends keyof T = keyof T>(
-    key: string,
-    value: T,
-    options: CookieSerializeOptions = {},
-    keys?: K[],
-    target: CookieTarget = Cookie.target
-  ): void | Error {
+  async set<T extends CookieItem>(key: string, item: T, options: CookieSerializeOptions = {}, keys?: KeyOf.Shallow<T>[]): Promise<void | Error> {
     if (typeof keys === 'undefined') {
-      keys = Object.keys(value) as K[]
-      ModuleLogger.debug('Cookie', 'set', `The keys have been derived from the value.`, keys)
+      keys = Object.keys(item)
+      ModuleLogger.debug(this.name, 'set', `The keys have been derived from the item.`, keys)
     }
 
     for (let k of keys) {
-      let serialized: string | Error
+      let serialized: string | Error, set: void | Error
 
-      serialized = this.serialize(key + '_' + String(k), value[k], options)
-      if (serialized instanceof Error)
-        return rc(() => ModuleLogger.error('Cookie', 'set', `Failed to serialize the key ${String(k)}.`, value, options), serialized)
+      serialized = this.serialize(key, k, item[k], options)
+      if (serialized instanceof Error) return serialized
 
-      target.set(serialized)
-      ModuleLogger.debug('Cookie', 'set', `The key ${String(k)} has been set.`, target.get(), options)
+      set = await this._set(serialized)
+      if (set instanceof Error) return set
+
+      ModuleLogger.debug(this.name, 'set', `The key ${String(k)} has been set.`, this._get(), options)
     }
   }
 
   /**
-   * Parse an HTTP Cookie header string and returning an object of all cookie
-   * name-value pairs.
+   * Copies an item to a target.
+   *
+   * @template T The store interface which extends {@link StorageItem}.
    */
-  static parse(cookie: string, options?: CookieParseOptions): CookieObject | Error {
-    return tc(() => parse(cookie, options))
+  async copy<T1 extends CookieItem, T2 extends CookieItem = CookieItem, T extends T1 & T2 = T1 & T2>(
+    key: string,
+    target: T2,
+    keys?: KeyOf.Shallow<T>[]
+  ): Promise<void | Error> {
+    let object: CookieObject | Error
+
+    object = await this.deserialize()
+    if (object instanceof Error) return object
+
+    ModuleLogger.debug(this.name, 'copy', `The cookies have been parsed.`, object)
+
+    if (typeof keys === 'undefined') {
+      keys = []
+
+      for (let k in object) {
+        if (!k.startsWith(key)) {
+          ModuleLogger.debug(this.name, 'parse', `The key ${k} has been skipped.`)
+          continue
+        }
+
+        keys.push(this.toCookieItemKey(key, k))
+        ModuleLogger.debug(this.name, 'parse', `The key ${k} has been pushed to the keys.`, keys)
+      }
+    }
+
+    for (let k of keys) {
+      // @ts-ignore
+      target[k] = object[this.toDocumentCookieName(key, k)]
+      ModuleLogger.debug(this.name, 'parse', `The cookie ${String(k)} has been copied to the target.`, target)
+    }
   }
 
   /**
-   * Serialize a cookie name-value pair into a `Set-Cookie` header string.
+   * Checks if an item exists, if keys is defined it will also assert that those keys are defined too.
+   *
+   * @template T The item interface which extends {@link CookieItem}.
    */
-  static serialize(key: string, value: string, options?: CookieSerializeOptions): string | Error {
-    return tc(() => serialize(key, value, options))
+  async has<T extends CookieItem>(key: string, keys?: KeyOf.Shallow<T>[]): Promise<boolean> {
+    let object: CookieObject | Error
+
+    object = await this.deserialize()
+    if (object instanceof Error) return false
+
+    ModuleLogger.debug(this.name, 'get', `The cookies have been parsed.`, object)
+
+    if (typeof keys === 'undefined') {
+      for (let k in object) {
+        if (k.startsWith(key + this.separator)) {
+          return true
+        }
+      }
+
+      return false
+    }
+
+    for (let k of keys) {
+      if (this.toDocumentCookieName(key, k) in object) {
+        continue
+      }
+
+      return false
+    }
+
+    return true
+  }
+
+  private async deserialize(options?: CookieParseOptions): Promise<CookieObject | Error> {
+    let cookie: string | Error
+
+    cookie = await this._get()
+    if (cookie instanceof Error) return cookie
+
+    return deserializeCookie(cookie, options)
+  }
+
+  private serialize(key: string, value: string, options?: CookieSerializeOptions): string | Error
+  private serialize<T extends CookieItem>(key: string, ik: keyof T, value: Primitive, options?: CookieSerializeOptions): string | Error
+  private serialize<T extends CookieItem>(...args: any[]): string | Error {
+    let key: string, ik: keyof T | undefined, value: Primitive, options: CookieSerializeOptions | undefined
+
+    key = args[0]
+    ik = typeof args[2] !== 'object' ? args[1] : undefined
+    value = typeof args[2] !== 'object' ? args[2] : args[1]
+    options = typeof args[2] !== 'object' ? args[3] : args[2]
+
+    return serializeCookie(typeof ik === 'undefined' ? key : this.toDocumentCookieName(key, ik), String(value), options)
+  }
+
+  /**
+   * Removes the key prefix and separator from the item key.
+   */
+  private toCookieItemKey<T extends CookieItem>(key: string, ik: KeyOf.Shallow<T>): string {
+    return String(ik).replace(key + this.separator, '')
+  }
+
+  /**
+   * Prefixes the item key with key and separator.
+   */
+  private toDocumentCookieName<T extends CookieItem>(key: string, ik: KeyOf.Shallow<T>): string {
+    return key + this.separator + String(ik)
   }
 }

@@ -12,7 +12,7 @@ import { Interval } from './interval'
  * @category Module
  */
 // istanbul ignore next
-class _ {
+class InternalWebSocket {
   /**
    * A {@link WebSocket} instance.
    */
@@ -29,6 +29,11 @@ class _ {
    * A string which determines the URL of the web socket.
    */
   url: string
+
+  private _onClose: (event: CloseEvent) => any = noop
+  private _onError: (event: Event) => any = noop
+  private _onMessage: (event: MessageEvent) => any = noop
+  private _onOpen: (event: Event) => any = noop
 
   constructor(
     name: string,
@@ -49,11 +54,6 @@ class _ {
     this.onMessage = onMessage
     this.onOpen = onOpen
   }
-
-  _onClose(event: CloseEvent): any {}
-  _onError(event: Event): any {}
-  _onMessage(event: MessageEvent): any {}
-  _onOpen(event: Event): any {}
 
   /**
    * Closes the connection.
@@ -132,25 +132,22 @@ class _ {
 
         break
       default:
-        switch (typeof data) {
-          case 'object':
-            tdata = JSON.stringify(data)
-            ModuleLogger.debug(this.id, 'send', `The data has been transformed.`, [tdata])
+        if (typeof data === 'object') {
+          tdata = JSON.stringify(data)
+          ModuleLogger.debug(this.id, 'send', `The data has been JSON stringified.`, [tdata])
 
-            break
-          default:
-            tdata = data
-            break
+          break
         }
+
+        tdata = data
         break
     }
 
     tdata = this.transformOutgoingData(data)
+    ModuleLogger.debug(this.id, 'send', `The data has been transformed.`, [tdata])
 
     send = tc(() => this.instance.send(tdata as any))
     if (send instanceof Error) return send
-
-    return
   }
 
   transformIncomingData<T extends object>(data: WebSocketEventData<T>): WebSocketEventData<T> {
@@ -238,15 +235,13 @@ class _ {
     this._onMessage = (event: MessageEvent) => {
       ModuleLogger.debug(this.id, 'onMessage', `The web socket received a message.`, event)
 
-      switch (true) {
-        case isStringJSON(event.data):
-          event = { ...event, data: JSON.parse(event.data) }
-          ModuleLogger.debug(this.id, 'onMessage', `The message has been JSON parsed.`, event.data)
-
-          break
+      if (isStringJSON(event.data)) {
+        event = { ...event, data: JSON.parse(event.data) }
+        ModuleLogger.debug(this.id, 'onMessage', `The data has been JSON parsed.`, event.data)
       }
 
       event = { ...event, data: this.transformIncomingData(event.data) }
+      ModuleLogger.debug(this.id, 'onMessage', `The data has been transformed.`, event.data)
 
       onMessage(event)
     }
@@ -261,4 +256,4 @@ class _ {
   }
 }
 
-export { _ as WebSocket }
+export { InternalWebSocket as WebSocket }

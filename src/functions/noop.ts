@@ -1,4 +1,6 @@
 /**
  * Works as any function.
  */
-export function noop(...args: any[]): any {}
+export function noop(...args: any[]): any {
+  // returns undefined
+}

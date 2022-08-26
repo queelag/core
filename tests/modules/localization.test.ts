@@ -1,7 +1,7 @@
 import { Localization, LocalizationPack } from '../../src'
 
-const EN: LocalizationPack = { data: { hello: 'hello @name', bye: 'bye' }, language: 'en' }
-const IT: LocalizationPack = { data: { hello: 'ciao @name', bye: 'ciao' }, language: 'it' }
+const EN: LocalizationPack = { data: { hello: 'hello {name}', bye: 'bye' }, language: 'en' }
+const IT: LocalizationPack = { data: { hello: 'ciao {name}', bye: 'ciao' }, language: 'it' }
 
 describe('Localization', () => {
   let localization: Localization
@@ -26,12 +26,12 @@ describe('Localization', () => {
 
   it('gets localized text', () => {
     localization.push(EN, IT)
-    expect(localization.get('hello')).toBe('hello @name')
-    expect(localization.get('it', 'hello')).toBe('ciao @name')
+    expect(localization.get('hello')).toBe('hello {name}')
+    expect(localization.get('it', 'hello')).toBe('ciao {name}')
 
     localization.language = 'it'
-    expect(localization.get('hello')).toBe('ciao @name')
-    expect(localization.get('en', 'hello')).toBe('hello @name')
+    expect(localization.get('hello')).toBe('ciao {name}')
+    expect(localization.get('en', 'hello')).toBe('hello {name}')
 
     localization.language = 'en'
     expect(localization.get('hello', { name: 'john' })).toBe('hello john')
@@ -53,14 +53,14 @@ describe('Localization', () => {
 
   it('fails to inject variables if they are not defined', () => {
     localization.push(EN)
-    expect(localization.get('hello')).toBe('hello @name')
+    expect(localization.get('hello')).toBe('hello {name}')
   })
 
   it('uses other pack data properties as variables', () => {
     localization.push({
       data: {
         first: 'first',
-        question: 'are you @first?'
+        question: 'are you {first}?'
       },
       language: 'en'
     })

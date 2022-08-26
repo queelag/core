@@ -83,7 +83,6 @@ export class Logger {
    */
   error(...args: any[]): void {
     if (this.isDisabled) return
-    // if (this.isLevelErrorDisabled) return
 
     console.error(...this.format(args, LoggerLevel.ERROR))
   }

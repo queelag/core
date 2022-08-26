@@ -1,21 +1,33 @@
-import cloneDeep from 'lodash/cloneDeep'
-import merge from 'lodash/merge'
-import { REGEXP_SQUARE_BRACKETS } from '../definitions/constants'
+import { REGEXP_LEFT_SQUARE_BRACKET_WITHOUT_LEADING_DOT, REGEXP_SQUARE_BRACKETS } from '../definitions/constants'
 import { KeyOf } from '../definitions/types'
 import { tc } from '../functions/tc'
 import { Environment } from '../modules/environment'
+import { isArray } from './array.utils'
 
 /**
  * Clones an object deeply.
  *
  * @template T The object interface.
  */
-export function cloneDeepObject<T extends object>(object: T, native: boolean = true): T {
-  if (native) {
-    return JSON.parse(JSON.stringify(object))
+export function cloneDeepObject<T extends object>(object: T): T {
+  let clone: T = {} as T
+
+  if (isArray(object)) {
+    clone = [] as T
   }
 
-  return cloneDeep(object)
+  for (let key in object) {
+    let value: any = object[key]
+
+    if (isObjectClonable(value)) {
+      clone[key] = cloneDeepObject<any>(value)
+      continue
+    }
+
+    clone[key] = value
+  }
+
+  return clone
 }
 
 /**
@@ -46,6 +58,8 @@ export function copyObjectProperty<T1 extends object, T2 extends object, T exten
  * @template T The object interface.
  * @template U The value interface or type.
  */
+export function deleteObjectProperty<T extends object>(object: T, key: KeyOf.Deep<T>): void
+export function deleteObjectProperty<T extends object>(object: T, key: string): void
 export function deleteObjectProperty<T extends object>(object: T, key: KeyOf.Deep<T>): void {
   switch (typeof key) {
     case 'number':
@@ -54,13 +68,13 @@ export function deleteObjectProperty<T extends object>(object: T, key: KeyOf.Dee
       break
     case 'string':
       if (key.includes('.')) {
-        let target: any | undefined, keys: string[], lkey: string
+        let target: any | Error, keys: string[], lkey: string
 
-        target = getObjectPropertyDotKeyTarget(object, key)
-        if (!target) return
-
-        keys = key.split('.')
+        keys = key.replace(REGEXP_LEFT_SQUARE_BRACKET_WITHOUT_LEADING_DOT, '$1.[').split('.')
         lkey = keys[keys.length - 1].replace(REGEXP_SQUARE_BRACKETS, '')
+
+        target = getObjectPropertyDotKeyTarget(object, keys)
+        if (target instanceof Error) return
 
         delete target[lkey]
 
@@ -91,18 +105,18 @@ export function getObjectProperty<T extends object, U extends any>(object: T, ke
       return object[key] as U
     case 'string':
       if (key.includes('.')) {
-        let keys: string[], lkey: string, target: any | undefined
+        let keys: string[], lkey: string, target: any | Error
 
-        target = getObjectPropertyDotKeyTarget(object, key)
-        if (!target) return fallback
-
-        keys = key.split('.')
+        keys = key.replace(REGEXP_LEFT_SQUARE_BRACKET_WITHOUT_LEADING_DOT, '$1.[').split('.')
         lkey = keys[keys.length - 1].replace(REGEXP_SQUARE_BRACKETS, '')
+
+        target = getObjectPropertyDotKeyTarget(object, keys)
+        if (target instanceof Error) return fallback
 
         return target[lkey]
       }
 
-      if (Object.keys(object).includes(key)) {
+      if (key in object) {
         // @ts-ignore
         return object[key]
       }
@@ -117,11 +131,8 @@ export function getObjectProperty<T extends object, U extends any>(object: T, ke
  * @template T The object interface.
  * @template U The parent interface.
  */
-function getObjectPropertyDotKeyTarget<T extends object, U extends object>(object: T, key: string): U | undefined {
-  let keys: string[], target: any | Error
-
-  keys = key.split('.')
-  target = object
+function getObjectPropertyDotKeyTarget<T extends object, U extends object>(object: T, keys: string[], construct: boolean = false): U | Error {
+  let target: any = object
 
   for (let i = 0; i < keys.length; i++) {
     let key: string
@@ -133,8 +144,26 @@ function getObjectPropertyDotKeyTarget<T extends object, U extends object>(objec
     key = keys[i]
     key = key.replace(REGEXP_SQUARE_BRACKETS, '')
 
-    target = tc(() => target[key])
-    if (target instanceof Error) return undefined
+    switch (typeof target[key]) {
+      case 'object':
+        if (target[key] === null) {
+          return new Error(`The target value is null.`)
+        }
+
+        target = target[key]
+        continue
+      case 'undefined':
+        if (construct) {
+          target[key] = keys[i + 1].includes('[') ? [] : {}
+          target = target[key]
+
+          continue
+        }
+
+        return new Error(`The target type is undefined.`)
+      default:
+        return new Error(`The target type is nor undefined nor object.`)
+    }
   }
 
   return target
@@ -145,8 +174,32 @@ function getObjectPropertyDotKeyTarget<T extends object, U extends object>(objec
  *
  * @template T the object interface.
  */
-export function mergeObjects<T extends object>(target: T, ...sources: object[]): T {
-  return merge(cloneDeepObject(target), ...sources.map((v: object) => cloneDeepObject(v)))
+export function mergeObjects<T extends object>(target: T, ...sources: Record<PropertyKey, any>[]): T {
+  let clone: T = cloneDeepObject(target)
+
+  for (let source of sources) {
+    for (let key in source) {
+      let tp: any, sp: any
+
+      tp = getObjectProperty(clone, key, {})
+      sp = source[key]
+
+      if (isArray(sp)) {
+        tp = getObjectProperty(clone, key, [])
+      }
+
+      if (isObjectClonable(sp)) {
+        // @ts-ignore
+        clone[key] = mergeObjects(tp, cloneDeepObject(sp))
+        continue
+      }
+
+      // @ts-ignore
+      clone[key] = sp
+    }
+  }
+
+  return clone
 }
 
 /**
@@ -200,37 +253,15 @@ export function setObjectProperty<T extends object, U extends any>(object: T, ke
       if (key.includes('.')) {
         let keys: string[], target: any | Error, lkey: string
 
-        keys = key.split('.')
-        target = object
-
-        for (let i = 0; i < keys.length; i++) {
-          let key: string
-
-          if (i >= keys.length - 1) {
-            continue
-          }
-
-          key = keys[i]
-          key = key.replace(REGEXP_SQUARE_BRACKETS, '')
-
-          switch (typeof target[key]) {
-            case 'object':
-              target = target[key]
-              continue
-            case 'undefined':
-              target[key] = keys[i + 1].includes('[') ? [] : {}
-              target = target[key]
-
-              continue
-            default:
-              return new Error(`The value type is nor undefined nor object.`)
-          }
-        }
-
+        keys = key.replace(REGEXP_LEFT_SQUARE_BRACKET_WITHOUT_LEADING_DOT, '$1.[').split('.')
         lkey = keys[keys.length - 1].replace(REGEXP_SQUARE_BRACKETS, '')
+
+        target = getObjectPropertyDotKeyTarget(object, keys, true)
+        if (target instanceof Error) return target
+
         target[lkey] = value
 
-        return
+        break
       }
 
       // @ts-ignore
@@ -332,6 +363,13 @@ export function isObject<T extends object>(value: any): value is T {
   }
 
   return typeof value === 'object'
+}
+
+/**
+ * Checks if the T object is clonable.
+ */
+export function isObjectClonable<T extends object>(object: T): boolean {
+  return isArray(object) || isPlainObject(object)
 }
 
 /**

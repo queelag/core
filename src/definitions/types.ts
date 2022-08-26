@@ -18,6 +18,8 @@ export namespace KeyOf {
 
 export type Primitive = bigint | boolean | null | number | string | symbol | undefined
 
+export type ProcessEnvValue = string | undefined
+
 export type StatusTransformer = (keys: string[]) => string
 
 export type ThrottleMapKey = Function | string

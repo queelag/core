@@ -1,5 +1,9 @@
+import { ProcessEnvValue } from '../definitions/types'
 import { noop } from '../functions/noop'
 import { tc } from '../functions/tc'
+
+declare var __webpack_require__: NodeRequire
+declare var __non_webpack_require__: NodeRequire
 
 /**
  * A module to handle environment conditions.
@@ -11,7 +15,7 @@ export class Environment {
    * Gets a key from process.env safely.
    */
   static get(key: string): string {
-    let value: string | undefined | Error
+    let value: ProcessEnvValue | Error
 
     value = tc(() => process.env[key], false)
     if (value instanceof Error) return ''
@@ -23,7 +27,7 @@ export class Environment {
    * Checks if a key is defined inside process.env safely.
    */
   static has(key: string): boolean {
-    let value: string | undefined | Error
+    let value: ProcessEnvValue | Error
 
     value = tc(() => process.env[key], false)
     if (value instanceof Error || typeof value === 'undefined') return false
@@ -44,8 +48,15 @@ export class Environment {
    */
   // istanbul ignore next
   static get require(): NodeRequire {
-    // @ts-ignore
-    return typeof __webpack_require__ === 'function' ? __non_webpack_require__ : typeof require === 'function' ? require : noop
+    if (typeof __webpack_require__ === 'function') {
+      return __non_webpack_require__
+    }
+
+    if (typeof require === 'function') {
+      return require
+    }
+
+    return noop as NodeRequire
   }
 
   /**

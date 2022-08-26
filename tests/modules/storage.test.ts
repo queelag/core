@@ -1,24 +1,20 @@
-import { cloneShallowObject, copyObjectProperty, rv, setObjectProperty, Storage, tne } from '../../src'
-import { StorageValue } from '../../src/definitions/interfaces'
+import { cloneShallowObject, copyObjectProperty, rne, rv, setObjectProperty, Storage } from '../../src'
+import { StorageItem } from '../../src/definitions/interfaces'
 import { Configuration } from '../../src/modules/configuration'
 
 describe('Storage', () => {
   let map: Map<string, any>, storage: Storage
 
-  beforeAll(() => {
+  beforeEach(() => {
     map = new Map()
     storage = new Storage(
-      'MockStorage',
+      'TestStorage',
       async () => map.clear(),
       async (key: string) => map.get(key),
       async (key: string) => map.has(key),
       async (key: string) => rv(() => map.delete(key)),
-      async (key: string, value: StorageValue) => rv(() => map.set(key, value))
+      async (key: string, value: StorageItem) => rv(() => map.set(key, value))
     )
-  })
-
-  beforeEach(() => {
-    map.clear()
   })
 
   it('sets and gets an item', async () => {
@@ -42,7 +38,7 @@ describe('Storage', () => {
   })
 
   it('copies an item to a target object', async () => {
-    let target: StorageValue
+    let target: StorageItem
 
     target = {}
     await storage.set('person', { name: 'john', surname: 'doe' })
@@ -72,48 +68,48 @@ describe('Storage', () => {
     expect(await storage.has('p2')).toBeFalsy()
   })
 
-  it('handles errors from private methods', async () => {
+  it('handles errors from internal methods', async () => {
     let backup: Storage
 
     backup = cloneShallowObject(storage)
 
     Configuration.module.tcp.log = false
 
-    setObjectProperty(storage, '_clear', tne)
+    setObjectProperty(storage, '_clear', rne)
     expect(await storage.clear()).toBeInstanceOf(Error)
     copyObjectProperty(backup, '_clear', storage)
 
-    setObjectProperty(storage, '_get', tne)
+    setObjectProperty(storage, '_get', rne)
     expect(await storage.get('person')).toBeInstanceOf(Error)
     copyObjectProperty(backup, '_get', storage)
 
-    setObjectProperty(storage, '_has', tne)
+    setObjectProperty(storage, '_has', rne)
     expect(await storage.has('person')).toBeFalsy()
     copyObjectProperty(backup, '_has', storage)
 
-    setObjectProperty(storage, '_remove', tne)
+    setObjectProperty(storage, '_remove', rne)
     expect(await storage.remove('person')).toBeInstanceOf(Error)
-    setObjectProperty(storage, '_set', tne)
+    setObjectProperty(storage, '_set', rne)
     expect(await storage.remove('person', [])).toBeInstanceOf(Error)
-    setObjectProperty(storage, '_get', tne)
+    setObjectProperty(storage, '_get', rne)
     expect(await storage.remove('person', [])).toBeInstanceOf(Error)
     copyObjectProperty(backup, '_get', storage)
     copyObjectProperty(backup, '_remove', storage)
     copyObjectProperty(backup, '_set', storage)
 
-    setObjectProperty(storage, '_set', tne)
+    setObjectProperty(storage, '_set', rne)
     expect(await storage.set('person', { name: 'john' })).toBeInstanceOf(Error)
-    setObjectProperty(storage, '_get', tne)
+    setObjectProperty(storage, '_get', rne)
     expect(await storage.set('person', { name: 'john' }, ['name'])).toBeInstanceOf(Error)
     copyObjectProperty(backup, '_get', storage)
     copyObjectProperty(backup, '_set', storage)
 
-    setObjectProperty(storage, '_get', tne)
+    setObjectProperty(storage, '_get', rne)
     expect(await storage.copy('person', {})).toBeInstanceOf(Error)
 
-    setObjectProperty(storage, '_has', tne)
+    setObjectProperty(storage, '_has', rne)
     expect(await storage.has('person')).toBeFalsy()
-    setObjectProperty(storage, '_get', tne)
+    setObjectProperty(storage, '_get', rne)
     setObjectProperty(storage, '_has', () => true)
     expect(await storage.has('person', [])).toBeFalsy()
     copyObjectProperty(backup, '_get', storage)

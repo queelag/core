@@ -1,5 +1,6 @@
 import type { FetchResponse } from '../classes/fetch.response'
 import type { WriteMode } from './enums'
+import { Primitive } from './types'
 
 export interface APIConfig<T = void> extends FetchRequestInit<T> {
   query?: object | string
@@ -11,12 +12,12 @@ export interface APIConfig<T = void> extends FetchRequestInit<T> {
 
 export interface CookieObject extends Record<string, string> {}
 
-export interface CookieTarget {
+export interface CookieSource {
   get: () => string
   set: (string: string) => void
 }
 
-export interface CookieValue extends Record<PropertyKey, any> {}
+export interface CookieItem extends Record<PropertyKey, Primitive> {}
 
 export interface ConfigurationModule {
   tc: {
@@ -72,7 +73,7 @@ export interface LocalizationPackData {
 export interface LocalizationVariables extends Record<number | string, string> {}
 
 export interface StorageTarget extends Record<PropertyKey, any> {}
-export interface StorageValue extends Record<PropertyKey, any> {}
+export interface StorageItem extends Record<PropertyKey, any> {}
 
 export interface WithID<T = string> {
   id: T

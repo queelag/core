@@ -9,9 +9,6 @@ export class Debounce {
   /** @internal */
   private static data: Map<Function, NodeJS.Timeout | number> = new Map()
 
-  /** @hidden */
-  constructor() {}
-
   /**
    * Lets fn run only if it hasn't be called again for ms time.
    */

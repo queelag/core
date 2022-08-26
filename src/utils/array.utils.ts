@@ -2,6 +2,15 @@ import { DEFAULT_ARRAY_INCLUDES, DEFAULT_ARRAY_REMOVES } from '../definitions/co
 import { ArrayIncludes, ArrayRemoves } from '../definitions/types'
 
 /**
+ * Clones an array shallowly.
+ *
+ * @template T The object interface.
+ */
+export function cloneShallowArray<T>(array: T[]): T[] {
+  return [...array]
+}
+
+/**
  * Returns the symmetric difference between the T arrays.
  */
 export function getArraysDifference<T>(arrays: T[][], includes: ArrayIncludes<T> = DEFAULT_ARRAY_INCLUDES): T[] {
@@ -109,6 +118,6 @@ export function removeArrayItems<T>(...args: any[]): T[] {
 /**
  * Checks whether value is an array.
  */
-export function isArray<T>(value: any): value is T[] {
+export function isArray<T extends unknown>(value: any): value is T[] {
   return Array.isArray(value)
 }

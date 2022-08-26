@@ -1,3 +1,4 @@
+import { REGEXP_VARIABLE_INSIDE_CURLY_BRACKETS, SORT_REGEXP_VARIABLE_INSIDE_CURLY_BRACKETS_MATCHES_COMPARE_FN } from '../definitions/constants'
 import { StorageName } from '../definitions/enums'
 import { LocalizationPack, LocalizationVariables } from '../definitions/interfaces'
 import { ModuleLogger } from '../loggers/module.logger'
@@ -81,16 +82,16 @@ export class Localization {
     localized = getObjectProperty(pack.data, path, '')
     if (!localized) return path
 
-    matches = localized.match(/@([a-zA-Z_]+|->|)+[a-zA-Z]/gm)
+    matches = localized.match(REGEXP_VARIABLE_INSIDE_CURLY_BRACKETS)
     if (!matches) return localized
 
     source = mergeObjects(pack.data, this.variables, variables)
-    matches = matches.sort((a: string, b: string) => b.length - a.length)
+    matches = matches.sort(SORT_REGEXP_VARIABLE_INSIDE_CURLY_BRACKETS_MATCHES_COMPARE_FN)
 
     for (let match of matches) {
       let key: string, value: string
 
-      key = match.slice(1).replace(/->/gm, '.')
+      key = match.slice(1, -1)
       value = getObjectProperty(source, key, match)
 
       localized = localized.replace(match, value)

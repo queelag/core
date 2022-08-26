@@ -11,9 +11,6 @@ export class Throttle {
   /** @internal */
   private static map: Map<ThrottleMapKey, number> = new Map()
 
-  /** @hidden */
-  constructor() {}
-
   /**
    * Calls the fn only if ms time has passed since the last execution.
    *

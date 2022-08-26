@@ -1,3 +1,4 @@
+import { noop } from '../functions/noop'
 import { tcp } from '../functions/tcp'
 
 /**
@@ -10,6 +11,14 @@ export class DeferredPromise<T> {
    * A {@link Promise} instance.
    */
   instance: Promise<T>
+  /**
+   * Rejects the promise.
+   */
+  reject: (reason?: any) => void = noop
+  /**
+   * Resolves the promise.
+   */
+  resolve: (value: T | PromiseLike<T>) => void = noop
 
   constructor() {
     this.instance = new Promise((resolve: (v: T | PromiseLike<T>) => void, reject: (reason?: any) => void) => {
@@ -38,16 +47,6 @@ export class DeferredPromise<T> {
     tcp(() => this.instance.finally(onfinally), false)
     return this
   }
-
-  /**
-   * Rejects the promise.
-   */
-  reject(reason?: any): void {}
-
-  /**
-   * Resolves the promise.
-   */
-  resolve(value: T | PromiseLike<T>): void {}
 
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.

@@ -1,9 +1,9 @@
 import { customRandom, random } from 'nanoid'
-import { ALPHABET_ALPHANUMERIC } from '../definitions/constants'
+import { ID_ALPHABET_ALPHANUMERIC } from '../definitions/constants'
 import { IDGenerateOptions } from '../definitions/interfaces'
 
 export class ID {
-  static alphabet: string = ALPHABET_ALPHANUMERIC
+  static alphabet: string = ID_ALPHABET_ALPHANUMERIC
   static random: (bytes: number) => Uint8Array = random
   static separator: string = '_'
   static size: number = 32

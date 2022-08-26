@@ -168,7 +168,8 @@ export function toLoggableFetchRequestInit<T>(init: FetchRequestInit<T>): FetchR
   if (init.body === undefined) return clone
 
   if (init.body instanceof FormData) {
-    clone.body = convertFormDataToObject(init.body) as any
+    // @ts-ignore
+    clone.body = convertFormDataToObject(init.body)
   }
 
   return clone
@@ -181,7 +182,9 @@ export function toLoggableNativeFetchRequestInit(init: RequestInit): RequestInit
   if (init.body === undefined) return clone
 
   if (init.body instanceof FormData) {
-    clone.body = convertFormDataToObject(init.body) as any
+    // @ts-ignore
+    clone.body = convertFormDataToObject(init.body)
+
     return clone
   }
 

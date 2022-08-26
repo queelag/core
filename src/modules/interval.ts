@@ -11,9 +11,6 @@ export class Interval {
   /** @internal */
   private static map: Map<IntervalMapKey, IntervalMapValue> = new Map()
 
-  /** @hidden */
-  constructor() {}
-
   /**
    * Starts an interval.
    */

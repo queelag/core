@@ -23,6 +23,7 @@ interface Object {
   do1: {
     a1: number[]
     n1: number
+    s1: string
   }
   sbi1: bigint
   sbo1: boolean
@@ -39,7 +40,7 @@ describe('ObjectUtils', () => {
 
   beforeEach(() => {
     o1 = {
-      do1: { a1: [0], n1: 0 },
+      do1: { a1: [0], n1: 0, s1: '' },
       sbi1: 0n,
       sbo1: false,
       sf1: noop,
@@ -49,7 +50,7 @@ describe('ObjectUtils', () => {
       su1: undefined,
       sy1: Symbol(0)
     }
-    o2 = cloneDeepObject(o1, false)
+    o2 = cloneDeepObject(o1)
   })
 
   it('clones an object shallowly', () => {
@@ -64,24 +65,14 @@ describe('ObjectUtils', () => {
   })
 
   it('clones an object deeply', () => {
-    clone = cloneDeepObject(o1, false)
+    clone = cloneDeepObject(o1)
     expect(clone).toStrictEqual(o1)
 
     clone.snum1 = 1
     expect(o1.snum1).toBe(0)
 
-    clone.do1.n1 = 1
-    expect(o1.do1.n1).toBe(0)
-
-    deleteObjectProperty(o1, 'sbi1')
-    deleteObjectProperty(o1, 'sf1')
-    deleteObjectProperty(o1, 'sy1')
-
-    clone = cloneDeepObject(o1)
-    expect(clone).toStrictEqual(omitObjectProperties(o1, ['su1']))
-
-    clone.snum1 = 1
-    expect(o1.snum1).toBe(0)
+    clone.do1.a1[0] = 1
+    expect(o1.do1.a1[0]).toBe(0)
 
     clone.do1.n1 = 1
     expect(o1.do1.n1).toBe(0)
@@ -105,51 +96,54 @@ describe('ObjectUtils', () => {
 
     deleteObjectProperty(o2.do1.a1, 0)
     expect(o2.do1.a1[0]).toBeUndefined()
+
+    expect(deleteObjectProperty(o1, 'unknown.unknown')).toBeUndefined()
   })
 
   it('gets an object property', () => {
     expect(getObjectProperty(o1, 'snum1')).toBe(0)
     expect(getObjectProperty(o1, 'do1.n1')).toBe(0)
     expect(getObjectProperty(o1, 'do1.a1.0')).toBe(0)
+    expect(getObjectProperty(o1, 'do1.a1.[0]')).toBe(0)
+    expect(getObjectProperty(o1, 'do1.a1[0]')).toBe(0)
     expect(getObjectProperty(o1, 'unknown')).toBeUndefined()
     expect(getObjectProperty(o1, 'unknown', null)).toBeNull()
+    expect(getObjectProperty(o1, 'unknown.unknown')).toBeUndefined()
+    expect(getObjectProperty(o1, 'snul1.unknown')).toBeUndefined()
     expect(getObjectProperty(o1.do1.a1, 0)).toBe(0)
   })
 
   it('merges multiple objects', () => {
-    deleteObjectProperty(o1, 'sbi1')
-    deleteObjectProperty(o1, 'sf1')
-    deleteObjectProperty(o1, 'sy1')
-    deleteObjectProperty(o2, 'sbi1')
-    deleteObjectProperty(o2, 'sf1')
-    deleteObjectProperty(o2, 'sy1')
+    let co1: Object, co2: Object
 
-    expect(mergeObjects(o1, o2)).toStrictEqual(
-      omitObjectProperties(
-        {
-          ...o1,
-          ...o2,
-          do1: {
-            ...o1.do1,
-            ...o2.do1
-          }
-        },
-        ['su1']
-      )
-    )
-    expect(mergeObjects(o2, o1)).toStrictEqual(
-      omitObjectProperties(
-        {
-          ...o2,
-          ...o1,
-          do1: {
-            ...o2.do1,
-            ...o1.do1
-          }
-        },
-        ['su1']
-      )
-    )
+    o2.do1.a1 = [1, 2]
+    o2.do1.n1 = 1
+    o2.sbi1 = 1n
+    o2.sbo1 = true
+
+    co1 = cloneDeepObject(o1)
+    co2 = cloneDeepObject(o2)
+
+    expect(mergeObjects(o1, o2)).toStrictEqual({
+      ...o1,
+      ...o2,
+      do1: {
+        ...o1.do1,
+        ...o2.do1
+      }
+    })
+    expect(mergeObjects(o2, o1)).toStrictEqual({
+      ...o2,
+      ...o1,
+      do1: {
+        ...o2.do1,
+        ...o1.do1,
+        a1: [0, 2]
+      }
+    })
+
+    expect(o1).toStrictEqual(co1)
+    expect(o2).toStrictEqual(co2)
   })
 
   it('omits an object properties', () => {
@@ -176,7 +170,7 @@ describe('ObjectUtils', () => {
   })
 
   it('picks an object properties', () => {
-    expect(pickObjectProperties(o1, ['do1'])).toStrictEqual({ do1: { a1: [0], n1: 0 } })
+    expect(pickObjectProperties(o1, ['do1'])).toStrictEqual({ do1: o1.do1 })
     expect(pickObjectProperties(o1, ['snum1'])).toStrictEqual({ snum1: 0 })
   })
 

@@ -1,6 +1,6 @@
 import { randomBytes } from 'crypto'
 import { ID } from '../../src'
-import { ALPHABET_NUMBERS } from '../../src/definitions/constants'
+import { ID_ALPHABET_NUMBERS } from '../../src/definitions/constants'
 
 describe('ID', () => {
   it('generates', () => {
@@ -15,7 +15,7 @@ describe('ID', () => {
   })
 
   it('generates with a custom alphabet', () => {
-    expect(ID.generate({ alphabet: ALPHABET_NUMBERS })).toMatch(/[0-9]{32}/)
+    expect(ID.generate({ alphabet: ID_ALPHABET_NUMBERS })).toMatch(/[0-9]{32}/)
   })
 
   it('generates with a custom random bytes generator', () => {

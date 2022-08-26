@@ -88,4 +88,9 @@ describe('Fetch', () => {
 
     CoreConfiguration.module.tcp.log = true
   })
+
+  it('works without request init', async () => {
+    response = await Fetch.handle(`${address}/any`)
+    expect(response).toBeInstanceOf(FetchResponse)
+  })
 })

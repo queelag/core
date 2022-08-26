@@ -84,20 +84,20 @@ export function toStartCaseString(string: string): string {
   start = ''
   ucnl = false
 
-  for (let i = 0; i < string.length; i++) {
-    if (REGEXP_NOT_LETTERS.test(string[i])) {
+  for (let char of string) {
+    if (REGEXP_NOT_LETTERS.test(char)) {
       ucnl = true
       continue
     }
 
     if (ucnl) {
-      start += string[i].toUpperCase()
+      start += char.toUpperCase()
       ucnl = false
 
       continue
     }
 
-    start += string[i]
+    start += char
   }
 
   return toCapitalizedString(start)

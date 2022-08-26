@@ -10,9 +10,6 @@ export class Timeout {
   /** @internal */
   private static map: Map<TimeoutMapKey, TimeoutMapValue> = new Map()
 
-  /** @hidden */
-  constructor() {}
-
   /**
    * Sets a timeout.
    */

@@ -3,7 +3,6 @@ import { FetchResponse } from '../classes/fetch.response'
 import { RequestMethod } from '../definitions/enums'
 import { GraphQLAPIConfig, GraphQLAPIRequestBody, GraphQLAPIResponse } from '../definitions/interfaces'
 import { API } from './api'
-import { Status } from './status'
 
 /**
  * A module to smartly handle GraphQL API calls and observe their status through the {@link Status} module.

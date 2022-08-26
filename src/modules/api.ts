@@ -247,6 +247,14 @@ export class API<T extends APIConfig = APIConfig, U = undefined> {
 
   /** @internal */
   private isConfigStatusSettable(config: APIConfig, status: string): boolean {
-    return config.status?.blacklist ? !config.status.blacklist.includes(status) : config.status?.whitelist ? config.status.whitelist.includes(status) : true
+    if (config.status?.blacklist) {
+      return !config.status.blacklist.includes(status)
+    }
+
+    if (config.status?.whitelist) {
+      return config.status.whitelist.includes(status)
+    }
+
+    return true
   }
 }

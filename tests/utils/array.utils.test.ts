@@ -1,13 +1,21 @@
-import { getArrayLastItem, getArraysDifference, getArraysIntersection, removeArrayDuplicates, removeArrayItems } from '../../src'
+import { cloneShallowArray, getArrayLastItem, getArraysDifference, getArraysIntersection, removeArrayDuplicates, removeArrayItems } from '../../src'
 
 describe('ArrayUtils', () => {
   let a1: number[], a2: number[], m1: number[][], m2: number[][]
 
-  beforeAll(() => {
+  beforeEach(() => {
     a1 = [0, 0, 1, 2, 3]
     a2 = [5, 5, 4, 3, 2]
     m1 = [[0], [1], [2], [3]]
     m2 = [[5], [4], [3], [2]]
+  })
+
+  it('clones an array shallowly', () => {
+    let clone: number[]
+
+    clone = cloneShallowArray(a1)
+    clone[0] = 1
+    expect(a1[0]).toBe(0)
   })
 
   it('gets the difference between n arrays', () => {

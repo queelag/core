@@ -1,4 +1,4 @@
-import { Environment } from '../../src'
+import { Environment, Polyfill } from '../../src'
 
 describe('Environment', () => {
   let env: NodeJS.ProcessEnv
@@ -36,7 +36,9 @@ describe('Environment', () => {
     expect(Environment.isFetchNotDefined).toBeFalsy()
   })
 
-  it('checks if file is defined', () => {
+  it('checks if file is defined', async () => {
+    await Polyfill.file()
+
     expect(Environment.isFileDefined).toBeTruthy()
     expect(Environment.isFileNotDefined).toBeFalsy()
   })

@@ -1,4 +1,4 @@
-import { getObjectProperty, noop, Polyfill, setObjectProperty } from '../../src'
+import { getObjectProperty, Polyfill, setObjectProperty } from '../../src'
 
 describe('Polyfill', () => {
   it('polyfills fetch', async () => {
@@ -43,9 +43,9 @@ describe('Polyfill', () => {
   })
 
   it('does not polyfill fetch if unable to import node-fetch', async () => {
-    let getNodeFetch: Function
+    let getNodeFetch: Function | undefined
 
-    getNodeFetch = getObjectProperty(Polyfill, 'getNodeFetch', noop)
+    getNodeFetch = getObjectProperty(Polyfill, 'getNodeFetch')
     setObjectProperty(Polyfill, 'getNodeFetch', () => new Error())
 
     // @ts-ignore
