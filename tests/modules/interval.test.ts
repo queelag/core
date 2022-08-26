@@ -17,7 +17,7 @@ describe('Interval', () => {
     expect(Interval.isRunning(fn)).toBeTruthy()
 
     await sleep(100)
-    expect(fn.mock.calls.length).toBeGreaterThanOrEqual(5)
+    expect(fn).toBeCalled()
 
     Interval.stop(fn)
     expect(Interval.isNotRunning(fn)).toBeTruthy()
@@ -28,7 +28,7 @@ describe('Interval', () => {
     expect(Interval.isRunning(name)).toBeTruthy()
 
     await sleep(100)
-    expect(fn.mock.calls.length).toBeGreaterThanOrEqual(5)
+    expect(fn).toBeCalled()
 
     Interval.stop(name)
     expect(Interval.isNotRunning(name)).toBeTruthy()
