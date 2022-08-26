@@ -71,7 +71,7 @@ export const ID_ALPHABET_HEX_UPPERCASE: string = ID_ALPHABET_NUMBERS + 'ABCDEF'
 /**
  * Localization
  */
-export const REGEXP_VARIABLE_INSIDE_CURLY_BRACKETS: RegExp = /{[^{}]+}/gm
+export const REGEXP_VARIABLE_INSIDE_CURLY_BRACKETS: RegExp = /{[^{}]{1,256}}/gm
 export const SORT_REGEXP_VARIABLE_INSIDE_CURLY_BRACKETS_MATCHES_COMPARE_FN: (a: string, b: string) => number = (a: string, b: string) => b.length - a.length
 
 /**
@@ -83,17 +83,16 @@ export const REGEXP_SQUARE_BRACKETS: RegExp = /[\[\]]/g
 /**
  * String Utils
  */
-export const REGEXP_NOT_LETTERS: RegExp = /[^a-zA-Z]/
-export const REGEXP_NOT_LOWERCASE_LETTERS: RegExp = /[^a-z]/
-export const REGEXP_UPPERCASE_LETTERS: RegExp = /[A-Z]/
+export const REGEXP_NOT_LETTERS: RegExp = /[^a-zA-Z]/g
+export const REGEXP_NOT_LOWERCASE_LETTERS: RegExp = /[^a-z]/g
+export const REGEXP_UPPERCASE_LETTERS: RegExp = /[A-Z]/g
 
 /**
  * URL Utils
  */
-export const REGEXP_URL_AMPERSANDS_AFTER_QUESTION_MARKS: RegExp = /\?+&+/
-export const REGEXP_URL_ENDING_WITH_QUESTION_MARK: RegExp = /\?$/
-export const REGEXP_URL_MULTIPLE_AMPERSANDS: RegExp = /&{2,}/
-export const REGEXP_URL_MULTIPLE_QUESTION_MARKS: RegExp = /\?{2,}/
-export const REGEXP_URL_MULTIPLE_SLASHES: RegExp = /:?\/{2,}/g
-export const REGEXP_URL_QUERY_PARAMETERS: RegExp = /\?.*/
-export const REGEXP_URL_QUESTION_MARKS_AFTER_AMPERSANDS: RegExp = /&+\?+/
+export const REGEXP_URL_AMPERSANDS_AFTER_QUESTION_MARKS: RegExp = /\?{1,4}&{1,4}/g
+export const REGEXP_URL_ENDING_WITH_QUESTION_MARK: RegExp = /\?$/g
+export const REGEXP_URL_MULTIPLE_AMPERSANDS: RegExp = /&{2,4}/g
+export const REGEXP_URL_MULTIPLE_QUESTION_MARKS: RegExp = /\?{2,4}/g
+export const REGEXP_URL_MULTIPLE_SLASHES: RegExp = /:?\/{2,4}/g
+export const REGEXP_URL_QUESTION_MARKS_AFTER_AMPERSANDS: RegExp = /&{1,4}\?{1,4}/g

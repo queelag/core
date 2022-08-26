@@ -4,7 +4,6 @@ import {
   REGEXP_URL_MULTIPLE_AMPERSANDS,
   REGEXP_URL_MULTIPLE_QUESTION_MARKS,
   REGEXP_URL_MULTIPLE_SLASHES,
-  REGEXP_URL_QUERY_PARAMETERS,
   REGEXP_URL_QUESTION_MARKS_AFTER_AMPERSANDS
 } from '../definitions/constants'
 
@@ -37,5 +36,5 @@ export function appendSearchParamsToURL(url: string, parameters: string): string
  * Removes every search param in a URL.
  */
 export function removeSearchParamsFromURL(url: string): string {
-  return url.replace(REGEXP_URL_QUERY_PARAMETERS, '').trim()
+  return url.slice(0, url.includes('?') ? url.indexOf('?') : undefined)
 }

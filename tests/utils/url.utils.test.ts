@@ -21,6 +21,7 @@ describe('URLUtils', () => {
   })
 
   it('removes search params', () => {
+    expect(removeSearchParamsFromURL('http://localhost:3000')).toBe('http://localhost:3000')
     expect(removeSearchParamsFromURL('http://localhost:3000?')).toBe('http://localhost:3000')
     expect(removeSearchParamsFromURL('http://localhost:3000?a')).toBe('http://localhost:3000')
     expect(removeSearchParamsFromURL('http://localhost:3000?a=')).toBe('http://localhost:3000')
