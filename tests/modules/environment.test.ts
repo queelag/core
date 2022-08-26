@@ -37,8 +37,8 @@ describe('Environment', () => {
   })
 
   it('checks if file is defined', () => {
-    expect(Environment.isFileDefined).toBeFalsy()
-    expect(Environment.isFileNotDefined).toBeTruthy()
+    expect(Environment.isFileDefined).toBeTruthy()
+    expect(Environment.isFileNotDefined).toBeFalsy()
   })
 
   it('checks if form data is defined', () => {
