@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1661459718196" clover="3.2.0">
-  <project timestamp="1661459718196" name="All files">
+<coverage generated="1661474114131" clover="3.2.0">
+  <project timestamp="1661474114131" name="All files">
     <metrics statements="1287" coveredstatements="1287" conditionals="419" coveredconditionals="415" methods="393" coveredmethods="380" elements="2099" coveredelements="2082" complexity="0" loc="1287" ncloc="1287" packages="8" files="62" classes="62"/>
     <package name="src">
       <metrics statements="59" coveredstatements="59" conditionals="0" coveredconditionals="0" methods="10" coveredmethods="5"/>
@@ -620,8 +620,8 @@
         <line num="17" count="10" type="cond" truecount="2" falsecount="0"/>
         <line num="18" count="10" type="cond" truecount="2" falsecount="0"/>
         <line num="20" count="10" type="stmt"/>
-        <line num="21" count="10" type="cond" truecount="2" falsecount="0"/>
-        <line num="22" count="10" type="cond" truecount="1" falsecount="0"/>
+        <line num="21" count="12" type="cond" truecount="2" falsecount="0"/>
+        <line num="22" count="12" type="cond" truecount="1" falsecount="0"/>
         <line num="25" count="10" type="stmt"/>
       </file>
       <file name="interval.ts" path="/Users/dario/Personal/@queelag/core/src/modules/interval.ts">
