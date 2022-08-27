@@ -3,7 +3,7 @@ import { RollupOptions } from 'rollup'
 import { terser } from 'rollup-plugin-terser'
 
 export default {
-  external: ['cookie', 'lodash/cloneDeep', 'lodash/merge', 'nanoid', 'rfc4648'],
+  external: ['cookie', 'nanoid', 'rfc4648'],
   input: 'src/index.ts',
   output: [
     {

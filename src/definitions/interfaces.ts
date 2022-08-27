@@ -35,6 +35,10 @@ export interface FetchRequestInit<T = void> extends Omit<RequestInit, 'body'> {
   parse?: boolean
 }
 
+export interface FlattenObjectOptions {
+  array: boolean
+}
+
 export interface GraphQLAPIConfig<T = void> extends APIConfig<T> {}
 
 export interface GraphQLAPIRequestBody<T = object> {

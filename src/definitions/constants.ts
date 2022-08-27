@@ -1,14 +1,6 @@
 import { noop } from '../functions/noop'
-import { removeSearchParamsFromURL } from '../utils/url.utils'
 import { ConfigurationModule } from './interfaces'
 import { ArrayIncludes, ArrayRemoves, StatusTransformer } from './types'
-
-/**
- * API
- */
-export const DEFAULT_API_STATUS_TRANSFORMER: StatusTransformer = (keys: string[]) => {
-  return keys[0] + '_' + removeSearchParamsFromURL(keys[1])
-}
 
 /**
  * Array Utils

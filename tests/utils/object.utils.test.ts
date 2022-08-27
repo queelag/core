@@ -1,9 +1,9 @@
 import {
   cloneDeepObject,
   cloneShallowObject,
-  convertObjectToFormData,
   copyObjectProperty,
   deleteObjectProperty,
+  flattenObject,
   getObjectProperty,
   hasObjectProperty,
   isObject,
@@ -14,10 +14,8 @@ import {
   noop,
   omitObjectProperties,
   pickObjectProperties,
-  Polyfill,
   setObjectProperty
 } from '../../src'
-import { Configuration } from '../../src/modules/configuration'
 
 interface Object {
   do1: {
@@ -98,6 +96,21 @@ describe('ObjectUtils', () => {
     expect(o2.do1.a1[0]).toBeUndefined()
 
     expect(deleteObjectProperty(o1, 'unknown.unknown')).toBeUndefined()
+  })
+
+  it('flattens an object', () => {
+    expect(flattenObject(o1)).toStrictEqual({
+      'do1.a1': [0],
+      'do1.n1': 0,
+      'do1.s1': '',
+      ...omitObjectProperties(o1, ['do1'])
+    })
+    expect(flattenObject(o1, { array: true })).toStrictEqual({
+      'do1.a1.0': 0,
+      'do1.n1': 0,
+      'do1.s1': '',
+      ...omitObjectProperties(o1, ['do1'])
+    })
   })
 
   it('gets an object property', () => {
@@ -192,33 +205,6 @@ describe('ObjectUtils', () => {
     expect(o1.do2.a1[0]).toBe(0)
 
     expect(setObjectProperty(o1, 'snum1.0', 0)).toBeInstanceOf(Error)
-  })
-
-  it('converts an object to form data', async () => {
-    let data: FormData
-
-    await Polyfill.file()
-
-    setObjectProperty(o1, 'blob', new Blob([]))
-    setObjectProperty(o1, 'file', new File([], ''))
-    setObjectProperty(o1, 'do2', o1)
-
-    Configuration.module.tc.log = false
-    data = convertObjectToFormData(o1)
-    Configuration.module.tc.log = true
-
-    expect(data.get('sbi1')).toBe('0')
-    expect(data.get('sbo1')).toBe('false')
-    expect(data.get('blob')).toBeInstanceOf(File)
-    expect(data.get('file')).toBeInstanceOf(File)
-    expect(data.get('do1')).toBe(JSON.stringify(o1.do1))
-    expect(data.get('do2')).toBeNull()
-    expect(data.get('f1')).toBeNull()
-    expect(data.get('snul1')).toBeNull()
-    expect(data.get('snum1')).toBe('0')
-    expect(data.get('ss1')).toBe('')
-    expect(data.get('sy1')).toBeNull()
-    expect(data.get('su1')).toBeNull()
   })
 
   it('checks if object has property', () => {

@@ -1,6 +1,6 @@
 import { FetchError } from '../classes/fetch.error'
 import { FetchResponse } from '../classes/fetch.response'
-import { DEFAULT_API_STATUS_TRANSFORMER, EMPTY_OBJECT } from '../definitions/constants'
+import { EMPTY_OBJECT } from '../definitions/constants'
 import { RequestMethod, WriteMode } from '../definitions/enums'
 import { APIConfig } from '../definitions/interfaces'
 import { rc } from '../functions/rc'
@@ -39,7 +39,7 @@ export class API<T extends APIConfig = APIConfig, U = undefined> {
   constructor(baseURL: string = '', config: T = EMPTY_OBJECT()) {
     this.baseURL = baseURL
     this.config = config
-    this.status = new Status(DEFAULT_API_STATUS_TRANSFORMER)
+    this.status = new Status()
   }
 
   /**

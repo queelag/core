@@ -1,5 +1,5 @@
 /**
- * Converts an object to a chain of query parameters.
+ * Serializes a T object to a query parameters string.
  *
  * @template T The object interface.
  */

@@ -1,6 +1,6 @@
 import { DEFAULT_LOGGER_SEPARATOR } from '../definitions/constants'
 import { ANSIColor, LoggerLevel, LoggerStatus } from '../definitions/enums'
-import { convertFormDataToObject } from '../utils/form.data.utils'
+import { deserializeFormData } from '../utils/form.data.utils'
 import { Environment } from './environment'
 
 /**
@@ -135,7 +135,7 @@ export class Logger {
       }
 
       if (Environment.isFormDataDefined && arg instanceof FormData) {
-        print.push(convertFormDataToObject(arg))
+        print.push(deserializeFormData(arg))
         continue
       }
 

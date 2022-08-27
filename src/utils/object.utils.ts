@@ -1,7 +1,6 @@
 import { REGEXP_LEFT_SQUARE_BRACKET_WITHOUT_LEADING_DOT, REGEXP_SQUARE_BRACKETS } from '../definitions/constants'
+import { FlattenObjectOptions } from '../definitions/interfaces'
 import { KeyOf } from '../definitions/types'
-import { tc } from '../functions/tc'
-import { Environment } from '../modules/environment'
 import { isArray } from './array.utils'
 
 /**
@@ -86,6 +85,23 @@ export function deleteObjectProperty<T extends object>(object: T, key: KeyOf.Dee
 
       break
   }
+}
+
+export function flattenObject<T extends object>(object: T, options?: FlattenObjectOptions, parents: string[] = []): Record<PropertyKey, any> {
+  let flat: Record<PropertyKey, any> = {}
+
+  for (let key in object) {
+    let value: any = object[key]
+
+    if (isObjectFlattenable(value, options)) {
+      flat = { ...flat, ...flattenObject(value, options, parents.concat(key)) }
+      continue
+    }
+
+    flat[parents.concat(key).join('.')] = object[key]
+  }
+
+  return flat
 }
 
 /**
@@ -271,51 +287,6 @@ export function setObjectProperty<T extends object, U extends any>(object: T, ke
   }
 }
 
-export function convertObjectToFormData<T extends object>(object: T): FormData {
-  let data: FormData
-
-  data = new FormData()
-
-  for (let [k, v] of Object.entries(object)) {
-    switch (typeof v) {
-      case 'bigint':
-      case 'boolean':
-      case 'number':
-        data.append(k, v.toString())
-        continue
-      case 'function':
-      case 'symbol':
-      case 'undefined':
-        continue
-      case 'object':
-        let stringified: string | Error
-
-        if (v === null) {
-          continue
-        }
-
-        switch (true) {
-          case Environment.isBlobDefined && v instanceof Blob:
-          case Environment.isFileDefined && v instanceof File:
-            data.append(k, v)
-            continue
-        }
-
-        stringified = tc(() => JSON.stringify(v))
-        if (stringified instanceof Error) continue
-
-        data.append(k, stringified)
-
-        continue
-      case 'string':
-        data.append(k, v)
-        continue
-    }
-  }
-
-  return data
-}
-
 /**
  * Checks whether the object has the property or not.
  *
@@ -370,6 +341,17 @@ export function isObject<T extends object>(value: any): value is T {
  */
 export function isObjectClonable<T extends object>(object: T): boolean {
   return isArray(object) || isPlainObject(object)
+}
+
+/**
+ * Checks if the T object is flattenable.
+ */
+export function isObjectFlattenable<T extends object>(object: T, options?: FlattenObjectOptions): boolean {
+  if (options?.array && isArray(object)) {
+    return true
+  }
+
+  return isPlainObject(object)
 }
 
 /**

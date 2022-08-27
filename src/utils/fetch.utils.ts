@@ -1,6 +1,6 @@
 import { FetchRequestInit } from '../definitions/interfaces'
 import { isArray } from './array.utils'
-import { convertFormDataToObject } from './form.data.utils'
+import { deserializeFormData } from './form.data.utils'
 import { mergeObjects, omitObjectProperties } from './object.utils'
 import { isStringJSON } from './string.utils'
 
@@ -169,7 +169,7 @@ export function toLoggableFetchRequestInit<T>(init: FetchRequestInit<T>): FetchR
 
   if (init.body instanceof FormData) {
     // @ts-ignore
-    clone.body = convertFormDataToObject(init.body)
+    clone.body = deserializeFormData(init.body)
   }
 
   return clone
@@ -183,7 +183,7 @@ export function toLoggableNativeFetchRequestInit(init: RequestInit): RequestInit
 
   if (init.body instanceof FormData) {
     // @ts-ignore
-    clone.body = convertFormDataToObject(init.body)
+    clone.body = deserializeFormData(init.body)
 
     return clone
   }

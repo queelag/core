@@ -1,18 +1,74 @@
+import { tc } from '../functions/tc'
+import { Environment } from '../modules/environment'
 import { isStringJSON } from './string.utils'
 
-export function convertFormDataToObject<T extends object>(data: FormData): T {
-  let object: T
-
-  object = {} as T
+/**
+ * Deserializes any FormData to a T object.
+ *
+ * @template T The object interface.
+ */
+export function deserializeFormData<T extends object>(data: FormData): T {
+  let object: T = {} as T
 
   for (let [k, v] of data.entries()) {
     if (typeof v === 'string' && isStringJSON(v)) {
-      Reflect.set(object, k, JSON.parse(v))
+      // @ts-ignore
+      object[k] = JSON.parse(v)
+
       continue
     }
 
-    Reflect.set(object, k, v)
+    // @ts-ignore
+    object[k] = v
   }
 
   return object
+}
+
+/**
+ * Serializes a T object to FormData.
+ *
+ * @template T The object interface.
+ */
+export function serializeFormData<T extends object>(object: T): FormData {
+  let data: FormData = new FormData()
+
+  for (let [k, v] of Object.entries(object)) {
+    switch (typeof v) {
+      case 'bigint':
+      case 'boolean':
+      case 'number':
+        data.append(k, v.toString())
+        continue
+      case 'function':
+      case 'symbol':
+      case 'undefined':
+        continue
+      case 'object':
+        let stringified: string | Error
+
+        if (v === null) {
+          continue
+        }
+
+        switch (true) {
+          case Environment.isBlobDefined && v instanceof Blob:
+          case Environment.isFileDefined && v instanceof File:
+            data.append(k, v)
+            continue
+        }
+
+        stringified = tc(() => JSON.stringify(v))
+        if (stringified instanceof Error) continue
+
+        data.append(k, stringified)
+
+        continue
+      case 'string':
+        data.append(k, v)
+        continue
+    }
+  }
+
+  return data
 }
