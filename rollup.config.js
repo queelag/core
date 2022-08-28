@@ -1,8 +1,8 @@
 import typescript from '@rollup/plugin-typescript'
-import { RollupOptions } from 'rollup'
+import { defineConfig } from 'rollup'
 import { terser } from 'rollup-plugin-terser'
 
-export default {
+export default defineConfig({
   external: ['cookie', 'nanoid', 'rfc4648'],
   input: 'src/index.ts',
   output: [
@@ -17,4 +17,4 @@ export default {
     }
   ],
   plugins: [terser(), typescript()]
-} as RollupOptions
+})
