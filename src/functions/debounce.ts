@@ -16,9 +16,9 @@ export function debounce(...args: any[]): void {
   fn = typeof args[0] === 'function' ? args[0] : args[1]
   ms = typeof args[0] === 'function' ? args[1] : args[2]
 
-  clearTimeout(DEBOUNCE_MAP.get(fn) as any)
-  FunctionLogger.verbose('Debounce', 'handle', `The timeout has been cleared.`, fn)
+  clearTimeout(DEBOUNCE_MAP.get(key))
+  FunctionLogger.verbose('Debounce', 'handle', `The ${key} timeout has been cleared.`)
 
-  DEBOUNCE_MAP.set(fn, setTimeout(fn, ms))
-  FunctionLogger.verbose('Debounce', 'handle', `The timeout has been set.`, fn)
+  DEBOUNCE_MAP.set(key, setTimeout(fn, ms))
+  FunctionLogger.verbose('Debounce', 'handle', `The ${key} timeout has been set.`)
 }
