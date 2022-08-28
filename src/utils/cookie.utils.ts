@@ -6,8 +6,13 @@ import { tc } from '../functions/tc'
  * Parse an HTTP Cookie header string and returning an object of all cookie
  * name-value pairs.
  */
-export function deserializeCookie(cookie: string, options?: CookieParseOptions): CookieObject | Error {
-  return tc(() => parse(cookie, options))
+export function deserializeCookie(cookie: string, options?: CookieParseOptions): CookieObject {
+  let object: CookieObject | Error
+
+  object = tc(() => parse(cookie, options))
+  if (object instanceof Error) return {}
+
+  return object
 }
 
 /**

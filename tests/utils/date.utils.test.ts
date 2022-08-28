@@ -1,4 +1,4 @@
-import { getDateInMilliseconds } from '../../src'
+import { getDateUnixTime } from '../../src'
 
 describe('DateUtils', () => {
   it('gets date in ms', () => {
@@ -6,8 +6,10 @@ describe('DateUtils', () => {
 
     date = new Date()
 
-    expect(getDateInMilliseconds(date)).toBe(date.valueOf())
-    expect(getDateInMilliseconds(date.valueOf())).toBe(date.valueOf())
-    expect(getDateInMilliseconds(date.toISOString())).toBe(date.valueOf())
+    expect(getDateUnixTime(date)).toBe(date.valueOf())
+    expect(getDateUnixTime(date.valueOf())).toBe(date.valueOf())
+    expect(getDateUnixTime(date.toISOString())).toBe(date.valueOf())
+
+    expect(getDateUnixTime(date, 's')).toBe(date.valueOf() / 100)
   })
 })

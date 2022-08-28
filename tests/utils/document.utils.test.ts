@@ -6,7 +6,7 @@ describe('DocumentUtils', () => {
     expect(createDocumentElement('div')).toBeUndefined()
 
     // @ts-ignore
-    delete global.window
+    delete global.document
     expect(createDocumentElement('div')).toStrictEqual({})
   })
 })

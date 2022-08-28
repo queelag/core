@@ -173,8 +173,7 @@ export class Cookie {
     }
 
     for (let k of keys) {
-      // @ts-ignore
-      target[k] = object[this.toDocumentCookieName(key, k)]
+      target[k] = object[this.toDocumentCookieName(key, k)] as T2[keyof T]
       ModuleLogger.debug(this.name, 'parse', `The cookie ${String(k)} has been copied to the target.`, target)
     }
   }

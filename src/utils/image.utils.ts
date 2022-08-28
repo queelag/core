@@ -1,5 +1,5 @@
+import { CACHE_IMAGES } from '../definitions/constants'
 import { UtilLogger } from '../loggers/util.logger'
-import { Cache } from '../modules/cache'
 
 /**
  * Draws an already loaded image element to a canvas and exports it as a base64 data URL.
@@ -27,7 +27,7 @@ export async function preloadImages(sources: string[]): Promise<boolean> {
 
   loads = await Promise.all(
     sources
-      .filter((v: string) => !Cache.images.has(v))
+      .filter((v: string) => !CACHE_IMAGES.has(v))
       .map(
         (v: string) =>
           new Promise<boolean>((resolve) => {
@@ -47,7 +47,7 @@ export async function preloadImages(sources: string[]): Promise<boolean> {
               resolve(false)
             }
             element.onload = () => {
-              Cache.images.set(v, getImageElementBase64(element))
+              CACHE_IMAGES.set(v, getImageElementBase64(element))
 
               element.remove()
               UtilLogger.debug('ImageUtils', 'preload', `The image with source ${v} has been cached and loaded.`)

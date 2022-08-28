@@ -4,7 +4,7 @@ import { deserializeFormData } from './form.data.utils'
 import { mergeObjects, omitObjectProperties } from './object.utils'
 import { isStringJSON } from './string.utils'
 
-export function deleteFetchRequestInitHeader<T extends unknown>(init: FetchRequestInit<T> | RequestInit, name: string): void {
+export function deleteFetchRequestInitHeader<T>(init: FetchRequestInit<T> | RequestInit, name: string): void {
   if (typeof init.headers === 'undefined') {
     return
   }
@@ -21,7 +21,7 @@ export function deleteFetchRequestInitHeader<T extends unknown>(init: FetchReque
   delete init.headers[name]
 }
 
-export function getFetchRequestInitHeader<T extends unknown>(init: FetchRequestInit<T> | RequestInit, name: string): string | null {
+export function getFetchRequestInitHeader<T>(init: FetchRequestInit<T> | RequestInit, name: string): string | null {
   let value: string | undefined
 
   if (typeof init.headers === 'undefined') {
@@ -47,7 +47,7 @@ export function getFetchRequestInitHeader<T extends unknown>(init: FetchRequestI
   return value
 }
 
-export function getFetchRequestInitHeadersEntries<T extends unknown>(init: FetchRequestInit<T> | RequestInit): string[][] {
+export function getFetchRequestInitHeadersEntries<T>(init: FetchRequestInit<T> | RequestInit): string[][] {
   if (typeof init.headers === 'undefined') {
     return []
   }
@@ -63,11 +63,11 @@ export function getFetchRequestInitHeadersEntries<T extends unknown>(init: Fetch
   return Object.entries(init.headers)
 }
 
-export function getFetchRequestInitHeadersLength<T extends unknown>(init: FetchRequestInit<T> | RequestInit): number {
+export function getFetchRequestInitHeadersLength<T>(init: FetchRequestInit<T> | RequestInit): number {
   return getFetchRequestInitHeadersEntries(init).length
 }
 
-export function setFetchRequestInitHeader<T extends unknown>(init: FetchRequestInit<T> | RequestInit, name: string, value: string): void {
+export function setFetchRequestInitHeader<T>(init: FetchRequestInit<T> | RequestInit, name: string, value: string): void {
   if (typeof init.headers === 'undefined') {
     init.headers = new Headers()
     init.headers.set(name, value)
@@ -89,7 +89,7 @@ export function setFetchRequestInitHeader<T extends unknown>(init: FetchRequestI
   init.headers[name] = value
 }
 
-export function setFetchRequestInitHeaderWhenUnset<V extends unknown>(init: FetchRequestInit<V> | RequestInit, name: string, value: string): void {
+export function setFetchRequestInitHeaderWhenUnset<T>(init: FetchRequestInit<T> | RequestInit, name: string, value: string): void {
   if (hasFetchRequestInitHeader(init, name)) {
     return
   }
@@ -97,8 +97,8 @@ export function setFetchRequestInitHeaderWhenUnset<V extends unknown>(init: Fetc
   setFetchRequestInitHeader(init, name, value)
 }
 
-export function mergeFetchRequestInits<V extends unknown>(target: FetchRequestInit<V>, ...sources: FetchRequestInit<V>[]): FetchRequestInit<V> {
-  let merged: FetchRequestInit<V>
+export function mergeFetchRequestInits<T>(target: FetchRequestInit<T>, ...sources: FetchRequestInit<T>[]): FetchRequestInit<T> {
+  let merged: FetchRequestInit<T>
 
   merged = mergeObjects(target, ...sources)
   merged.headers = new Headers()
@@ -120,7 +120,7 @@ export function mergeFetchRequestInits<V extends unknown>(target: FetchRequestIn
   return merged
 }
 
-export function toNativeFetchRequestInit<V extends unknown>(init: FetchRequestInit<V>): RequestInit {
+export function toNativeFetchRequestInit<T>(init: FetchRequestInit<T>): RequestInit {
   let clone: RequestInit
 
   clone = omitObjectProperties(init, ['body'])
@@ -161,14 +161,13 @@ export function toNativeFetchRequestInit<V extends unknown>(init: FetchRequestIn
   return clone
 }
 
-export function toLoggableFetchRequestInit<T>(init: FetchRequestInit<T>): FetchRequestInit<T> {
-  let clone: FetchRequestInit<T>
+export function toLoggableFetchRequestInit<T>(init: FetchRequestInit<T>): FetchRequestInit {
+  let clone: FetchRequestInit
 
   clone = omitObjectProperties(init, ['body'])
   if (init.body === undefined) return clone
 
   if (init.body instanceof FormData) {
-    // @ts-ignore
     clone.body = deserializeFormData(init.body)
   }
 
@@ -182,9 +181,7 @@ export function toLoggableNativeFetchRequestInit(init: RequestInit): RequestInit
   if (init.body === undefined) return clone
 
   if (init.body instanceof FormData) {
-    // @ts-ignore
-    clone.body = deserializeFormData(init.body)
-
+    clone.body = deserializeFormData(init.body) as BodyInit
     return clone
   }
 
@@ -198,6 +195,6 @@ export function toLoggableNativeFetchRequestInit(init: RequestInit): RequestInit
   return clone
 }
 
-export function hasFetchRequestInitHeader<V extends unknown>(init: FetchRequestInit<V> | RequestInit, name: string): boolean {
+export function hasFetchRequestInitHeader<T>(init: FetchRequestInit<T> | RequestInit, name: string): boolean {
   return getFetchRequestInitHeader(init, name) !== null
 }

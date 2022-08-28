@@ -12,14 +12,11 @@ export function deserializeFormData<T extends object>(data: FormData): T {
 
   for (let [k, v] of data.entries()) {
     if (typeof v === 'string' && isStringJSON(v)) {
-      // @ts-ignore
-      object[k] = JSON.parse(v)
-
+      object[k as keyof T] = JSON.parse(v)
       continue
     }
 
-    // @ts-ignore
-    object[k] = v
+    object[k as keyof T] = v as any
   }
 
   return object

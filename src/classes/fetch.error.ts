@@ -5,7 +5,7 @@ import { FetchResponse } from './fetch.response'
  *
  * @category Class
  */
-export class FetchError<T = void> extends Error {
+export class FetchError<T = unknown> extends Error {
   response: FetchResponse<T>
 
   constructor(error: Error, response: FetchResponse<T>) {
@@ -16,11 +16,11 @@ export class FetchError<T = void> extends Error {
     this.response = response
   }
 
-  static from<T = void>(): FetchError<T>
-  static from<T = void>(error: Error): FetchError<T>
-  static from<T = void>(error: Error, response: FetchResponse<T>): FetchError<T>
-  static from<T = void>(response: FetchResponse<T>): FetchError<T>
-  static from<T = void>(...args: any[]): FetchError<T> {
+  static from<T>(): FetchError<T>
+  static from<T>(error: Error): FetchError<T>
+  static from<T>(error: Error, response: FetchResponse<T>): FetchError<T>
+  static from<T>(response: FetchResponse<T>): FetchError<T>
+  static from<T>(...args: any[]): FetchError<T> {
     switch (true) {
       case args[0] instanceof Error && args[1] instanceof FetchResponse:
         return new FetchError(args[0], args[1])

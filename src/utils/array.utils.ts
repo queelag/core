@@ -118,6 +118,6 @@ export function removeArrayItems<T>(...args: any[]): T[] {
 /**
  * Checks whether value is an array.
  */
-export function isArray<T extends unknown>(value: any): value is T[] {
+export function isArray<T>(value: any): value is T[] {
   return Array.isArray(value)
 }

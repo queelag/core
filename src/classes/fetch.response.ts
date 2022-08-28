@@ -6,7 +6,7 @@ import { ClassLogger } from '../loggers/class.logger'
  *
  * @category Class
  */
-export class FetchResponse<T = void> implements Response {
+export class FetchResponse<T = unknown> implements Response {
   readonly body: ReadableStream<Uint8Array> | null
   readonly bodyUsed: boolean
   data: T

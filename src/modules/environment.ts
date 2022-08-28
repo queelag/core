@@ -88,6 +88,20 @@ export class Environment {
   }
 
   /**
+   * Checks if document is defined.
+   */
+  static get isDocumentDefined(): boolean {
+    return typeof document !== 'undefined'
+  }
+
+  /**
+   * Checks if document is not defined.
+   */
+  static get isDocumentNotDefined(): boolean {
+    return typeof document === 'undefined'
+  }
+
+  /**
    * Checks if fetch is defined.
    */
   static get isFetchDefined(): boolean {

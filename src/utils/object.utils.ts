@@ -80,8 +80,7 @@ export function deleteObjectProperty<T extends object>(object: T, key: KeyOf.Dee
         return
       }
 
-      // @ts-ignore
-      delete object[key]
+      delete object[key as keyof T]
 
       break
   }
@@ -133,8 +132,7 @@ export function getObjectProperty<T extends object, U extends any>(object: T, ke
       }
 
       if (key in object) {
-        // @ts-ignore
-        return object[key]
+        return object[key as keyof T] as U
       }
 
       return fallback
@@ -205,13 +203,11 @@ export function mergeObjects<T extends object>(target: T, ...sources: Record<Pro
       }
 
       if (isObjectClonable(sp)) {
-        // @ts-ignore
-        clone[key] = mergeObjects(tp, cloneDeepObject(sp))
+        clone[key as keyof T] = mergeObjects(tp, cloneDeepObject(sp))
         continue
       }
 
-      // @ts-ignore
-      clone[key] = sp
+      clone[key as keyof T] = sp
     }
   }
 
@@ -256,14 +252,13 @@ export function pickObjectProperties<T extends object, K extends keyof T>(object
  * @template T The object interface.
  * @template U The value interface or type.
  */
-export function setObjectProperty<T extends object, U extends any>(object: T, key: KeyOf.Deep<T>, value: U): void | Error
-export function setObjectProperty<T extends object, U extends any>(object: T, key: string, value: U): void | Error
-export function setObjectProperty<T extends object, U extends any>(object: T, key: KeyOf.Deep<T>, value: U): void | Error {
+export function setObjectProperty<T extends object, U extends unknown>(object: T, key: KeyOf.Deep<T>, value: U): void | Error
+export function setObjectProperty<T extends object, U extends unknown>(object: T, key: string, value: U): void | Error
+export function setObjectProperty<T extends object, U extends unknown>(object: T, key: KeyOf.Deep<T>, value: U): void | Error {
   switch (typeof key) {
     case 'number':
     case 'symbol':
-      // @ts-ignore
-      object[key] = value
+      object[key as keyof T] = value as T[keyof T]
       break
     case 'string':
       if (key.includes('.')) {
@@ -280,8 +275,7 @@ export function setObjectProperty<T extends object, U extends any>(object: T, ke
         break
       }
 
-      // @ts-ignore
-      object[key] = value
+      object[key as keyof T] = value as T[keyof T]
 
       break
   }
@@ -301,24 +295,6 @@ export function hasObjectProperty<T extends object>(object: T, key: KeyOf.Deep<T
   symbol = Symbol()
 
   return getObjectProperty(object, key, symbol) !== symbol
-}
-
-/**
- * Checks if the object has keys.
- *
- * @template T The object interface.
- */
-export function isObjectKeysPopulated<T extends object>(object: T): boolean {
-  return Object.keys(object).length > 0
-}
-
-/**
- * Checks if the object has values.
- *
- * @template T The object interface.
- */
-export function isObjectValuesPopulated<T extends object>(object: T): boolean {
-  return Object.values(object).length > 0
 }
 
 /**
@@ -353,18 +329,35 @@ export function isObjectFlattenable<T extends object>(object: T, options?: Flatt
 
   return isPlainObject(object)
 }
+/**
+ * Checks if the object has keys.
+ *
+ * @template T The object interface.
+ */
+export function isObjectKeysPopulated<T extends object>(object: T): boolean {
+  return Object.keys(object).length > 0
+}
+
+/**
+ * Checks if the object has values.
+ *
+ * @template T The object interface.
+ */
+export function isObjectValuesPopulated<T extends object>(object: T): boolean {
+  return Object.values(object).length > 0
+}
 
 /**
  * Checks if value is a plain object.
  */
 export function isPlainObject<T extends object>(value: any): value is T {
+  if (value === null) {
+    return false
+  }
+
   if (typeof value !== 'object') {
     return false
   }
 
-  if (typeof value?.toString !== 'function') {
-    return false
-  }
-
-  return value.toString() === '[object Object]'
+  return Object.getPrototypeOf(value) === Object.prototype
 }

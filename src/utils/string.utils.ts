@@ -4,14 +4,14 @@ import { tc } from '../functions/tc'
 /**
  * Capitalizes the first letter in a string, if lowercase is set to true the other characters will be lowercased.
  */
-export function toCapitalizedString(string: string, lowercase: boolean = false): string {
+export function getCapitalizedString(string: string, lowercase: boolean = false): string {
   return string.charAt(0).toUpperCase() + (lowercase ? string.slice(1).toLowerCase() : string.slice(1))
 }
 
 /**
  * Transforms any string to a per word capitalized string but with the first char in lowercase.
  */
-export function toCamelCaseString(string: string): string {
+export function getCamelCaseString(string: string): string {
   let camel: string, ucnlcl: boolean
 
   camel = ''
@@ -41,7 +41,7 @@ export function toCamelCaseString(string: string): string {
   return camel
 }
 
-function toSymbolSeparatedCaseString(string: string, symbol: string): string {
+function getSymbolSeparatedCaseString(string: string, symbol: string): string {
   let result: string = ''
 
   for (let i = 0; i < string.length; i++) {
@@ -64,21 +64,21 @@ function toSymbolSeparatedCaseString(string: string, symbol: string): string {
 /**
  * Transforms any string to a word divided string by dashes.
  */
-export function toKebabCaseString(string: string): string {
-  return toSymbolSeparatedCaseString(string, '-')
+export function getKebabCaseString(string: string): string {
+  return getSymbolSeparatedCaseString(string, '-')
 }
 
 /**
  * Transforms any string to a word divided string by underscores.
  */
-export function toSnakeCaseString(string: string): string {
-  return toSymbolSeparatedCaseString(string, '_')
+export function getSnakeCaseString(string: string): string {
+  return getSymbolSeparatedCaseString(string, '_')
 }
 
 /**
  * Transforms any string to a per word capitalized string.
  */
-export function toStartCaseString(string: string): string {
+export function getStartCaseString(string: string): string {
   let start: string, ucnl: boolean
 
   start = ''
@@ -100,7 +100,7 @@ export function toStartCaseString(string: string): string {
     start += char
   }
 
-  return toCapitalizedString(start)
+  return getCapitalizedString(start)
 }
 
 /**

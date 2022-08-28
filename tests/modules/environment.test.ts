@@ -31,6 +31,11 @@ describe('Environment', () => {
     expect(Environment.isNotDevelopment).toBeTruthy()
   })
 
+  it('checks if document is defined', () => {
+    expect(Environment.isDocumentDefined).toBeTruthy()
+    expect(Environment.isDocumentNotDefined).toBeFalsy()
+  })
+
   it('checks if fetch is defined', () => {
     expect(Environment.isFetchDefined).toBeTruthy()
     expect(Environment.isFetchNotDefined).toBeFalsy()

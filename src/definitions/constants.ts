@@ -1,17 +1,17 @@
 import { noop } from '../functions/noop'
 import { ConfigurationModule } from './interfaces'
-import { ArrayIncludes, ArrayRemoves, StatusTransformer } from './types'
+import { ArrayIncludes, ArrayRemoves, DebounceMapKey, DebounceMapValue, StatusTransformer, ThrottleMapKey, ThrottleMapValue } from './types'
+
+/**
+ * Any
+ */
+export const EMPTY_OBJECT: () => Record<PropertyKey, any> = () => ({})
 
 /**
  * Array Utils
  */
 export const DEFAULT_ARRAY_INCLUDES: ArrayIncludes<any> = (array: any[], item: any) => array.includes(item)
 export const DEFAULT_ARRAY_REMOVES: ArrayRemoves<any> = (array: any[], item: any) => array.includes(item)
-
-/**
- * Cookie
- */
-export const DEFAULT_COOKIE_SEPARATOR: string = '_'
 
 /**
  * Configuration
@@ -28,24 +28,19 @@ export const DEFAULT_CONFIGURATION_MODULE: () => ConfigurationModule = () => ({
 })
 
 /**
+ * Cookie
+ */
+export const DEFAULT_COOKIE_SEPARATOR: string = '_'
+
+/**
+ * Debounce
+ */
+export const DEBOUNCE_MAP: Map<DebounceMapKey, DebounceMapValue> = new Map()
+
+/**
  * History
  */
 export const DEFAULT_HISTORY_SIZE: number = 100
-
-/**
- * Logger
- */
-export const DEFAULT_LOGGER_SEPARATOR: string = ' -> '
-
-/**
- * Status
- */
-export const DEFAULT_STATUS_TRANSFORMER: StatusTransformer = (keys: string[]) => keys.join('_')
-
-/**
- * Any
- */
-export const EMPTY_OBJECT: () => Record<PropertyKey, any> = () => ({})
 
 /**
  * ID
@@ -61,10 +56,20 @@ export const ID_ALPHABET_HEX_LOWERCASE: string = ID_ALPHABET_NUMBERS + 'abcdef'
 export const ID_ALPHABET_HEX_UPPERCASE: string = ID_ALPHABET_NUMBERS + 'ABCDEF'
 
 /**
+ * Image Utils
+ */
+export const CACHE_IMAGES: Map<string, string> = new Map()
+
+/**
  * Localization
  */
 export const REGEXP_VARIABLE_INSIDE_CURLY_BRACKETS: RegExp = /{[^{}]{1,256}}/gm
 export const SORT_REGEXP_VARIABLE_INSIDE_CURLY_BRACKETS_MATCHES_COMPARE_FN: (a: string, b: string) => number = (a: string, b: string) => b.length - a.length
+
+/**
+ * Logger
+ */
+export const DEFAULT_LOGGER_SEPARATOR: string = ' -> '
 
 /**
  * Object Utils
@@ -73,11 +78,21 @@ export const REGEXP_LEFT_SQUARE_BRACKET_WITHOUT_LEADING_DOT: RegExp = /([^.])\[/
 export const REGEXP_SQUARE_BRACKETS: RegExp = /[\[\]]/g
 
 /**
+ * Status
+ */
+export const DEFAULT_STATUS_TRANSFORMER: StatusTransformer = (keys: string[]) => keys.join('_')
+
+/**
  * String Utils
  */
 export const REGEXP_NOT_LETTERS: RegExp = /[^a-zA-Z]/g
 export const REGEXP_NOT_LOWERCASE_LETTERS: RegExp = /[^a-z]/g
 export const REGEXP_UPPERCASE_LETTERS: RegExp = /[A-Z]/g
+
+/**
+ * Throttle
+ */
+export const THROTTLE_MAP: Map<ThrottleMapKey, ThrottleMapValue> = new Map()
 
 /**
  * URL Utils

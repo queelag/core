@@ -3,6 +3,9 @@ import { ArrayPath, Path } from './path'
 export type ArrayIncludes<T> = (array: T[], item: T) => boolean
 export type ArrayRemoves<T> = (array: T[], item: T) => boolean
 
+export type DebounceMapKey = Function | string
+export type DebounceMapValue = NodeJS.Timeout | number
+
 export type IntervalMapKey = Function | string
 export type IntervalMapValue = NodeJS.Timeout | number | string | undefined
 
@@ -23,6 +26,7 @@ export type ProcessEnvValue = string | undefined
 export type StatusTransformer = (keys: string[]) => string
 
 export type ThrottleMapKey = Function | string
+export type ThrottleMapValue = number
 
 export type TimeoutMapKey = Function | string
 export type TimeoutMapValue = NodeJS.Timeout | number | string | undefined

@@ -9,5 +9,5 @@ export function createDocumentElement<K1 extends keyof HTMLElementTagNameMap, K2
   tagName: K1 | K2,
   options?: ElementCreationOptions
 ): HTMLElementTagNameMap[K1] | SVGElementTagNameMap[K2] {
-  return Environment.isWindowDefined ? document.createElement(tagName, options) : ({} as any)
+  return Environment.isDocumentDefined ? document.createElement(tagName, options) : ({} as any)
 }

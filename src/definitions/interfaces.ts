@@ -2,7 +2,7 @@ import type { FetchResponse } from '../classes/fetch.response'
 import type { WriteMode } from './enums'
 import { Primitive } from './types'
 
-export interface APIConfig<T = void> extends FetchRequestInit<T> {
+export interface APIConfig<T = unknown> extends FetchRequestInit<T> {
   query?: object | string
   status?: {
     blacklist?: string[]
@@ -30,7 +30,7 @@ export interface ConfigurationModule {
   }
 }
 
-export interface FetchRequestInit<T = void> extends Omit<RequestInit, 'body'> {
+export interface FetchRequestInit<T = unknown> extends Omit<RequestInit, 'body'> {
   body?: T
   parse?: boolean
 }
@@ -39,7 +39,7 @@ export interface FlattenObjectOptions {
   array: boolean
 }
 
-export interface GraphQLAPIConfig<T = void> extends APIConfig<T> {}
+export interface GraphQLAPIConfig<T = unknown> extends APIConfig<T> {}
 
 export interface GraphQLAPIRequestBody<T = object> {
   query: string
@@ -51,6 +51,17 @@ export interface GraphQLAPIResponse<T = any> extends FetchResponse<GraphQLAPIRes
 export interface GraphQLAPIResponseBody<T = any> {
   data: T
   errors?: any[]
+}
+
+export interface GraphQLAPIResponseBodyError<T = any> {
+  extensions?: T[]
+  locations: GraphQLAPIResponseBodyErrorLocation[]
+  message: string
+}
+
+export interface GraphQLAPIResponseBodyErrorLocation {
+  column: number
+  line: number
 }
 
 export interface HistoryDataTarget extends Record<PropertyKey, any> {}
@@ -74,17 +85,13 @@ export interface LocalizationPackData {
   [key: string]: string | LocalizationPackData
 }
 
-export interface LocalizationVariables extends Record<number | string, string> {}
+export interface LocalizationVariables extends Record<number | string, Primitive> {}
 
-export interface StorageTarget extends Record<PropertyKey, any> {}
 export interface StorageItem extends Record<PropertyKey, any> {}
-
-export interface WithID<T = string> {
-  id: T
-}
+export interface StorageTarget extends Record<PropertyKey, any> {}
 
 export interface WithWriteMode {
+  mode?: WriteMode
   isModeCreate?: boolean
   isModeUpdate?: boolean
-  mode?: WriteMode
 }
