@@ -114,18 +114,18 @@ export function isStringJSON(string: string): boolean {
  * Checks if a string is not a stringified JSON.
  */
 export function isStringNotJSON(string: string): boolean {
-  return tc(() => JSON.parse(string), false) instanceof Error
+  return !isStringJSON(string)
 }
 
 /**
- * Checks whether a value is parsable as float.
+ * Checks if a string is a float.
  */
 export function isStringFloat(string: string): boolean {
   return !isNaN(parseFloat(string))
 }
 
 /**
- * Checks whether a value is parsable as int.
+ * Checks if a string is an int.
  */
 export function isStringInt(string: string): boolean {
   if (string.includes('.')) {
@@ -133,4 +133,23 @@ export function isStringInt(string: string): boolean {
   }
 
   return !isNaN(parseInt(string))
+}
+
+/**
+ * Checks if a string is a valid URL.
+ */
+export function isStringURL(string: string): boolean {
+  let url: URL | TypeError
+
+  url = tc(() => new URL(string), false)
+  if (!(url instanceof URL)) return false
+
+  return true
+}
+
+/**
+ * Checks if a string is not a valid URL.
+ */
+export function isStringNotURL(string: string): boolean {
+  return !isStringURL(string)
 }

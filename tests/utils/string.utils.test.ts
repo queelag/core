@@ -7,7 +7,9 @@ import {
   isStringFloat,
   isStringInt,
   isStringJSON,
-  isStringNotJSON
+  isStringNotJSON,
+  isStringNotURL,
+  isStringURL
 } from '../../src'
 
 describe('StringUtils', () => {
@@ -65,5 +67,12 @@ describe('StringUtils', () => {
     expect(isStringInt('0')).toBeTruthy()
     expect(isStringInt('0.5')).toBeFalsy()
     expect(isStringInt('')).toBeFalsy()
+  })
+
+  it('checks if string is an url', () => {
+    expect(isStringURL('https://localhost:3000')).toBeTruthy()
+    expect(isStringURL('')).toBeFalsy()
+    expect(isStringNotURL('https://localhost:3000')).toBeFalsy()
+    expect(isStringNotURL('')).toBeTruthy()
   })
 })
