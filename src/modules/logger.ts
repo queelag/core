@@ -45,7 +45,7 @@ export class Logger {
     if (this.isDisabled) return
     if (this.isLevelVerboseDisabled) return
 
-    console.debug(...this.format(args, LoggerLevel.VERBOSE))
+    console.debug(...this.format(...args))
   }
 
   /**
@@ -55,7 +55,7 @@ export class Logger {
     if (this.isDisabled) return
     if (this.isLevelDebugDisabled) return
 
-    console.debug(...this.format(args, LoggerLevel.DEBUG))
+    console.debug(...this.format(...args))
   }
 
   /**
@@ -65,7 +65,7 @@ export class Logger {
     if (this.isDisabled) return
     if (this.isLevelInfoDisabled) return
 
-    console.info(...this.format(args, LoggerLevel.INFO))
+    console.info(...this.format(...args))
   }
 
   /**
@@ -75,7 +75,7 @@ export class Logger {
     if (this.isDisabled) return
     if (this.isLevelWarnDisabled) return
 
-    console.warn(...this.format(args, LoggerLevel.WARN))
+    console.warn(...this.format(...args))
   }
 
   /**
@@ -84,7 +84,7 @@ export class Logger {
   error(...args: any[]): void {
     if (this.isDisabled) return
 
-    console.error(...this.format(args, LoggerLevel.ERROR))
+    console.error(...this.format(...args))
   }
 
   /**
