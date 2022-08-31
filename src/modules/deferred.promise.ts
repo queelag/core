@@ -1,3 +1,4 @@
+import { PromiseState } from '../definitions/enums'
 import { tcp } from '../functions/tcp'
 
 /**
@@ -11,19 +12,35 @@ export class DeferredPromise<T> {
    */
   instance: Promise<T>
   /**
+   * A {@link PromiseState}.
+   */
+  state: PromiseState
+
+  private _reject!: (reason?: any) => void
+  private _resolve!: (value: T | PromiseLike<T>) => void
+
+  constructor() {
+    this.state = PromiseState.PENDING
+    this.instance = new Promise((resolve: (v: T | PromiseLike<T>) => void, reject: (reason?: any) => void) => {
+      this._reject = reject
+      this._resolve = resolve
+    })
+  }
+
+  /**
    * Rejects the promise.
    */
-  reject!: (reason?: any) => void
+  reject(reason?: any): void {
+    this._reject(reason)
+    this.state = PromiseState.REJECTED
+  }
+
   /**
    * Resolves the promise.
    */
-  resolve!: (value: T | PromiseLike<T>) => void
-
-  constructor() {
-    this.instance = new Promise((resolve: (v: T | PromiseLike<T>) => void, reject: (reason?: any) => void) => {
-      this.reject = reject
-      this.resolve = resolve
-    })
+  resolve(value: T | PromiseLike<T>): void {
+    this._resolve(value)
+    this.state = PromiseState.FULFILLED
   }
 
   /**
@@ -59,5 +76,21 @@ export class DeferredPromise<T> {
   ): this {
     tcp(() => this.instance.then(onfulfilled, onrejected), false)
     return this
+  }
+
+  get isFulfilled(): boolean {
+    return this.state === PromiseState.FULFILLED
+  }
+
+  get isPending(): boolean {
+    return this.state === PromiseState.PENDING
+  }
+
+  get isRejected(): boolean {
+    return this.state === PromiseState.REJECTED
+  }
+
+  get isResolved(): boolean {
+    return this.isFulfilled
   }
 }

@@ -20,6 +20,7 @@ export {
   GraphQLAPIResponse,
   GraphQLAPIResponseBody,
   HistoryDataTarget,
+  IDGenerateOptions,
   LocalizationPack,
   LocalizationPackData,
   WithWriteMode
