@@ -89,11 +89,11 @@ export function getLowestNumber(...args: any[]): number {
 /**
  * Parses to a BigInt safely.
  */
-export function parseBigInt(value: string | number | bigint | boolean, fallback: BigInt = 0n): BigInt {
+export function parseBigInt(value: string | number | bigint | boolean, fallback?: BigInt): BigInt {
   let parsed: BigInt | Error
 
   parsed = tc(() => BigInt(value))
-  if (parsed instanceof Error) return fallback
+  if (parsed instanceof Error) return fallback ?? 0n
 
   return parsed
 }
