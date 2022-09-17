@@ -93,7 +93,7 @@ export function parseBigInt(value: string | number | bigint | boolean, fallback?
   let parsed: BigInt | Error
 
   parsed = tc(() => BigInt(value))
-  if (parsed instanceof Error) return fallback ?? 0n
+  if (parsed instanceof Error) return fallback ?? BigInt(0)
 
   return parsed
 }
