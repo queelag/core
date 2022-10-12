@@ -30,5 +30,3 @@ export type ThrottleMapValue = number
 
 export type TimeoutMapKey = Function | string
 export type TimeoutMapValue = NodeJS.Timeout | number | string | undefined
-
-export type WebSocketEventData<T extends object> = T | ArrayBufferLike | ArrayBufferView | Blob | string

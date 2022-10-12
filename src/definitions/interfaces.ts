@@ -30,6 +30,13 @@ export interface ConfigurationModule {
   }
 }
 
+export interface DeserializeBlobOptions {
+  resolveArrayBuffer?: boolean
+  resolveText?: boolean
+}
+
+export interface DeserializeFileOptions extends DeserializeBlobOptions {}
+
 export interface FetchRequestInit<T = unknown> extends Omit<RequestInit, 'body'> {
   body?: T
   parse?: boolean

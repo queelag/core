@@ -1,5 +1,7 @@
 export * from './classes/fetch.error'
 export * from './classes/fetch.response'
+export * from './classes/queelag.blob'
+export * from './classes/queelag.file'
 export {
   EMPTY_OBJECT,
   ID_ALPHABET_ALPHANUMERIC,
@@ -15,14 +17,26 @@ export { LoggerLevel, LoggerName as CoreLoggerName, LoggerStatus, RequestMethod,
 export {
   APIConfig,
   ConfigurationModule as CoreConfigurationModule,
+  CookieItem,
+  CookieObject,
+  CookieSource,
+  DeserializeBlobOptions,
+  DeserializeFileOptions,
   FetchRequestInit,
+  FlattenObjectOptions,
   GraphQLAPIConfig,
+  GraphQLAPIRequestBody,
   GraphQLAPIResponse,
   GraphQLAPIResponseBody,
+  GraphQLAPIResponseBodyError,
+  GraphQLAPIResponseBodyErrorLocation,
   HistoryDataTarget,
   IDGenerateOptions,
   LocalizationPack,
   LocalizationPackData,
+  LocalizationVariables,
+  StorageItem,
+  StorageTarget,
   WithWriteMode
 } from './definitions/interfaces'
 export * from './definitions/types'
@@ -54,30 +68,28 @@ export * from './modules/base64'
 export { Configuration as CoreConfiguration } from './modules/configuration'
 export * from './modules/cookie'
 export * from './modules/deferred.promise'
-export * from './modules/document.cookie'
 export * from './modules/environment'
 export * from './modules/fetch'
 export * from './modules/graphql.api'
 export * from './modules/history'
 export * from './modules/id'
 export * from './modules/interval'
-export * from './modules/local.storage'
 export * from './modules/localization'
 export * from './modules/logger'
 export * from './modules/polyfill'
-export * from './modules/session.storage'
 export * from './modules/status'
 export * from './modules/storage'
 export * from './modules/text.codec'
 export * from './modules/timeout'
-export * from './modules/web.socket'
 export * from './utils/array.utils'
+export * from './utils/blob.utils'
 export * from './utils/cookie.utils'
 export * from './utils/date.utils'
 export * from './utils/document.utils'
 export * from './utils/emoji.utils'
 export * from './utils/error.utils'
 export * from './utils/fetch.utils'
+export * from './utils/file.utils'
 export * from './utils/form.data.utils'
 export * from './utils/function.utils'
 export * from './utils/image.utils'

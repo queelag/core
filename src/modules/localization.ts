@@ -4,7 +4,6 @@ import { LocalizationPack, LocalizationVariables } from '../definitions/interfac
 import { ModuleLogger } from '../loggers/module.logger'
 import { isNotError } from '../utils/error.utils'
 import { getObjectProperty, hasObjectProperty, mergeObjects } from '../utils/object.utils'
-import { LocalStorage } from './local.storage'
 import { Storage } from './storage'
 
 /**
@@ -30,7 +29,7 @@ export class Localization {
    */
   variables: LocalizationVariables
 
-  constructor(language: string, packs: LocalizationPack[] = [], variables: LocalizationVariables = {}, storage: Storage = LocalStorage) {
+  constructor(language: string, storage: Storage, packs: LocalizationPack[] = [], variables: LocalizationVariables = {}) {
     this.language = language
     this.packs = packs
     this.storage = storage
