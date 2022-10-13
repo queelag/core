@@ -15,8 +15,8 @@ jobs:
           fetch-depth: 0
       - name: Install Dependencies
         run: yarn
-      - name: Jest Coverage
-        run: yarn jest --coverage
+      - name: Test Coverage
+        run: yarn test --coverage
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@master
         env:
