@@ -11,6 +11,7 @@
   "devDependencies": {
     "@microsoft/api-extractor": "^7.29.3",
     "@rollup/plugin-typescript": "^8.3.4",
+    "@vitest/coverage-c8": "^0.24.1",
     "@vitest/ui": "^0.24.1",
     "fastify": "^4.5.2",
     "mercurius": "^10.1.1",
@@ -31,7 +32,7 @@
   },
   "repository": "https://github.com/queelag/core",
   "scripts": {
-    "test": "vitest",
+    "test": "vitest --coverage",
     "build": "rm -rf dist && yarn rollup -c --configPlugin typescript && yarn api-extractor run --local",
     "tarball": "yarn version && cp package.json dist/. && cd dist && yarn pack",
     "deploy": "yarn test && yarn build && yarn tarball && yarn publish dist/*.tgz --access public"
