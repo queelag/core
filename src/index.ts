@@ -39,6 +39,7 @@ export {
   StorageTarget,
   WithWriteMode
 } from './definitions/interfaces'
+export * from './definitions/stubs'
 export * from './definitions/types'
 export * from './functions/debounce'
 export * from './functions/gql'

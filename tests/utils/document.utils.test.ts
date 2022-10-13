@@ -1,3 +1,4 @@
+import { describe, expect, it } from 'vitest'
 import { createDocumentElement, noop } from '../../src'
 
 describe('DocumentUtils', () => {

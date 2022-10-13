@@ -1,4 +1,5 @@
-import { Logger, LoggerLevel, LoggerStatus } from '../../src'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { Logger, LoggerLevel, LoggerStatus, noop } from '../../src'
 import { ANSIColor } from '../../src/definitions/enums'
 
 describe('Logger', () => {
@@ -6,11 +7,11 @@ describe('Logger', () => {
 
   beforeEach(() => {
     logger = new Logger('test', LoggerLevel.VERBOSE, LoggerStatus.ON)
-    jest.spyOn(console, 'debug').mockImplementation().mockReset()
-    jest.spyOn(console, 'error').mockImplementation().mockReset()
-    jest.spyOn(console, 'info').mockImplementation().mockReset()
-    jest.spyOn(console, 'log').mockImplementation().mockReset()
-    jest.spyOn(console, 'warn').mockImplementation().mockReset()
+    vi.spyOn(console, 'debug').mockImplementation(noop).mockReset()
+    vi.spyOn(console, 'error').mockImplementation(noop).mockReset()
+    vi.spyOn(console, 'info').mockImplementation(noop).mockReset()
+    vi.spyOn(console, 'log').mockImplementation(noop).mockReset()
+    vi.spyOn(console, 'warn').mockImplementation(noop).mockReset()
   })
 
   it('logs to correct channels', () => {
@@ -116,6 +117,9 @@ describe('Logger', () => {
   it('prints correctly', () => {
     let data: FormData
 
+    // @ts-ignore
+    global.window = {}
+
     expect(logger.format('bigint', 0n)).toStrictEqual(['bigint -> 0'])
     expect(logger.format('boolean', false)).toStrictEqual(['boolean -> false'])
     expect(logger.format('function', () => true)).toStrictEqual(['function -> () => true'])
@@ -132,6 +136,9 @@ describe('Logger', () => {
     data.append('name', 'john')
 
     expect(logger.format('form-data', data)).toStrictEqual(['form-data', { name: 'john' }])
+
+    // @ts-ignore
+    delete global.window
   })
 
   it('uses ANSI colors in non web environments', () => {

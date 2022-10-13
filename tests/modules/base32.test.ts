@@ -1,4 +1,5 @@
 import { randomBytes } from 'crypto'
+import { describe, expect, it } from 'vitest'
 import { Base32 } from '../../src'
 
 describe('Base32', () => {

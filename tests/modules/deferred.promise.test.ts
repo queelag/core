@@ -1,15 +1,16 @@
+import { beforeEach, describe, expect, it, Mock, vi } from 'vitest'
 import { DeferredPromise } from '../../src'
 import { PromiseState } from '../../src/definitions/enums'
 
 describe('DeferredPromise', () => {
-  let promise: DeferredPromise<number>, onfinally: jest.Mock, onfulfilled: jest.Mock, onrejected: jest.Mock
+  let promise: DeferredPromise<number>, onfinally: Mock, onfulfilled: Mock, onrejected: Mock
 
   beforeEach(() => {
     promise = new DeferredPromise()
 
-    onfinally = jest.fn()
-    onfulfilled = jest.fn()
-    onrejected = jest.fn()
+    onfinally = vi.fn()
+    onfulfilled = vi.fn()
+    onrejected = vi.fn()
 
     promise.catch(onrejected).finally(onfinally).then(onfulfilled)
   })

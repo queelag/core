@@ -1,3 +1,4 @@
+import { describe, expect, it } from 'vitest'
 import { sleep } from '../../src'
 
 describe('sleep', () => {

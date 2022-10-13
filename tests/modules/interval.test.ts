@@ -1,10 +1,11 @@
+import { afterAll, beforeEach, describe, expect, it, Mock, vi } from 'vitest'
 import { Interval, sleep } from '../../src'
 
 describe('Interval', () => {
-  let fn: jest.Mock, name: string
+  let fn: Mock, name: string
 
   beforeEach(() => {
-    fn = jest.fn()
+    fn = vi.fn()
     name = 'interval'
   })
 

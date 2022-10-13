@@ -1,10 +1,11 @@
+import { beforeEach, describe, expect, it, Mock, vi } from 'vitest'
 import { sleep, throttle } from '../../src'
 
 describe('Throttle', () => {
-  let fn: jest.Mock, name: string
+  let fn: Mock, name: string
 
   beforeEach(() => {
-    fn = jest.fn()
+    fn = vi.fn()
     name = 'throttle'
   })
 

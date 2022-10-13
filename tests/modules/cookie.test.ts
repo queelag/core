@@ -1,3 +1,4 @@
+import { beforeEach, describe, expect, it } from 'vitest'
 import { cloneDeepObject, Cookie, copyObjectProperty, getObjectProperty, ma, noop, rne, setObjectProperty } from '../../src'
 import { CookieItem } from '../../src/definitions/interfaces'
 import { STUB_COOKIE_GET, STUB_COOKIE_SET } from '../../src/definitions/stubs'

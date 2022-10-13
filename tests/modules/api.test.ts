@@ -1,3 +1,4 @@
+import { afterAll, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest'
 import { API, CoreConfiguration, FetchError, FetchResponse, RequestMethod, Status, WriteMode } from '../../src'
 import { closeServer, openServer } from '../server'
 
@@ -168,37 +169,37 @@ describe('API', () => {
   })
 
   it('has working status based handlers', async () => {
-    api.handleError = jest.fn(async () => false)
-    api.handlePending = jest.fn(async () => true)
-    api.handleSuccess = jest.fn(async () => true)
+    api.handleError = vi.fn(async () => false)
+    api.handlePending = vi.fn(async () => true)
+    api.handleSuccess = vi.fn(async () => true)
 
     await api.get('text')
     expect(api.handleError).not.toBeCalled()
     expect(api.handlePending).toBeCalled()
     expect(api.handleSuccess).toBeCalled()
 
-    api.handleError = jest.fn(async () => false)
-    api.handlePending = jest.fn(async () => true)
-    api.handleSuccess = jest.fn(async () => true)
+    api.handleError = vi.fn(async () => false)
+    api.handlePending = vi.fn(async () => true)
+    api.handleSuccess = vi.fn(async () => true)
 
     await api.get('error')
     expect(api.handleError).toBeCalled()
     expect(api.handlePending).toBeCalled()
     expect(api.handleSuccess).not.toBeCalled()
 
-    api.handleError = jest.fn(async () => true)
+    api.handleError = vi.fn(async () => true)
 
     await api.get('error')
     expect(api.status.isError(RequestMethod.GET, 'error')).toBeFalsy()
 
-    api.handlePending = jest.fn(async () => false)
+    api.handlePending = vi.fn(async () => false)
 
     response = await api.get('text')
     expect(response).toBeInstanceOf(Error)
     expect(api.status.isError(RequestMethod.GET, 'text')).toBeTruthy()
 
-    api.handlePending = jest.fn(async () => true)
-    api.handleSuccess = jest.fn(async () => false)
+    api.handlePending = vi.fn(async () => true)
+    api.handleSuccess = vi.fn(async () => false)
 
     response = await api.get('text')
     expect(response).toBeInstanceOf(Error)
@@ -206,7 +207,7 @@ describe('API', () => {
   })
 
   it('transforms body', async () => {
-    api.transformBody = jest.fn()
+    api.transformBody = vi.fn()
 
     response = await api.post('any')
     expect(api.transformBody).toBeCalled()

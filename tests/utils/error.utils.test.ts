@@ -1,3 +1,4 @@
+import { describe, expect, it } from 'vitest'
 import { isError, isNotError } from '../../src'
 
 describe('ErrorUtils', () => {

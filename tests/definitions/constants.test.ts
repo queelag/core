@@ -1,3 +1,4 @@
+import { describe, expect, test } from 'vitest'
 import { SORT_REGEXP_VARIABLE_INSIDE_CURLY_BRACKETS_MATCHES_COMPARE_FN } from '../../src/definitions/constants'
 
 describe('Constants', () => {

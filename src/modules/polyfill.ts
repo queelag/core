@@ -29,7 +29,7 @@ export class Polyfill {
       return
     }
 
-    if (Environment.isNotJest && Environment.isWindowDefined) {
+    if (Environment.isNotTest && Environment.isWindowDefined) {
       return
     }
 
@@ -51,7 +51,7 @@ export class Polyfill {
       return
     }
 
-    if (Environment.isNotJest && Environment.isWindowDefined) {
+    if (Environment.isNotTest && Environment.isWindowDefined) {
       return
     }
 
@@ -76,7 +76,7 @@ export class Polyfill {
       return
     }
 
-    if (Environment.isNotJest && Environment.isWindowDefined) {
+    if (Environment.isNotTest && Environment.isWindowDefined) {
       return
     }
 
@@ -98,7 +98,7 @@ export class Polyfill {
       return
     }
 
-    if (Environment.isNotJest && Environment.isWindowDefined) {
+    if (Environment.isNotTest && Environment.isWindowDefined) {
       return
     }
 
@@ -112,7 +112,7 @@ export class Polyfill {
 
   // istanbul ignore next
   private static async getNodeFetch(): Promise<NodeFetch | Error> {
-    if (Environment.isJest) {
+    if (Environment.isTest) {
       return tc(() => Environment.require('node-fetch-cjs'))
     }
 

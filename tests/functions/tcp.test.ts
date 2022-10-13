@@ -1,3 +1,4 @@
+import { describe, expect, it, vi } from 'vitest'
 import { tcp } from '../../src'
 import { Configuration } from '../../src/modules/configuration'
 
@@ -12,7 +13,7 @@ describe('tcp', () => {
   })
 
   it('calls the onCatch callback if the fn throws', async () => {
-    Configuration.module.tcp.onCatch = jest.fn()
+    Configuration.module.tcp.onCatch = vi.fn()
     await tcp(async () => {
       throw new Error()
     }, false)
@@ -20,7 +21,7 @@ describe('tcp', () => {
   })
 
   it('does log if log is true', () => {
-    console.error = jest.fn()
+    console.error = vi.fn()
     tcp(async () => {
       throw new Error()
     }, true)

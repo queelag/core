@@ -1,13 +1,23 @@
-import { Localization, LocalizationPack } from '../../src'
+import { beforeEach, describe, expect, it } from 'vitest'
+import { Localization, LocalizationPack, rv, Storage, StorageItem } from '../../src'
 
 const EN: LocalizationPack = { data: { hello: 'hello {name}', bye: 'bye' }, language: 'en' }
 const IT: LocalizationPack = { data: { hello: 'ciao {name}', bye: 'ciao' }, language: 'it' }
 
 describe('Localization', () => {
-  let localization: Localization
+  let map: Map<string, any>, storage: Storage, localization: Localization
 
   beforeEach(() => {
-    localization = new Localization('en')
+    map = new Map()
+    storage = new Storage(
+      'TestStorage',
+      async () => map.clear(),
+      async (key: string) => map.get(key) ?? {},
+      async (key: string) => map.has(key),
+      async (key: string) => rv(() => map.delete(key)),
+      async (key: string, value: StorageItem) => rv(() => map.set(key, value))
+    )
+    localization = new Localization('en', storage)
   })
 
   it('adds packs', () => {

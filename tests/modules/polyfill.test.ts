@@ -1,3 +1,4 @@
+import { describe, expect, it } from 'vitest'
 import { getObjectProperty, Polyfill, setObjectProperty } from '../../src'
 
 describe('Polyfill', () => {
@@ -12,7 +13,8 @@ describe('Polyfill', () => {
     delete global.FormData
 
     global.window = {} as any
-    delete process.env.JEST_WORKER_ID
+    process.env.NODE_ENV = 'development'
+    // delete process.env.JEST_WORKER_ID
 
     await Polyfill.blob()
     await Polyfill.fetch()
@@ -24,7 +26,8 @@ describe('Polyfill', () => {
     expect(global.File).toBeUndefined()
     expect(global.FormData).toBeUndefined()
 
-    process.env.JEST_WORKER_ID = ''
+    process.env.NODE_ENV = 'test'
+    // process.env.JEST_WORKER_ID = ''
 
     await Polyfill.blob()
     await Polyfill.fetch()

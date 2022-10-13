@@ -1,3 +1,4 @@
+import { describe, expect, it } from 'vitest'
 import { appendSearchParamsToURL, concatURL, removeSearchParamsFromURL } from '../../src'
 
 describe('URLUtils', () => {

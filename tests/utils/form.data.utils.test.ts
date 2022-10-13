@@ -1,3 +1,4 @@
+import { describe, expect, it } from 'vitest'
 import { deserializeFormData, noop, Polyfill, serializeFormData } from '../../src'
 import { Configuration } from '../../src/modules/configuration'
 

@@ -1,3 +1,4 @@
+import { beforeEach, describe, expect, it } from 'vitest'
 import { cloneShallowObject, copyObjectProperty, rne, rv, setObjectProperty, Storage } from '../../src'
 import { StorageItem } from '../../src/definitions/interfaces'
 import { Configuration } from '../../src/modules/configuration'

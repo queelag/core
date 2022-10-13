@@ -1,3 +1,4 @@
+import { afterAll, beforeAll, describe, expect, it, vi } from 'vitest'
 import { CoreConfiguration, Fetch, FetchError, FetchResponse, tie } from '../../src'
 import { closeServer, openServer } from '../server'
 
@@ -77,7 +78,7 @@ describe('Fetch', () => {
   })
 
   it('can throw during request', async () => {
-    jest.spyOn(global, 'fetch').mockImplementationOnce(() => {
+    vi.spyOn(global, 'fetch').mockImplementationOnce(() => {
       throw new Error()
     })
 

@@ -1,3 +1,4 @@
+import { describe, expect, test } from 'vitest'
 import { STUB_COOKIE_GET, STUB_COOKIE_SET, STUB_STORAGE, STUB_TEXT_DECODER, STUB_TEXT_ENCODER } from '../../src/definitions/stubs'
 
 describe('Stubs', () => {

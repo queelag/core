@@ -1,3 +1,4 @@
+import { describe, expect, it } from 'vitest'
 import { rc } from '../../src'
 
 describe('rc', () => {

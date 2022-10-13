@@ -1,3 +1,4 @@
+import { describe, expect, it, vi } from 'vitest'
 import { tc } from '../../src'
 import { Configuration } from '../../src/modules/configuration'
 
@@ -12,7 +13,7 @@ describe('tc', () => {
   })
 
   it('calls the onCatch callback if the fn throws', () => {
-    Configuration.module.tc.onCatch = jest.fn()
+    Configuration.module.tc.onCatch = vi.fn()
     tc(() => {
       throw new Error()
     }, false)
@@ -20,7 +21,7 @@ describe('tc', () => {
   })
 
   it('does log if log is true', () => {
-    console.error = jest.fn()
+    console.error = vi.fn()
     tc(() => {
       throw new Error()
     }, true)

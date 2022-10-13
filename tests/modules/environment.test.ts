@@ -1,3 +1,4 @@
+import { describe, expect, it } from 'vitest'
 import { Environment, Polyfill } from '../../src'
 
 describe('Environment', () => {
@@ -32,8 +33,8 @@ describe('Environment', () => {
   })
 
   it('checks if document is defined', () => {
-    expect(Environment.isDocumentDefined).toBeTruthy()
-    expect(Environment.isDocumentNotDefined).toBeFalsy()
+    expect(Environment.isDocumentDefined).toBeFalsy()
+    expect(Environment.isDocumentNotDefined).toBeTruthy()
   })
 
   it('checks if fetch is defined', () => {
@@ -54,8 +55,8 @@ describe('Environment', () => {
   })
 
   it('checks if JEST_WORKER_ID is defined', () => {
-    expect(Environment.isJest).toBeTruthy()
-    expect(Environment.isNotJest).toBeFalsy()
+    expect(Environment.isJest).toBeFalsy()
+    expect(Environment.isNotJest).toBeTruthy()
   })
 
   it('checks if NODE_ENV is production', () => {
@@ -74,8 +75,8 @@ describe('Environment', () => {
   })
 
   it('checks if window is defined', () => {
-    expect(Environment.isWindowDefined).toBeTruthy()
-    expect(Environment.isWindowNotDefined).toBeFalsy()
+    expect(Environment.isWindowDefined).toBeFalsy()
+    expect(Environment.isWindowNotDefined).toBeTruthy()
   })
 
   it('returns the NODE_ENV value', () => {

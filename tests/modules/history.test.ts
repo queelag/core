@@ -1,3 +1,4 @@
+import { beforeEach, describe, expect, it } from 'vitest'
 import { History } from '../../src'
 import { DEFAULT_HISTORY_SIZE } from '../../src/definitions/constants'
 

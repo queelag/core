@@ -1,3 +1,4 @@
+import { describe, expect, it } from 'vitest'
 import { FetchError, FetchResponse } from '../../src'
 
 describe('FetchError', () => {

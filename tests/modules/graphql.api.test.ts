@@ -1,3 +1,4 @@
+import { afterAll, beforeAll, beforeEach, describe, expect, it } from 'vitest'
 import { FetchError, gql, GraphQLAPI, GraphQLAPIResponse, tie } from '../../src'
 import { closeServer, openServer } from '../server'
 
@@ -14,7 +15,7 @@ const MUTATION_SET_TEXT: string = gql`
     }
   }
 `
-jest.setTimeout(900719925)
+// jest.setTimeout(900719925)
 
 describe('GraphQLAPI', () => {
   let address: string, api: GraphQLAPI, response: GraphQLAPIResponse<any> | FetchError<any>
