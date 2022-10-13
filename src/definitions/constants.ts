@@ -56,11 +56,6 @@ export const ID_ALPHABET_HEX_LOWERCASE: string = ID_ALPHABET_NUMBERS + 'abcdef'
 export const ID_ALPHABET_HEX_UPPERCASE: string = ID_ALPHABET_NUMBERS + 'ABCDEF'
 
 /**
- * Image Utils
- */
-export const CACHE_IMAGES: Map<string, string> = new Map()
-
-/**
  * Localization
  */
 export const REGEXP_VARIABLE_INSIDE_CURLY_BRACKETS: RegExp = /{[^{}]{1,256}}/gm

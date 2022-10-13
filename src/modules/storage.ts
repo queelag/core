@@ -140,6 +140,10 @@ export class Storage {
     }
 
     for (let k of keys) {
+      if (!hasObjectProperty(item, k)) {
+        continue
+      }
+
       copyObjectProperty(item, k, target)
       ModuleLogger.debug(this.name, 'get', `The ${key} ${String(k)} property has been copied.`, target)
     }
