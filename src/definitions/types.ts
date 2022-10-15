@@ -7,7 +7,7 @@ export type DebounceMapKey = Function | string
 export type DebounceMapValue = NodeJS.Timeout | number
 
 export type IntervalMapKey = Function | string
-export type IntervalMapValue = NodeJS.Timeout | number | string | undefined
+export type IntervalMapValue = NodeJS.Timer | number
 
 export type IsEqual<T1, T2> = (a: T1, b: T2) => boolean
 
@@ -29,4 +29,4 @@ export type ThrottleMapKey = Function | string
 export type ThrottleMapValue = number
 
 export type TimeoutMapKey = Function | string
-export type TimeoutMapValue = NodeJS.Timeout | number | string | undefined
+export type TimeoutMapValue = NodeJS.Timeout | number
