@@ -11,6 +11,10 @@ import { isArray } from './array.utils'
 export function cloneDeepObject<T extends object>(object: T): T {
   let clone: T = {} as T
 
+  if (!isObjectClonable(object)) {
+    return object
+  }
+
   if (isArray(object)) {
     clone = [] as T
   }

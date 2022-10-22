@@ -53,7 +53,7 @@ export class Localization {
         potential.data = mergeObjects(potential.data, pack.data)
         ModuleLogger.debug('Localization', 'add', `The pack data has been merged for the language ${pack.language}.`, [potential.data])
 
-        return
+        continue
       }
 
       this.packs.push(pack)

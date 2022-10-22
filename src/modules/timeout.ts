@@ -30,7 +30,7 @@ export class Timeout {
    * Unsets a timeout.
    */
   static unset(key: TimeoutMapKey): void {
-    let timeout: TimeoutMapValue
+    let timeout: TimeoutMapValue | undefined
 
     timeout = this.map.get(key)
     if (!timeout) return ModuleLogger.warn('Timeout', 'unset', `The timeout ${key} is not set.`)

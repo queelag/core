@@ -11,7 +11,19 @@ import { Primitive } from './types'
 
 type ArrayKey = number
 
-type BrowserNativeObject = Blob | Date | File | FileList | Function | Map<any, any> | RegExp | Promise<any> | Set<any> | WeakMap<any, any> | WeakSet<any>
+type BrowserNativeObject =
+  | Blob
+  | Date
+  | File
+  | FileList
+  | Function
+  | Map<any, any>
+  | RegExp
+  | Promise<any>
+  | Set<any>
+  | SharedArrayBuffer
+  | WeakMap<any, any>
+  | WeakSet<any>
 
 type IsTuple<T extends ReadonlyArray<any>> = number extends T['length'] ? false : true
 

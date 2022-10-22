@@ -92,7 +92,21 @@ export interface LocalizationPackData {
   [key: string]: string | LocalizationPackData
 }
 
-export interface LocalizationVariables extends Record<number | string, Primitive> {}
+export interface LocalizationVariables extends Record<number | string, any> {}
+
+export interface QueelagBlobJSON {
+  id: string
+  size: number
+  text?: string
+  type: string
+  uInt8Array: Uint8Array
+}
+
+export interface QueelagFileJSON extends QueelagBlobJSON {
+  lastModified: number
+  name: string
+  webkitRelativePath: string
+}
 
 export interface StorageItem extends Record<PropertyKey, any> {}
 export interface StorageTarget extends Record<PropertyKey, any> {}
