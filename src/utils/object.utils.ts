@@ -286,6 +286,49 @@ export function setObjectProperty<T extends object, U extends unknown>(object: T
 }
 
 /**
+ * Deletes every object undefined property deeply.
+ *
+ * @template T The object interface.
+ */
+export function deleteDeepObjectUndefinedProperties<T extends object>(object: T): T {
+  let clone: T = cloneShallowObject(object)
+
+  for (let key in clone) {
+    let value: any = clone[key]
+
+    if (isPlainObject(value)) {
+      clone[key] = deleteDeepObjectUndefinedProperties<any>(value)
+      continue
+    }
+
+    if (typeof value === 'undefined') {
+      delete clone[key]
+    }
+  }
+
+  return clone
+}
+
+/**
+ * Deletes every object undefined property shallowly.
+ *
+ * @template T The object interface.
+ */
+export function deleteShallowObjectUndefinedProperties<T extends object>(object: T): T {
+  let clone: T = cloneShallowObject(object)
+
+  for (let key in clone) {
+    let value: any = clone[key]
+
+    if (typeof value === 'undefined') {
+      delete clone[key]
+    }
+  }
+
+  return clone
+}
+
+/**
  * Checks whether the object has the property or not.
  *
  * @template T The object interface.

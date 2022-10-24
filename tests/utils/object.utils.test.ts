@@ -3,7 +3,9 @@ import {
   cloneDeepObject,
   cloneShallowObject,
   copyObjectProperty,
+  deleteDeepObjectUndefinedProperties,
   deleteObjectProperty,
+  deleteShallowObjectUndefinedProperties,
   flattenObject,
   getObjectProperty,
   hasObjectProperty,
@@ -23,6 +25,7 @@ interface Object {
     a1: number[]
     n1: number
     s1: string
+    u1: undefined
   }
   sbi1: bigint
   sbo1: boolean
@@ -39,7 +42,7 @@ describe('ObjectUtils', () => {
 
   beforeEach(() => {
     o1 = {
-      do1: { a1: [0], n1: 0, s1: '' },
+      do1: { a1: [0], n1: 0, s1: '', u1: undefined },
       sbi1: 0n,
       sbo1: false,
       sf1: noop,
@@ -104,12 +107,14 @@ describe('ObjectUtils', () => {
       'do1.a1': [0],
       'do1.n1': 0,
       'do1.s1': '',
+      'do1.u1': undefined,
       ...omitObjectProperties(o1, ['do1'])
     })
     expect(flattenObject(o1, { array: true })).toStrictEqual({
       'do1.a1.0': 0,
       'do1.n1': 0,
       'do1.s1': '',
+      'do1.u1': undefined,
       ...omitObjectProperties(o1, ['do1'])
     })
   })
@@ -206,6 +211,17 @@ describe('ObjectUtils', () => {
     expect(o1.do2.a1[0]).toBe(0)
 
     expect(setObjectProperty(o1, 'snum1.0', 0)).toBeInstanceOf(Error)
+  })
+
+  it('deletes object undefined properties deeply', () => {
+    expect(deleteDeepObjectUndefinedProperties(o1)).toStrictEqual({
+      ...omitObjectProperties(o1, ['su1']),
+      do1: { ...omitObjectProperties(o1.do1, ['u1']) }
+    })
+  })
+
+  it('deletes object undefined properties shallowly', () => {
+    expect(deleteShallowObjectUndefinedProperties(o1)).toStrictEqual(omitObjectProperties(o1, ['su1']))
   })
 
   it('checks if object has property', () => {
