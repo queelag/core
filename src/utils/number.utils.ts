@@ -101,7 +101,9 @@ export function parseBigInt(value: string | number | bigint | boolean, fallback?
 /**
  * Parses to a float or int safely.
  */
-export function parseNumber(string: string, fallback: number = 0): number {
+export function parseNumber(value: any, fallback: number = 0): number {
+  let string: string = String(value)
+
   if (string.includes('.')) {
     return isStringFloat(string) ? parseFloat(string) : fallback
   }
