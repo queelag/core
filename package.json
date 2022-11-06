@@ -27,11 +27,12 @@
   "main": "index.cjs",
   "module": "index.js",
   "name": "@queelag/core",
+  "private": false,
   "repository": "https://github.com/queelag/core",
   "scripts": {
     "test": "vitest run",
     "build": "rm -rf dist && yarn rollup -c && yarn api-extractor run --local",
-    "tarball": "yarn version && cp package.json dist/. && cd dist && yarn pack",
+    "tarball": "yarn version && cp package.json README.md dist/. && cd dist && yarn pack",
     "deploy": "yarn test && yarn build && yarn tarball && yarn publish dist/*.tgz"
   },
   "sideEffects": false,
