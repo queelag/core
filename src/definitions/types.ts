@@ -1,4 +1,4 @@
-import { ArrayPath, Path } from './path'
+// import { ArrayPath, Path } from './path'
 
 export type ArrayIncludes<T> = (array: T[], item: T) => boolean
 export type ArrayRemoves<T> = (array: T[], item: T) => boolean
@@ -14,8 +14,10 @@ export type IsEqual<T1, T2> = (a: T1, b: T2) => boolean
 export type FetchRequestInfo = Request | string
 
 export namespace KeyOf {
-  export type Deep<T, D extends number = 16> = keyof T | Path<T, D>
-  export type DeepArray<T, D extends number = 16> = ArrayPath<T, D>
+  // export type Deep<T, D extends number = 16> = keyof T | Path<T, D>
+  export type Deep<T> = keyof T
+  // export type DeepArray<T, D extends number = 16> = ArrayPath<T, D>
+  export type DeepArray<T> = keyof T extends number ? keyof T : never
   export type Shallow<T> = keyof T
 }
 

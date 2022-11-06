@@ -11,7 +11,9 @@ import { Primitive } from './types'
 
 type ArrayKey = number
 
-export type ArrayPath<T, D extends number, CD extends number[] = []> = T extends ReadonlyArray<infer V>
+export type ArrayPath<T, D extends number, CD extends number[] = []> = D extends CD['length']
+  ? never
+  : T extends ReadonlyArray<infer V>
   ? IsTuple<T> extends true
     ? {
         [K in TupleKeys<T>]-?: ArrayPathImpl<K & string, T[K], D, Increment<CD>>
