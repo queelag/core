@@ -5,7 +5,7 @@ export default defineConfig({
     coverage: {
       exclude: ['src/index.ts'],
       include: ['src/**/*.ts'],
-      reporter: ['lcovonly']
+      reporter: ['lcov']
     },
     include: ['tests/**/*.test.ts']
   }
