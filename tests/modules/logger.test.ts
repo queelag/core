@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { Logger, LoggerLevel, LoggerStatus, noop } from '../../src'
+import { Logger, LoggerLevel, LoggerStatus, noop, Polyfill } from '../../src'
 import { ANSIColor } from '../../src/definitions/enums'
 
 describe('Logger', () => {
@@ -114,7 +114,7 @@ describe('Logger', () => {
     expect(console.error).toBeCalledTimes(1)
   })
 
-  it('prints correctly', () => {
+  it('prints correctly', async () => {
     let data: FormData
 
     // @ts-ignore
@@ -131,6 +131,8 @@ describe('Logger', () => {
 
     expect(logger.format('symbol', Symbol())).toStrictEqual(['symbol -> Symbol()'])
     expect(logger.format('undefined', undefined)).toStrictEqual(['undefined -> undefined'])
+
+    await Polyfill.formData()
 
     data = new FormData()
     data.append('name', 'john')

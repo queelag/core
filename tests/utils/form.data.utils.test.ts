@@ -1,8 +1,12 @@
-import { describe, expect, it } from 'vitest'
+import { beforeAll, describe, expect, it } from 'vitest'
 import { deserializeFormData, noop, Polyfill, serializeFormData } from '../../src'
 import { Configuration } from '../../src/modules/configuration'
 
 describe('FormData', () => {
+  beforeAll(async () => {
+    await Polyfill.formData()
+  })
+
   it('deserializes form data to object', () => {
     let data: FormData
 
@@ -33,6 +37,7 @@ describe('FormData', () => {
   it('serializes an object to form data', async () => {
     let object: Record<PropertyKey, any>, data: FormData
 
+    await Polyfill.blob()
     await Polyfill.file()
 
     object = {

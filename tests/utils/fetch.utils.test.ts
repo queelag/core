@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it } from 'vitest'
+import { beforeAll, beforeEach, describe, expect, it } from 'vitest'
 import {
   deleteFetchRequestInitHeader,
   FetchRequestInit,
@@ -7,6 +7,7 @@ import {
   hasFetchRequestInitHeader,
   mergeFetchRequestInits,
   noop,
+  Polyfill,
   setFetchRequestInitHeader,
   setFetchRequestInitHeaderWhenUnset,
   toLoggableFetchRequestInit,
@@ -16,6 +17,11 @@ import {
 
 describe('FetchUtils', () => {
   let init: FetchRequestInit<any>, inits: FetchRequestInit<any>[], native: RequestInit
+
+  beforeAll(async () => {
+    await Polyfill.fetch()
+    await Polyfill.formData()
+  })
 
   beforeEach(() => {
     init = {}

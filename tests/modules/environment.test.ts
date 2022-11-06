@@ -22,7 +22,9 @@ describe('Environment', () => {
     expect(Environment.has('UNKNOWN')).toBeFalsy()
   })
 
-  it('checks if blob is defined', () => {
+  it('checks if blob is defined', async () => {
+    await Polyfill.blob()
+
     expect(Environment.isBlobDefined).toBeTruthy()
     expect(Environment.isBlobNotDefined).toBeFalsy()
   })
@@ -37,7 +39,9 @@ describe('Environment', () => {
     expect(Environment.isDocumentNotDefined).toBeTruthy()
   })
 
-  it('checks if fetch is defined', () => {
+  it('checks if fetch is defined', async () => {
+    await Polyfill.fetch()
+
     expect(Environment.isFetchDefined).toBeTruthy()
     expect(Environment.isFetchNotDefined).toBeFalsy()
   })
@@ -49,7 +53,9 @@ describe('Environment', () => {
     expect(Environment.isFileNotDefined).toBeFalsy()
   })
 
-  it('checks if form data is defined', () => {
+  it('checks if form data is defined', async () => {
+    await Polyfill.formData()
+
     expect(Environment.isFormDataDefined).toBeTruthy()
     expect(Environment.isFormDataNotDefined).toBeFalsy()
   })

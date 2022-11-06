@@ -1,8 +1,12 @@
-import { describe, expect, it } from 'vitest'
-import { FetchError, FetchResponse } from '../../src'
+import { beforeAll, describe, expect, it } from 'vitest'
+import { FetchError, FetchResponse, Polyfill } from '../../src'
 
 describe('FetchError', () => {
   let error: FetchError<any>
+
+  beforeAll(async () => {
+    await Polyfill.fetch()
+  })
 
   it('constructs', () => {
     let e: Error, response: FetchResponse<any>
