@@ -1,11 +1,13 @@
 import { beforeAll, describe, expect, it } from 'vitest'
-import { Base64, QueelagBlob, TextCodec } from '../../src'
+import { Base64, Polyfill, QueelagBlob, TextCodec } from '../../src'
 import { QueelagBlobJSON } from '../../src/definitions/interfaces'
 
 describe('QueelagBlob', () => {
   let blob: Blob, qblob: QueelagBlob
 
-  beforeAll(() => {
+  beforeAll(async () => {
+    await Polyfill.blob()
+
     blob = new Blob(['hello'], { type: 'text/plain' })
     qblob = new QueelagBlob(blob)
   })
