@@ -1,5 +1,5 @@
-![GitHub](https://img.shields.io/github/license/queelag/core?style=flat)
-![GitHub package.json version](https://img.shields.io/github/package-json/v/queelag/core)
+![NPM](https://img.shields.io/npm/l/@queelag/core)
+![npm (scoped)](https://img.shields.io/npm/v/@queelag/core)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=queelag_core&metric=coverage)](https://sonarcloud.io/summary/new_code?id=queelag_core)
 [![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=queelag_core&metric=ncloc)](https://sonarcloud.io/summary/new_code?id=queelag_core)
 [![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=queelag_core&metric=duplicated_lines_density)](https://sonarcloud.io/summary/new_code?id=queelag_core)

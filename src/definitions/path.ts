@@ -11,6 +11,24 @@ import { Primitive } from './types'
 
 type ArrayKey = number
 
+export type ArrayPath<T, D extends number, CD extends number[] = []> = T extends ReadonlyArray<infer V>
+  ? IsTuple<T> extends true
+    ? {
+        [K in TupleKeys<T>]-?: ArrayPathImpl<K & string, T[K], D, Increment<CD>>
+      }[TupleKeys<T>]
+    : ArrayPathImpl<ArrayKey, V, D, Increment<CD>>
+  : {
+      [K in keyof T]-?: ArrayPathImpl<K & string, T[K], D, Increment<CD>>
+    }[keyof T]
+
+type ArrayPathImpl<K extends string | number, V, D extends number, CD extends number[]> = V extends Primitive | BrowserNativeObject
+  ? never
+  : V extends ReadonlyArray<infer U>
+  ? U extends Primitive | BrowserNativeObject
+    ? never
+    : `${K}` | `${K}.${ArrayPath<V, D, CD>}`
+  : `${K}.${ArrayPath<V, D, CD>}`
+
 type BrowserNativeObject =
   | Blob
   | Date
@@ -25,36 +43,24 @@ type BrowserNativeObject =
   | WeakMap<any, any>
   | WeakSet<any>
 
+type Increment<T extends number[]> = [...T, 0]
+
 type IsTuple<T extends ReadonlyArray<any>> = number extends T['length'] ? false : true
 
-type TupleKeys<T extends ReadonlyArray<any>> = Exclude<keyof T, keyof any[]>
-
-export type Path<T> = T extends ReadonlyArray<infer V>
-  ? IsTuple<T> extends true
-    ? {
-        [K in TupleKeys<T>]-?: PathImpl<K & string, T[K]>
-      }[TupleKeys<T>]
-    : PathImpl<ArrayKey, V>
-  : {
-      [K in keyof T]-?: PathImpl<K & string, T[K]>
-    }[keyof T]
-
-type PathImpl<K extends number | string, V> = V extends Primitive | BrowserNativeObject ? `${K}` : `${K}` | `${K}.${Path<V>}`
-
-type ArrayPathImpl<K extends string | number, V> = V extends Primitive | BrowserNativeObject
+export type Path<T, D extends number, CD extends number[] = []> = D extends CD['length']
   ? never
-  : V extends ReadonlyArray<infer U>
-  ? U extends Primitive | BrowserNativeObject
-    ? never
-    : `${K}` | `${K}.${ArrayPath<V>}`
-  : `${K}.${ArrayPath<V>}`
-
-export type ArrayPath<T> = T extends ReadonlyArray<infer V>
+  : T extends ReadonlyArray<infer V>
   ? IsTuple<T> extends true
     ? {
-        [K in TupleKeys<T>]-?: ArrayPathImpl<K & string, T[K]>
+        [K in TupleKeys<T>]-?: PathImpl<K & string, T[K], D, Increment<CD>>
       }[TupleKeys<T>]
-    : ArrayPathImpl<ArrayKey, V>
+    : PathImpl<ArrayKey, V, D, Increment<CD>>
   : {
-      [K in keyof T]-?: ArrayPathImpl<K & string, T[K]>
+      [K in keyof T]-?: PathImpl<K & string, T[K], D, Increment<CD>>
     }[keyof T]
+
+type PathImpl<K extends number | string, V, D extends number, CD extends number[]> = V extends Primitive | BrowserNativeObject
+  ? `${K}`
+  : `${K}` | `${K}.${Path<V, D, CD>}`
+
+type TupleKeys<T extends ReadonlyArray<any>> = Exclude<keyof T, keyof any[]>
