@@ -35,5 +35,5 @@
     "deploy": "yarn test && yarn build && yarn tarball && yarn publish dist/*.tgz"
   },
   "sideEffects": false,
-  "version": "1.1.10"
+  "version": "1.1.11"
 }
