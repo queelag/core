@@ -19,6 +19,7 @@ describe('FetchUtils', () => {
   let init: FetchRequestInit<any>, inits: FetchRequestInit<any>[], native: RequestInit
 
   beforeAll(async () => {
+    await Polyfill.blob()
     await Polyfill.fetch()
     await Polyfill.formData()
   })

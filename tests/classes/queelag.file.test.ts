@@ -6,6 +6,7 @@ describe('QueelagFile', () => {
   let file: File, qfile: QueelagFile
 
   beforeAll(async () => {
+    await Polyfill.blob()
     await Polyfill.file()
 
     file = new File(['hello'], 'file', { lastModified: Date.now(), type: 'text/plain' })

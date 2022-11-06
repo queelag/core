@@ -6,7 +6,9 @@ describe('FetchResponse', () => {
   let response: FetchResponse<any>
 
   beforeAll(async () => {
+    await Polyfill.blob()
     await Polyfill.fetch()
+    await Polyfill.formData()
   })
 
   it('constructs', () => {
