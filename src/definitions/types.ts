@@ -3,6 +3,8 @@
 export type ArrayIncludes<T> = (array: T[], item: T) => boolean
 export type ArrayRemoves<T> = (array: T[], item: T) => boolean
 
+export type { CamelCase, DelimiterCase, KebabCase, PascalCase, ScreamingSnakeCase, SnakeCase } from './cases'
+
 export type DebounceMapKey = Function | string
 export type DebounceMapValue = NodeJS.Timeout | number
 
