@@ -69,16 +69,9 @@ export function getKebabCaseString(string: string): string {
 }
 
 /**
- * Transforms any string to a word divided string by underscores.
- */
-export function getSnakeCaseString(string: string): string {
-  return getSymbolSeparatedCaseString(string, '_')
-}
-
-/**
  * Transforms any string to a per word capitalized string.
  */
-export function getStartCaseString(string: string): string {
+export function getPascalCaseString(string: string): string {
   let start: string, ucnl: boolean
 
   start = ''
@@ -101,6 +94,13 @@ export function getStartCaseString(string: string): string {
   }
 
   return getCapitalizedString(start)
+}
+
+/**
+ * Transforms any string to a word divided string by underscores.
+ */
+export function getSnakeCaseString(string: string): string {
+  return getSymbolSeparatedCaseString(string, '_')
 }
 
 /**

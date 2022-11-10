@@ -3,8 +3,8 @@ import {
   getCamelCaseString,
   getCapitalizedString,
   getKebabCaseString,
+  getPascalCaseString,
   getSnakeCaseString,
-  getStartCaseString,
   isStringFloat,
   isStringInt,
   isStringJSON,
@@ -35,20 +35,20 @@ describe('StringUtils', () => {
     expect(getKebabCaseString('KebabCase')).toBe('kebab-case')
   })
 
+  it('makes string pascal case', () => {
+    expect(getPascalCaseString('pascal case')).toBe('PascalCase')
+    expect(getPascalCaseString('pascalCase')).toBe('PascalCase')
+    expect(getPascalCaseString('pascal-case')).toBe('PascalCase')
+    expect(getPascalCaseString('pascal_case')).toBe('PascalCase')
+    expect(getPascalCaseString('PascalCase')).toBe('PascalCase')
+  })
+
   it('makes string snake case', () => {
     expect(getSnakeCaseString('snake case')).toBe('snake_case')
     expect(getSnakeCaseString('snakeCase')).toBe('snake_case')
     expect(getSnakeCaseString('snake-case')).toBe('snake_case')
     expect(getSnakeCaseString('snake_case')).toBe('snake_case')
     expect(getSnakeCaseString('SnakeCase')).toBe('snake_case')
-  })
-
-  it('makes string start case', () => {
-    expect(getStartCaseString('start case')).toBe('StartCase')
-    expect(getStartCaseString('startCase')).toBe('StartCase')
-    expect(getStartCaseString('start-case')).toBe('StartCase')
-    expect(getStartCaseString('start_case')).toBe('StartCase')
-    expect(getStartCaseString('StartCase')).toBe('StartCase')
   })
 
   it('checks if string is json', () => {
