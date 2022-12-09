@@ -9,6 +9,7 @@ import {
   isNumberEven,
   isNumberMultipleOf,
   isNumberOdd,
+  localizeNumber,
   parseBigInt,
   parseNumber,
   toFixedNumber
@@ -112,5 +113,13 @@ describe('NumberUtils', () => {
     expect(isNumberMultipleOf(2, 3)).toBeFalsy()
     expect(isNumberMultipleOf(4, 2)).toBeTruthy()
     expect(isNumberMultipleOf(6, 2)).toBeTruthy()
+  })
+
+  it('formats number as an en-US formatted string', () => {
+    expect(localizeNumber(0.385)).toBe('0.385')
+    expect(localizeNumber(1)).toBe('1')
+    expect(localizeNumber(1000)).toBe('1,000')
+    expect(localizeNumber(10999)).toBe('10,999')
+    expect(localizeNumber(193801284.283)).toBe('193,801,284.283')
   })
 })

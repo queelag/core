@@ -138,3 +138,10 @@ export function isNumberMultipleOf(number: number, of: number): boolean {
 export function isNumberOdd(number: number): boolean {
   return Math.abs(number % 2) == 1
 }
+
+/**
+ * Localize a number into a en-US formatted string.
+ */
+export function localizeNumber(number: number): string {
+  return number.toLocaleString('en-US')
+}
