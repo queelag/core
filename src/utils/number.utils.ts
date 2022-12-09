@@ -140,7 +140,7 @@ export function isNumberOdd(number: number): boolean {
 }
 
 /**
- * Localize a number into a en-US formatted string.
+ * Localize a number into a en-US formatted string with up to 3 decimals.
  */
 export function localizeNumber(number: number): string {
   return number.toLocaleString('en-US')

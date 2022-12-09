@@ -115,8 +115,8 @@ describe('NumberUtils', () => {
     expect(isNumberMultipleOf(6, 2)).toBeTruthy()
   })
 
-  it('formats number as an en-US formatted string', () => {
-    expect(localizeNumber(0.385)).toBe('0.385')
+  it('formats number as an en-US formatted string with up to 3 decimals', () => {
+    expect(localizeNumber(0.38521)).toBe('0.385')
     expect(localizeNumber(1)).toBe('1')
     expect(localizeNumber(1000)).toBe('1,000')
     expect(localizeNumber(10999)).toBe('10,999')
