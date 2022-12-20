@@ -1,4 +1,6 @@
 import { QueelagFileJSON } from '../definitions/interfaces'
+import { STUB_FILE } from '../definitions/stubs'
+import { Environment } from '../modules/environment'
 import { QueelagBlob } from './queelag.blob'
 
 export class QueelagFile extends QueelagBlob {
@@ -14,7 +16,7 @@ export class QueelagFile extends QueelagBlob {
     file = args[0]
     json = args[0]
 
-    if (args[0] instanceof File) {
+    if (Environment.isFileNotDefined || args[0] instanceof File) {
       this.file = file
 
       return
@@ -49,6 +51,10 @@ export class QueelagFile extends QueelagBlob {
   }
 
   static get EMPTY(): QueelagFile {
+    if (Environment.isFileNotDefined) {
+      return new QueelagFile(new STUB_FILE([], '') as File)
+    }
+
     return new QueelagFile(new File([], ''))
   }
 }

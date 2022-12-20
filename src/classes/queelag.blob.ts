@@ -1,6 +1,8 @@
 import { QueelagBlobJSON } from '../definitions/interfaces'
+import { STUB_BLOB } from '../definitions/stubs'
 import { tcp } from '../functions/tcp'
 import { Base64 } from '../modules/base64'
+import { Environment } from '../modules/environment'
 import { ID } from '../modules/id'
 import { TextCodec } from '../modules/text.codec'
 
@@ -112,6 +114,10 @@ export class QueelagBlob {
   }
 
   static get EMPTY(): QueelagBlob {
+    if (Environment.isBlobNotDefined) {
+      return new QueelagBlob(new STUB_BLOB() as Blob)
+    }
+
     return new QueelagBlob(new Blob())
   }
 }

@@ -22,6 +22,46 @@ export const STUB_COOKIE_SET: (map: Map<string, string>, deserialize?: Function)
     }
   }
 
+export class STUB_BLOB {
+  readonly size: number
+  readonly type: string
+
+  constructor(blobParts?: BlobPart[], options?: BlobPropertyBag) {
+    this.size = 0
+    this.type = options?.type ?? ''
+  }
+
+  async arrayBuffer(): Promise<ArrayBuffer> {
+    return new ArrayBuffer(0)
+  }
+
+  slice(start?: number, end?: number, contentType?: string): STUB_BLOB {
+    return this
+  }
+
+  stream(): ReadableStream<Uint8Array> {
+    return new ReadableStream()
+  }
+
+  async text(): Promise<string> {
+    return ''
+  }
+}
+
+export class STUB_FILE extends STUB_BLOB {
+  readonly lastModified: number
+  readonly name: string
+  readonly webkitRelativePath: string
+
+  constructor(fileBits: BlobPart[], fileName: string, options?: FilePropertyBag) {
+    super(fileBits, options)
+
+    this.lastModified = options?.lastModified ?? 0
+    this.name = fileName ?? ''
+    this.webkitRelativePath = ''
+  }
+}
+
 export const STUB_STORAGE: (map: Map<string, string>) => Storage = (map: Map<string, string>) => ({
   clear: () => map.clear(),
   getItem: (key: string) => {
