@@ -1,16 +1,16 @@
 import { beforeAll, describe, expect, it } from 'vitest'
-import { Polyfill, QueelagFile } from '../../src'
-import { QueelagFileJSON } from '../../src/definitions/interfaces'
+import { AracnaFile, Polyfill } from '../../src'
+import { AracnaFileJSON } from '../../src/definitions/interfaces'
 
-describe('QueelagFile', () => {
-  let file: File, qfile: QueelagFile
+describe('AracnaFile', () => {
+  let file: File, qfile: AracnaFile
 
   beforeAll(async () => {
     await Polyfill.blob()
     await Polyfill.file()
 
     file = new File(['hello'], 'file', { lastModified: Date.now(), type: 'text/plain' })
-    qfile = new QueelagFile(file)
+    qfile = new AracnaFile(file)
   })
 
   it('constructs from file', () => {
@@ -25,7 +25,7 @@ describe('QueelagFile', () => {
   })
 
   it('constructs from json', async () => {
-    let json: QueelagFileJSON, qfile2: QueelagFile
+    let json: AracnaFileJSON, qfile2: AracnaFile
 
     await qfile.resolveArrayBuffer()
     await qfile.resolveText()
@@ -41,7 +41,7 @@ describe('QueelagFile', () => {
     expect(json.uInt8Array).toStrictEqual({ ...qfile.uInt8Array })
     expect(json.webkitRelativePath).toBeUndefined()
 
-    qfile2 = new QueelagFile(json)
+    qfile2 = new AracnaFile(json)
 
     expect(qfile2.arrayBuffer).toStrictEqual(qfile.arrayBuffer)
     expect(qfile2.base64).toBe(qfile.base64)

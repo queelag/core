@@ -94,7 +94,7 @@ export interface LocalizationPackData {
 
 export interface LocalizationVariables extends Record<number | string, any> {}
 
-export interface QueelagBlobJSON {
+export interface AracnaBlobJSON {
   id: string
   size: number
   text?: string
@@ -102,7 +102,7 @@ export interface QueelagBlobJSON {
   uInt8Array: Uint8Array
 }
 
-export interface QueelagFileJSON extends QueelagBlobJSON {
+export interface AracnaFileJSON extends AracnaBlobJSON {
   lastModified: number
   name: string
   webkitRelativePath: string

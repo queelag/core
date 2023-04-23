@@ -23,13 +23,13 @@ export class Localization {
   /**
    * A {@link Storage} instance.
    */
-  storage: Storage
+  storage?: Storage
   /**
    * An object which contains global variables.
    */
   variables: LocalizationVariables
 
-  constructor(language: string, storage: Storage, packs: LocalizationPack[] = [], variables: LocalizationVariables = {}) {
+  constructor(language: string, packs: LocalizationPack[] = [], storage: Storage, variables: LocalizationVariables = {}) {
     this.language = language
     this.packs = packs
     this.storage = storage
@@ -37,6 +37,11 @@ export class Localization {
   }
 
   async initialize(): Promise<boolean> {
+    if (!this.storage) {
+      ModuleLogger.warn('Localization', 'storeLanguage', `This localization instance has no storage.`)
+      return false
+    }
+
     return isNotError(await this.storage.copy(StorageName.LOCALIZATION, this, ['language']))
   }
 
@@ -100,6 +105,11 @@ export class Localization {
   }
 
   async storeLanguage(language: string): Promise<boolean> {
+    if (!this.storage) {
+      ModuleLogger.warn('Localization', 'storeLanguage', `This localization instance has no storage.`)
+      return false
+    }
+
     this.language = language
     ModuleLogger.debug('Localization', 'storeLanguage', `The language has been set to ${this.language}.`)
 

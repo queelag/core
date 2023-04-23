@@ -1,7 +1,7 @@
+export * from './classes/aracna.blob'
+export * from './classes/aracna.file'
 export * from './classes/fetch.error'
 export * from './classes/fetch.response'
-export * from './classes/queelag.blob'
-export * from './classes/queelag.file'
 export {
   EMPTY_OBJECT,
   ID_ALPHABET_ALPHANUMERIC,
@@ -13,13 +13,13 @@ export {
   ID_ALPHABET_NUMBERS,
   ID_ALPHABET_UPPERCASE
 } from './definitions/constants'
-export { LoggerLevel, LoggerName as CoreLoggerName, LoggerStatus, RequestMethod, StorageName as CoreStorageName, WriteMode } from './definitions/enums'
+export { LoggerName as CoreLoggerName, StorageName as CoreStorageName, LoggerLevel, LoggerStatus, RequestMethod, WriteMode } from './definitions/enums'
 export {
   APIConfig,
-  ConfigurationModule as CoreConfigurationModule,
   CookieItem,
   CookieObject,
   CookieSource,
+  ConfigurationModule as CoreConfigurationModule,
   DeserializeBlobOptions,
   DeserializeFileOptions,
   FetchRequestInit,

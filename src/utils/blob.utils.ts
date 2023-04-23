@@ -1,8 +1,8 @@
-import { QueelagBlob } from '../classes/queelag.blob'
+import { AracnaBlob } from '../classes/aracna.blob'
 import { DeserializeBlobOptions } from '../definitions/interfaces'
 
-export async function deserializeBlob(blob: Blob, options?: DeserializeBlobOptions): Promise<QueelagBlob> {
-  let item: QueelagBlob = new QueelagBlob(blob)
+export async function deserializeBlob(blob: Blob, options?: DeserializeBlobOptions): Promise<AracnaBlob> {
+  let item: AracnaBlob = new AracnaBlob(blob)
 
   if (options?.resolveArrayBuffer) {
     await item.resolveArrayBuffer()
@@ -15,6 +15,6 @@ export async function deserializeBlob(blob: Blob, options?: DeserializeBlobOptio
   return item
 }
 
-export function serializeBlob(blob: QueelagBlob, endings?: EndingType): Blob {
+export function serializeBlob(blob: AracnaBlob, endings?: EndingType): Blob {
   return new Blob([blob.blob], { endings, type: blob.type })
 }

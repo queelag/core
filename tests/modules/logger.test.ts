@@ -1,12 +1,12 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { Logger, LoggerLevel, LoggerStatus, noop, Polyfill } from '../../src'
+import { Logger, Polyfill, noop } from '../../src'
 import { ANSIColor } from '../../src/definitions/enums'
 
 describe('Logger', () => {
   let logger: Logger
 
   beforeEach(() => {
-    logger = new Logger('test', LoggerLevel.VERBOSE, LoggerStatus.ON)
+    logger = new Logger('test', 'verbose', 'on')
     vi.spyOn(console, 'debug').mockImplementation(noop).mockReset()
     vi.spyOn(console, 'error').mockImplementation(noop).mockReset()
     vi.spyOn(console, 'info').mockImplementation(noop).mockReset()
@@ -28,7 +28,7 @@ describe('Logger', () => {
   })
 
   it('respects the level', () => {
-    logger.setLevel(LoggerLevel.VERBOSE)
+    logger.setLevel('verbose')
     logger.verbose()
     logger.debug()
     logger.info()
@@ -39,7 +39,7 @@ describe('Logger', () => {
     expect(console.warn).toBeCalledTimes(1)
     expect(console.error).toBeCalledTimes(1)
 
-    logger.setLevel(LoggerLevel.DEBUG)
+    logger.setLevel('debug')
     logger.verbose()
     logger.debug()
     logger.info()
@@ -50,7 +50,7 @@ describe('Logger', () => {
     expect(console.warn).toBeCalledTimes(2)
     expect(console.error).toBeCalledTimes(2)
 
-    logger.setLevel(LoggerLevel.INFO)
+    logger.setLevel('info')
     logger.verbose()
     logger.debug()
     logger.info()
@@ -61,7 +61,7 @@ describe('Logger', () => {
     expect(console.warn).toBeCalledTimes(3)
     expect(console.error).toBeCalledTimes(3)
 
-    logger.setLevel(LoggerLevel.WARN)
+    logger.setLevel('warn')
     logger.verbose()
     logger.debug()
     logger.info()
@@ -72,7 +72,7 @@ describe('Logger', () => {
     expect(console.warn).toBeCalledTimes(4)
     expect(console.error).toBeCalledTimes(4)
 
-    logger.setLevel(LoggerLevel.ERROR)
+    logger.setLevel('error')
     logger.verbose()
     logger.debug()
     logger.info()
@@ -120,24 +120,24 @@ describe('Logger', () => {
     // @ts-ignore
     global.window = {}
 
-    expect(logger.format('bigint', 0n)).toStrictEqual(['bigint -> 0'])
-    expect(logger.format('boolean', false)).toStrictEqual(['boolean -> false'])
-    expect(logger.format('function', () => true)).toStrictEqual(['function -> () => true'])
-    expect(logger.format('number', 0)).toStrictEqual(['number -> 0'])
-    expect(logger.format('object', {})).toStrictEqual(['object', {}])
+    expect(logger.format('debug', 'bigint', 0n)).toStrictEqual(['bigint -> 0'])
+    expect(logger.format('debug', 'boolean', false)).toStrictEqual(['boolean -> false'])
+    expect(logger.format('debug', 'function', () => true)).toStrictEqual(['function -> () => true'])
+    expect(logger.format('debug', 'number', 0)).toStrictEqual(['number -> 0'])
+    expect(logger.format('debug', 'object', {})).toStrictEqual(['object', {}])
 
-    expect(logger.format('string', '')).toStrictEqual(['string'])
-    expect(logger.format('string', 'hello')).toStrictEqual(['string -> hello'])
+    expect(logger.format('debug', 'string', '')).toStrictEqual(['string'])
+    expect(logger.format('debug', 'string', 'hello')).toStrictEqual(['string -> hello'])
 
-    expect(logger.format('symbol', Symbol())).toStrictEqual(['symbol -> Symbol()'])
-    expect(logger.format('undefined', undefined)).toStrictEqual(['undefined -> undefined'])
+    expect(logger.format('debug', 'symbol', Symbol())).toStrictEqual(['symbol -> Symbol()'])
+    expect(logger.format('debug', 'undefined', undefined)).toStrictEqual(['undefined -> undefined'])
 
     await Polyfill.formData()
 
     data = new FormData()
     data.append('name', 'john')
 
-    expect(logger.format('form-data', data)).toStrictEqual(['form-data', { name: 'john' }])
+    expect(logger.format('debug', 'form-data', data)).toStrictEqual(['form-data', { name: 'john' }])
 
     // @ts-ignore
     delete global.window
@@ -147,30 +147,23 @@ describe('Logger', () => {
     // @ts-ignore
     delete global.window
 
-    expect(logger.format('number', 0)).toStrictEqual([ANSIColor.WHITE, 'number -> 0'])
-    expect(logger.format('object', {})).toStrictEqual([ANSIColor.WHITE, 'object', ANSIColor.RESET, {}])
+    expect(logger.format('verbose', 'number', 0)).toStrictEqual([ANSIColor.WHITE, 'number -> 0'])
+    expect(logger.format('verbose', 'object', {})).toStrictEqual([ANSIColor.WHITE, 'object', ANSIColor.RESET, {}])
 
-    logger.level = LoggerLevel.DEBUG
-    expect(logger.format('number', 0)).toStrictEqual([ANSIColor.MAGENTA, 'number -> 0'])
-
-    logger.level = LoggerLevel.INFO
-    expect(logger.format('number', 0)).toStrictEqual([ANSIColor.BLUE, 'number -> 0'])
-
-    logger.level = LoggerLevel.WARN
-    expect(logger.format('number', 0)).toStrictEqual([ANSIColor.YELLOW, 'number -> 0'])
-
-    logger.level = LoggerLevel.ERROR
-    expect(logger.format('number', 0)).toStrictEqual([ANSIColor.RED, 'number -> 0'])
+    expect(logger.format('debug', 'number', 0)).toStrictEqual([ANSIColor.MAGENTA, 'number -> 0'])
+    expect(logger.format('info', 'number', 0)).toStrictEqual([ANSIColor.BLUE, 'number -> 0'])
+    expect(logger.format('warn', 'number', 0)).toStrictEqual([ANSIColor.YELLOW, 'number -> 0'])
+    expect(logger.format('error', 'number', 0)).toStrictEqual([ANSIColor.RED, 'number -> 0'])
   })
 
   it('gets level and status from the environment', () => {
-    process.env.LOGGER_TEST_LEVEL = LoggerLevel.DEBUG
-    process.env.LOGGER_TEST_STATUS = LoggerStatus.OFF
+    process.env.LOGGER_TEST_LEVEL = 'debug'
+    process.env.LOGGER_TEST_STATUS = 'off'
 
     logger = new Logger('TEST')
 
-    expect(logger.level).toBe(LoggerLevel.DEBUG)
-    expect(logger.status).toBe(LoggerStatus.OFF)
+    expect(logger.level).toBe('debug')
+    expect(logger.status).toBe('off')
 
     delete process.env.LOGGER_TEST_LEVEL
     delete process.env.LOGGER_TEST_STATUS
@@ -178,14 +171,14 @@ describe('Logger', () => {
 
   it('sets default level and status based on the environment', () => {
     logger = new Logger('TEST')
-    expect(logger.level).toBe(LoggerLevel.WARN)
-    expect(logger.status).toBe(LoggerStatus.OFF)
+    expect(logger.level).toBe('warn')
+    expect(logger.status).toBe('off')
 
     process.env.NODE_ENV = 'production'
 
     logger = new Logger('TEST')
-    expect(logger.level).toBe(LoggerLevel.ERROR)
-    expect(logger.status).toBe(LoggerStatus.ON)
+    expect(logger.level).toBe('error')
+    expect(logger.status).toBe('on')
 
     process.env.NODE_ENV = 'test'
   })

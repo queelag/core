@@ -26,9 +26,9 @@
   "license": "MIT",
   "main": "index.cjs",
   "module": "index.js",
-  "name": "@queelag/core",
+  "name": "@aracna/core",
   "private": false,
-  "repository": "https://github.com/queelag/core",
+  "repository": "https://github.com/aracna/core",
   "scripts": {
     "test": "vitest run",
     "build": "rm -rf dist && yarn rollup -c && yarn api-extractor run --local",
@@ -36,5 +36,5 @@
     "deploy": "yarn test && yarn build && yarn tarball && yarn publish dist/*.tgz"
   },
   "sideEffects": false,
-  "version": "1.1.17"
+  "version": "1.1.18"
 }

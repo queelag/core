@@ -1,6 +1,8 @@
-import { DEFAULT_LOGGER_SEPARATOR } from '../definitions/constants'
-import { ANSIColor, LoggerLevel, LoggerStatus } from '../definitions/enums'
+import { DEFAULT_LOGGER_COLORS, DEFAULT_LOGGER_SEPARATOR, LOGGER_LEVELS, LOGGER_STATUSES } from '../definitions/constants'
+import { ANSIColor } from '../definitions/enums'
+import { LoggerLevel, LoggerStatus } from '../definitions/types'
 import { deserializeFormData } from '../utils/form.data.utils'
+import { getLoggerANSIColor } from '../utils/logger.utils'
 import { Environment } from './environment'
 
 /**
@@ -9,6 +11,10 @@ import { Environment } from './environment'
  * @category Module
  */
 export class Logger {
+  /**
+   * A boolean which determines if colors are used or not in non browser environments.
+   */
+  colors: boolean
   /**
    * A {@link LoggerLevel} which determines the logs that are printed.
    */
@@ -28,10 +34,12 @@ export class Logger {
 
   constructor(
     name: string,
-    level: LoggerLevel = Logger.getLevelFromEnvironment(name) || (Environment.isProduction ? LoggerLevel.ERROR : LoggerLevel.WARN),
-    status: LoggerStatus = Logger.getStatusFromEnvironment(name) || (Environment.isTest ? LoggerStatus.OFF : LoggerStatus.ON),
+    level: LoggerLevel = Logger.getLevelFromEnvironment(name) || (Environment.isProduction ? 'error' : 'warn'),
+    status: LoggerStatus = Logger.getStatusFromEnvironment(name) || (Environment.isTest ? 'off' : 'on'),
+    colors: boolean = DEFAULT_LOGGER_COLORS,
     separator: string = DEFAULT_LOGGER_SEPARATOR
   ) {
+    this.colors = colors
     this.level = level
     this.name = name
     this.separator = separator
@@ -45,7 +53,7 @@ export class Logger {
     if (this.isDisabled) return
     if (this.isLevelVerboseDisabled) return
 
-    console.debug(...this.format(...args))
+    console.debug(...this.format('verbose', ...args))
   }
 
   /**
@@ -55,7 +63,7 @@ export class Logger {
     if (this.isDisabled) return
     if (this.isLevelDebugDisabled) return
 
-    console.debug(...this.format(...args))
+    console.debug(...this.format('debug', ...args))
   }
 
   /**
@@ -65,7 +73,7 @@ export class Logger {
     if (this.isDisabled) return
     if (this.isLevelInfoDisabled) return
 
-    console.info(...this.format(...args))
+    console.info(...this.format('info', ...args))
   }
 
   /**
@@ -75,7 +83,7 @@ export class Logger {
     if (this.isDisabled) return
     if (this.isLevelWarnDisabled) return
 
-    console.warn(...this.format(...args))
+    console.warn(...this.format('warn', ...args))
   }
 
   /**
@@ -84,21 +92,21 @@ export class Logger {
   error(...args: any[]): void {
     if (this.isDisabled) return
 
-    console.error(...this.format(...args))
+    console.error(...this.format('error', ...args))
   }
 
   /**
    * Disables verbose, debug, info, warn and error logs.
    */
   disable(): void {
-    this.status = LoggerStatus.OFF
+    this.status = 'off'
   }
 
   /**
    * Enables verbose, debug, info, warn and error logs.
    */
   enable(): void {
-    this.status = LoggerStatus.ON
+    this.status = 'on'
   }
 
   /**
@@ -109,9 +117,23 @@ export class Logger {
   }
 
   /**
+   * Disables the colors
+   */
+  disableColors(): void {
+    this.colors = false
+  }
+
+  /**
+   * Enables the colors
+   */
+  enableColors(): void {
+    this.colors = true
+  }
+
+  /**
    * Formats the args to be easier to read.
    */
-  format(...args: any[]): any[] {
+  format(level: LoggerLevel, ...args: any[]): any[] {
     let print: any[], primitives: string[]
 
     print = []
@@ -126,12 +148,16 @@ export class Logger {
       }
 
       if (primitives.length > 0) {
-        Environment.isWindowNotDefined && print.push(this.ANSIColorByLevel)
+        if (this.colors) {
+          Environment.isWindowNotDefined && print.push(getLoggerANSIColor(level))
+        }
 
         print.push(primitives.join(this.separator))
         primitives = []
 
-        Environment.isWindowNotDefined && print.push(ANSIColor.RESET)
+        if (this.colors) {
+          Environment.isWindowNotDefined && print.push(ANSIColor.RESET)
+        }
       }
 
       if (Environment.isFormDataDefined && arg instanceof FormData) {
@@ -143,7 +169,10 @@ export class Logger {
     }
 
     if (primitives.length > 0) {
-      Environment.isWindowNotDefined && print.push(this.ANSIColorByLevel)
+      if (this.colors) {
+        Environment.isWindowNotDefined && print.push(getLoggerANSIColor(level))
+      }
+
       print.push(primitives.join(this.separator))
     }
 
@@ -154,7 +183,7 @@ export class Logger {
     let value: string
 
     value = Environment.get(`LOGGER_${name}_LEVEL`)
-    if (!Object.keys(LoggerLevel).includes(value)) return
+    if (!LOGGER_LEVELS.includes(value as LoggerLevel)) return
 
     return value as LoggerLevel
   }
@@ -163,48 +192,32 @@ export class Logger {
     let value: string
 
     value = Environment.get(`LOGGER_${name}_STATUS`)
-    if (!Object.keys(LoggerStatus).includes(value)) return
+    if (!LOGGER_STATUSES.includes(value as LoggerStatus)) return
 
     return value as LoggerStatus
   }
 
-  /** @internal */
-  private get ANSIColorByLevel(): string {
-    switch (this.level) {
-      case LoggerLevel.DEBUG:
-        return ANSIColor.MAGENTA
-      case LoggerLevel.ERROR:
-        return ANSIColor.RED
-      case LoggerLevel.INFO:
-        return ANSIColor.BLUE
-      case LoggerLevel.VERBOSE:
-        return ANSIColor.WHITE
-      case LoggerLevel.WARN:
-        return ANSIColor.YELLOW
-    }
-  }
-
   get isDisabled(): boolean {
-    return this.status === LoggerStatus.OFF
+    return this.status === 'off'
   }
 
   get isEnabled(): boolean {
-    return this.status === LoggerStatus.ON
+    return this.status === 'on'
   }
 
   get isLevelVerboseDisabled(): boolean {
-    return [LoggerLevel.DEBUG, LoggerLevel.INFO, LoggerLevel.WARN, LoggerLevel.ERROR].includes(this.level)
+    return ['debug', 'info', 'warn', 'error'].includes(this.level)
   }
 
   get isLevelDebugDisabled(): boolean {
-    return [LoggerLevel.INFO, LoggerLevel.WARN, LoggerLevel.ERROR].includes(this.level)
+    return ['info', 'warn', 'error'].includes(this.level)
   }
 
   get isLevelInfoDisabled(): boolean {
-    return [LoggerLevel.WARN, LoggerLevel.ERROR].includes(this.level)
+    return ['warn', 'error'].includes(this.level)
   }
 
   get isLevelWarnDisabled(): boolean {
-    return [LoggerLevel.ERROR].includes(this.level)
+    return ['error'].includes(this.level)
   }
 }

@@ -23,6 +23,9 @@ export namespace KeyOf {
   export type Shallow<T> = keyof T
 }
 
+export type LoggerLevel = 'verbose' | 'debug' | 'info' | 'warn' | 'error'
+export type LoggerStatus = 'off' | 'on'
+
 export type Primitive = bigint | boolean | null | number | string | symbol | undefined
 
 export type ProcessEnvValue = string | undefined

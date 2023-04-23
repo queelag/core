@@ -10,19 +10,6 @@ export enum ANSIColor {
   RESET = '\x1b[0m'
 }
 
-export enum LoggerLevel {
-  VERBOSE = 'VERBOSE',
-  DEBUG = 'DEBUG',
-  INFO = 'INFO',
-  WARN = 'WARN',
-  ERROR = 'ERROR'
-}
-
-export enum LoggerStatus {
-  OFF = 'OFF',
-  ON = 'ON'
-}
-
 export enum LoggerName {
   CLASS = 'CORE_CLASS',
   FUNCTION = 'CORE_FUNCTION',

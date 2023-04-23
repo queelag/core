@@ -1,15 +1,15 @@
 import { beforeAll, describe, expect, it } from 'vitest'
-import { Base64, Polyfill, QueelagBlob, TextCodec } from '../../src'
-import { QueelagBlobJSON } from '../../src/definitions/interfaces'
+import { AracnaBlob, Base64, Polyfill, TextCodec } from '../../src'
+import { AracnaBlobJSON } from '../../src/definitions/interfaces'
 
-describe('QueelagBlob', () => {
-  let blob: Blob, qblob: QueelagBlob
+describe('AracnaBlob', () => {
+  let blob: Blob, qblob: AracnaBlob
 
   beforeAll(async () => {
     await Polyfill.blob()
 
     blob = new Blob(['hello'], { type: 'text/plain' })
-    qblob = new QueelagBlob(blob)
+    qblob = new AracnaBlob(blob)
   })
 
   it('constructs from blob', () => {
@@ -24,7 +24,7 @@ describe('QueelagBlob', () => {
   })
 
   it('constructs from json', async () => {
-    let json: QueelagBlobJSON, qblob2: QueelagBlob
+    let json: AracnaBlobJSON, qblob2: AracnaBlob
 
     await qblob.resolveArrayBuffer()
     await qblob.resolveText()
@@ -37,7 +37,7 @@ describe('QueelagBlob', () => {
     expect(json.type).toBe(qblob.type)
     expect(json.uInt8Array).toStrictEqual({ ...qblob.uInt8Array })
 
-    qblob2 = new QueelagBlob(json)
+    qblob2 = new AracnaBlob(json)
 
     expect(qblob2.arrayBuffer).toStrictEqual(qblob.arrayBuffer)
     expect(qblob2.base64).toBe(qblob.base64)

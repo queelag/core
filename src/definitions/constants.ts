@@ -1,6 +1,16 @@
 import { noop } from '../functions/noop'
 import { ConfigurationModule } from './interfaces'
-import { ArrayIncludes, ArrayRemoves, DebounceMapKey, DebounceMapValue, StatusTransformer, ThrottleMapKey, ThrottleMapValue } from './types'
+import {
+  ArrayIncludes,
+  ArrayRemoves,
+  DebounceMapKey,
+  DebounceMapValue,
+  LoggerLevel,
+  LoggerStatus,
+  StatusTransformer,
+  ThrottleMapKey,
+  ThrottleMapValue
+} from './types'
 
 /**
  * Any
@@ -64,7 +74,10 @@ export const SORT_REGEXP_VARIABLE_INSIDE_CURLY_BRACKETS_MATCHES_COMPARE_FN: (a: 
 /**
  * Logger
  */
+export const DEFAULT_LOGGER_COLORS: boolean = true
 export const DEFAULT_LOGGER_SEPARATOR: string = ' -> '
+export const LOGGER_LEVELS: LoggerLevel[] = ['debug', 'error', 'info', 'verbose', 'warn']
+export const LOGGER_STATUSES: LoggerStatus[] = ['off', 'on']
 
 /**
  * Object Utils
