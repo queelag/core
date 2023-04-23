@@ -13,7 +13,7 @@ export {
   ID_ALPHABET_NUMBERS,
   ID_ALPHABET_UPPERCASE
 } from './definitions/constants'
-export { LoggerName as CoreLoggerName, StorageName as CoreStorageName, LoggerLevel, LoggerStatus, RequestMethod, WriteMode } from './definitions/enums'
+export { LoggerName as CoreLoggerName, StorageName as CoreStorageName, RequestMethod, WriteMode } from './definitions/enums'
 export {
   APIConfig,
   CookieItem,
