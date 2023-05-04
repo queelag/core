@@ -25,12 +25,12 @@
   "exports": {
     "import": "./index.js",
     "require": {
-      "default": "./index.cjs",
+      "default": "./index.cjs.js",
       "types": "./index.d.ts"
     }
   },
   "license": "MIT",
-  "main": "index.cjs",
+  "main": "index.cjs.js",
   "module": "index.js",
   "name": "@aracna/core",
   "private": false,
