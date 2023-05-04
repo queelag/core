@@ -1,4 +1,4 @@
-import { Primitive } from './types'
+import { Primitive } from './types.js'
 
 /**
  * Implementation taken from https://github.com/react-hook-form/react-hook-form, thanks to the following authors.

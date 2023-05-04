@@ -1,6 +1,6 @@
-import { ProcessEnvValue } from '../definitions/types'
-import { noop } from '../functions/noop'
-import { tc } from '../functions/tc'
+import { ProcessEnvValue } from '../definitions/types.js'
+import { noop } from '../functions/noop.js'
+import { tc } from '../functions/tc.js'
 
 declare const __webpack_require__: NodeRequire
 declare const __non_webpack_require__: NodeRequire

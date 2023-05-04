@@ -1,12 +1,12 @@
-import { FetchError } from '../classes/fetch.error'
-import { FetchResponse } from '../classes/fetch.response'
-import { RequestMethod } from '../definitions/enums'
-import { FetchRequestInit } from '../definitions/interfaces'
-import { FetchRequestInfo } from '../definitions/types'
-import { tcp } from '../functions/tcp'
-import { ModuleLogger } from '../loggers/module.logger'
-import { toLoggableNativeFetchRequestInit, toNativeFetchRequestInit } from '../utils/fetch.utils'
-import { Polyfill } from './polyfill'
+import { FetchError } from '../classes/fetch.error.js'
+import { FetchResponse } from '../classes/fetch.response.js'
+import { RequestMethod } from '../definitions/enums.js'
+import { FetchRequestInit } from '../definitions/interfaces.js'
+import { FetchRequestInfo } from '../definitions/types.js'
+import { tcp } from '../functions/tcp.js'
+import { ModuleLogger } from '../loggers/module.logger.js'
+import { toLoggableNativeFetchRequestInit, toNativeFetchRequestInit } from '../utils/fetch.utils.js'
+import { Polyfill } from './polyfill.js'
 
 /**
  * A module to use the native fetch in a more fashionable way.

@@ -1,6 +1,6 @@
-import { THROTTLE_MAP } from '../definitions/constants'
-import { FunctionLogger } from '../loggers/function.logger'
-import { tc } from './tc'
+import { THROTTLE_MAP } from '../definitions/constants.js'
+import { FunctionLogger } from '../loggers/function.logger.js'
+import { tc } from './tc.js'
 
 /**
  * Calls the fn only if ms time has passed since the last execution.

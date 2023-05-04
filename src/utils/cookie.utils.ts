@@ -1,6 +1,6 @@
 import { CookieParseOptions, CookieSerializeOptions, parse, serialize } from 'cookie'
-import { CookieObject } from '../definitions/interfaces'
-import { tc } from '../functions/tc'
+import { CookieObject } from '../definitions/interfaces.js'
+import { tc } from '../functions/tc.js'
 
 /**
  * Parse an HTTP Cookie header string and returning an object of all cookie

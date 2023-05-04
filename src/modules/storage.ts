@@ -1,8 +1,8 @@
-import { StorageItem, StorageTarget } from '../definitions/interfaces'
-import { KeyOf } from '../definitions/types'
-import { mtcp } from '../functions/mtcp'
-import { ModuleLogger } from '../loggers/module.logger'
-import { copyObjectProperty, deleteObjectProperty, hasObjectProperty } from '../utils/object.utils'
+import { StorageItem, StorageTarget } from '../definitions/interfaces.js'
+import { KeyOf } from '../definitions/types.js'
+import { mtcp } from '../functions/mtcp.js'
+import { ModuleLogger } from '../loggers/module.logger.js'
+import { copyObjectProperty, deleteObjectProperty, hasObjectProperty } from '../utils/object.utils.js'
 
 /**
  * A module to handle any storage operations through a store.

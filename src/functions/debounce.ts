@@ -1,6 +1,6 @@
-import { DEBOUNCE_MAP } from '../definitions/constants'
-import { DebounceMapKey } from '../definitions/types'
-import { FunctionLogger } from '../loggers/function.logger'
+import { DEBOUNCE_MAP } from '../definitions/constants.js'
+import { DebounceMapKey } from '../definitions/types.js'
+import { FunctionLogger } from '../loggers/function.logger.js'
 
 /**
  * Lets fn run only if it hasn't be called again for ms time.

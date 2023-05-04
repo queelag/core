@@ -1,10 +1,10 @@
-import { REGEXP_VARIABLE_INSIDE_CURLY_BRACKETS, SORT_REGEXP_VARIABLE_INSIDE_CURLY_BRACKETS_MATCHES_COMPARE_FN } from '../definitions/constants'
-import { StorageName } from '../definitions/enums'
-import { LocalizationPack, LocalizationVariables } from '../definitions/interfaces'
-import { ModuleLogger } from '../loggers/module.logger'
-import { isNotError } from '../utils/error.utils'
-import { getObjectProperty, hasObjectProperty, mergeObjects } from '../utils/object.utils'
-import { Storage } from './storage'
+import { REGEXP_VARIABLE_INSIDE_CURLY_BRACKETS, SORT_REGEXP_VARIABLE_INSIDE_CURLY_BRACKETS_MATCHES_COMPARE_FN } from '../definitions/constants.js'
+import { StorageName } from '../definitions/enums.js'
+import { LocalizationPack, LocalizationVariables } from '../definitions/interfaces.js'
+import { ModuleLogger } from '../loggers/module.logger.js'
+import { isNotError } from '../utils/error.utils.js'
+import { getObjectProperty, hasObjectProperty, mergeObjects } from '../utils/object.utils.js'
+import { Storage } from './storage.js'
 
 /**
  * A module to handle simple localization.

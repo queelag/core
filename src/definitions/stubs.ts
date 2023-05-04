@@ -1,5 +1,5 @@
-import { deserializeCookie } from '../utils/cookie.utils'
-import { CookieObject } from './interfaces'
+import { deserializeCookie } from '../utils/cookie.utils.js'
+import { CookieObject } from './interfaces.js'
 
 export const STUB_COOKIE_GET: (map: Map<string, string>) => () => string = (map: Map<string, string>) => () =>
   [...map.entries()].map(([k, v]) => [k, v].join('=')).join(';')

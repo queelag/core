@@ -1,4 +1,4 @@
-import { tcp } from '../functions/tcp'
+import { tcp } from '../functions/tcp.js'
 
 /**
  * Calls every fn synchronously.

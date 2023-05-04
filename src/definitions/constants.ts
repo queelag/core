@@ -1,5 +1,5 @@
-import { noop } from '../functions/noop'
-import { ConfigurationModule } from './interfaces'
+import { noop } from '../functions/noop.js'
+import { ConfigurationModule } from './interfaces.js'
 import {
   ArrayIncludes,
   ArrayRemoves,
@@ -10,7 +10,7 @@ import {
   StatusTransformer,
   ThrottleMapKey,
   ThrottleMapValue
-} from './types'
+} from './types.js'
 
 /**
  * Any

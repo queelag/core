@@ -1,6 +1,6 @@
-import { DEFAULT_STATUS_TRANSFORMER } from '../definitions/constants'
-import { StatusTransformer } from '../definitions/types'
-import { ModuleLogger } from '../loggers/module.logger'
+import { DEFAULT_STATUS_TRANSFORMER } from '../definitions/constants.js'
+import { StatusTransformer } from '../definitions/types.js'
+import { ModuleLogger } from '../loggers/module.logger.js'
 
 /**
  * A module to keep track of status changes.

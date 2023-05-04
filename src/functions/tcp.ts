@@ -1,4 +1,4 @@
-import { Configuration } from '../modules/configuration'
+import { Configuration } from '../modules/configuration.js'
 
 /**
  * Try catches an asynchronous fn, returning both T and U.

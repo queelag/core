@@ -1,5 +1,5 @@
-import { DEFAULT_ARRAY_INCLUDES, DEFAULT_ARRAY_REMOVES } from '../definitions/constants'
-import { ArrayIncludes, ArrayRemoves } from '../definitions/types'
+import { DEFAULT_ARRAY_INCLUDES, DEFAULT_ARRAY_REMOVES } from '../definitions/constants.js'
+import { ArrayIncludes, ArrayRemoves } from '../definitions/types.js'
 
 /**
  * Clones an array shallowly.

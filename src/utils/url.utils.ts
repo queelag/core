@@ -5,7 +5,7 @@ import {
   REGEXP_URL_MULTIPLE_QUESTION_MARKS,
   REGEXP_URL_MULTIPLE_SLASHES,
   REGEXP_URL_QUESTION_MARKS_AFTER_AMPERSANDS
-} from '../definitions/constants'
+} from '../definitions/constants.js'
 
 /**
  * Joins a set of URL chunks without making syntax errors.

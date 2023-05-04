@@ -1,5 +1,5 @@
-import { tc } from '../functions/tc'
-import { isStringFloat, isStringInt } from './string.utils'
+import { tc } from '../functions/tc.js'
+import { isStringFloat, isStringInt } from './string.utils.js'
 
 /**
  * Returns an always positive number.

@@ -1,4 +1,4 @@
-import { tc } from './tc'
+import { tc } from './tc.js'
 
 /**
  * Makes a function try catched.

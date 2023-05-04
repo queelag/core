@@ -1,4 +1,4 @@
-import { tcp } from './tcp'
+import { tcp } from './tcp.js'
 
 /**
  * Calls fn whilst returning a custom T value.

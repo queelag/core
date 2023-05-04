@@ -1,4 +1,4 @@
-import { tc } from './tc'
+import { tc } from './tc.js'
 
 /**
  * Calls fn whilst returning a custom T value.

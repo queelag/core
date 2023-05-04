@@ -1,9 +1,9 @@
-// import { ArrayPath, Path } from './path'
+// import { ArrayPath, Path } from './path.js'
 
 export type ArrayIncludes<T> = (array: T[], item: T) => boolean
 export type ArrayRemoves<T> = (array: T[], item: T) => boolean
 
-export type { CamelCase, DelimiterCase, KebabCase, PascalCase, ScreamingSnakeCase, SnakeCase } from './cases'
+export type { CamelCase, DelimiterCase, KebabCase, PascalCase, ScreamingSnakeCase, SnakeCase } from './cases.js'
 
 export type DebounceMapKey = Function | string
 export type DebounceMapValue = NodeJS.Timeout | number

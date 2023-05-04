@@ -1,5 +1,5 @@
-import { AracnaFile } from '../classes/aracna.file'
-import { DeserializeFileOptions } from '../definitions/interfaces'
+import { AracnaFile } from '../classes/aracna.file.js'
+import { DeserializeFileOptions } from '../definitions/interfaces.js'
 
 export async function deserializeFile(file: File, options?: DeserializeFileOptions): Promise<AracnaFile> {
   let item: AracnaFile = new AracnaFile(file)

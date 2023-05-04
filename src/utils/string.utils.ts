@@ -1,5 +1,5 @@
-import { REGEXP_NOT_LETTERS, REGEXP_NOT_LOWERCASE_LETTERS, REGEXP_UPPERCASE_LETTERS } from '../definitions/constants'
-import { tc } from '../functions/tc'
+import { REGEXP_NOT_LETTERS, REGEXP_NOT_LOWERCASE_LETTERS, REGEXP_UPPERCASE_LETTERS } from '../definitions/constants.js'
+import { tc } from '../functions/tc.js'
 
 /**
  * Capitalizes the first letter in a string, if lowercase is set to true the other characters will be lowercased.

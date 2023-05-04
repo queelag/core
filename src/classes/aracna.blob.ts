@@ -1,10 +1,10 @@
-import { AracnaBlobJSON } from '../definitions/interfaces'
-import { STUB_BLOB } from '../definitions/stubs'
-import { tcp } from '../functions/tcp'
-import { Base64 } from '../modules/base64'
-import { Environment } from '../modules/environment'
-import { ID } from '../modules/id'
-import { TextCodec } from '../modules/text.codec'
+import { AracnaBlobJSON } from '../definitions/interfaces.js'
+import { STUB_BLOB } from '../definitions/stubs.js'
+import { tcp } from '../functions/tcp.js'
+import { Base64 } from '../modules/base64.js'
+import { Environment } from '../modules/environment.js'
+import { ID } from '../modules/id.js'
+import { TextCodec } from '../modules/text.codec.js'
 
 export class AracnaBlob {
   private _arrayBuffer?: ArrayBuffer

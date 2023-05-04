@@ -1,7 +1,7 @@
-import { DEFAULT_HISTORY_SIZE } from '../definitions/constants'
-import { HistoryDataTarget } from '../definitions/interfaces'
-import { ModuleLogger } from '../loggers/module.logger'
-import { cloneDeepObject } from '../utils/object.utils'
+import { DEFAULT_HISTORY_SIZE } from '../definitions/constants.js'
+import { HistoryDataTarget } from '../definitions/interfaces.js'
+import { ModuleLogger } from '../loggers/module.logger.js'
+import { cloneDeepObject } from '../utils/object.utils.js'
 
 /**
  * A module to handle history changes.

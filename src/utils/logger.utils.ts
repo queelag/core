@@ -1,5 +1,5 @@
-import { ANSIColor } from '../definitions/enums'
-import { LoggerLevel } from '../definitions/types'
+import { ANSIColor } from '../definitions/enums.js'
+import { LoggerLevel } from '../definitions/types.js'
 
 export function getLoggerANSIColor(level: LoggerLevel): string {
   switch (level) {

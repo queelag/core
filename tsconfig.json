@@ -7,9 +7,10 @@
     "esModuleInterop": true,
     "jsx": "react",
     "module": "ESNext",
-    "moduleResolution": "Node",
+    "moduleResolution": "nodenext",
     "outDir": "dist",
     "resolveJsonModule": true,
+    "skipLibCheck": true,
     "strict": true,
     "target": "ESNext"
   },

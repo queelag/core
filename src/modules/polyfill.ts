@@ -1,7 +1,7 @@
-import { tc } from '../functions/tc'
-import { tcp } from '../functions/tcp'
-import { ModuleLogger } from '../loggers/module.logger'
-import { Environment } from './environment'
+import { tc } from '../functions/tc.js'
+import { tcp } from '../functions/tcp.js'
+import { ModuleLogger } from '../loggers/module.logger.js'
+import { Environment } from './environment.js'
 
 interface NodeFetch {
   default: any

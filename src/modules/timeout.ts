@@ -1,5 +1,5 @@
-import { TimeoutMapKey, TimeoutMapValue } from '../definitions/types'
-import { ModuleLogger } from '../loggers/module.logger'
+import { TimeoutMapKey, TimeoutMapValue } from '../definitions/types.js'
+import { ModuleLogger } from '../loggers/module.logger.js'
 
 /**
  * A module to safely handle timeouts.

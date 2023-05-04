@@ -1,5 +1,5 @@
-import { PromiseState } from '../definitions/enums'
-import { tcp } from '../functions/tcp'
+import { PromiseState } from '../definitions/enums.js'
+import { tcp } from '../functions/tcp.js'
 
 /**
  * A module to handle deferred promises.
