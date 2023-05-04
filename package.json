@@ -23,8 +23,8 @@
     "vitest": "latest"
   },
   "license": "MIT",
-  "main": "index.cjs.js",
-  "module": "index.js",
+  "main": "index.js",
+  "module": "index.mjs",
   "name": "@aracna/core",
   "private": false,
   "repository": "https://github.com/aracna/core",

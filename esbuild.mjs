@@ -14,9 +14,10 @@ build({
   ...OPTIONS,
   entryPoints: await glob('./src/**/*.ts'),
   format: 'esm',
+  outdir: 'dist',
+  outExtension: { '.js': '.mjs' },
   packages: 'external',
-  platform: 'neutral',
-  outdir: 'dist'
+  platform: 'neutral'
 }).catch(() => process.exit(1))
 
 /**
@@ -29,7 +30,7 @@ build({
   format: 'cjs',
   packages: 'external',
   platform: 'neutral',
-  outfile: 'dist/index.cjs.js'
+  outfile: 'dist/index.js'
 }).catch(() => process.exit(1))
 
 /**
