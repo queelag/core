@@ -25,12 +25,11 @@ build({
  */
 build({
   ...OPTIONS,
-  bundle: true,
-  entryPoints: ['src/index.ts'],
+  entryPoints: await glob('./src/**/*.ts'),
   format: 'cjs',
+  outdir: 'dist',
   packages: 'external',
-  platform: 'neutral',
-  outfile: 'dist/index.js'
+  platform: 'neutral'
 }).catch(() => process.exit(1))
 
 /**

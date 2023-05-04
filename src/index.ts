@@ -14,7 +14,7 @@ export {
   ID_ALPHABET_UPPERCASE
 } from './definitions/constants'
 export { LoggerName as CoreLoggerName, StorageName as CoreStorageName, RequestMethod, WriteMode } from './definitions/enums'
-export {
+export type {
   APIConfig,
   CookieItem,
   CookieObject,
@@ -40,7 +40,7 @@ export {
   WithWriteMode
 } from './definitions/interfaces'
 export * from './definitions/stubs'
-export * from './definitions/types'
+export type * from './definitions/types'
 export * from './functions/debounce'
 export * from './functions/gql'
 export * from './functions/ma'
