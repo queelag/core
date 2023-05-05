@@ -21,15 +21,6 @@
     "typescript": "^5.0.4",
     "vitest": "^0.31.0"
   },
-  "exports": {
-    ".": {
-      "import": "./index.js",
-      "require": {
-        "default": "./index.cjs.js",
-        "types": "./index.d.ts"
-      }
-    }
-  },
   "license": "MIT",
   "main": "index.cjs.js",
   "module": "index.js",
