@@ -4,7 +4,7 @@ import { tcp } from '../functions/tcp.js'
 import { Base64 } from '../modules/base64.js'
 import { Environment } from '../modules/environment.js'
 import { ID } from '../modules/id.js'
-import { TextCodec } from '../modules/text.codec.js'
+import { TextCodec } from '../modules/text-codec.js'
 
 export class AracnaBlob {
   private _arrayBuffer?: ArrayBuffer

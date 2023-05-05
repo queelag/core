@@ -1,6 +1,6 @@
 import { IntervalMapKey, IntervalMapValue } from '../definitions/types.js'
 import { tc } from '../functions/tc.js'
-import { ModuleLogger } from '../loggers/module.logger.js'
+import { ModuleLogger } from '../loggers/module-logger.js'
 
 /**
  * A module to safely handle intervals with a name.

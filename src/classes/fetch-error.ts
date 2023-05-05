@@ -1,4 +1,4 @@
-import { FetchResponse } from './fetch.response.js'
+import { FetchResponse } from './fetch-response.js'
 
 /**
  * A class made for Fetch errors.

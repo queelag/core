@@ -1,6 +1,5 @@
-import { tc } from '../functions/tc.js'
-import { tcp } from '../functions/tcp.js'
-import { ModuleLogger } from '../loggers/module.logger.js'
+import { tcp } from '../index.js'
+import { ModuleLogger } from '../loggers/module-logger.js'
 import { Environment } from './environment.js'
 
 interface NodeFetch {
@@ -36,6 +35,7 @@ export class Polyfill {
     NodeFetch = await this.getNodeFetch()
     if (NodeFetch instanceof Error) return
 
+    console.log('NodeFetch', NodeFetch, Environment.isTest)
     global.Blob = NodeFetch.Blob
 
     ModuleLogger.debug('Polyfill', 'blob', `The Blob object has been polyfilled with node-fetch.`)
@@ -112,10 +112,6 @@ export class Polyfill {
 
   // istanbul ignore next
   private static async getNodeFetch(): Promise<NodeFetch | Error> {
-    if (Environment.isTest) {
-      return tc(() => Environment.require('node-fetch-cjs'))
-    }
-
     return tcp(() => Environment.import('node-fetch'))
   }
 }

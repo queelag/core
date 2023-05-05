@@ -3,9 +3,9 @@ import { DEFAULT_COOKIE_SEPARATOR } from '../definitions/constants.js'
 import { CookieItem, CookieObject } from '../definitions/interfaces.js'
 import { KeyOf, Primitive } from '../definitions/types.js'
 import { mtcp } from '../functions/mtcp.js'
-import { ModuleLogger } from '../loggers/module.logger.js'
-import { deserializeCookie, serializeCookie } from '../utils/cookie.utils.js'
-import { setObjectProperty } from '../utils/object.utils.js'
+import { ModuleLogger } from '../loggers/module-logger.js'
+import { deserializeCookie, serializeCookie } from '../utils/cookie-utils.js'
+import { setObjectProperty } from '../utils/object-utils.js'
 
 /**
  * A module to handle cookies through a store.

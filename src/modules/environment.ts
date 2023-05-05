@@ -1,5 +1,4 @@
 import { ProcessEnvValue } from '../definitions/types.js'
-import { noop } from '../functions/noop.js'
 import { tc } from '../functions/tc.js'
 
 declare const __webpack_require__: NodeRequire
@@ -41,22 +40,6 @@ export class Environment {
   // istanbul ignore next
   static get import(): Function {
     return new Function('path', 'return import(path)')
-  }
-
-  /**
-   * Returns a webpack safe require.
-   */
-  // istanbul ignore next
-  static get require(): NodeRequire {
-    if (typeof __webpack_require__ === 'function') {
-      return __non_webpack_require__
-    }
-
-    if (typeof require === 'function') {
-      return require
-    }
-
-    return noop as NodeRequire
   }
 
   /**

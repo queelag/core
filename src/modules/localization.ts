@@ -1,9 +1,9 @@
 import { REGEXP_VARIABLE_INSIDE_CURLY_BRACKETS, SORT_REGEXP_VARIABLE_INSIDE_CURLY_BRACKETS_MATCHES_COMPARE_FN } from '../definitions/constants.js'
 import { StorageName } from '../definitions/enums.js'
 import { LocalizationPack, LocalizationVariables } from '../definitions/interfaces.js'
-import { ModuleLogger } from '../loggers/module.logger.js'
-import { isNotError } from '../utils/error.utils.js'
-import { getObjectProperty, hasObjectProperty, mergeObjects } from '../utils/object.utils.js'
+import { ModuleLogger } from '../loggers/module-logger.js'
+import { isNotError } from '../utils/error-utils.js'
+import { getObjectProperty, hasObjectProperty, mergeObjects } from '../utils/object-utils.js'
 import { Storage } from './storage.js'
 
 /**

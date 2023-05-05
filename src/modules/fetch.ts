@@ -1,11 +1,11 @@
-import { FetchError } from '../classes/fetch.error.js'
-import { FetchResponse } from '../classes/fetch.response.js'
+import { FetchError } from '../classes/fetch-error.js'
+import { FetchResponse } from '../classes/fetch-response.js'
 import { RequestMethod } from '../definitions/enums.js'
 import { FetchRequestInit } from '../definitions/interfaces.js'
 import { FetchRequestInfo } from '../definitions/types.js'
 import { tcp } from '../functions/tcp.js'
-import { ModuleLogger } from '../loggers/module.logger.js'
-import { toLoggableNativeFetchRequestInit, toNativeFetchRequestInit } from '../utils/fetch.utils.js'
+import { ModuleLogger } from '../loggers/module-logger.js'
+import { toLoggableNativeFetchRequestInit, toNativeFetchRequestInit } from '../utils/fetch-utils.js'
 import { Polyfill } from './polyfill.js'
 
 /**

@@ -1,4 +1,4 @@
-import { AracnaBlob } from '../classes/aracna.blob.js'
+import { AracnaBlob } from '../classes/aracna-blob.js'
 import { DeserializeBlobOptions } from '../definitions/interfaces.js'
 
 export async function deserializeBlob(blob: Blob, options?: DeserializeBlobOptions): Promise<AracnaBlob> {

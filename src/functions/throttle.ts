@@ -1,5 +1,5 @@
 import { THROTTLE_MAP } from '../definitions/constants.js'
-import { FunctionLogger } from '../loggers/function.logger.js'
+import { FunctionLogger } from '../loggers/function-logger.js'
 import { tc } from './tc.js'
 
 /**

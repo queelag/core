@@ -1,6 +1,6 @@
 import { tc } from '../functions/tc.js'
 import { Environment } from '../modules/environment.js'
-import { isStringJSON } from './string.utils.js'
+import { isStringJSON } from './string-utils.js'
 
 /**
  * Deserializes any FormData to a T object.

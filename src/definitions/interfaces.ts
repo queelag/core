@@ -1,4 +1,4 @@
-import type { FetchResponse } from '../classes/fetch.response.js'
+import type { FetchResponse } from '../classes/fetch-response.js'
 import type { WriteMode } from './enums.js'
 import { Primitive } from './types.js'
 

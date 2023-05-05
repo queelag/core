@@ -1,32 +1,33 @@
 {
   "author": "Dario Sechi",
   "dependencies": {
-    "@types/cookie": "latest",
-    "cookie": "latest",
-    "nanoid": "3.3.6",
-    "node-fetch": "latest",
-    "node-fetch-cjs": "latest",
-    "rfc4648": "latest"
+    "@types/cookie": "^0.5.1",
+    "cookie": "^0.5.0",
+    "nanoid": "^4.0.2",
+    "node-fetch": "^3.3.1",
+    "rfc4648": "^1.5.2"
   },
   "devDependencies": {
-    "@microsoft/api-extractor": "latest",
-    "@vitest/coverage-c8": "latest",
-    "@vitest/ui": "latest",
-    "esbuild": "latest",
-    "fastify": "latest",
-    "glob": "latest",
-    "mercurius": "latest",
-    "prettier": "latest",
-    "tslib": "latest",
-    "typedoc": "latest",
-    "typescript": "latest",
-    "vitest": "latest"
+    "@microsoft/api-extractor": "^7.34.8",
+    "@vitest/coverage-c8": "^0.31.0",
+    "@vitest/ui": "^0.31.0",
+    "esbuild": "^0.17.18",
+    "fastify": "^4.17.0",
+    "glob": "^10.2.2",
+    "mercurius": "^13.0.0",
+    "prettier": "^2.8.8",
+    "tslib": "^2.5.0",
+    "typedoc": "^0.24.6",
+    "typescript": "^5.0.4",
+    "vitest": "^0.31.0"
   },
   "exports": {
-    "import": "./index.js",
-    "require": {
-      "default": "./index.cjs.js",
-      "types": "./index.d.ts"
+    ".": {
+      "import": "./index.js",
+      "require": {
+        "default": "./index.cjs.js",
+        "types": "./index.d.ts"
+      }
     }
   },
   "license": "MIT",

@@ -1,5 +1,5 @@
-import { FetchError } from '../classes/fetch.error.js'
-import { FetchResponse } from '../classes/fetch.response.js'
+import { FetchError } from '../classes/fetch-error.js'
+import { FetchResponse } from '../classes/fetch-response.js'
 import { RequestMethod } from '../definitions/enums.js'
 import { GraphQLAPIConfig, GraphQLAPIRequestBody, GraphQLAPIResponse } from '../definitions/interfaces.js'
 import { API } from './api.js'

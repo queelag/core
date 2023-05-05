@@ -1,7 +1,7 @@
 import { REGEXP_LEFT_SQUARE_BRACKET_WITHOUT_LEADING_DOT, REGEXP_SQUARE_BRACKETS } from '../definitions/constants.js'
 import { FlattenObjectOptions } from '../definitions/interfaces.js'
 import { KeyOf } from '../definitions/types.js'
-import { isArray } from './array.utils.js'
+import { isArray } from './array-utils.js'
 
 /**
  * Clones an object deeply.

@@ -1,8 +1,8 @@
 import { FetchRequestInit } from '../definitions/interfaces.js'
-import { isArray } from './array.utils.js'
-import { deserializeFormData } from './form.data.utils.js'
-import { mergeObjects, omitObjectProperties } from './object.utils.js'
-import { isStringJSON } from './string.utils.js'
+import { isArray } from './array-utils.js'
+import { deserializeFormData } from './form-data-utils.js'
+import { mergeObjects, omitObjectProperties } from './object-utils.js'
+import { isStringJSON } from './string-utils.js'
 
 export function deleteFetchRequestInitHeader<T>(init: FetchRequestInit<T> | RequestInit, name: string): void {
   if (typeof init.headers === 'undefined') {
