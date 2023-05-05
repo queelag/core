@@ -27,7 +27,7 @@ build({
   bundle: true,
   entryPoints: ['src/index.ts'],
   format: 'cjs',
-  outfile: 'dist/index.cjs.js',
+  outfile: 'dist/index.cjs',
   packages: 'external',
   platform: 'neutral'
 }).catch(() => process.exit(1))

@@ -21,8 +21,15 @@
     "typescript": "^5.0.4",
     "vitest": "^0.31.0"
   },
+  "exports": {
+    "import": "./index.js",
+    "require": {
+      "default": "./index.cjs",
+      "types": "./index.d.ts"
+    }
+  },
   "license": "MIT",
-  "main": "index.cjs.js",
+  "main": "index.cjs",
   "module": "index.js",
   "name": "@aracna/core",
   "private": false,
