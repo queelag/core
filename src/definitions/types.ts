@@ -30,6 +30,8 @@ export type Primitive = bigint | boolean | null | number | string | symbol | und
 
 export type ProcessEnvValue = string | undefined
 
+export type RequestMethod = 'CONNECT' | 'DELETE' | 'GET' | 'HEAD' | 'OPTIONS' | 'PATCH' | 'POST' | 'PUT' | 'TRACE'
+
 export type StatusTransformer = (keys: string[]) => string
 
 export type ThrottleMapKey = Function | string
@@ -37,3 +39,5 @@ export type ThrottleMapValue = number
 
 export type TimeoutMapKey = Function | string
 export type TimeoutMapValue = NodeJS.Timeout | number
+
+export type WriteMode = 'create' | 'update'

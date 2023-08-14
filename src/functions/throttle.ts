@@ -2,11 +2,6 @@ import { THROTTLE_MAP } from '../definitions/constants.js'
 import { FunctionLogger } from '../loggers/function-logger.js'
 import { tc } from './tc.js'
 
-/**
- * Calls the fn only if ms time has passed since the last execution.
- *
- * @returns
- */
 export function throttle(fn: Function, ms: number): void
 export function throttle(name: string, fn: Function, ms: number): void
 export function throttle(...args: any[]): void {

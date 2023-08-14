@@ -23,23 +23,6 @@ export enum PromiseState {
   REJECTED = 'REJECTED'
 }
 
-export enum RequestMethod {
-  CONNECT = 'CONNECT',
-  DELETE = 'DELETE',
-  GET = 'GET',
-  HEAD = 'HEAD',
-  OPTIONS = 'OPTIONS',
-  PATCH = 'PATCH',
-  POST = 'POST',
-  PUT = 'PUT',
-  TRACE = 'TRACE'
-}
-
 export enum StorageName {
   LOCALIZATION = 'LOCALIZATION'
-}
-
-export enum WriteMode {
-  CREATE = 'CREATE',
-  UPDATE = 'UPDATE'
 }

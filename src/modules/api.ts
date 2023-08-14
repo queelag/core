@@ -1,8 +1,8 @@
 import { FetchError } from '../classes/fetch-error.js'
 import { FetchResponse } from '../classes/fetch-response.js'
 import { EMPTY_OBJECT } from '../definitions/constants.js'
-import { RequestMethod, WriteMode } from '../definitions/enums.js'
 import { APIConfig } from '../definitions/interfaces.js'
+import { RequestMethod, WriteMode } from '../definitions/types.js'
 import { rc } from '../functions/rc.js'
 import { mergeFetchRequestInits } from '../utils/fetch-utils.js'
 import { serializeQueryParameters } from '../utils/query-parameters-utils.js'
@@ -11,44 +11,17 @@ import { Fetch } from './fetch.js'
 import { Polyfill } from './polyfill.js'
 import { Status } from './status.js'
 
-/**
- * A module to smartly handle API calls and observe their status through the {@link Status} module.
- *
- * @category Module
- * @template T The configuration interface which extends the {@link APIConfig} one
- * @template U The default Error interface
- */
 export class API<T extends APIConfig = APIConfig, U = undefined> {
-  /**
-   * A string used as a prefix for all requests made by the instance.
-   */
   readonly baseURL: string
-  /**
-   * A config based on the T interface.
-   */
   readonly config: T
-  /**
-   * A Status module initialized with a custom transformer.
-   */
   readonly status: Status
 
-  /**
-   * @template T The configuration interface which extends the {@link APIConfig} one.
-   * @template U The default Error interface.
-   */
   constructor(baseURL: string = '', config: T = EMPTY_OBJECT()) {
     this.baseURL = baseURL
     this.config = config
     this.status = new Status()
   }
 
-  /**
-   * Performs any request.
-   *
-   * @template V The response data interface.
-   * @template W The body interface.
-   * @template X The error data interface, defaults to U.
-   */
   async handle<V, W, X = U>(method: RequestMethod, path: string, body?: W, config: T = EMPTY_OBJECT()): Promise<FetchResponse<V> | FetchError<X>> {
     let tbody: W | undefined, query: string, handled: boolean, response: FetchResponse<V & X> | FetchError<X>
 
@@ -84,156 +57,71 @@ export class API<T extends APIConfig = APIConfig, U = undefined> {
     return rc(() => this.setCallStatus(method, path, config, Status.SUCCESS), response)
   }
 
-  /**
-   * Performs a CONNECT request.
-   *
-   * @template V The response data interface.
-   * @template W The error data interface, defaults to U.
-   */
   async connect<V, W = U>(path: string, config?: T): Promise<FetchResponse<V> | FetchError<W>> {
-    return this.handle<V, any, W>(RequestMethod.CONNECT, path, undefined, config)
+    return this.handle<V, any, W>('CONNECT', path, undefined, config)
   }
 
-  /**
-   * Performs a DELETE request.
-   *
-   * @template V The response data interface.
-   * @template W The error data interface, defaults to U.
-   */
   async delete<V, W = U>(path: string, config?: T): Promise<FetchResponse<V> | FetchError<W>> {
-    return this.handle<V, any, W>(RequestMethod.DELETE, path, undefined, config)
+    return this.handle<V, any, W>('DELETE', path, undefined, config)
   }
 
-  /**
-   * Performs a GET request.
-   *
-   * @template V The response data interface.
-   * @template W The error data interface, defaults to U.
-   */
   async get<V, W = U>(path: string, config?: T): Promise<FetchResponse<V> | FetchError<W>> {
-    return this.handle<V, any, W>(RequestMethod.GET, path, undefined, config)
+    return this.handle<V, any, W>('GET', path, undefined, config)
   }
 
-  /**
-   * Performs a HEAD request.
-   */
   async head(path: string, config?: T): Promise<FetchResponse | FetchError> {
-    return this.handle(RequestMethod.GET, path, undefined, config)
+    return this.handle('HEAD', path, undefined, config)
   }
 
-  /**
-   * Performs a OPTIONS request.
-   *
-   * @template V The response data interface.
-   * @template W The error data interface, defaults to U.
-   */
   async options<V, W = U>(path: string, config?: T): Promise<FetchResponse<V> | FetchError<W>> {
-    return this.handle<V, any, W>(RequestMethod.OPTIONS, path, undefined, config)
+    return this.handle<V, any, W>('OPTIONS', path, undefined, config)
   }
 
-  /**
-   * Performs a PATCH request.
-   *
-   * @template V The response data interface.
-   * @template W The body interface.
-   * @template X The error data interface, defaults to U.
-   */
   async patch<V, W, X = U>(path: string, body?: W, config?: T): Promise<FetchResponse<V> | FetchError<X>> {
-    return this.handle<V, W, X>(RequestMethod.PATCH, path, body, config)
+    return this.handle<V, W, X>('PATCH', path, body, config)
   }
 
-  /**
-   * Performs a POST request.
-   *
-   * @template V The response data interface.
-   * @template W The body interface.
-   * @template X The error data interface, defaults to U.
-   */
   async post<V, W, X = U>(path: string, body?: W, config?: T): Promise<FetchResponse<V> | FetchError<X>> {
-    return this.handle<V, W, X>(RequestMethod.POST, path, body, config)
+    return this.handle<V, W, X>('POST', path, body, config)
   }
 
-  /**
-   * Performs a PUT request.
-   *
-   * @template V The response data interface.
-   * @template W The body interface.
-   * @template X The error data interface, defaults to U.
-   */
   async put<V, W, X = U>(path: string, body?: W, config?: T): Promise<FetchResponse<V> | FetchError<X>> {
-    return this.handle<V, W, X>(RequestMethod.PUT, path, body, config)
+    return this.handle<V, W, X>('PUT', path, body, config)
   }
 
-  /**
-   * Performs a TRACE request.
-   */
   async trace(path: string, config?: T): Promise<FetchResponse | FetchError> {
-    return this.handle(RequestMethod.TRACE, path, undefined, config)
+    return this.handle('TRACE', path, undefined, config)
   }
 
-  /**
-   * Performs a POST request if mode is CREATE or a PUT request if mode is UPDATE.
-   *
-   * @template V The response data interface.
-   * @template W The body interface.
-   * @template X The error data interface, defaults to U.
-   */
   async write<V, W, X = U>(mode: WriteMode, path: string, body?: W, config?: T): Promise<FetchResponse<V> | FetchError<X>> {
     switch (mode) {
-      case WriteMode.CREATE:
+      case 'create':
         return this.post(path, body, config)
-      case WriteMode.UPDATE:
+      case 'update':
         return this.put(path, body, config)
     }
   }
 
-  /**
-   * Transforms the body.
-   *
-   * @template V The body interface.
-   */
   async transformBody<V>(method: RequestMethod, path: string, body: V | undefined, config: T): Promise<any> {
     return body
   }
 
-  /**
-   * Transforms the query parameters.
-   *
-   * @template V The body interface.
-   */
   async transformQueryParameters<V>(method: RequestMethod, path: string, body: V | undefined, config: T): Promise<string> {
     if (typeof config.query === 'object') {
       return serializeQueryParameters(config.query)
     }
 
-    return config.query || ''
+    return config.query ?? ''
   }
 
-  /**
-   * Called when any API call returns an Error.
-   *
-   * @template V The body interface.
-   * @template W The error data interface, defaults to U.
-   */
   async handleError<V, W = U>(method: RequestMethod, path: string, body: V | undefined, config: T, error: FetchError<W>): Promise<boolean> {
     return false
   }
 
-  /**
-   * Called when any API call has started.
-   *
-   * @template V The body interface.
-   */
   async handlePending<V>(method: RequestMethod, path: string, body: V | undefined, config: T): Promise<boolean> {
     return true
   }
 
-  /**
-   * Called when any API call returns an Error.
-   *
-   * @template V The response data interface.
-   * @template W The body interface.
-   */
   async handleSuccess<V, W>(method: RequestMethod, path: string, body: W | undefined, config: T, response: FetchResponse<V>): Promise<boolean> {
     return true
   }

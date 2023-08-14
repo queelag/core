@@ -2,11 +2,6 @@ import { DEBOUNCE_MAP } from '../definitions/constants.js'
 import { DebounceMapKey } from '../definitions/types.js'
 import { FunctionLogger } from '../loggers/function-logger.js'
 
-/**
- * Lets fn run only if it hasn't be called again for ms time.
- *
- * @returns
- */
 export function debounce(fn: Function, ms: number): void
 export function debounce(name: string, fn: Function, ms: number): void
 export function debounce(...args: any[]): void {

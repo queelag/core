@@ -7,11 +7,6 @@ import { ModuleLogger } from '../loggers/module-logger.js'
 import { deserializeCookie, serializeCookie } from '../utils/cookie-utils.js'
 import { setObjectProperty } from '../utils/object-utils.js'
 
-/**
- * A module to handle cookies through a store.
- *
- * @category Module
- */
 export class Cookie {
   name: string
   separator: string = DEFAULT_COOKIE_SEPARATOR
@@ -27,9 +22,6 @@ export class Cookie {
     this._set = mtcp(set)
   }
 
-  /**
-   * Clears all cookies.
-   */
   async clear(): Promise<void | Error> {
     let object: CookieObject | Error
 
@@ -49,11 +41,6 @@ export class Cookie {
     }
   }
 
-  /**
-   * Gets an item.
-   *
-   * @template T The item interface which extends {@link CookieItem}.
-   */
   async get<T extends CookieItem>(key: string): Promise<T | Error> {
     let object: CookieObject | Error, item: T
 
@@ -77,11 +64,6 @@ export class Cookie {
     return item
   }
 
-  /**
-   * Removes an item, if keys are defined it will only remove those keys of the item.
-
-  * @template T The store interface which extends {@link AnyObject}.
-   */
   async remove<T extends CookieItem>(key: string, keys?: KeyOf.Shallow<T>[]): Promise<void | Error> {
     if (typeof keys === 'undefined') {
       let object: CookieObject | Error
@@ -117,11 +99,6 @@ export class Cookie {
     }
   }
 
-  /**
-   * Sets an item.
-   *
-   * @template T The item interface which extends {@link CookieItem}.
-   */
   async set<T extends CookieItem>(key: string, item: T, options: CookieSerializeOptions = {}, keys?: KeyOf.Shallow<T>[]): Promise<void | Error> {
     if (typeof keys === 'undefined') {
       keys = Object.keys(item)
@@ -141,11 +118,6 @@ export class Cookie {
     }
   }
 
-  /**
-   * Copies an item to a target.
-   *
-   * @template T The store interface which extends {@link StorageItem}.
-   */
   async copy<T1 extends CookieItem, T2 extends CookieItem = CookieItem, T extends T1 & T2 = T1 & T2>(
     key: string,
     target: T2,
@@ -178,11 +150,6 @@ export class Cookie {
     }
   }
 
-  /**
-   * Checks if an item exists, if keys is defined it will also assert that those keys are defined too.
-   *
-   * @template T The item interface which extends {@link CookieItem}.
-   */
   async has<T extends CookieItem>(key: string, keys?: KeyOf.Shallow<T>[]): Promise<boolean> {
     let object: CookieObject | Error
 
@@ -234,16 +201,10 @@ export class Cookie {
     return serializeCookie(typeof ik === 'undefined' ? key : this.toDocumentCookieName(key, ik), String(value), options)
   }
 
-  /**
-   * Removes the key prefix and separator from the item key.
-   */
   private toCookieItemKey<T extends CookieItem>(key: string, ik: KeyOf.Shallow<T>): string {
     return String(ik).replace(key + this.separator, '')
   }
 
-  /**
-   * Prefixes the item key with key and separator.
-   */
   private toDocumentCookieName<T extends CookieItem>(key: string, ik: KeyOf.Shallow<T>): string {
     return key + this.separator + String(ik)
   }

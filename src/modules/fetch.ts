@@ -1,6 +1,5 @@
 import { FetchError } from '../classes/fetch-error.js'
 import { FetchResponse } from '../classes/fetch-response.js'
-import { RequestMethod } from '../definitions/enums.js'
 import { FetchRequestInit } from '../definitions/interfaces.js'
 import { FetchRequestInfo } from '../definitions/types.js'
 import { tcp } from '../functions/tcp.js'
@@ -55,7 +54,7 @@ export class Fetch {
    * @template U The error data interface.
    */
   static async connect<T, U>(input: FetchRequestInfo, init: FetchRequestInit = {}): Promise<FetchResponse<T> | FetchError<U>> {
-    return this.handle(input, { ...init, method: RequestMethod.CONNECT })
+    return this.handle(input, { ...init, method: 'CONNECT' })
   }
 
   /**
@@ -66,7 +65,7 @@ export class Fetch {
    * @template V The body interface.
    */
   static async delete<T, U, V>(input: FetchRequestInfo, body?: V, init: FetchRequestInit = {}): Promise<FetchResponse<T> | FetchError<U>> {
-    return this.handle(input, { ...init, body, method: RequestMethod.DELETE })
+    return this.handle(input, { ...init, body, method: 'DELETE' })
   }
 
   /**
@@ -76,14 +75,14 @@ export class Fetch {
    * @template U The error data interface.
    */
   static async get<T, U>(input: FetchRequestInfo, init: FetchRequestInit = {}): Promise<FetchResponse<T> | FetchError<U>> {
-    return this.handle(input, { ...init, method: RequestMethod.GET })
+    return this.handle(input, { ...init, method: 'GET' })
   }
 
   /**
    * Performs a HEAD request.
    */
   static async head(input: FetchRequestInfo, init: FetchRequestInit = {}): Promise<FetchResponse | FetchError> {
-    return this.handle(input, { ...init, method: RequestMethod.HEAD })
+    return this.handle(input, { ...init, method: 'HEAD' })
   }
 
   /**
@@ -93,7 +92,7 @@ export class Fetch {
    * @template U The error data interface.
    */
   static async options<T, U>(input: FetchRequestInfo, init: FetchRequestInit = {}): Promise<FetchResponse<T> | FetchError<U>> {
-    return this.handle(input, { ...init, method: RequestMethod.OPTIONS })
+    return this.handle(input, { ...init, method: 'OPTIONS' })
   }
 
   /**
@@ -104,7 +103,7 @@ export class Fetch {
    * @template V The body interface.
    */
   static async patch<T, U, V>(input: FetchRequestInfo, body?: V, init: FetchRequestInit = {}): Promise<FetchResponse<T> | FetchError<U>> {
-    return this.handle(input, { ...init, body, method: RequestMethod.PATCH })
+    return this.handle(input, { ...init, body, method: 'PATCH' })
   }
 
   /**
@@ -115,7 +114,7 @@ export class Fetch {
    * @template V The body interface.
    */
   static async post<T, U, V>(input: FetchRequestInfo, body?: V, init: FetchRequestInit = {}): Promise<FetchResponse<T> | FetchError<U>> {
-    return this.handle(input, { ...init, body, method: RequestMethod.POST })
+    return this.handle(input, { ...init, body, method: 'POST' })
   }
 
   /**
@@ -124,13 +123,13 @@ export class Fetch {
    * @template V The body interface.
    */
   static async put<V>(input: FetchRequestInfo, body?: V, init: FetchRequestInit = {}): Promise<FetchResponse | FetchError> {
-    return this.handle(input, { ...init, body, method: RequestMethod.PUT })
+    return this.handle(input, { ...init, body, method: 'PUT' })
   }
 
   /**
    * Performs a TRACE request.
    */
   static async trace(input: FetchRequestInfo, init: FetchRequestInit = {}): Promise<FetchResponse | FetchError> {
-    return this.handle(input, { ...init, method: RequestMethod.TRACE })
+    return this.handle(input, { ...init, method: 'TRACE' })
   }
 }
