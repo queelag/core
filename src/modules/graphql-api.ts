@@ -1,6 +1,5 @@
 import { FetchError } from '../classes/fetch-error.js'
 import { FetchResponse } from '../classes/fetch-response.js'
-import { RequestMethod } from '../definitions/enums.js'
 import { GraphQLAPIConfig, GraphQLAPIRequestBody, GraphQLAPIResponse } from '../definitions/interfaces.js'
 import { API } from './api.js'
 
@@ -28,7 +27,7 @@ export class GraphQLAPI<T extends GraphQLAPIConfig = GraphQLAPIConfig, U = undef
       variables
     }
 
-    return this.handle(RequestMethod.POST, '', body, config)
+    return this.handle('POST', '', body, config)
   }
 
   /**
