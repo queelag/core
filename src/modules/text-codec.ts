@@ -1,8 +1,6 @@
 import { STUB_TEXT_DECODER, STUB_TEXT_ENCODER } from '../definitions/stubs.js'
 
 /**
- * A module to have both TextDecoder and TextEncoder already initialized.
- *
  * @category Module
  */
 export class TextCodec {

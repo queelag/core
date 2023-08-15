@@ -7,26 +7,12 @@ import { getObjectProperty, hasObjectProperty, mergeObjects } from '../utils/obj
 import { Storage } from './storage.js'
 
 /**
- * A module to handle simple localization.
- *
  * @category Module
  */
 export class Localization {
-  /**
-   * A string which determines the current language.
-   */
   language: string
-  /**
-   * An array of {@link LocalizationPack} objects.
-   */
   packs: LocalizationPack[]
-  /**
-   * A {@link Storage} instance.
-   */
   storage?: Storage
-  /**
-   * An object which contains global variables.
-   */
   variables: LocalizationVariables
 
   constructor(language: string, packs: LocalizationPack[] = [], storage: Storage, variables: LocalizationVariables = {}) {
@@ -45,9 +31,6 @@ export class Localization {
     return isNotError(await this.storage.copy(StorageName.LOCALIZATION, this, ['language']))
   }
 
-  /**
-   * Pushes n {@link LocalizationPack} to the {@link Localization.data}.
-   */
   push(...packs: LocalizationPack[]): void {
     for (let pack of packs) {
       let potential: LocalizationPack
@@ -66,9 +49,6 @@ export class Localization {
     }
   }
 
-  /**
-   * Returns a localized string.
-   */
   get<T extends object>(path: string, variables?: LocalizationVariables): string
   get<T extends object>(language: string, path: string, variables?: LocalizationVariables): string
   get<T extends object>(...args: any[]): string {
@@ -126,11 +106,18 @@ export class Localization {
     ModuleLogger.debug('Localization', 'setVariables', `The variables have been set.`, variables)
   }
 
-  /**
-   * Checks whether a path is localizable or not.
-   */
-  has(path: string): boolean {
-    return this.packs.some((v: LocalizationPack) => hasObjectProperty(v.data, path))
+  has(path: string): boolean
+  has(language: string, path: string): boolean
+  has(...args: any[]): boolean {
+    let language: string, path: string, pack: LocalizationPack
+
+    language = typeof args[1] === 'string' ? args[0] : this.language
+    path = typeof args[1] === 'string' ? args[1] : args[0]
+
+    pack = this.getPackByLanguage(language)
+    if (!pack.language) return false
+
+    return hasObjectProperty(pack.data, path)
   }
 
   getPackByLanguage(language: string): LocalizationPack {

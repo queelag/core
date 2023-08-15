@@ -6,30 +6,13 @@ import { getLoggerANSIColor } from '../utils/logger-utils.js'
 import { Environment } from './environment.js'
 
 /**
- * A module to print prettier logs.
- *
  * @category Module
  */
 export class Logger {
-  /**
-   * A boolean which determines if colors are used or not in non browser environments.
-   */
   colors: boolean
-  /**
-   * A {@link LoggerLevel} which determines the logs that are printed.
-   */
   level: LoggerLevel
-  /**
-   * A string which determines the name of this ModuleLogger.
-   */
   name: string
-  /**
-   * A string which separates the logged args.
-   */
   separator: string
-  /**
-   * A {@link LoggerStatus}.
-   */
   status: LoggerStatus
 
   constructor(
@@ -46,9 +29,6 @@ export class Logger {
     this.status = status
   }
 
-  /**
-   * Logs a verbose message to the console.
-   */
   verbose(...args: any[]): void {
     if (this.isDisabled) return
     if (this.isLevelVerboseDisabled) return
@@ -56,9 +36,6 @@ export class Logger {
     console.debug(...this.format('verbose', ...args))
   }
 
-  /**
-   * Logs a debug message to the console.
-   */
   debug(...args: any[]): void {
     if (this.isDisabled) return
     if (this.isLevelDebugDisabled) return
@@ -66,9 +43,6 @@ export class Logger {
     console.debug(...this.format('debug', ...args))
   }
 
-  /**
-   * Logs an info message to the console.
-   */
   info(...args: any[]): void {
     if (this.isDisabled) return
     if (this.isLevelInfoDisabled) return
@@ -76,9 +50,6 @@ export class Logger {
     console.info(...this.format('info', ...args))
   }
 
-  /**
-   * Logs a warn message to the console.
-   */
   warn(...args: any[]): void {
     if (this.isDisabled) return
     if (this.isLevelWarnDisabled) return
@@ -86,53 +57,32 @@ export class Logger {
     console.warn(...this.format('warn', ...args))
   }
 
-  /**
-   * Logs an error message to the console.
-   */
   error(...args: any[]): void {
     if (this.isDisabled) return
 
     console.error(...this.format('error', ...args))
   }
 
-  /**
-   * Disables verbose, debug, info, warn and error logs.
-   */
   disable(): void {
     this.status = 'off'
   }
 
-  /**
-   * Enables verbose, debug, info, warn and error logs.
-   */
   enable(): void {
     this.status = 'on'
   }
 
-  /**
-   * Sets the level.
-   */
   setLevel(level: LoggerLevel): void {
     this.level = level
   }
 
-  /**
-   * Disables the colors
-   */
   disableColors(): void {
     this.colors = false
   }
 
-  /**
-   * Enables the colors
-   */
   enableColors(): void {
     this.colors = true
   }
 
-  /**
-   * Formats the args to be easier to read.
-   */
   format(level: LoggerLevel, ...args: any[]): any[] {
     let print: any[], primitives: string[]
 

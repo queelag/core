@@ -4,8 +4,6 @@ import { ModuleLogger } from '../loggers/module-logger.js'
 import { cloneDeepObject } from '../utils/object-utils.js'
 
 /**
- * A module to handle history changes.
- *
  * @category Module
  */
 export class History<T extends HistoryDataTarget = HistoryDataTarget, K extends keyof T = keyof T> {

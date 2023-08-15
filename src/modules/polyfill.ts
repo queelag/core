@@ -13,14 +13,9 @@ interface NodeFetch {
 }
 
 /**
- * A module to inject requirable polyfills.
- *
  * @category Module
  */
 export class Polyfill {
-  /**
-   * Polyfills the Blob object.
-   */
   static async blob(): Promise<void> {
     let NodeFetch: NodeFetch | Error
 
@@ -41,9 +36,6 @@ export class Polyfill {
     ModuleLogger.debug('Polyfill', 'blob', `The Blob object has been polyfilled with node-fetch.`)
   }
 
-  /**
-   * Polyfills the Fetch API.
-   */
   static async fetch(): Promise<void> {
     let NodeFetch: NodeFetch | Error
 
@@ -66,9 +58,6 @@ export class Polyfill {
     ModuleLogger.debug('Polyfill', 'fetch', `The Fetch API has been polyfilled with node-fetch.`)
   }
 
-  /**
-   * Polyfills the File object.
-   */
   static async file(): Promise<void> {
     let NodeFetch: NodeFetch | Error
 
@@ -88,9 +77,6 @@ export class Polyfill {
     ModuleLogger.debug('Polyfill', 'file', `The File object has been polyfilled with node-fetch.`)
   }
 
-  /**
-   * Polyfills the FormData object.
-   */
   static async formData(): Promise<void> {
     let NodeFetch: NodeFetch | Error
 

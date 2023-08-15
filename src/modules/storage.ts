@@ -5,8 +5,6 @@ import { ModuleLogger } from '../loggers/module-logger.js'
 import { copyObjectProperty, deleteObjectProperty, hasObjectProperty } from '../utils/object-utils.js'
 
 /**
- * A module to handle any storage operations through a store.
- *
  * @category Module
  */
 export class Storage {
@@ -44,11 +42,6 @@ export class Storage {
     ModuleLogger.debug(this.name, 'get', `The storage has been cleared.`)
   }
 
-  /**
-   * Gets an item.
-   *
-   * @template T The item interface which extends {@link StorageItem}.
-   */
   async get<T extends StorageItem>(key: string): Promise<T | Error> {
     let item: T | Error
 
@@ -60,11 +53,6 @@ export class Storage {
     return item
   }
 
-  /**
-   * Removes an item, if keys are defined it will only remove those keys of the item.
-   *
-   * @template T The store interface which extends {@link StorageItem}.
-   */
   async remove<T extends StorageItem>(key: string, keys?: KeyOf.Deep<T>[]): Promise<void | Error> {
     let item: T | Error, set: void | Error
 
@@ -93,11 +81,6 @@ export class Storage {
     ModuleLogger.debug(this.name, 'remove', `The item ${key} has been set.`)
   }
 
-  /**
-   * Sets an item.
-   *
-   * @template T The store interface which extends {@link StorageItem}.
-   */
   async set<T extends StorageItem>(key: string, item: T, keys?: KeyOf.Deep<T>[]): Promise<void | Error> {
     let set: void | Error
 
@@ -120,11 +103,6 @@ export class Storage {
     ModuleLogger.debug(this.name, 'set', `The item ${key} has been set.`, item)
   }
 
-  /**
-   * Copies an item to a target.
-   *
-   * @template T The store interface which extends {@link StorageItem}.
-   */
   async copy<T1 extends StorageItem, T2 extends StorageTarget, T extends T1 & T2>(key: string, target: T2, keys?: KeyOf.Deep<T>[]): Promise<void | Error>
   async copy<T1 extends StorageItem, T2 extends StorageTarget, T extends T1 & T2>(key: string, target: T2, keys?: string[]): Promise<void | Error>
   async copy<T1 extends StorageItem, T2 extends StorageTarget, T extends T1 & T2>(key: string, target: T2, keys?: KeyOf.Deep<T>[]): Promise<void | Error> {
@@ -149,9 +127,6 @@ export class Storage {
     }
   }
 
-  /**
-   * Checks if an item exists, if keys is defined it will also assert that those keys are inside the item.
-   */
   async has<T extends StorageItem>(key: string, keys?: KeyOf.Deep<T>[]): Promise<boolean> {
     let has: boolean | Error, item: T | Error
 

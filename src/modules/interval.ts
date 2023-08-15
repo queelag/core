@@ -3,17 +3,12 @@ import { tc } from '../functions/tc.js'
 import { ModuleLogger } from '../loggers/module-logger.js'
 
 /**
- * A module to safely handle intervals with a name.
- *
  * @category Module
  */
 export class Interval {
   /** @internal */
   private static map: Map<IntervalMapKey, IntervalMapValue> = new Map()
 
-  /**
-   * Starts an interval.
-   */
   static start(fn: Function, ms: number, autorun?: boolean): void
   static start(name: string, fn: Function, ms: number, autorun?: boolean): void
   static start(...args: any[]): void {
@@ -36,9 +31,6 @@ export class Interval {
     ModuleLogger.debug('Interval', 'start', `The interval ${key} has been set to run every ${ms}ms.`)
   }
 
-  /**
-   * Stops an interval.
-   */
   static stop(fn: Function): void
   static stop(name: string): void
   static stop(key: IntervalMapKey): void {
@@ -49,9 +41,6 @@ export class Interval {
     ModuleLogger.debug('Interval', 'stop', `The interval ${key} has been deleted.`)
   }
 
-  /**
-   * Clears all intervals.
-   */
   static clear(): void {
     this.map.forEach(clearTimeout)
     ModuleLogger.debug('Interval', 'clear', `The intervals have been cleared.`)
@@ -60,16 +49,10 @@ export class Interval {
     ModuleLogger.debug('Interval', 'clear', `The map has been cleared.`)
   }
 
-  /**
-   * Checks whether an interval is running.
-   */
   static isRunning(key: IntervalMapKey): boolean {
     return this.map.has(key)
   }
 
-  /**
-   * Checks whether an interval is not running.
-   */
   static isNotRunning(key: IntervalMapKey): boolean {
     return this.isRunning(key) === false
   }

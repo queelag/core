@@ -2,18 +2,10 @@ import { PromiseState } from '../definitions/enums.js'
 import { tcp } from '../functions/tcp.js'
 
 /**
- * A module to handle deferred promises.
- *
  * @category Module
  */
 export class DeferredPromise<T> {
-  /**
-   * A {@link Promise} instance.
-   */
   instance: Promise<T>
-  /**
-   * A {@link PromiseState}.
-   */
   state: PromiseState
 
   private _reject!: (reason?: any) => void
@@ -27,17 +19,11 @@ export class DeferredPromise<T> {
     })
   }
 
-  /**
-   * Rejects the promise.
-   */
   reject(reason?: any): void {
     this._reject(reason)
     this.state = PromiseState.REJECTED
   }
 
-  /**
-   * Resolves the promise.
-   */
   resolve(value: T | PromiseLike<T>): void {
     this._resolve(value)
     this.state = PromiseState.FULFILLED
