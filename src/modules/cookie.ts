@@ -97,8 +97,6 @@ export class Cookie {
       if (set instanceof Error) return set
 
       ModuleLogger.debug(this.name, 'remove', `The key ${String(k)} has been removed.`)
-
-      return
     }
   }
 
