@@ -1,6 +1,7 @@
 import { DEFAULT_LOGGER_COLORS, DEFAULT_LOGGER_SEPARATOR, LOGGER_LEVELS, LOGGER_STATUSES } from '../definitions/constants.js'
 import { ANSIColor } from '../definitions/enums.js'
 import { LoggerLevel, LoggerStatus } from '../definitions/types.js'
+import { getSnakeCaseString } from '../index.js'
 import { deserializeFormData } from '../utils/form-data-utils.js'
 import { getLoggerANSIColor } from '../utils/logger-utils.js'
 import { Environment } from './environment.js'
@@ -132,7 +133,7 @@ export class Logger {
   static getLevelFromEnvironment(name: string): LoggerLevel | undefined {
     let value: string
 
-    value = Environment.get(`LOGGER_${name}_LEVEL`)
+    value = Environment.get(`LOGGER_${getSnakeCaseString(name).toUpperCase()}_LEVEL`)
     if (!LOGGER_LEVELS.includes(value as LoggerLevel)) return
 
     return value as LoggerLevel
@@ -141,7 +142,7 @@ export class Logger {
   static getStatusFromEnvironment(name: string): LoggerStatus | undefined {
     let value: string
 
-    value = Environment.get(`LOGGER_${name}_STATUS`)
+    value = Environment.get(`LOGGER_${getSnakeCaseString(name).toUpperCase()}_STATUS`)
     if (!LOGGER_STATUSES.includes(value as LoggerStatus)) return
 
     return value as LoggerStatus
