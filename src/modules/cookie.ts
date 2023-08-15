@@ -25,7 +25,7 @@ export class Cookie {
     this._set = mtcp(set)
   }
 
-  async clear(): Promise<void | Error> {
+  async clear(options: CookieSerializeOptions = {}): Promise<void | Error> {
     let object: CookieObject | Error
 
     object = await this.deserialize()
@@ -34,7 +34,7 @@ export class Cookie {
     for (let key in object) {
       let serialized: string | Error, set: void | Error
 
-      serialized = this.serialize(key, '', { expires: new Date(0) })
+      serialized = this.serialize(key, '', { ...options, expires: new Date(0) })
       if (serialized instanceof Error) return serialized
 
       set = await this._set(serialized)
