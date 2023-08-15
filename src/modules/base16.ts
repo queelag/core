@@ -1,5 +1,8 @@
 import { base16 } from 'rfc4648'
 
+/**
+ * @category Module
+ */
 export class Base16 {
   static decode(string: string): Uint8Array {
     return base16.parse(string)

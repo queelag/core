@@ -1,5 +1,8 @@
 import { base32 } from 'rfc4648'
 
+/**
+ * @category Module
+ */
 export class Base32 {
   static decode(string: string): Uint8Array {
     return base32.parse(string)

@@ -11,6 +11,9 @@ import { Fetch } from './fetch.js'
 import { Polyfill } from './polyfill.js'
 import { Status } from './status.js'
 
+/**
+ * @category Module
+ */
 export class API<T extends APIConfig = APIConfig, U = undefined> {
   readonly baseURL: string
   readonly config: T

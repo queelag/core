@@ -1,5 +1,8 @@
 import { base64 } from 'rfc4648'
 
+/**
+ * @category Module
+ */
 export class Base64 {
   static decode(string: string): Uint8Array {
     return base64.parse(string)

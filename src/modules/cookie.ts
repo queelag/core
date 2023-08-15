@@ -7,6 +7,9 @@ import { ModuleLogger } from '../loggers/module-logger.js'
 import { deserializeCookie, serializeCookie } from '../utils/cookie-utils.js'
 import { setObjectProperty } from '../utils/object-utils.js'
 
+/**
+ * @category Module
+ */
 export class Cookie {
   name: string
   separator: string = DEFAULT_COOKIE_SEPARATOR
@@ -64,7 +67,7 @@ export class Cookie {
     return item
   }
 
-  async remove<T extends CookieItem>(key: string, keys?: KeyOf.Shallow<T>[]): Promise<void | Error> {
+  async remove<T extends CookieItem>(key: string, options: CookieSerializeOptions = {}, keys?: KeyOf.Shallow<T>[]): Promise<void | Error> {
     if (typeof keys === 'undefined') {
       let object: CookieObject | Error
 
@@ -87,7 +90,7 @@ export class Cookie {
     for (let k of keys) {
       let serialized: string | Error, set: void | Error
 
-      serialized = this.serialize(key, k, '', { expires: new Date(0) })
+      serialized = this.serialize(key, k, '', { ...options, expires: new Date(0) })
       if (serialized instanceof Error) return serialized
 
       set = await this._set(serialized)
