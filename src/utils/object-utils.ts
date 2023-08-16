@@ -3,11 +3,6 @@ import { FlattenObjectOptions } from '../definitions/interfaces.js'
 import { KeyOf } from '../definitions/types.js'
 import { isArray } from './array-utils.js'
 
-/**
- * Clones an object deeply.
- *
- * @template T The object interface.
- */
 export function cloneDeepObject<T extends object>(object: T): T {
   let clone: T = {} as T
 
@@ -33,34 +28,16 @@ export function cloneDeepObject<T extends object>(object: T): T {
   return clone
 }
 
-/**
- * Clones an object shallowly.
- *
- * @template T The object interface.
- */
 export function cloneShallowObject<T extends object>(object: T): T {
   return { ...object }
 }
 
-/**
- * Copies a property from an object to another, supports dot notation.
- *
- * @template T1 The source object interface.
- * @template T2 The target object interface.
- * @template T The source and target object shared interface.
- */
 export function copyObjectProperty<T1 extends object, T2 extends object, T extends T1 & T2>(source: T, key: KeyOf.Deep<T>, target: T): void | Error
 export function copyObjectProperty<T1 extends object, T2 extends object, T extends T1 & T2>(source: T, key: string, target: T): void | Error
 export function copyObjectProperty<T1 extends object, T2 extends object, T extends T1 & T2>(source: T, key: KeyOf.Deep<T>, target: T): void | Error {
   return setObjectProperty(target, key, getObjectProperty(source, key))
 }
 
-/**
- * Deletes a property from an object, supports dot notation.
- *
- * @template T The object interface.
- * @template U The value interface or type.
- */
 export function deleteObjectProperty<T extends object>(object: T, key: KeyOf.Deep<T>): void
 export function deleteObjectProperty<T extends object>(object: T, key: string): void
 export function deleteObjectProperty<T extends object>(object: T, key: KeyOf.Deep<T>): void {
@@ -107,12 +84,6 @@ export function flattenObject<T extends object>(object: T, options?: FlattenObje
   return flat
 }
 
-/**
- * Gets a property from an object, supports dot notation.
- *
- * @template T The object interface.
- * @template U The value interface or type.
- */
 export function getObjectProperty<T extends object, U extends any>(object: T, key: KeyOf.Deep<T>): U | undefined
 export function getObjectProperty<T extends object, U extends any>(object: T, key: KeyOf.Deep<T>, fallback: U): U
 export function getObjectProperty<T extends object, U extends any>(object: T, key: string): U | undefined
@@ -143,12 +114,6 @@ export function getObjectProperty<T extends object, U extends any>(object: T, ke
   }
 }
 
-/**
- * Gets the target of an object property dot key.
- *
- * @template T The object interface.
- * @template U The parent interface.
- */
 function getObjectPropertyDotKeyTarget<T extends object, U extends object>(object: T, keys: string[], construct: boolean = false): U | Error {
   let target: any = object
 
@@ -187,11 +152,6 @@ function getObjectPropertyDotKeyTarget<T extends object, U extends object>(objec
   return target
 }
 
-/**
- * Merges multiple objects without touching the target.
- *
- * @template T the object interface.
- */
 export function mergeObjects<T extends object>(target: T, ...sources: Record<PropertyKey, any>[]): T {
   let clone: T = cloneDeepObject(target)
 
@@ -218,11 +178,6 @@ export function mergeObjects<T extends object>(target: T, ...sources: Record<Pro
   return clone
 }
 
-/**
- * Creates a new object without the omitted properties of T.
- *
- * @template T The object interface.
- */
 export function omitObjectProperties<T extends object, K extends keyof T>(object: T, keys: K[]): Omit<T, K> {
   let clone: T = cloneShallowObject(object)
 
@@ -233,11 +188,6 @@ export function omitObjectProperties<T extends object, K extends keyof T>(object
   return clone
 }
 
-/**
- * Creates a new object with only the picked keys of T.
- *
- * @template T The object interface.
- */
 export function pickObjectProperties<T extends object, K extends keyof T>(object: T, keys: K[]): Pick<T, K> {
   let pick: Pick<T, K> = {} as any
 
@@ -250,12 +200,6 @@ export function pickObjectProperties<T extends object, K extends keyof T>(object
   return pick
 }
 
-/**
- * Sets a value to a key in an object, supports dot notation.
- *
- * @template T The object interface.
- * @template U The value interface or type.
- */
 export function setObjectProperty<T extends object, U extends unknown>(object: T, key: KeyOf.Deep<T>, value: U): void | Error
 export function setObjectProperty<T extends object, U extends unknown>(object: T, key: string, value: U): void | Error
 export function setObjectProperty<T extends object, U extends unknown>(object: T, key: KeyOf.Deep<T>, value: U): void | Error {
@@ -285,11 +229,6 @@ export function setObjectProperty<T extends object, U extends unknown>(object: T
   }
 }
 
-/**
- * Deletes every object undefined property deeply.
- *
- * @template T The object interface.
- */
 export function deleteDeepObjectUndefinedProperties<T extends object>(object: T): T {
   let clone: T = cloneShallowObject(object)
 
@@ -309,11 +248,6 @@ export function deleteDeepObjectUndefinedProperties<T extends object>(object: T)
   return clone
 }
 
-/**
- * Deletes every object undefined property shallowly.
- *
- * @template T The object interface.
- */
 export function deleteShallowObjectUndefinedProperties<T extends object>(object: T): T {
   let clone: T = cloneShallowObject(object)
 
@@ -328,11 +262,6 @@ export function deleteShallowObjectUndefinedProperties<T extends object>(object:
   return clone
 }
 
-/**
- * Checks whether the object has the property or not.
- *
- * @template T The object interface.
- */
 export function hasObjectProperty<T extends object>(object: T, key: KeyOf.Deep<T>): boolean
 export function hasObjectProperty<T extends object>(object: T, key: string): boolean
 export function hasObjectProperty<T extends object>(object: T, key: KeyOf.Deep<T>): boolean {
@@ -344,9 +273,6 @@ export function hasObjectProperty<T extends object>(object: T, key: KeyOf.Deep<T
   return getObjectProperty(object, key, symbol) !== symbol
 }
 
-/**
- * Checks whether the object is really an object or not.
- */
 export function isObject<T extends object>(value: any): value is T {
   if (value === null) {
     return false
@@ -359,16 +285,10 @@ export function isObject<T extends object>(value: any): value is T {
   return typeof value === 'object'
 }
 
-/**
- * Checks if the T object is clonable.
- */
 export function isObjectClonable<T extends object>(object: T): boolean {
   return isArray(object) || isPlainObject(object)
 }
 
-/**
- * Checks if the T object is flattenable.
- */
 export function isObjectFlattenable<T extends object>(object: T, options?: FlattenObjectOptions): boolean {
   if (options?.array && isArray(object)) {
     return true
@@ -376,27 +296,15 @@ export function isObjectFlattenable<T extends object>(object: T, options?: Flatt
 
   return isPlainObject(object)
 }
-/**
- * Checks if the object has keys.
- *
- * @template T The object interface.
- */
+
 export function isObjectKeysPopulated<T extends object>(object: T): boolean {
   return Object.keys(object).length > 0
 }
 
-/**
- * Checks if the object has values.
- *
- * @template T The object interface.
- */
 export function isObjectValuesPopulated<T extends object>(object: T): boolean {
   return Object.values(object).length > 0
 }
 
-/**
- * Checks if value is a plain object.
- */
 export function isPlainObject<T extends object>(value: any): value is T {
   if (value === null) {
     return false

@@ -1,18 +1,10 @@
 import { DEFAULT_ARRAY_INCLUDES, DEFAULT_ARRAY_REMOVES } from '../definitions/constants.js'
 import { ArrayIncludes, ArrayRemoves } from '../definitions/types.js'
 
-/**
- * Clones an array shallowly.
- *
- * @template T The object interface.
- */
 export function cloneShallowArray<T>(array: T[]): T[] {
   return [...array]
 }
 
-/**
- * Returns the symmetric difference between the T arrays.
- */
 export function getArraysDifference<T>(arrays: T[][], includes: ArrayIncludes<T> = DEFAULT_ARRAY_INCLUDES): T[] {
   let result: T[] = []
 
@@ -33,9 +25,6 @@ export function getArraysDifference<T>(arrays: T[][], includes: ArrayIncludes<T>
   return result
 }
 
-/**
- * Returns the intersection between the T arrays.
- */
 export function getArraysIntersection<T>(arrays: T[][], includes: ArrayIncludes<T> = DEFAULT_ARRAY_INCLUDES): T[] {
   let result: T[] = []
 
@@ -56,18 +45,12 @@ export function getArraysIntersection<T>(arrays: T[][], includes: ArrayIncludes<
   return result
 }
 
-/**
- * Gets the last T item, falls back to fallback if defined and if not returns undefined.
- */
 export function getArrayLastItem<T>(array: T[]): T | undefined
 export function getArrayLastItem<T>(array: T[], fallback: T): T
 export function getArrayLastItem<T>(array: T[], fallback?: T): T | undefined {
   return array[array.length - 1] || fallback
 }
 
-/**
- * Removes every duplicate using Set if no callbackfn is defined.
- */
 export function removeArrayDuplicates<T>(array: T[], includes: ArrayIncludes<T> = DEFAULT_ARRAY_INCLUDES): T[] {
   let result: T[] = []
 
@@ -87,9 +70,6 @@ export function removeArrayDuplicates<T>(array: T[], includes: ArrayIncludes<T> 
   return result
 }
 
-/**
- * Removes every T item matching the callbackfn result.
- */
 export function removeArrayItems<T>(array: T[], removes?: ArrayRemoves<T>): T[]
 export function removeArrayItems<T>(array: T[], items: T[], removes?: ArrayRemoves<T>): T[]
 export function removeArrayItems<T>(...args: any[]): T[] {
@@ -115,9 +95,6 @@ export function removeArrayItems<T>(...args: any[]): T[] {
   return result
 }
 
-/**
- * Checks whether value is an array.
- */
 export function isArray<T>(value: any): value is T[] {
   return Array.isArray(value)
 }

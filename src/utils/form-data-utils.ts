@@ -2,11 +2,6 @@ import { tc } from '../functions/tc.js'
 import { Environment } from '../modules/environment.js'
 import { isStringJSON } from './string-utils.js'
 
-/**
- * Deserializes any FormData to a T object.
- *
- * @template T The object interface.
- */
 export function deserializeFormData<T extends object>(data: FormData): T {
   let object: T = {} as T
 
@@ -22,11 +17,6 @@ export function deserializeFormData<T extends object>(data: FormData): T {
   return object
 }
 
-/**
- * Serializes a T object to FormData.
- *
- * @template T The object interface.
- */
 export function serializeFormData<T extends object>(object: T): FormData {
   let data: FormData = new FormData()
 

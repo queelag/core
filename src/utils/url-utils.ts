@@ -7,9 +7,6 @@ import {
   REGEXP_URL_QUESTION_MARKS_AFTER_AMPERSANDS
 } from '../definitions/constants.js'
 
-/**
- * Joins a set of URL chunks without making syntax errors.
- */
 export function concatURL(...chunks: Partial<string>[]): string {
   return chunks
     .filter(Boolean)
@@ -19,9 +16,6 @@ export function concatURL(...chunks: Partial<string>[]): string {
     .trim()
 }
 
-/**
- * Joins a set of search params and safely appends them to the url.
- */
 export function appendSearchParamsToURL(url: string, parameters: string): string {
   return [url.trim(), parameters.trim()]
     .join(url.includes('=') ? '&' : '?')
@@ -32,9 +26,6 @@ export function appendSearchParamsToURL(url: string, parameters: string): string
     .replace(REGEXP_URL_QUESTION_MARKS_AFTER_AMPERSANDS, '&')
 }
 
-/**
- * Removes every search param in a URL.
- */
 export function removeSearchParamsFromURL(url: string): string {
   return url.slice(0, url.includes('?') ? url.indexOf('?') : undefined)
 }

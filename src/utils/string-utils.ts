@@ -1,16 +1,6 @@
 import { REGEXP_NOT_LETTERS, REGEXP_NOT_LOWERCASE_LETTERS, REGEXP_UPPERCASE_LETTERS } from '../definitions/constants.js'
 import { tc } from '../functions/tc.js'
 
-/**
- * Capitalizes the first letter in a string, if lowercase is set to true the other characters will be lowercased.
- */
-export function getCapitalizedString(string: string, lowercase: boolean = false): string {
-  return string.charAt(0).toUpperCase() + (lowercase ? string.slice(1).toLowerCase() : string.slice(1))
-}
-
-/**
- * Transforms any string to a per word capitalized string but with the first char in lowercase.
- */
 export function getCamelCaseString(string: string): string {
   let camel: string, ucnlcl: boolean
 
@@ -41,36 +31,14 @@ export function getCamelCaseString(string: string): string {
   return camel
 }
 
-function getSymbolSeparatedCaseString(string: string, symbol: string): string {
-  let result: string = ''
-
-  for (let i = 0; i < string.length; i++) {
-    if (REGEXP_UPPERCASE_LETTERS.test(string[i])) {
-      result += (i <= 0 ? '' : symbol) + string[i].toLowerCase()
-      continue
-    }
-
-    if (REGEXP_NOT_LOWERCASE_LETTERS.test(string[i])) {
-      result += symbol
-      continue
-    }
-
-    result += string[i]
-  }
-
-  return result
+export function getCapitalizedString(string: string, lowercase: boolean = false): string {
+  return string.charAt(0).toUpperCase() + (lowercase ? string.slice(1).toLowerCase() : string.slice(1))
 }
 
-/**
- * Transforms any string to a word divided string by dashes.
- */
 export function getKebabCaseString(string: string): string {
-  return getSymbolSeparatedCaseString(string, '-')
+  return getSymbolCaseString(string, '-')
 }
 
-/**
- * Transforms any string to a per word capitalized string.
- */
 export function getPascalCaseString(string: string): string {
   let start: string, ucnl: boolean
 
@@ -96,37 +64,34 @@ export function getPascalCaseString(string: string): string {
   return getCapitalizedString(start)
 }
 
-/**
- * Transforms any string to a word divided string by underscores.
- */
 export function getSnakeCaseString(string: string): string {
-  return getSymbolSeparatedCaseString(string, '_')
+  return getSymbolCaseString(string, '_')
 }
 
-/**
- * Checks if a string is a stringified JSON.
- */
-export function isStringJSON(string: string): boolean {
-  return !(tc(() => JSON.parse(string), false) instanceof Error)
+export function getSymbolCaseString(string: string, symbol: string): string {
+  let result: string = ''
+
+  for (let i = 0; i < string.length; i++) {
+    if (REGEXP_UPPERCASE_LETTERS.test(string[i])) {
+      result += (i <= 0 ? '' : symbol) + string[i].toLowerCase()
+      continue
+    }
+
+    if (REGEXP_NOT_LOWERCASE_LETTERS.test(string[i])) {
+      result += symbol
+      continue
+    }
+
+    result += string[i]
+  }
+
+  return result
 }
 
-/**
- * Checks if a string is not a stringified JSON.
- */
-export function isStringNotJSON(string: string): boolean {
-  return !isStringJSON(string)
-}
-
-/**
- * Checks if a string is a float.
- */
 export function isStringFloat(string: string): boolean {
   return !isNaN(parseFloat(string))
 }
 
-/**
- * Checks if a string is an int.
- */
 export function isStringInt(string: string): boolean {
   if (string.includes('.')) {
     return false
@@ -135,9 +100,14 @@ export function isStringInt(string: string): boolean {
   return !isNaN(parseInt(string))
 }
 
-/**
- * Checks if a string is a valid URL.
- */
+export function isStringJSON(string: string): boolean {
+  return !(tc(() => JSON.parse(string), false) instanceof Error)
+}
+
+export function isStringNotJSON(string: string): boolean {
+  return !isStringJSON(string)
+}
+
 export function isStringURL(string: string): boolean {
   let url: URL | TypeError
 
@@ -147,9 +117,6 @@ export function isStringURL(string: string): boolean {
   return true
 }
 
-/**
- * Checks if a string is not a valid URL.
- */
 export function isStringNotURL(string: string): boolean {
   return !isStringURL(string)
 }
