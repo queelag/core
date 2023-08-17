@@ -1,5 +1,5 @@
 import { afterAll, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest'
-import { API, CoreConfiguration, FetchError, FetchResponse, RequestMethod, Status, WriteMode } from '../../src'
+import { API, CoreConfiguration, FetchError, FetchResponse, Status } from '../../src'
 import { closeServer, openServer } from '../server'
 
 function getResponseData<T>(response: FetchResponse<T> | FetchError<any>): T {
@@ -112,60 +112,60 @@ describe('API', () => {
   })
 
   it('handles write', async () => {
-    response = await api.write(WriteMode.CREATE, 'any', 'hello')
-    expect(getResponseHeaders(response).get('method')).toBe(RequestMethod.POST)
+    response = await api.write('create', 'any', 'hello')
+    expect(getResponseHeaders(response).get('method')).toBe('POST')
 
-    response = await api.write(WriteMode.UPDATE, 'any', 'hello')
-    expect(getResponseHeaders(response).get('method')).toBe(RequestMethod.PUT)
+    response = await api.write('update', 'any', 'hello')
+    expect(getResponseHeaders(response).get('method')).toBe('PUT')
   })
 
   it('has working status implementation', async () => {
     let response: Promise<FetchResponse | FetchError>
 
-    expect(api.status.isIdle(RequestMethod.GET, 'text')).toBeTruthy()
+    expect(api.status.isIdle('GET', 'text')).toBeTruthy()
     response = api.get('text')
-    expect(api.status.isPending(RequestMethod.GET, 'text')).toBeTruthy()
+    expect(api.status.isPending('GET', 'text')).toBeTruthy()
 
     await response
 
-    expect(api.status.isSuccess(RequestMethod.GET, 'text')).toBeTruthy()
+    expect(api.status.isSuccess('GET', 'text')).toBeTruthy()
 
     response = api.get('error')
-    expect(api.status.isPending(RequestMethod.GET, 'error')).toBeTruthy()
+    expect(api.status.isPending('GET', 'error')).toBeTruthy()
 
     await response
 
-    expect(api.status.isError(RequestMethod.GET, 'error')).toBeTruthy()
+    expect(api.status.isError('GET', 'error')).toBeTruthy()
   })
 
   it('has working status blacklist', async () => {
     let response: Promise<FetchResponse | FetchError>
 
-    expect(api.status.isIdle(RequestMethod.GET, 'text')).toBeTruthy()
+    expect(api.status.isIdle('GET', 'text')).toBeTruthy()
     response = api.get('text', { status: { blacklist: [Status.ERROR, Status.IDLE, Status.PENDING, Status.SUCCESS] } })
-    expect(api.status.isIdle(RequestMethod.GET, 'text')).toBeTruthy()
+    expect(api.status.isIdle('GET', 'text')).toBeTruthy()
 
     await response
 
-    expect(api.status.isIdle(RequestMethod.GET, 'text')).toBeTruthy()
+    expect(api.status.isIdle('GET', 'text')).toBeTruthy()
 
     await api.get('error')
-    expect(api.status.isError(RequestMethod.GET, 'error')).toBeTruthy()
+    expect(api.status.isError('GET', 'error')).toBeTruthy()
   })
 
   it('has working status whitelist', async () => {
     let response: Promise<FetchResponse | FetchError>
 
-    expect(api.status.isIdle(RequestMethod.GET, 'text')).toBeTruthy()
+    expect(api.status.isIdle('GET', 'text')).toBeTruthy()
     response = api.get('text', { status: { whitelist: [] } })
-    expect(api.status.isIdle(RequestMethod.GET, 'text')).toBeTruthy()
+    expect(api.status.isIdle('GET', 'text')).toBeTruthy()
 
     await response
 
-    expect(api.status.isIdle(RequestMethod.GET, 'text')).toBeTruthy()
+    expect(api.status.isIdle('GET', 'text')).toBeTruthy()
 
     await api.get('error')
-    expect(api.status.isError(RequestMethod.GET, 'error')).toBeTruthy()
+    expect(api.status.isError('GET', 'error')).toBeTruthy()
   })
 
   it('has working status based handlers', async () => {
@@ -190,20 +190,20 @@ describe('API', () => {
     api.handleError = vi.fn(async () => true)
 
     await api.get('error')
-    expect(api.status.isError(RequestMethod.GET, 'error')).toBeFalsy()
+    expect(api.status.isError('GET', 'error')).toBeFalsy()
 
     api.handlePending = vi.fn(async () => false)
 
     response = await api.get('text')
     expect(response).toBeInstanceOf(Error)
-    expect(api.status.isError(RequestMethod.GET, 'text')).toBeTruthy()
+    expect(api.status.isError('GET', 'text')).toBeTruthy()
 
     api.handlePending = vi.fn(async () => true)
     api.handleSuccess = vi.fn(async () => false)
 
     response = await api.get('text')
     expect(response).toBeInstanceOf(Error)
-    expect(api.status.isError(RequestMethod.GET, 'text')).toBeTruthy()
+    expect(api.status.isError('GET', 'text')).toBeTruthy()
   })
 
   it('transforms body', async () => {

@@ -1,4 +1,4 @@
-import { tcp } from '../functions/tcp.js'
+import { tcp } from '../index.js'
 import { ModuleLogger } from '../loggers/module-logger.js'
 import { Environment } from './environment.js'
 
@@ -98,6 +98,6 @@ export class Polyfill {
 
   // istanbul ignore next
   private static async getNodeFetch(): Promise<NodeFetch | Error> {
-    return tcp(() => Environment.import('node-fetch'))
+    return tcp(() => import('node-fetch'))
   }
 }

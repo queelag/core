@@ -1,6 +1,5 @@
 import fastify, { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify'
 import mercurius from 'mercurius'
-import { RequestMethod } from '../src'
 
 const server: FastifyInstance = fastify({ logger: false })
 
@@ -62,17 +61,17 @@ server.get('/any', (req: FastifyRequest, rep: FastifyReply) => rep.send())
 server.options('/any', (req: FastifyRequest, rep: FastifyReply) => rep.send())
 
 server.patch('/any', (req: FastifyRequest, rep: FastifyReply) => {
-  rep.header('method', RequestMethod.PATCH)
+  rep.header('method', 'PATCH')
   rep.send(req.body)
 })
 
 server.post('/any', (req: FastifyRequest, rep: FastifyReply) => {
-  rep.header('method', RequestMethod.POST)
+  rep.header('method', 'POST')
   rep.send(req.body)
 })
 
 server.put('/any', (req: FastifyRequest, rep: FastifyReply) => {
-  rep.header('method', RequestMethod.PUT)
+  rep.header('method', 'PUT')
   rep.send(req.body)
 })
 

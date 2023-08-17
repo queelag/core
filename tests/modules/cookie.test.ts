@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it } from 'vitest'
-import { cloneDeepObject, Cookie, copyObjectProperty, getObjectProperty, ma, noop, rne, setObjectProperty } from '../../src'
+import { Cookie, cloneDeepObject, copyObjectProperty, getObjectProperty, ma, noop, rne, setObjectProperty } from '../../src'
 import { CookieItem } from '../../src/definitions/interfaces'
 import { STUB_COOKIE_GET, STUB_COOKIE_SET } from '../../src/definitions/stubs'
 import { Configuration } from '../../src/modules/configuration'
@@ -39,7 +39,7 @@ describe('Cookie', () => {
     await cookie.set<TestCookie>('test', { a: 0, b: 0 })
     expect(await cookie.has<TestCookie>('test')).toBeTruthy()
 
-    await cookie.remove<TestCookie>('test', ['a'])
+    await cookie.remove<TestCookie>('test', {}, ['a'])
     expect(await cookie.has<TestCookie>('test', ['a'])).toBeFalsy()
     expect(await cookie.has<TestCookie>('test', ['b'])).toBeTruthy()
 
@@ -90,7 +90,7 @@ describe('Cookie', () => {
     serialize = getObjectProperty(cookie, 'serialize', noop)
     setObjectProperty(cookie, 'serialize', () => new Error())
 
-    expect(await cookie.remove('test', ['a'])).toBeInstanceOf(Error)
+    expect(await cookie.remove('test', {}, ['a'])).toBeInstanceOf(Error)
     expect(await cookie.clear()).toBeInstanceOf(Error)
 
     setObjectProperty(cookie, 'serialize', serialize)
@@ -105,7 +105,7 @@ describe('Cookie', () => {
 
     setObjectProperty(cookie, '_set', rne)
     expect(await cookie.clear()).toBeInstanceOf(Error)
-    expect(await cookie.remove<TestCookie>('test', ['a'])).toBeInstanceOf(Error)
+    expect(await cookie.remove<TestCookie>('test', {}, ['a'])).toBeInstanceOf(Error)
     expect(await cookie.set<TestCookie>('test', { a: 0 }, undefined, ['a'])).toBeInstanceOf(Error)
     copyObjectProperty(backup, '_set', cookie)
 

@@ -23,11 +23,6 @@ export class Environment {
     return true
   }
 
-  // istanbul ignore next
-  static get import(): Function {
-    return new Function('path', 'return import(path)')
-  }
-
   static get isBlobDefined(): boolean {
     return typeof Blob !== 'undefined'
   }

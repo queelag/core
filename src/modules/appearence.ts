@@ -4,6 +4,7 @@ import { noop } from '../functions/noop.js'
 import { ModuleLogger } from '../loggers/module-logger.js'
 import { isNotError } from '../utils/error-utils.js'
 import { Environment } from './environment.js'
+import { Storage } from './storage.js'
 
 export class Appearence {
   storage?: Storage

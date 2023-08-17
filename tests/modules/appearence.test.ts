@@ -1,12 +1,21 @@
 import { beforeEach, describe, expect, it, Mock, vi } from 'vitest'
-import { Appearence } from '../../src'
+import { Appearence, rv, Storage, StorageItem } from '../../src'
 
 describe('Appearence', () => {
-  let onChangeTheme: Mock, appearence: Appearence
+  let onChangeTheme: Mock, map: Map<string, any>, storage: Storage, appearence: Appearence
 
   beforeEach(() => {
     onChangeTheme = vi.fn()
-    appearence = new Appearence(onChangeTheme)
+    map = new Map()
+    storage = new Storage(
+      'TestStorage',
+      async () => map.clear(),
+      async (key: string) => map.get(key) ?? {},
+      async (key: string) => map.has(key),
+      async (key: string) => rv(() => map.delete(key)),
+      async (key: string, value: StorageItem) => rv(() => map.set(key, value))
+    )
+    appearence = new Appearence(onChangeTheme, undefined, storage)
   })
 
   it('starts with system theme', () => {
