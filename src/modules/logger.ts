@@ -1,9 +1,9 @@
 import { DEFAULT_LOGGER_COLORS, DEFAULT_LOGGER_SEPARATOR, LOGGER_LEVELS, LOGGER_STATUSES } from '../definitions/constants.js'
 import { ANSIColor } from '../definitions/enums.js'
 import { LoggerLevel, LoggerStatus } from '../definitions/types.js'
-import { getSnakeCaseString } from '../index.js'
 import { deserializeFormData } from '../utils/form-data-utils.js'
 import { getLoggerANSIColor } from '../utils/logger-utils.js'
+import { getSnakeCaseString } from '../utils/string-utils.js'
 import { Environment } from './environment.js'
 
 /**

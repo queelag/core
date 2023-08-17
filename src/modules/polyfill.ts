@@ -1,4 +1,4 @@
-import { tcp } from '../index.js'
+import { tcp } from '../functions/tcp.js'
 import { ModuleLogger } from '../loggers/module-logger.js'
 import { Environment } from './environment.js'
 
