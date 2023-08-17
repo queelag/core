@@ -5,6 +5,7 @@ import { FetchRequestInfo } from '../definitions/types.js'
 import { tcp } from '../functions/tcp.js'
 import { ModuleLogger } from '../loggers/module-logger.js'
 import { toLoggableNativeFetchRequestInit, toNativeFetchRequestInit } from '../utils/fetch-utils.js'
+import { Polyfill } from './polyfill.js'
 
 /**
  * @category Module
@@ -15,7 +16,10 @@ export class Fetch {
   static async handle<T, U, V>(input: FetchRequestInfo, init: FetchRequestInit<V> = {}): Promise<FetchResponse<T> | FetchError<U>> {
     let ninit: RequestInit, response: FetchResponse<T & U> | Error
 
-    await this.onHandleStart()
+    await Polyfill.blob()
+    await Polyfill.fetch()
+    await Polyfill.file()
+    await Polyfill.formData()
 
     ninit = toNativeFetchRequestInit(init)
     ModuleLogger.debug('Fetch', 'handle', `The request init has been parsed.`, toLoggableNativeFetchRequestInit(ninit))
