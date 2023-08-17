@@ -103,6 +103,11 @@ export const REGEXP_UPPERCASE_LETTERS: RegExp = /[A-Z]/g
 export const THROTTLE_MAP: Map<ThrottleMapKey, ThrottleMapValue> = new Map()
 
 /**
+ * Typeahead
+ */
+export const DEFAULT_TYPEAHEAD_DEBOUNCE_TIME: number = 100
+
+/**
  * URL Utils
  */
 export const REGEXP_URL_AMPERSANDS_AFTER_QUESTION_MARKS: RegExp = /\?{1,4}&{1,4}/g

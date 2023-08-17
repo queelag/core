@@ -24,5 +24,6 @@ export enum PromiseState {
 }
 
 export enum StorageName {
+  APPEARENCE = 'APPEARENCE',
   LOCALIZATION = 'LOCALIZATION'
 }
