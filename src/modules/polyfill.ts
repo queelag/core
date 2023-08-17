@@ -30,7 +30,6 @@ export class Polyfill {
     NodeFetch = await this.getNodeFetch()
     if (NodeFetch instanceof Error) return
 
-    console.log('NodeFetch', NodeFetch, Environment.isTest)
     global.Blob = NodeFetch.Blob
 
     ModuleLogger.debug('Polyfill', 'blob', `The Blob object has been polyfilled with node-fetch.`)

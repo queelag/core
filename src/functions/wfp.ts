@@ -2,7 +2,7 @@ import { tcp } from './tcp.js'
 
 export async function wfp(fn: () => Promise<any>, ms: number = 100, timeout: number = 10000): Promise<void | Error> {
   return new Promise((resolve) => {
-    let et: number, interval: NodeJS.Timer | number
+    let et: number, interval: NodeJS.Timeout | number
 
     /**
      * Elapsed Time

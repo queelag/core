@@ -8,7 +8,6 @@ import { mergeFetchRequestInits } from '../utils/fetch-utils.js'
 import { serializeQueryParameters } from '../utils/query-parameters-utils.js'
 import { appendSearchParamsToURL, concatURL } from '../utils/url-utils.js'
 import { Fetch } from './fetch.js'
-import { Polyfill } from './polyfill.js'
 import { Status } from './status.js'
 
 /**
@@ -25,15 +24,14 @@ export class API<T extends APIConfig = APIConfig, U = undefined> {
     this.status = new Status()
   }
 
+  protected async onHandleStart(): Promise<void> {}
+
   async handle<V, W, X = U>(method: RequestMethod, path: string, body?: W, config: T = EMPTY_OBJECT()): Promise<FetchResponse<V> | FetchError<X>> {
     let tbody: W | undefined, query: string, handled: boolean, response: FetchResponse<V & X> | FetchError<X>
 
     this.setCallStatus(method, path, config, Status.PENDING)
 
-    await Polyfill.blob()
-    await Polyfill.fetch()
-    await Polyfill.file()
-    await Polyfill.formData()
+    await this.onHandleStart()
 
     tbody = await this.transformBody(method, path, body, config)
     query = await this.transformQueryParameters(method, path, body, config)

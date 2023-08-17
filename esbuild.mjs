@@ -12,7 +12,7 @@ const OPTIONS = {
  */
 build({
   ...OPTIONS,
-  entryPoints: await glob('./src/**/*.ts'),
+  entryPoints: await glob('./src/**/*.ts', { ignore: ['**/index-browser.ts'] }),
   format: 'esm',
   outdir: 'dist',
   packages: 'external',
@@ -38,7 +38,7 @@ build({
 build({
   ...OPTIONS,
   bundle: true,
-  entryPoints: ['src/index.ts'],
+  entryPoints: ['src/index-browser.ts'],
   format: 'iife',
   globalName: 'AracnaCore',
   platform: 'browser',
