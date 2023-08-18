@@ -1,6 +1,8 @@
-import { tcp } from '../index.js'
-import { ModuleLogger } from '../loggers/module-logger.js'
-import { Environment } from './environment.js'
+import { vi } from 'vitest'
+import { tcp } from '../../src/functions/tcp'
+import { ModuleLogger } from '../../src/loggers/module-logger'
+import { Environment } from '../../src/modules/environment'
+import type { Polyfill as _ } from '../../src/modules/polyfill'
 
 interface NodeFetch {
   default: any
@@ -12,10 +14,7 @@ interface NodeFetch {
   Response: any
 }
 
-/**
- * @category Module
- */
-export class Polyfill {
+class Polyfill implements _ {
   static async blob(): Promise<void> {
     let NodeFetch: NodeFetch | Error
 
@@ -95,8 +94,9 @@ export class Polyfill {
     ModuleLogger.debug('Polyfill', 'formData', `The FormData object has been polyfilled with node-fetch.`)
   }
 
-  // istanbul ignore next
   private static async getNodeFetch(): Promise<NodeFetch | Error> {
-    return tcp(() => new Function(`return import('node-fetch')`)())
+    return tcp(() => import('node-fetch'))
   }
 }
+
+vi.mock('../../src/modules/polyfill.ts', () => ({ Polyfill }))
