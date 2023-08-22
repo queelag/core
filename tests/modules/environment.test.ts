@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { Environment, Polyfill } from '../../src'
+import { Environment, useNodeFetch } from '../../src'
 
 describe('Environment', () => {
   let env: NodeJS.ProcessEnv
@@ -23,7 +23,7 @@ describe('Environment', () => {
   })
 
   it('checks if blob is defined', async () => {
-    await Polyfill.blob()
+    await useNodeFetch(await import('node-fetch'))
 
     expect(Environment.isBlobDefined).toBeTruthy()
     expect(Environment.isBlobNotDefined).toBeFalsy()
@@ -40,21 +40,21 @@ describe('Environment', () => {
   })
 
   it('checks if fetch is defined', async () => {
-    await Polyfill.fetch()
+    await useNodeFetch(await import('node-fetch'))
 
     expect(Environment.isFetchDefined).toBeTruthy()
     expect(Environment.isFetchNotDefined).toBeFalsy()
   })
 
   it('checks if file is defined', async () => {
-    await Polyfill.file()
+    await useNodeFetch(await import('node-fetch'))
 
     expect(Environment.isFileDefined).toBeTruthy()
     expect(Environment.isFileNotDefined).toBeFalsy()
   })
 
   it('checks if form data is defined', async () => {
-    await Polyfill.formData()
+    await useNodeFetch(await import('node-fetch'))
 
     expect(Environment.isFormDataDefined).toBeTruthy()
     expect(Environment.isFormDataNotDefined).toBeFalsy()

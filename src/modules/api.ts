@@ -8,7 +8,7 @@ import { mergeFetchRequestInits } from '../utils/fetch-utils.js'
 import { serializeQueryParameters } from '../utils/query-parameters-utils.js'
 import { appendSearchParamsToURL, concatURL } from '../utils/url-utils.js'
 import { Fetch } from './fetch.js'
-import { Polyfill } from './polyfill.js'
+import { importNodeFetch, useNodeFetch } from './polyfill.js'
 import { Status } from './status.js'
 
 /**
@@ -32,10 +32,7 @@ export class API<T extends APIConfig = APIConfig, U = undefined> {
 
     this.setCallStatus(method, path, config, Status.PENDING)
 
-    await Polyfill.blob()
-    await Polyfill.fetch()
-    await Polyfill.file()
-    await Polyfill.formData()
+    await useNodeFetch(await importNodeFetch())
 
     tbody = await this.transformBody(method, path, body, config)
     query = await this.transformQueryParameters(method, path, body, config)

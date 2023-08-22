@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { Logger, Polyfill, noop } from '../../src'
+import { Logger, noop, useNodeFetch } from '../../src'
 import { ANSIColor } from '../../src/definitions/enums'
 
 describe('Logger', () => {
@@ -132,7 +132,7 @@ describe('Logger', () => {
     expect(logger.format('debug', 'symbol', Symbol())).toStrictEqual(['symbol -> Symbol()'])
     expect(logger.format('debug', 'undefined', undefined)).toStrictEqual(['undefined -> undefined'])
 
-    await Polyfill.formData()
+    await useNodeFetch(await import('node-fetch'))
 
     data = new FormData()
     data.append('name', 'john')

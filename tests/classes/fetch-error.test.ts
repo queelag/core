@@ -1,11 +1,11 @@
 import { beforeAll, describe, expect, it } from 'vitest'
-import { FetchError, FetchResponse, Polyfill } from '../../src'
+import { FetchError, FetchResponse, useNodeFetch } from '../../src'
 
 describe('FetchError', () => {
   let error: FetchError<any>
 
   beforeAll(async () => {
-    await Polyfill.fetch()
+    await useNodeFetch(await import('node-fetch'))
   })
 
   it('constructs', () => {

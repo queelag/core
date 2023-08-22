@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { getObjectProperty, Polyfill, setObjectProperty } from '../../src'
+import { useNodeFetch } from '../../src'
 
 describe('Polyfill', () => {
   it('polyfills fetch', async () => {
@@ -16,10 +16,7 @@ describe('Polyfill', () => {
     process.env.NODE_ENV = 'development'
     // delete process.env.JEST_WORKER_ID
 
-    await Polyfill.blob()
-    await Polyfill.fetch()
-    await Polyfill.file()
-    await Polyfill.formData()
+    await useNodeFetch(await import('node-fetch'))
 
     expect(global.Blob).toBeUndefined()
     expect(global.fetch).toBeUndefined()
@@ -29,28 +26,17 @@ describe('Polyfill', () => {
     process.env.NODE_ENV = 'test'
     // process.env.JEST_WORKER_ID = ''
 
-    await Polyfill.blob()
-    await Polyfill.fetch()
-    await Polyfill.file()
-    await Polyfill.formData()
+    await useNodeFetch(await import('node-fetch'))
 
     expect(Blob).toBeDefined()
     expect(fetch).toBeDefined()
     expect(File).toBeDefined()
     expect(FormData).toBeDefined()
 
-    await Polyfill.blob()
-    await Polyfill.fetch()
-    await Polyfill.file()
-    await Polyfill.formData()
+    await useNodeFetch(await import('node-fetch'))
   })
 
   it('does not polyfill fetch if unable to import node-fetch', async () => {
-    let getNodeFetch: Function | undefined
-
-    getNodeFetch = getObjectProperty(Polyfill, 'getNodeFetch')
-    setObjectProperty(Polyfill, 'getNodeFetch', () => new Error())
-
     // @ts-ignore
     delete global.Blob
     // @ts-ignore
@@ -60,16 +46,11 @@ describe('Polyfill', () => {
     // @ts-ignore
     delete global.FormData
 
-    await Polyfill.blob()
-    await Polyfill.fetch()
-    await Polyfill.file()
-    await Polyfill.formData()
+    await useNodeFetch(new Error())
 
     expect(global.Blob).toBeUndefined()
     expect(global.fetch).toBeUndefined()
     expect(global.File).toBeUndefined()
     expect(global.FormData).toBeUndefined()
-
-    setObjectProperty(Polyfill, 'getNodeFetch', getNodeFetch)
   })
 })

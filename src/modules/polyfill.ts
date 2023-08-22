@@ -1,102 +1,42 @@
-import { tcp } from '../index.js'
-import { ModuleLogger } from '../loggers/module-logger.js'
+import { NodeFetch } from '../definitions/interfaces.js'
+import { tcp } from '../functions/tcp.js'
+import { UtilLogger } from '../loggers/util-logger.js'
 import { Environment } from './environment.js'
 
-interface NodeFetch {
-  default: any
-  Blob: any
-  File: any
-  FormData: any
-  Headers: any
-  Request: any
-  Response: any
-}
-
-/**
- * @category Module
- */
-export class Polyfill {
-  static async blob(): Promise<void> {
-    let NodeFetch: NodeFetch | Error
-
-    if (Environment.isBlobDefined) {
-      return
-    }
-
-    if (Environment.isNotTest && Environment.isWindowDefined) {
-      return
-    }
-
-    NodeFetch = await this.getNodeFetch()
-    if (NodeFetch instanceof Error) return
-
-    global.Blob = NodeFetch.Blob
-
-    ModuleLogger.debug('Polyfill', 'blob', `The Blob object has been polyfilled with node-fetch.`)
+export async function useNodeFetch(NodeFetch: NodeFetch | Error): Promise<void> {
+  if (NodeFetch instanceof Error) {
+    return
   }
 
-  static async fetch(): Promise<void> {
-    let NodeFetch: NodeFetch | Error
+  if (Environment.isNotTest && Environment.isWindowDefined) {
+    return
+  }
 
-    if (Environment.isFetchDefined) {
-      return
-    }
+  if (Environment.isBlobNotDefined) {
+    global.Blob = NodeFetch.Blob
+    UtilLogger.debug('useNodeFetch', `The Blob object has been polyfilled with node-fetch.`)
+  }
 
-    if (Environment.isNotTest && Environment.isWindowDefined) {
-      return
-    }
-
-    NodeFetch = await this.getNodeFetch()
-    if (NodeFetch instanceof Error) return
-
+  if (Environment.isFetchNotDefined) {
     global.fetch = NodeFetch.default
     global.Headers = NodeFetch.Headers
     global.Request = NodeFetch.Request
     global.Response = NodeFetch.Response
 
-    ModuleLogger.debug('Polyfill', 'fetch', `The Fetch API has been polyfilled with node-fetch.`)
+    UtilLogger.debug('useNodeFetch', `The Fetch API has been polyfilled with node-fetch.`)
   }
 
-  static async file(): Promise<void> {
-    let NodeFetch: NodeFetch | Error
-
-    if (Environment.isFileDefined) {
-      return
-    }
-
-    if (Environment.isNotTest && Environment.isWindowDefined) {
-      return
-    }
-
-    NodeFetch = await this.getNodeFetch()
-    if (NodeFetch instanceof Error) return
-
+  if (Environment.isFileNotDefined) {
     global.File = NodeFetch.File
-
-    ModuleLogger.debug('Polyfill', 'file', `The File object has been polyfilled with node-fetch.`)
+    UtilLogger.debug('useNodeFetch', `The File object has been polyfilled with node-fetch.`)
   }
 
-  static async formData(): Promise<void> {
-    let NodeFetch: NodeFetch | Error
-
-    if (Environment.isFormDataDefined) {
-      return
-    }
-
-    if (Environment.isNotTest && Environment.isWindowDefined) {
-      return
-    }
-
-    NodeFetch = await this.getNodeFetch()
-    if (NodeFetch instanceof Error) return
-
+  if (Environment.isFormDataNotDefined) {
     global.FormData = NodeFetch.FormData
-
-    ModuleLogger.debug('Polyfill', 'formData', `The FormData object has been polyfilled with node-fetch.`)
+    UtilLogger.debug('useNodeFetch', `The FormData object has been polyfilled with node-fetch.`)
   }
+}
 
-  // istanbul ignore next
-  private static async getNodeFetch(): Promise<NodeFetch | Error> {
-    return tcp(() => new Function(`return import('node-fetch')`)())
-  }
+export async function importNodeFetch(): Promise<NodeFetch | Error> {
+  return tcp(() => new Function(`return import('node-fetch')`)())
 }

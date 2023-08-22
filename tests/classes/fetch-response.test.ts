@@ -1,14 +1,12 @@
 import { beforeAll, describe, expect, it } from 'vitest'
-import { FetchResponse, Polyfill, setObjectProperty, tne } from '../../src'
+import { FetchResponse, setObjectProperty, tne, useNodeFetch } from '../../src'
 import { Configuration } from '../../src/modules/configuration'
 
 describe('FetchResponse', () => {
   let response: FetchResponse<any>
 
   beforeAll(async () => {
-    await Polyfill.blob()
-    await Polyfill.fetch()
-    await Polyfill.formData()
+    await useNodeFetch(await import('node-fetch'))
   })
 
   it('constructs', () => {

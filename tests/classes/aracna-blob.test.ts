@@ -1,12 +1,12 @@
 import { beforeAll, describe, expect, it } from 'vitest'
-import { AracnaBlob, Base64, Polyfill, TextCodec } from '../../src'
+import { AracnaBlob, Base64, TextCodec, useNodeFetch } from '../../src'
 import { AracnaBlobJSON } from '../../src/definitions/interfaces'
 
 describe('AracnaBlob', () => {
   let blob: Blob, qblob: AracnaBlob
 
   beforeAll(async () => {
-    await Polyfill.blob()
+    await useNodeFetch(await import('node-fetch'))
 
     blob = new Blob(['hello'], { type: 'text/plain' })
     qblob = new AracnaBlob(blob)

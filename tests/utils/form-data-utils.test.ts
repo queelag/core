@@ -1,10 +1,10 @@
 import { beforeAll, describe, expect, it } from 'vitest'
-import { deserializeFormData, noop, Polyfill, serializeFormData } from '../../src'
+import { deserializeFormData, noop, serializeFormData, useNodeFetch } from '../../src'
 import { Configuration } from '../../src/modules/configuration'
 
 describe('FormData', () => {
   beforeAll(async () => {
-    await Polyfill.formData()
+    await useNodeFetch(await import('node-fetch'))
   })
 
   it('deserializes form data to object', () => {
@@ -37,8 +37,7 @@ describe('FormData', () => {
   it('serializes an object to form data', async () => {
     let object: Record<PropertyKey, any>, data: FormData
 
-    await Polyfill.blob()
-    await Polyfill.file()
+    await useNodeFetch(await import('node-fetch'))
 
     object = {
       do1: { a1: [0], n1: 0, s1: '' },

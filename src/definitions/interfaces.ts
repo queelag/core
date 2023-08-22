@@ -9,6 +9,20 @@ export interface APIConfig<T = unknown> extends FetchRequestInit<T> {
   }
 }
 
+export interface AracnaBlobJSON {
+  id: string
+  size: number
+  text?: string
+  type: string
+  uInt8Array: Uint8Array
+}
+
+export interface AracnaFileJSON extends AracnaBlobJSON {
+  lastModified: number
+  name: string
+  webkitRelativePath: string
+}
+
 export interface CookieObject extends Record<string, string> {}
 
 export interface CookieSource {
@@ -93,18 +107,14 @@ export interface LocalizationPackData {
 
 export interface LocalizationVariables extends Record<number | string, any> {}
 
-export interface AracnaBlobJSON {
-  id: string
-  size: number
-  text?: string
-  type: string
-  uInt8Array: Uint8Array
-}
-
-export interface AracnaFileJSON extends AracnaBlobJSON {
-  lastModified: number
-  name: string
-  webkitRelativePath: string
+export interface NodeFetch {
+  default: any
+  Blob: typeof Blob
+  File: typeof File
+  FormData: typeof FormData
+  Headers: typeof Headers
+  Request: any
+  Response: any
 }
 
 export interface StorageItem extends Record<PropertyKey, any> {}

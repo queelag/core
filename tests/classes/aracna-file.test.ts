@@ -1,13 +1,12 @@
 import { beforeAll, describe, expect, it } from 'vitest'
-import { AracnaFile, Polyfill } from '../../src'
+import { AracnaFile, useNodeFetch } from '../../src'
 import { AracnaFileJSON } from '../../src/definitions/interfaces'
 
 describe('AracnaFile', () => {
   let file: File, qfile: AracnaFile
 
   beforeAll(async () => {
-    await Polyfill.blob()
-    await Polyfill.file()
+    await useNodeFetch(await import('node-fetch'))
 
     file = new File(['hello'], 'file', { lastModified: Date.now(), type: 'text/plain' })
     qfile = new AracnaFile(file)
