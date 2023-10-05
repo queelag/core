@@ -85,7 +85,7 @@ export class Status {
   }
 
   areSomeSuccess(...keys: string[][]): boolean {
-    return keys.some((v: string[]) => this.isPending(...v))
+    return keys.some((v: string[]) => this.isSuccess(...v))
   }
 
   areSomeError(...keys: string[][]): boolean {
