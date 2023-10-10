@@ -20,35 +20,35 @@ describe('StringUtils', () => {
   })
 
   it('makes string camel case', () => {
-    expect(getCamelCaseString('camel case')).toBe('camelCase')
-    expect(getCamelCaseString('camelCase')).toBe('camelCase')
-    expect(getCamelCaseString('camel-case')).toBe('camelCase')
-    expect(getCamelCaseString('camel_case')).toBe('camelCase')
-    expect(getCamelCaseString('CamelCase')).toBe('camelCase')
+    expect(getCamelCaseString('camel case1')).toBe('camelCase1')
+    expect(getCamelCaseString('camelCase1')).toBe('camelCase1')
+    expect(getCamelCaseString('camel-case1')).toBe('camelCase1')
+    expect(getCamelCaseString('camel_case1')).toBe('camelCase1')
+    expect(getCamelCaseString('CamelCase1')).toBe('camelCase1')
   })
 
   it('makes string kebab case', () => {
-    expect(getKebabCaseString('kebab case')).toBe('kebab-case')
-    expect(getKebabCaseString('kebabCase')).toBe('kebab-case')
-    expect(getKebabCaseString('kebab-case')).toBe('kebab-case')
-    expect(getKebabCaseString('kebab_case')).toBe('kebab-case')
-    expect(getKebabCaseString('KebabCase')).toBe('kebab-case')
+    expect(getKebabCaseString('kebab case1')).toBe('kebab-case1')
+    expect(getKebabCaseString('kebabCase1')).toBe('kebab-case1')
+    expect(getKebabCaseString('kebab-case1')).toBe('kebab-case1')
+    expect(getKebabCaseString('kebab_case1')).toBe('kebab-case1')
+    expect(getKebabCaseString('KebabCase1')).toBe('kebab-case1')
   })
 
   it('makes string pascal case', () => {
-    expect(getPascalCaseString('pascal case')).toBe('PascalCase')
-    expect(getPascalCaseString('pascalCase')).toBe('PascalCase')
-    expect(getPascalCaseString('pascal-case')).toBe('PascalCase')
-    expect(getPascalCaseString('pascal_case')).toBe('PascalCase')
-    expect(getPascalCaseString('PascalCase')).toBe('PascalCase')
+    expect(getPascalCaseString('pascal case1')).toBe('PascalCase1')
+    expect(getPascalCaseString('pascalCase1')).toBe('PascalCase1')
+    expect(getPascalCaseString('pascal-case1')).toBe('PascalCase1')
+    expect(getPascalCaseString('pascal_case1')).toBe('PascalCase1')
+    expect(getPascalCaseString('PascalCase1')).toBe('PascalCase1')
   })
 
   it('makes string snake case', () => {
-    expect(getSnakeCaseString('snake case')).toBe('snake_case')
-    expect(getSnakeCaseString('snakeCase')).toBe('snake_case')
-    expect(getSnakeCaseString('snake-case')).toBe('snake_case')
-    expect(getSnakeCaseString('snake_case')).toBe('snake_case')
-    expect(getSnakeCaseString('SnakeCase')).toBe('snake_case')
+    expect(getSnakeCaseString('snake case1')).toBe('snake_case1')
+    expect(getSnakeCaseString('snakeCase1')).toBe('snake_case1')
+    expect(getSnakeCaseString('snake-case1')).toBe('snake_case1')
+    expect(getSnakeCaseString('snake_case1')).toBe('snake_case1')
+    expect(getSnakeCaseString('SnakeCase1')).toBe('snake_case1')
   })
 
   it('checks if string is json', () => {

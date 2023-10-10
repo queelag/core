@@ -93,8 +93,8 @@ export const DEFAULT_STATUS_TRANSFORMER: StatusTransformer = (keys: string[]) =>
 /**
  * String Utils
  */
-export const REGEXP_NOT_LETTERS: RegExp = /[^a-zA-Z]/g
-export const REGEXP_NOT_LOWERCASE_LETTERS: RegExp = /[^a-z]/g
+export const REGEXP_NOT_LETTERS_AND_NUMBERS: RegExp = /[^a-zA-Z0-9]/g
+export const REGEXP_NOT_LOWERCASE_LETTERS_AND_NUMBERS: RegExp = /[^a-z0-9]/g
 export const REGEXP_UPPERCASE_LETTERS: RegExp = /[A-Z]/g
 
 /**

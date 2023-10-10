@@ -1,4 +1,4 @@
-import { REGEXP_NOT_LETTERS, REGEXP_NOT_LOWERCASE_LETTERS, REGEXP_UPPERCASE_LETTERS } from '../definitions/constants.js'
+import { REGEXP_NOT_LETTERS_AND_NUMBERS, REGEXP_NOT_LOWERCASE_LETTERS_AND_NUMBERS, REGEXP_UPPERCASE_LETTERS } from '../definitions/constants.js'
 import { tc } from '../functions/tc.js'
 
 export function getCamelCaseString(string: string): string {
@@ -13,7 +13,7 @@ export function getCamelCaseString(string: string): string {
       continue
     }
 
-    if (REGEXP_NOT_LOWERCASE_LETTERS.test(string[i])) {
+    if (REGEXP_NOT_LOWERCASE_LETTERS_AND_NUMBERS.test(string[i])) {
       ucnlcl = true
       continue
     }
@@ -46,7 +46,7 @@ export function getPascalCaseString(string: string): string {
   ucnl = false
 
   for (let char of string) {
-    if (REGEXP_NOT_LETTERS.test(char)) {
+    if (REGEXP_NOT_LETTERS_AND_NUMBERS.test(char)) {
       ucnl = true
       continue
     }
@@ -77,7 +77,7 @@ export function getSymbolCaseString(string: string, symbol: string): string {
       continue
     }
 
-    if (REGEXP_NOT_LOWERCASE_LETTERS.test(string[i])) {
+    if (REGEXP_NOT_LOWERCASE_LETTERS_AND_NUMBERS.test(string[i])) {
       result += symbol
       continue
     }
