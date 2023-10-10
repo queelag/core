@@ -41,6 +41,7 @@ build({
   entryPoints: ['src/index.ts'],
   format: 'iife',
   globalName: 'AracnaCore',
+  outfile: 'dist/index.iife.js',
   platform: 'browser',
-  outfile: 'dist/index.iife.js'
+  treeShaking: true
 }).catch(() => process.exit(1))
