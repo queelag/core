@@ -24,10 +24,8 @@
   },
   "exports": {
     "import": "./index.js",
-    "require": {
-      "default": "./index.cjs",
-      "types": "./index.d.ts"
-    }
+    "require": "./index.cjs",
+    "types": "./index.d.ts"
   },
   "license": "MIT",
   "main": "index.cjs",
