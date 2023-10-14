@@ -1,14 +1,14 @@
 import { beforeEach, describe, expect, it } from 'vitest'
-import { cloneShallowObject, copyObjectProperty, rne, rv, setObjectProperty, Storage } from '../../src'
+import { AsyncStorage, cloneShallowObject, copyObjectProperty, rne, rv, setObjectProperty } from '../../src'
 import { StorageItem } from '../../src/definitions/interfaces'
 import { Configuration } from '../../src/modules/configuration'
 
 describe('Storage', () => {
-  let map: Map<string, any>, storage: Storage
+  let map: Map<string, any>, storage: AsyncStorage
 
   beforeEach(() => {
     map = new Map()
-    storage = new Storage(
+    storage = new AsyncStorage(
       'TestStorage',
       async () => map.clear(),
       async (key: string) => map.get(key),
@@ -70,7 +70,7 @@ describe('Storage', () => {
   })
 
   it('handles errors from internal methods', async () => {
-    let backup: Storage
+    let backup: AsyncStorage
 
     backup = cloneShallowObject(storage)
 

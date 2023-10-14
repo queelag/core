@@ -1,16 +1,11 @@
 {
   "$schema": "https://json.schemastore.org/tsconfig.json",
   "compilerOptions": {
-    "allowSyntheticDefaultImports": true,
     "declaration": true,
     "emitDeclarationOnly": true,
-    "esModuleInterop": true,
-    "jsx": "react",
-    "module": "ESNext",
-    "moduleResolution": "nodenext",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
     "outDir": "dist",
-    "resolveJsonModule": true,
-    "skipLibCheck": true,
     "strict": true,
     "target": "ESNext"
   },

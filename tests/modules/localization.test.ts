@@ -1,21 +1,21 @@
 import { beforeEach, describe, expect, it } from 'vitest'
-import { Localization, LocalizationPack, Storage, StorageItem, rv } from '../../src'
+import { Localization, LocalizationPack, StorageItem, SyncStorage, rv } from '../../src'
 
 const EN: LocalizationPack = { data: { hello: 'hello {name}', bye: 'bye' }, language: 'en' }
 const IT: LocalizationPack = { data: { hello: 'ciao {name}', bye: 'ciao' }, language: 'it' }
 
 describe('Localization', () => {
-  let map: Map<string, any>, storage: Storage, localization: Localization
+  let map: Map<string, any>, storage: SyncStorage, localization: Localization
 
   beforeEach(() => {
     map = new Map()
-    storage = new Storage(
+    storage = new SyncStorage(
       'TestStorage',
-      async () => map.clear(),
-      async (key: string) => map.get(key) ?? {},
-      async (key: string) => map.has(key),
-      async (key: string) => rv(() => map.delete(key)),
-      async (key: string, value: StorageItem) => rv(() => map.set(key, value))
+      () => map.clear(),
+      (key: string) => map.get(key) ?? {},
+      (key: string) => map.has(key),
+      (key: string) => rv(() => map.delete(key)),
+      (key: string, value: StorageItem) => rv(() => map.set(key, value))
     )
     localization = new Localization('en', [], storage)
   })
@@ -101,7 +101,8 @@ describe('Localization', () => {
   })
 
   it('stores language', async () => {
-    expect(await localization.storeLanguage('it')).toBeTruthy()
+    localization.setLanguage('it')
+    expect(await localization.storeLanguage()).toBeTruthy()
     localization.setLanguage('en')
     expect(await localization.initialize()).toBeTruthy()
     expect(localization.language).toBe('it')

@@ -4,7 +4,8 @@ import { LocalizationPack, LocalizationVariables } from '../definitions/interfac
 import { ModuleLogger } from '../loggers/module-logger.js'
 import { isNotError } from '../utils/error-utils.js'
 import { getObjectProperty, hasObjectProperty, mergeObjects } from '../utils/object-utils.js'
-import { Storage } from './storage.js'
+import { AsyncStorage } from './async-storage.js'
+import { SyncStorage } from './sync-storage.js'
 
 /**
  * @category Module
@@ -12,10 +13,10 @@ import { Storage } from './storage.js'
 export class Localization {
   language: string
   packs: LocalizationPack[]
-  storage?: Storage
+  storage?: AsyncStorage | SyncStorage
   variables: LocalizationVariables
 
-  constructor(language: string, packs: LocalizationPack[] = [], storage: Storage, variables: LocalizationVariables = {}) {
+  constructor(language: string, packs: LocalizationPack[] = [], storage: AsyncStorage | SyncStorage, variables: LocalizationVariables = {}) {
     this.language = language
     this.packs = packs
     this.storage = storage
@@ -84,14 +85,11 @@ export class Localization {
     return localized
   }
 
-  async storeLanguage(language: string): Promise<boolean> {
+  async storeLanguage(): Promise<boolean> {
     if (!this.storage) {
       ModuleLogger.warn('Localization', 'storeLanguage', `This localization instance has no storage.`)
       return false
     }
-
-    this.language = language
-    ModuleLogger.debug('Localization', 'storeLanguage', `The language has been set to ${this.language}.`)
 
     return isNotError(await this.storage.set(StorageName.LOCALIZATION, this, ['language']))
   }

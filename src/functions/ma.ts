@@ -1,3 +1,3 @@
-export function ma<T>(fn: (...args: any) => T): (...args: any) => Promise<T> {
+export function ma<T>(fn: (...args: any) => T | Promise<T>): (...args: any) => Promise<T> {
   return async (...args: any) => fn(...args)
 }

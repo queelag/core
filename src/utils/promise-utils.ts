@@ -19,3 +19,11 @@ export async function chainTruthyPromises(...fns: ((...args: any[]) => Promise<a
 
   return true
 }
+
+export function isPromise<T>(value: any): value is Promise<T> {
+  return value instanceof Promise
+}
+
+export function isNotPromise<T>(value: T | Promise<T>): value is T {
+  return !(value instanceof Promise)
+}

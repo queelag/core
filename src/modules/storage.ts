@@ -1,6 +1,5 @@
 import { StorageItem, StorageTarget } from '../definitions/interfaces.js'
 import { KeyOf } from '../definitions/types.js'
-import { mtcp } from '../functions/mtcp.js'
 import { ModuleLogger } from '../loggers/module-logger.js'
 import { copyObjectProperty, deleteObjectProperty, hasObjectProperty } from '../utils/object-utils.js'
 
@@ -10,64 +9,54 @@ import { copyObjectProperty, deleteObjectProperty, hasObjectProperty } from '../
 export class Storage {
   readonly name: string
 
-  private readonly _clear: () => Promise<void | Error>
-  private readonly _get: <T extends StorageItem>(key: string) => Promise<T | Error>
-  private readonly _has: (key: string) => Promise<boolean | Error>
-  private readonly _remove: (key: string) => Promise<void | Error>
-  private readonly _set: <T extends StorageItem>(key: string, item: T) => Promise<void | Error>
+  protected readonly _clear: () => void | Error | Promise<void | Error>
+  protected readonly _get: <T extends StorageItem>(key: string) => T | Error | Promise<T | Error>
+  protected readonly _has: (key: string) => boolean | Error | Promise<boolean | Error>
+  protected readonly _remove: (key: string) => void | Error | Promise<void | Error>
+  protected readonly _set: <T extends StorageItem>(key: string, item: T) => void | Error | Promise<void | Error>
 
   constructor(
     name: string,
-    clear: () => Promise<void>,
-    get: <T extends StorageItem>(key: string) => Promise<T>,
-    has: (key: string) => Promise<boolean>,
-    remove: (key: string) => Promise<void>,
-    set: <T extends StorageItem>(key: string, item: T) => Promise<void>
+    clear: () => void | Error | Promise<void | Error>,
+    get: <T extends StorageItem>(key: string) => T | Error | Promise<T | Error>,
+    has: (key: string) => boolean | Error | Promise<boolean | Error>,
+    remove: (key: string) => void | Error | Promise<void | Error>,
+    set: <T extends StorageItem>(key: string, item: T) => void | Error | Promise<void | Error>
   ) {
     this.name = name
 
-    this._clear = mtcp(clear)
-    this._get = mtcp(get)
-    this._has = mtcp(has)
-    this._remove = mtcp(remove)
-    this._set = mtcp(set)
+    this._clear = clear
+    this._get = get
+    this._has = has
+    this._remove = remove
+    this._set = set
   }
 
-  async clear(): Promise<void | Error> {
-    let clear: void | Error
-
-    clear = await this._clear()
-    if (clear instanceof Error) return clear
-
+  protected clear_(cleared: void | Error): void | Error {
+    if (cleared instanceof Error) return cleared
     ModuleLogger.debug(this.name, 'get', `The storage has been cleared.`)
   }
 
-  async get<T extends StorageItem>(key: string): Promise<T | Error> {
-    let item: T | Error
+  clear(): void | Error | Promise<void | Error> {
+    return this.clear_(this._clear() as void | Error)
+  }
 
-    item = await this._get(key)
+  protected get_<T extends StorageItem>(key: string, item: T | Error): T | Error {
     if (item instanceof Error) return item
-
     ModuleLogger.debug(this.name, 'get', `The item ${key} has been retrieved.`, item)
-
     return item
   }
 
-  async remove<T extends StorageItem>(key: string, keys?: KeyOf.Deep<T>[]): Promise<void | Error> {
-    let item: T | Error, set: void | Error
+  get<T extends StorageItem>(key: string): T | Error | Promise<T | Error> {
+    return this.get_(key, this._get(key) as T | Error)
+  }
 
-    if (typeof keys === 'undefined') {
-      let removed: void | Error
+  protected remove_(key: string, removed: void | Error): void | Error {
+    if (removed instanceof Error) return removed
+    ModuleLogger.debug(this.name, 'remove', `The item ${key} has been removed.`)
+  }
 
-      removed = await this._remove(key)
-      if (removed instanceof Error) return removed
-
-      ModuleLogger.debug(this.name, 'remove', `The item ${key} has been removed.`)
-
-      return
-    }
-
-    item = await this._get(key)
+  protected remove__<T extends StorageItem>(key: string, keys: KeyOf.Deep<T>[], item: T | Error): T | Error {
     if (item instanceof Error) return item
 
     for (let k of keys) {
@@ -75,40 +64,63 @@ export class Storage {
       ModuleLogger.debug(this.name, 'remove', `The key ${String(k)} has been removed from the item ${key}.`, keys)
     }
 
-    set = await this._set(key, item)
-    if (set instanceof Error) return set
-
-    ModuleLogger.debug(this.name, 'remove', `The item ${key} has been set.`)
+    return item
   }
 
-  async set<T extends StorageItem>(key: string, item: T, keys?: KeyOf.Deep<T>[]): Promise<void | Error> {
-    let set: void | Error
+  protected remove___<T extends StorageItem>(key: string, item: T, set: void | Error): void | Error {
+    if (set instanceof Error) return set
+    ModuleLogger.debug(this.name, 'remove', `The item ${key} has been set.`, item)
+  }
 
-    if (keys) {
-      let current: T | Error
+  remove<T extends StorageItem>(key: string, keys?: KeyOf.Deep<T>[]): void | Error | Promise<void | Error> {
+    let item: T | Error
 
-      current = await this._get(key)
-      if (current instanceof Error) return current
-
-      for (let k of keys) {
-        copyObjectProperty(item, k, current)
-      }
-
-      return this.set(key, current)
+    if (typeof keys === 'undefined') {
+      return this.remove_(key, this._remove(key) as void | Error)
     }
 
-    set = await this._set(key, item)
+    item = this.remove__(key, keys, this._get(key) as T | Error)
+    if (item instanceof Error) return item
+
+    return this.remove___(key, item, this._set(key, item) as void | Error)
+  }
+
+  protected set_<T extends StorageItem>(key: string, item: T | Error, set: void | Error): void | Error {
+    if (item instanceof Error) return item
     if (set instanceof Error) return set
 
     ModuleLogger.debug(this.name, 'set', `The item ${key} has been set.`, item)
   }
 
-  async copy<T1 extends StorageItem, T2 extends StorageTarget, T extends T1 & T2>(key: string, target: T2, keys?: KeyOf.Deep<T>[]): Promise<void | Error>
-  async copy<T1 extends StorageItem, T2 extends StorageTarget, T extends T1 & T2>(key: string, target: T2, keys?: string[]): Promise<void | Error>
-  async copy<T1 extends StorageItem, T2 extends StorageTarget, T extends T1 & T2>(key: string, target: T2, keys?: KeyOf.Deep<T>[]): Promise<void | Error> {
-    let item: T | Error
+  protected set__<T extends StorageItem>(item: T, keys: KeyOf.Deep<T>[], current: T | Error): T | Error {
+    if (current instanceof Error) return current
 
-    item = await this._get(key)
+    for (let k of keys) {
+      copyObjectProperty(item, k, current)
+    }
+
+    return current
+  }
+
+  set<T extends StorageItem>(key: string, item: T, keys?: KeyOf.Deep<T>[]): void | Error | Promise<void | Error> {
+    let current: T | Error
+
+    if (typeof keys === 'undefined') {
+      return this.set_(key, item, this._set(key, item) as void | Error)
+    }
+
+    current = this.set__(item, keys, this._get(key) as T | Error)
+    if (current instanceof Error) return current
+
+    return this.set_(key, item, this._set(key, current) as void | Error)
+  }
+
+  protected copy_<T1 extends StorageItem, T2 extends StorageTarget, T extends T1 & T2>(
+    key: string,
+    target: T2,
+    keys: KeyOf.Deep<T>[] | undefined,
+    item: T1 | Error
+  ): void | Error {
     if (item instanceof Error) return item
 
     ModuleLogger.debug(this.name, 'get', `The item ${key} has been retrieved.`, item)
@@ -127,18 +139,20 @@ export class Storage {
     }
   }
 
-  async has<T extends StorageItem>(key: string, keys?: KeyOf.Deep<T>[]): Promise<boolean> {
-    let has: boolean | Error, item: T | Error
+  copy<T1 extends StorageItem, T2 extends StorageTarget, T extends T1 & T2>(
+    key: string,
+    target: T2,
+    keys?: KeyOf.Deep<T>[]
+  ): void | Error | Promise<void | Error> {
+    return this.copy_(key, target, keys, this._get(key))
+  }
 
-    has = await this._has(key)
-    if (has instanceof Error || !has) return false
+  protected has_<T extends StorageItem>(keys: KeyOf.Deep<T>[] | undefined, item: T | Error): boolean {
+    if (item instanceof Error) return false
 
     if (typeof keys === 'undefined') {
       return true
     }
-
-    item = await this._get(key)
-    if (item instanceof Error) return false
 
     for (let k of keys) {
       if (hasObjectProperty(item, k)) {
@@ -149,5 +163,14 @@ export class Storage {
     }
 
     return true
+  }
+
+  has<T extends StorageItem>(key: string, keys?: KeyOf.Deep<T>[]): boolean | Promise<boolean> {
+    let has: boolean | Error
+
+    has = this._has(key) as boolean | Error
+    if (has instanceof Error || !has) return false
+
+    return this.has_(keys, this._get(key) as T | Error)
   }
 }

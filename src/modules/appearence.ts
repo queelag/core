@@ -3,14 +3,15 @@ import { Theme } from '../definitions/types.js'
 import { noop } from '../functions/noop.js'
 import { ModuleLogger } from '../loggers/module-logger.js'
 import { isNotError } from '../utils/error-utils.js'
+import { AsyncStorage } from './async-storage.js'
 import { Environment } from './environment.js'
-import { Storage } from './storage.js'
+import { SyncStorage } from './sync-storage.js'
 
 export class Appearence {
-  storage?: Storage
+  storage?: AsyncStorage | SyncStorage
   theme: Theme
 
-  constructor(onChangeTheme: (theme: Theme) => any = noop, theme: Theme = 'system', storage?: Storage) {
+  constructor(onChangeTheme: (theme: Theme) => any = noop, theme: Theme = 'system', storage?: AsyncStorage | SyncStorage) {
     this.storage = storage
     this.theme = theme
 

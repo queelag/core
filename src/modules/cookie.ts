@@ -2,7 +2,7 @@ import { CookieParseOptions, CookieSerializeOptions } from 'cookie'
 import { DEFAULT_COOKIE_SEPARATOR } from '../definitions/constants.js'
 import { CookieItem, CookieObject } from '../definitions/interfaces.js'
 import { KeyOf, Primitive } from '../definitions/types.js'
-import { mtcp } from '../functions/mtcp.js'
+import { mtc } from '../functions/mtc.js'
 import { ModuleLogger } from '../loggers/module-logger.js'
 import { deserializeCookie, serializeCookie } from '../utils/cookie-utils.js'
 import { setObjectProperty } from '../utils/object-utils.js'
@@ -14,21 +14,21 @@ export class Cookie {
   name: string
   separator: string = DEFAULT_COOKIE_SEPARATOR
 
-  private readonly _get: () => Promise<string | Error>
-  private readonly _set: (cookies: string) => Promise<void | Error>
+  private readonly _get: () => string | Error
+  private readonly _set: (cookies: string) => void | Error
 
-  constructor(name: string, get: () => Promise<string>, set: (cookies: string) => Promise<void>, separator: string = DEFAULT_COOKIE_SEPARATOR) {
+  constructor(name: string, get: () => string, set: (cookies: string) => void, separator: string = DEFAULT_COOKIE_SEPARATOR) {
     this.name = name
     this.separator = separator
 
-    this._get = mtcp(get)
-    this._set = mtcp(set)
+    this._get = mtc(get)
+    this._set = mtc(set)
   }
 
-  async clear(options: CookieSerializeOptions = {}): Promise<void | Error> {
+  clear(options: CookieSerializeOptions = {}): void | Error {
     let object: CookieObject | Error
 
-    object = await this.deserialize()
+    object = this.deserialize()
     if (object instanceof Error) return object
 
     for (let key in object) {
@@ -37,17 +37,17 @@ export class Cookie {
       serialized = this.serialize(key, '', { ...options, expires: new Date(0) })
       if (serialized instanceof Error) return serialized
 
-      set = await this._set(serialized)
+      set = this._set(serialized)
       if (set instanceof Error) return set
 
       ModuleLogger.debug(this.name, 'remove', `The cookie ${key} has been removed.`)
     }
   }
 
-  async get<T extends CookieItem>(key: string): Promise<T | Error> {
+  get<T extends CookieItem>(key: string): T | Error {
     let object: CookieObject | Error, item: T
 
-    object = await this.deserialize()
+    object = this.deserialize()
     if (object instanceof Error) return object
 
     ModuleLogger.debug(this.name, 'get', `The cookies have been parsed.`, object)
@@ -67,11 +67,11 @@ export class Cookie {
     return item
   }
 
-  async remove<T extends CookieItem>(key: string, options: CookieSerializeOptions = {}, keys?: KeyOf.Shallow<T>[]): Promise<void | Error> {
+  remove<T extends CookieItem>(key: string, options: CookieSerializeOptions = {}, keys?: KeyOf.Shallow<T>[]): void | Error {
     if (typeof keys === 'undefined') {
       let object: CookieObject | Error
 
-      object = await this.deserialize()
+      object = this.deserialize()
       if (object instanceof Error) return object
 
       keys = []
@@ -93,14 +93,14 @@ export class Cookie {
       serialized = this.serialize(key, k, '', { ...options, expires: new Date(0) })
       if (serialized instanceof Error) return serialized
 
-      set = await this._set(serialized)
+      set = this._set(serialized)
       if (set instanceof Error) return set
 
       ModuleLogger.debug(this.name, 'remove', `The key ${String(k)} has been removed.`)
     }
   }
 
-  async set<T extends CookieItem>(key: string, item: T, options: CookieSerializeOptions = {}, keys?: KeyOf.Shallow<T>[]): Promise<void | Error> {
+  set<T extends CookieItem>(key: string, item: T, options: CookieSerializeOptions = {}, keys?: KeyOf.Shallow<T>[]): void | Error {
     if (typeof keys === 'undefined') {
       keys = Object.keys(item)
       ModuleLogger.debug(this.name, 'set', `The keys have been derived from the item.`, keys)
@@ -112,21 +112,21 @@ export class Cookie {
       serialized = this.serialize(key, k, item[k], options)
       if (serialized instanceof Error) return serialized
 
-      set = await this._set(serialized)
+      set = this._set(serialized)
       if (set instanceof Error) return set
 
       ModuleLogger.debug(this.name, 'set', `The key ${String(k)} has been set.`, this._get(), options)
     }
   }
 
-  async copy<T1 extends CookieItem, T2 extends CookieItem = CookieItem, T extends T1 & T2 = T1 & T2>(
+  copy<T1 extends CookieItem, T2 extends CookieItem = CookieItem, T extends T1 & T2 = T1 & T2>(
     key: string,
     target: T2,
     keys?: KeyOf.Shallow<T>[]
-  ): Promise<void | Error> {
+  ): void | Error {
     let object: CookieObject | Error
 
-    object = await this.deserialize()
+    object = this.deserialize()
     if (object instanceof Error) return object
 
     ModuleLogger.debug(this.name, 'copy', `The cookies have been parsed.`, object)
@@ -151,10 +151,10 @@ export class Cookie {
     }
   }
 
-  async has<T extends CookieItem>(key: string, keys?: KeyOf.Shallow<T>[]): Promise<boolean> {
+  has<T extends CookieItem>(key: string, keys?: KeyOf.Shallow<T>[]): boolean {
     let object: CookieObject | Error
 
-    object = await this.deserialize()
+    object = this.deserialize()
     if (object instanceof Error) return false
 
     ModuleLogger.debug(this.name, 'get', `The cookies have been parsed.`, object)
@@ -180,10 +180,10 @@ export class Cookie {
     return true
   }
 
-  private async deserialize(options?: CookieParseOptions): Promise<CookieObject | Error> {
+  private deserialize(options?: CookieParseOptions): CookieObject | Error {
     let cookie: string | Error
 
-    cookie = await this._get()
+    cookie = this._get()
     if (cookie instanceof Error) return cookie
 
     return deserializeCookie(cookie, options)
