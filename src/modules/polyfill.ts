@@ -38,7 +38,7 @@ export async function useNodeFetch(NodeFetch: NodeFetch | Error): Promise<void> 
 }
 
 export async function importNodeFetch(): Promise<NodeFetch | Error> {
-  if (Environment.isWindowDefined) {
+  if (Environment.isNotTest && Environment.isWindowDefined) {
     return new Error('The Fetch API is already defined in the browser.')
   }
 
