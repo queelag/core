@@ -1,6 +1,7 @@
+import { DEFAULT_WF_MS, DEFAULT_WF_TIMEOUT } from '../definitions/constants.js'
 import { tc } from './tc.js'
 
-export async function wf(fn: () => any, ms: number = 100, timeout: number = 10000): Promise<void | Error> {
+export async function wf(fn: () => any, ms: number = DEFAULT_WF_MS, timeout: number = DEFAULT_WF_TIMEOUT): Promise<void | Error> {
   return new Promise((resolve) => {
     let et: number, interval: NodeJS.Timeout | number
 

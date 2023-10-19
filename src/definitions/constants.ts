@@ -116,3 +116,11 @@ export const REGEXP_URL_MULTIPLE_AMPERSANDS: RegExp = /&{2,4}/g
 export const REGEXP_URL_MULTIPLE_QUESTION_MARKS: RegExp = /\?{2,4}/g
 export const REGEXP_URL_MULTIPLE_SLASHES: RegExp = /:?\/{2,4}/g
 export const REGEXP_URL_QUESTION_MARKS_AFTER_AMPERSANDS: RegExp = /&{1,4}\?{1,4}/g
+
+/**
+ * wf & wfp
+ */
+export const DEFAULT_WF_MS: number = 100
+export const DEFAULT_WF_TIMEOUT: number = 10000
+export const DEFAULT_WFP_MS: number = DEFAULT_WF_MS
+export const DEFAULT_WFP_TIMEOUT: number = DEFAULT_WF_TIMEOUT
