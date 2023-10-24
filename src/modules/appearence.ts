@@ -28,9 +28,9 @@ export class Appearence {
 
       copied = await this.storage.copy(StorageName.APPEARENCE, this, ['theme'])
       if (copied instanceof Error) return false
-
-      this.setTheme(this.theme)
     }
+
+    this.setTheme(this.theme)
 
     return true
   }
