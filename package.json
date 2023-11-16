@@ -40,9 +40,7 @@
   "repository": "https://github.com/aracna/core",
   "scripts": {
     "build": "rm -rf dist && node esbuild.mjs && pnpm tsc && pnpm api-extractor run --local",
-    "prepack": "pnpm build",
-    "prepublish": "pnpm version patch && cp LICENSE package.json README.md dist/. && cd dist && pnpm pack",
-    "publish": "publish dist/*.tgz",
+    "prepublish": "pnpm test && pnpm build && pnpm version patch && cp LICENSE package.json README.md dist/. && cd dist && pnpm pack",
     "test": "vitest run"
   },
   "sideEffects": false,
