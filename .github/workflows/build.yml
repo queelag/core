@@ -16,7 +16,7 @@ jobs:
       - name: Enables Corepack
         run: corepack enable
       - name: Install Dependencies
-        run: pnpm
+        run: pnpm install
       - name: Test Coverage
         run: pnpm test --coverage
       - name: SonarCloud Scan
