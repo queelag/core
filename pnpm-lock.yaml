@@ -2431,3 +2431,5 @@ packages:
     optionalDependencies:
       commander: 9.5.0
     dev: true
+
+publishDirectory: dist
