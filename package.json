@@ -36,15 +36,17 @@
   "main": "index.cjs",
   "module": "index.js",
   "name": "@aracna/core",
-  "private": false,
+  "publishConfig": {
+    "directory": "dist"
+  },
   "repository": "https://github.com/aracna/core",
   "scripts": {
     "build": "rm -rf dist && node esbuild.mjs && pnpm tsc && pnpm api-extractor run --local",
-    "prepublish": "pnpm test && pnpm build && pnpm version patch && cp LICENSE package.json README.md dist/. && cd dist && pnpm pack",
+    "prepublish": "pnpm test && pnpm build && pnpm version patch --force && cp LICENSE package.json README.md dist && pnpm test",
     "test": "vitest run"
   },
   "sideEffects": false,
   "type": "module",
   "types": "index.d.ts",
-  "version": "1.1.55"
+  "version": "1.1.59"
 }
