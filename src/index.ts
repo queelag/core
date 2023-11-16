@@ -13,9 +13,11 @@ export {
   ID_ALPHABET_NUMBERS,
   ID_ALPHABET_UPPERCASE
 } from './definitions/constants.js'
-export { LoggerName as CoreLoggerName, StorageName as CoreStorageName } from './definitions/enums.js'
+export { LoggerName as CoreLoggerName, StorageName as CoreStorageName, PromiseState } from './definitions/enums.js'
 export type {
   APIConfig,
+  AracnaBlobJSON,
+  AracnaFileJSON,
   CookieItem,
   CookieObject,
   CookieSource,
@@ -35,6 +37,7 @@ export type {
   LocalizationPack,
   LocalizationPackData,
   LocalizationVariables,
+  NodeFetch,
   StorageItem,
   StorageTarget,
   WithWriteMode

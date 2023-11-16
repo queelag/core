@@ -14,9 +14,9 @@ jobs:
         with:
           fetch-depth: 0
       - name: Install Dependencies
-        run: yarn
+        run: pnpm
       - name: Test Coverage
-        run: yarn test --coverage
+        run: pnpm test --coverage
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@master
         env:

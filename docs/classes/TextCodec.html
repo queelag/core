@@ -1,4 +1,4 @@
-<!DOCTYPE html><html class="default" lang="en"><head><meta charSet="utf-8"/><meta http-equiv="x-ua-compatible" content="IE=edge"/><title>TextCodec | @aracna/core - v1.1.18</title><meta name="description" content="Documentation for @aracna/core - v1.1.18"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="stylesheet" href="../assets/style.css"/><link rel="stylesheet" href="../assets/highlight.css"/><script async src="../assets/search.js" id="search-script"></script></head><body><script>document.documentElement.dataset.theme = localStorage.getItem("tsd-theme") || "os"</script><header class="tsd-page-toolbar">
+<!DOCTYPE html><html class="default" lang="en"><head><meta charSet="utf-8"/><meta http-equiv="x-ua-compatible" content="IE=edge"/><title>TextCodec | @aracna/core - v1.1.54</title><meta name="description" content="Documentation for @aracna/core"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="stylesheet" href="../assets/style.css"/><link rel="stylesheet" href="../assets/highlight.css"/><script defer src="../assets/main.js"></script><script async src="../assets/search.js" id="tsd-search-script"></script></head><body><script>document.documentElement.dataset.theme = localStorage.getItem("tsd-theme") || "os"</script><header class="tsd-page-toolbar">
 <div class="tsd-toolbar-contents container">
 <div class="table-cell" id="tsd-search" data-base="..">
 <div class="field"><label for="tsd-search-field" class="tsd-widget tsd-toolbar-icon search no-caption"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M15.7824 13.833L12.6666 10.7177C12.5259 10.5771 12.3353 10.499 12.1353 10.499H11.6259C12.4884 9.39596 13.001 8.00859 13.001 6.49937C13.001 2.90909 10.0914 0 6.50048 0C2.90959 0 0 2.90909 0 6.49937C0 10.0896 2.90959 12.9987 6.50048 12.9987C8.00996 12.9987 9.39756 12.4863 10.5008 11.6239V12.1332C10.5008 12.3332 10.5789 12.5238 10.7195 12.6644L13.8354 15.7797C14.1292 16.0734 14.6042 16.0734 14.8948 15.7797L15.7793 14.8954C16.0731 14.6017 16.0731 14.1267 15.7824 13.833ZM6.50048 10.499C4.29094 10.499 2.50018 8.71165 2.50018 6.49937C2.50018 4.29021 4.28781 2.49976 6.50048 2.49976C8.71001 2.49976 10.5008 4.28708 10.5008 6.49937C10.5008 8.70852 8.71314 10.499 6.50048 10.499Z" fill="var(--color-text)"></path></svg></label><input type="text" id="tsd-search-field" aria-label="Search"/></div>
@@ -6,24 +6,21 @@
 <div id="tsd-toolbar-links"></div></div>
 <ul class="results">
 <li class="state loading">Preparing search index...</li>
-<li class="state failure">The search index is not available</li></ul><a href="../index.html" class="title">@aracna/core - v1.1.18</a></div>
+<li class="state failure">The search index is not available</li></ul><a href="../index.html" class="title">@aracna/core - v1.1.54</a></div>
 <div class="table-cell" id="tsd-widgets"><a href="#" class="tsd-widget tsd-toolbar-icon menu no-caption" data-toggle="menu" aria-label="Menu"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="1" y="3" width="14" height="2" fill="var(--color-text)"></rect><rect x="1" y="7" width="14" height="2" fill="var(--color-text)"></rect><rect x="1" y="11" width="14" height="2" fill="var(--color-text)"></rect></svg></a></div></div></header>
 <div class="container container-main">
-<div class="col-8 col-content">
+<div class="col-content">
 <div class="tsd-page-title">
 <ul class="tsd-breadcrumb">
-<li><a href="../index.html">@aracna/core - v1.1.18</a></li>
+<li><a href="../modules.html">@aracna/core</a></li>
 <li><a href="TextCodec.html">TextCodec</a></li></ul>
 <h1>Class TextCodec</h1></div>
-<section class="tsd-panel tsd-comment">
-<div class="tsd-comment tsd-typography"><p>A module to have both TextDecoder and TextEncoder already initialized.</p>
-</div></section>
 <section class="tsd-panel tsd-hierarchy">
 <h4>Hierarchy</h4>
 <ul class="tsd-hierarchy">
 <li><span class="target">TextCodec</span></li></ul></section><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/queelag/core/blob/8bb490a/src/modules/text.codec.ts#L8">src/modules/text.codec.ts:8</a></li></ul></aside>
+<li>Defined in <a href="https://github.com/queelag/core/blob/d0071ba/src/modules/text-codec.ts#L6">src/modules/text-codec.ts:6</a></li></ul></aside>
 <section class="tsd-panel-group tsd-index-group">
 <section class="tsd-panel tsd-index-panel">
 <details class="tsd-index-content tsd-index-accordion" open><summary class="tsd-accordion-summary tsd-index-summary">
@@ -31,124 +28,344 @@
 <div class="tsd-accordion-details">
 <section class="tsd-index-section">
 <h3 class="tsd-index-heading">Constructors</h3>
-<div class="tsd-index-list"><a href="TextCodec.html#constructor" class="tsd-index-link tsd-kind-constructor tsd-parent-kind-class"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><rect fill="var(--color-icon-background)" stroke="#4D7FFF" stroke-width="1.5" x="1" y="1" width="22" height="22" rx="12" id="icon-512-path"></rect><path d="M11.898 16.1201C11.098 16.1201 10.466 15.8961 10.002 15.4481C9.53803 15.0001 9.30603 14.3841 9.30603 13.6001V9.64012C9.30603 8.85612 9.53803 8.24012 10.002 7.79212C10.466 7.34412 11.098 7.12012 11.898 7.12012C12.682 7.12012 13.306 7.34812 13.77 7.80412C14.234 8.25212 14.466 8.86412 14.466 9.64012H13.386C13.386 9.14412 13.254 8.76412 12.99 8.50012C12.734 8.22812 12.37 8.09212 11.898 8.09212C11.426 8.09212 11.054 8.22412 10.782 8.48812C10.518 8.75212 10.386 9.13212 10.386 9.62812V13.6001C10.386 14.0961 10.518 14.4801 10.782 14.7521C11.054 15.0161 11.426 15.1481 11.898 15.1481C12.37 15.1481 12.734 15.0161 12.99 14.7521C13.254 14.4801 13.386 14.0961 13.386 13.6001H14.466C14.466 14.3761 14.234 14.9921 13.77 15.4481C13.306 15.8961 12.682 16.1201 11.898 16.1201Z" fill="var(--color-text)" id="icon-512-text"></path></svg><span>constructor</span></a>
+<div class="tsd-index-list"><a href="TextCodec.html#constructor" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><g id="icon-512"><rect fill="var(--color-icon-background)" stroke="#4D7FFF" stroke-width="1.5" x="1" y="1" width="22" height="22" rx="12"></rect><path d="M11.898 16.1201C11.098 16.1201 10.466 15.8961 10.002 15.4481C9.53803 15.0001 9.30603 14.3841 9.30603 13.6001V9.64012C9.30603 8.85612 9.53803 8.24012 10.002 7.79212C10.466 7.34412 11.098 7.12012 11.898 7.12012C12.682 7.12012 13.306 7.34812 13.77 7.80412C14.234 8.25212 14.466 8.86412 14.466 9.64012H13.386C13.386 9.14412 13.254 8.76412 12.99 8.50012C12.734 8.22812 12.37 8.09212 11.898 8.09212C11.426 8.09212 11.054 8.22412 10.782 8.48812C10.518 8.75212 10.386 9.13212 10.386 9.62812V13.6001C10.386 14.0961 10.518 14.4801 10.782 14.7521C11.054 15.0161 11.426 15.1481 11.898 15.1481C12.37 15.1481 12.734 15.0161 12.99 14.7521C13.254 14.4801 13.386 14.0961 13.386 13.6001H14.466C14.466 14.3761 14.234 14.9921 13.77 15.4481C13.306 15.8961 12.682 16.1201 11.898 16.1201Z" fill="var(--color-text)"></path></g></svg><span>constructor</span></a>
+</div></section>
+<section class="tsd-index-section">
+<h3 class="tsd-index-heading">Properties</h3>
+<div class="tsd-index-list"><a href="TextCodec.html#decoder" class="tsd-index-link tsd-is-private"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><g id="icon-1024"><rect fill="var(--color-icon-background)" stroke="#FF984D" stroke-width="1.5" x="1" y="1" width="22" height="22" rx="12"></rect><path d="M9.354 16V7.24H12.174C12.99 7.24 13.638 7.476 14.118 7.948C14.606 8.412 14.85 9.036 14.85 9.82C14.85 10.604 14.606 11.232 14.118 11.704C13.638 12.168 12.99 12.4 12.174 12.4H10.434V16H9.354ZM10.434 11.428H12.174C12.646 11.428 13.022 11.284 13.302 10.996C13.59 10.7 13.734 10.308 13.734 9.82C13.734 9.324 13.59 8.932 13.302 8.644C13.022 8.356 12.646 8.212 12.174 8.212H10.434V11.428Z" fill="var(--color-text)"></path></g></svg><span>decoder</span></a>
+<a href="TextCodec.html#encoder" class="tsd-index-link tsd-is-private"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>encoder</span></a>
 </div></section>
 <section class="tsd-index-section">
 <h3 class="tsd-index-heading">Accessors</h3>
-<div class="tsd-index-list"><a href="TextCodec.html#isDecoderDefined" class="tsd-index-link tsd-kind-accessor tsd-parent-kind-class"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><rect fill="var(--color-icon-background)" stroke="#FF4D4D" stroke-width="1.5" x="1" y="1" width="22" height="22" rx="12" id="icon-262144-path"></rect><path d="M8.85 16L11.13 7.24H12.582L14.85 16H13.758L13.182 13.672H10.53L9.954 16H8.85ZM10.746 12.76H12.954L12.282 10.06C12.154 9.548 12.054 9.12 11.982 8.776C11.91 8.432 11.866 8.208 11.85 8.104C11.834 8.208 11.79 8.432 11.718 8.776C11.646 9.12 11.546 9.544 11.418 10.048L10.746 12.76Z" fill="var(--color-text)" id="icon-262144-text"></path></svg><span>is<wbr/>Decoder<wbr/>Defined</span></a>
-<a href="TextCodec.html#isDecoderNotDefined" class="tsd-index-link tsd-kind-accessor tsd-parent-kind-class"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-262144-path"></use><use href="#icon-262144-text"></use></svg><span>is<wbr/>Decoder<wbr/>Not<wbr/>Defined</span></a>
-<a href="TextCodec.html#isEncoderDefined" class="tsd-index-link tsd-kind-accessor tsd-parent-kind-class"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-262144-path"></use><use href="#icon-262144-text"></use></svg><span>is<wbr/>Encoder<wbr/>Defined</span></a>
-<a href="TextCodec.html#isEncoderNotDefined" class="tsd-index-link tsd-kind-accessor tsd-parent-kind-class"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-262144-path"></use><use href="#icon-262144-text"></use></svg><span>is<wbr/>Encoder<wbr/>Not<wbr/>Defined</span></a>
+<div class="tsd-index-list"><a href="TextCodec.html#isDecoderDefined" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><g id="icon-262144"><rect fill="var(--color-icon-background)" stroke="#FF4D4D" stroke-width="1.5" x="1" y="1" width="22" height="22" rx="12"></rect><path d="M8.85 16L11.13 7.24H12.582L14.85 16H13.758L13.182 13.672H10.53L9.954 16H8.85ZM10.746 12.76H12.954L12.282 10.06C12.154 9.548 12.054 9.12 11.982 8.776C11.91 8.432 11.866 8.208 11.85 8.104C11.834 8.208 11.79 8.432 11.718 8.776C11.646 9.12 11.546 9.544 11.418 10.048L10.746 12.76Z" fill="var(--color-text)"></path></g></svg><span>is<wbr/>Decoder<wbr/>Defined</span></a>
+<a href="TextCodec.html#isDecoderNotDefined" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-262144"></use></svg><span>is<wbr/>Decoder<wbr/>Not<wbr/>Defined</span></a>
+<a href="TextCodec.html#isEncoderDefined" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-262144"></use></svg><span>is<wbr/>Encoder<wbr/>Defined</span></a>
+<a href="TextCodec.html#isEncoderNotDefined" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-262144"></use></svg><span>is<wbr/>Encoder<wbr/>Not<wbr/>Defined</span></a>
 </div></section>
 <section class="tsd-index-section">
 <h3 class="tsd-index-heading">Methods</h3>
-<div class="tsd-index-list"><a href="TextCodec.html#decode" class="tsd-index-link tsd-kind-method tsd-parent-kind-class"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><rect fill="var(--color-icon-background)" stroke="#FF4DB8" stroke-width="1.5" x="1" y="1" width="22" height="22" rx="12" id="icon-2048-path"></rect><path d="M9.162 16V7.24H10.578L11.514 10.072C11.602 10.328 11.674 10.584 11.73 10.84C11.794 11.088 11.842 11.28 11.874 11.416C11.906 11.28 11.954 11.088 12.018 10.84C12.082 10.584 12.154 10.324 12.234 10.06L13.122 7.24H14.538V16H13.482V12.82C13.482 12.468 13.49 12.068 13.506 11.62C13.53 11.172 13.558 10.716 13.59 10.252C13.622 9.78 13.654 9.332 13.686 8.908C13.726 8.476 13.762 8.1 13.794 7.78L12.366 12.16H11.334L9.894 7.78C9.934 8.092 9.97 8.456 10.002 8.872C10.042 9.28 10.078 9.716 10.11 10.18C10.142 10.636 10.166 11.092 10.182 11.548C10.206 12.004 10.218 12.428 10.218 12.82V16H9.162Z" fill="var(--color-text)" id="icon-2048-text"></path></svg><span>decode</span></a>
-<a href="TextCodec.html#encode" class="tsd-index-link tsd-kind-method tsd-parent-kind-class"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>encode</span></a>
+<div class="tsd-index-list"><a href="TextCodec.html#decode" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><g id="icon-2048"><rect fill="var(--color-icon-background)" stroke="#FF4DB8" stroke-width="1.5" x="1" y="1" width="22" height="22" rx="12"></rect><path d="M9.162 16V7.24H10.578L11.514 10.072C11.602 10.328 11.674 10.584 11.73 10.84C11.794 11.088 11.842 11.28 11.874 11.416C11.906 11.28 11.954 11.088 12.018 10.84C12.082 10.584 12.154 10.324 12.234 10.06L13.122 7.24H14.538V16H13.482V12.82C13.482 12.468 13.49 12.068 13.506 11.62C13.53 11.172 13.558 10.716 13.59 10.252C13.622 9.78 13.654 9.332 13.686 8.908C13.726 8.476 13.762 8.1 13.794 7.78L12.366 12.16H11.334L9.894 7.78C9.934 8.092 9.97 8.456 10.002 8.872C10.042 9.28 10.078 9.716 10.11 10.18C10.142 10.636 10.166 11.092 10.182 11.548C10.206 12.004 10.218 12.428 10.218 12.82V16H9.162Z" fill="var(--color-text)"></path></g></svg><span>decode</span></a>
+<a href="TextCodec.html#encode" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>encode</span></a>
 </div></section></div></details></section></section>
 <section class="tsd-panel-group tsd-member-group">
 <h2>Constructors</h2>
-<section class="tsd-panel tsd-member tsd-kind-constructor tsd-parent-kind-class"><a id="constructor" class="tsd-anchor"></a>
-<h3 class="tsd-anchor-link"><span>constructor</span><a href="#constructor" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" id="icon-anchor-a"></path><path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" id="icon-anchor-b"></path><path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" id="icon-anchor-c"></path></svg></a></h3>
-<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class">
-<li class="tsd-signature tsd-anchor-link" id="constructor.new_TextCodec">new <wbr/>Text<wbr/>Codec<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="TextCodec.html" class="tsd-signature-type" data-tsd-kind="Class">TextCodec</a><a href="#constructor.new_TextCodec" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
+<section class="tsd-panel tsd-member"><a id="constructor" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><span>constructor</span><a href="#constructor" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><g stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round" id="icon-anchor"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5"></path><path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5"></path></g></svg></a></h3>
+<ul class="tsd-signatures">
+<li class="tsd-signature tsd-anchor-link" id="constructor.new_TextCodec"><span class="tsd-kind-constructor-signature">new <wbr/>Text<wbr/>Codec</span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="TextCodec.html" class="tsd-signature-type tsd-kind-class">TextCodec</a><a href="#constructor.new_TextCodec" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></li>
 <li class="tsd-description">
-<h4 class="tsd-returns-title">Returns <a href="TextCodec.html" class="tsd-signature-type" data-tsd-kind="Class">TextCodec</a></h4></li></ul></section></section>
+<h4 class="tsd-returns-title">Returns <a href="TextCodec.html" class="tsd-signature-type tsd-kind-class">TextCodec</a></h4></li></ul></section></section>
+<section class="tsd-panel-group tsd-member-group">
+<h2>Properties</h2>
+<section class="tsd-panel tsd-member tsd-is-private"><a id="decoder" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagStatic">Static</code> <code class="tsd-tag ts-flagPrivate">Private</code> <span>decoder</span><a href="#decoder" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
+<div class="tsd-signature"><span class="tsd-kind-property">decoder</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type ">TextDecoder</span><span class="tsd-signature-symbol"> = ...</span></div><aside class="tsd-sources">
+<ul>
+<li>Defined in <a href="https://github.com/queelag/core/blob/d0071ba/src/modules/text-codec.ts#L8">src/modules/text-codec.ts:8</a></li></ul></aside></section>
+<section class="tsd-panel tsd-member tsd-is-private"><a id="encoder" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagStatic">Static</code> <code class="tsd-tag ts-flagPrivate">Private</code> <span>encoder</span><a href="#encoder" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
+<div class="tsd-signature"><span class="tsd-kind-property">encoder</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type ">TextEncoder</span><span class="tsd-signature-symbol"> = ...</span></div><aside class="tsd-sources">
+<ul>
+<li>Defined in <a href="https://github.com/queelag/core/blob/d0071ba/src/modules/text-codec.ts#L10">src/modules/text-codec.ts:10</a></li></ul></aside></section></section>
 <section class="tsd-panel-group tsd-member-group">
 <h2>Accessors</h2>
-<section class="tsd-panel tsd-member tsd-kind-accessor tsd-parent-kind-class"><a id="isDecoderDefined" class="tsd-anchor"></a>
-<h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagStatic">Static</code> <span>is<wbr/>Decoder<wbr/>Defined</span><a href="#isDecoderDefined" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
-<ul class="tsd-signatures tsd-kind-accessor tsd-parent-kind-class">
+<section class="tsd-panel tsd-member"><a id="isDecoderDefined" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagStatic">Static</code> <span>is<wbr/>Decoder<wbr/>Defined</span><a href="#isDecoderDefined" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
+<ul class="tsd-signatures">
 <li class="tsd-signature" id="isDecoderDefined.isDecoderDefined-1"><span class="tsd-signature-symbol">get</span> isDecoderDefined<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
 <li class="tsd-description">
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/queelag/core/blob/8bb490a/src/modules/text.codec.ts#L22">src/modules/text.codec.ts:22</a></li></ul></aside></li></ul></section>
-<section class="tsd-panel tsd-member tsd-kind-accessor tsd-parent-kind-class"><a id="isDecoderNotDefined" class="tsd-anchor"></a>
-<h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagStatic">Static</code> <span>is<wbr/>Decoder<wbr/>Not<wbr/>Defined</span><a href="#isDecoderNotDefined" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
-<ul class="tsd-signatures tsd-kind-accessor tsd-parent-kind-class">
+<li>Defined in <a href="https://github.com/queelag/core/blob/d0071ba/src/modules/text-codec.ts#L20">src/modules/text-codec.ts:20</a></li></ul></aside></li></ul></section>
+<section class="tsd-panel tsd-member"><a id="isDecoderNotDefined" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagStatic">Static</code> <span>is<wbr/>Decoder<wbr/>Not<wbr/>Defined</span><a href="#isDecoderNotDefined" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
+<ul class="tsd-signatures">
 <li class="tsd-signature" id="isDecoderNotDefined.isDecoderNotDefined-1"><span class="tsd-signature-symbol">get</span> isDecoderNotDefined<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
 <li class="tsd-description">
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/queelag/core/blob/8bb490a/src/modules/text.codec.ts#L26">src/modules/text.codec.ts:26</a></li></ul></aside></li></ul></section>
-<section class="tsd-panel tsd-member tsd-kind-accessor tsd-parent-kind-class"><a id="isEncoderDefined" class="tsd-anchor"></a>
-<h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagStatic">Static</code> <span>is<wbr/>Encoder<wbr/>Defined</span><a href="#isEncoderDefined" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
-<ul class="tsd-signatures tsd-kind-accessor tsd-parent-kind-class">
+<li>Defined in <a href="https://github.com/queelag/core/blob/d0071ba/src/modules/text-codec.ts#L24">src/modules/text-codec.ts:24</a></li></ul></aside></li></ul></section>
+<section class="tsd-panel tsd-member"><a id="isEncoderDefined" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagStatic">Static</code> <span>is<wbr/>Encoder<wbr/>Defined</span><a href="#isEncoderDefined" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
+<ul class="tsd-signatures">
 <li class="tsd-signature" id="isEncoderDefined.isEncoderDefined-1"><span class="tsd-signature-symbol">get</span> isEncoderDefined<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
 <li class="tsd-description">
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/queelag/core/blob/8bb490a/src/modules/text.codec.ts#L30">src/modules/text.codec.ts:30</a></li></ul></aside></li></ul></section>
-<section class="tsd-panel tsd-member tsd-kind-accessor tsd-parent-kind-class"><a id="isEncoderNotDefined" class="tsd-anchor"></a>
-<h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagStatic">Static</code> <span>is<wbr/>Encoder<wbr/>Not<wbr/>Defined</span><a href="#isEncoderNotDefined" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
-<ul class="tsd-signatures tsd-kind-accessor tsd-parent-kind-class">
+<li>Defined in <a href="https://github.com/queelag/core/blob/d0071ba/src/modules/text-codec.ts#L28">src/modules/text-codec.ts:28</a></li></ul></aside></li></ul></section>
+<section class="tsd-panel tsd-member"><a id="isEncoderNotDefined" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagStatic">Static</code> <span>is<wbr/>Encoder<wbr/>Not<wbr/>Defined</span><a href="#isEncoderNotDefined" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
+<ul class="tsd-signatures">
 <li class="tsd-signature" id="isEncoderNotDefined.isEncoderNotDefined-1"><span class="tsd-signature-symbol">get</span> isEncoderNotDefined<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
 <li class="tsd-description">
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/queelag/core/blob/8bb490a/src/modules/text.codec.ts#L34">src/modules/text.codec.ts:34</a></li></ul></aside></li></ul></section></section>
+<li>Defined in <a href="https://github.com/queelag/core/blob/d0071ba/src/modules/text-codec.ts#L32">src/modules/text-codec.ts:32</a></li></ul></aside></li></ul></section></section>
 <section class="tsd-panel-group tsd-member-group">
 <h2>Methods</h2>
-<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="decode" class="tsd-anchor"></a>
-<h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagStatic">Static</code> <span>decode</span><a href="#decode" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
-<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-<li class="tsd-signature tsd-anchor-link" id="decode.decode-1">decode<span class="tsd-signature-symbol">(</span>input<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Uint8Array</span>, options<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">TextDecodeOptions</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><a href="#decode.decode-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
+<section class="tsd-panel tsd-member"><a id="decode" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagStatic">Static</code> <span>decode</span><a href="#decode" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
+<ul class="tsd-signatures">
+<li class="tsd-signature tsd-anchor-link" id="decode.decode-1"><span class="tsd-kind-call-signature">decode</span><span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">input</span>, <span class="tsd-kind-parameter">options</span><span class="tsd-signature-symbol">?</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><a href="#decode.decode-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></li>
 <li class="tsd-description">
 <div class="tsd-parameters">
 <h4 class="tsd-parameters-title">Parameters</h4>
 <ul class="tsd-parameter-list">
 <li>
-<h5>input: <span class="tsd-signature-type">Uint8Array</span></h5></li>
+<h5><span class="tsd-kind-parameter">input</span>: <span class="tsd-signature-type ">Uint8Array</span></h5></li>
 <li>
-<h5><code class="tsd-tag ts-flagOptional">Optional</code> options: <span class="tsd-signature-type">TextDecodeOptions</span></h5></li></ul></div>
+<h5><code class="tsd-tag ts-flagOptional">Optional</code> <span class="tsd-kind-parameter">options</span>: <span class="tsd-signature-type ">TextDecodeOptions</span></h5></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/queelag/core/blob/8bb490a/src/modules/text.codec.ts#L14">src/modules/text.codec.ts:14</a></li></ul></aside></li></ul></section>
-<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="encode" class="tsd-anchor"></a>
-<h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagStatic">Static</code> <span>encode</span><a href="#encode" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
-<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-<li class="tsd-signature tsd-anchor-link" id="encode.encode-1">encode<span class="tsd-signature-symbol">(</span>input<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Uint8Array</span><a href="#encode.encode-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
+<li>Defined in <a href="https://github.com/queelag/core/blob/d0071ba/src/modules/text-codec.ts#L12">src/modules/text-codec.ts:12</a></li></ul></aside></li></ul></section>
+<section class="tsd-panel tsd-member"><a id="encode" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagStatic">Static</code> <span>encode</span><a href="#encode" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
+<ul class="tsd-signatures">
+<li class="tsd-signature tsd-anchor-link" id="encode.encode-1"><span class="tsd-kind-call-signature">encode</span><span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">input</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type ">Uint8Array</span><a href="#encode.encode-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></li>
 <li class="tsd-description">
 <div class="tsd-parameters">
 <h4 class="tsd-parameters-title">Parameters</h4>
 <ul class="tsd-parameter-list">
 <li>
-<h5>input: <span class="tsd-signature-type">string</span></h5></li></ul></div>
-<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Uint8Array</span></h4><aside class="tsd-sources">
+<h5><span class="tsd-kind-parameter">input</span>: <span class="tsd-signature-type">string</span></h5></li></ul></div>
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type ">Uint8Array</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/queelag/core/blob/8bb490a/src/modules/text.codec.ts#L18">src/modules/text.codec.ts:18</a></li></ul></aside></li></ul></section></section></div>
-<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
+<li>Defined in <a href="https://github.com/queelag/core/blob/d0071ba/src/modules/text-codec.ts#L16">src/modules/text-codec.ts:16</a></li></ul></aside></li></ul></section></section></div>
+<div class="col-sidebar">
+<div class="page-menu">
 <div class="tsd-navigation settings">
 <details class="tsd-index-accordion"><summary class="tsd-accordion-summary">
-<h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M4.93896 8.531L12 15.591L19.061 8.531L16.939 6.409L12 11.349L7.06098 6.409L4.93896 8.531Z" fill="var(--color-text)"></path></svg> Settings</h3></summary>
+<h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M4.93896 8.531L12 15.591L19.061 8.531L16.939 6.409L12 11.349L7.06098 6.409L4.93896 8.531Z" fill="var(--color-text)" id="icon-chevronDown"></path></svg>Settings</h3></summary>
 <div class="tsd-accordion-details">
 <div class="tsd-filter-visibility">
 <h4 class="uppercase">Member Visibility</h4><form>
 <ul id="tsd-filter-options">
 <li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-protected" name="protected"/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>Protected</span></label></li>
+<li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-private" name="private"/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>Private</span></label></li>
 <li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-inherited" name="inherited" checked/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>Inherited</span></label></li>
 <li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-external" name="external"/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>External</span></label></li></ul></form></div>
 <div class="tsd-theme-toggle">
-<h4 class="uppercase">Theme</h4><select id="theme"><option value="os">OS</option><option value="light">Light</option><option value="dark">Dark</option></select></div></div></details></div>
-<nav class="tsd-navigation primary">
-<details class="tsd-index-accordion" open><summary class="tsd-accordion-summary">
-<h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M4.93896 8.531L12 15.591L19.061 8.531L16.939 6.409L12 11.349L7.06098 6.409L4.93896 8.531Z" fill="var(--color-text)"></path></svg> Modules</h3></summary>
+<h4 class="uppercase">Theme</h4><select id="tsd-theme"><option value="os">OS</option><option value="light">Light</option><option value="dark">Dark</option></select></div></div></details></div>
+<details open class="tsd-index-accordion tsd-page-navigation"><summary class="tsd-accordion-summary">
+<h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><use href="#icon-chevronDown"></use></svg>On This Page</h3></summary>
 <div class="tsd-accordion-details">
 <ul>
-<li><a href="../index.html">@aracna/core -<wbr/> v1.1.18</a>
-<ul>
-<li class="tsd-kind-namespace"><a href="../modules/KeyOf.html">Key<wbr/>Of</a></li></ul></li></ul></div></details></nav>
-<nav class="tsd-navigation secondary menu-sticky">
-<ul>
-<li class="current tsd-kind-class"><a href="TextCodec.html" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><rect fill="var(--color-icon-background)" stroke="var(--color-ts-class)" stroke-width="1.5" x="1" y="1" width="22" height="22" rx="6" id="icon-128-path"></rect><path d="M11.898 16.1201C11.098 16.1201 10.466 15.8961 10.002 15.4481C9.53803 15.0001 9.30603 14.3841 9.30603 13.6001V9.64012C9.30603 8.85612 9.53803 8.24012 10.002 7.79212C10.466 7.34412 11.098 7.12012 11.898 7.12012C12.682 7.12012 13.306 7.34812 13.77 7.80412C14.234 8.25212 14.466 8.86412 14.466 9.64012H13.386C13.386 9.14412 13.254 8.76412 12.99 8.50012C12.734 8.22812 12.37 8.09212 11.898 8.09212C11.426 8.09212 11.054 8.22412 10.782 8.48812C10.518 8.75212 10.386 9.13212 10.386 9.62812V13.6001C10.386 14.0961 10.518 14.4801 10.782 14.7521C11.054 15.0161 11.426 15.1481 11.898 15.1481C12.37 15.1481 12.734 15.0161 12.99 14.7521C13.254 14.4801 13.386 14.0961 13.386 13.6001H14.466C14.466 14.3761 14.234 14.9921 13.77 15.4481C13.306 15.8961 12.682 16.1201 11.898 16.1201Z" fill="var(--color-text)" id="icon-128-text"></path></svg><span>Text<wbr/>Codec</span></a>
-<ul>
-<li class="tsd-kind-constructor tsd-parent-kind-class"><a href="TextCodec.html#constructor" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-512-path"></use><use href="#icon-512-text"></use></svg>constructor</a></li>
-<li class="tsd-kind-accessor tsd-parent-kind-class"><a href="TextCodec.html#isDecoderDefined" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-262144-path"></use><use href="#icon-262144-text"></use></svg>is<wbr/>Decoder<wbr/>Defined</a></li>
-<li class="tsd-kind-accessor tsd-parent-kind-class"><a href="TextCodec.html#isDecoderNotDefined" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-262144-path"></use><use href="#icon-262144-text"></use></svg>is<wbr/>Decoder<wbr/>Not<wbr/>Defined</a></li>
-<li class="tsd-kind-accessor tsd-parent-kind-class"><a href="TextCodec.html#isEncoderDefined" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-262144-path"></use><use href="#icon-262144-text"></use></svg>is<wbr/>Encoder<wbr/>Defined</a></li>
-<li class="tsd-kind-accessor tsd-parent-kind-class"><a href="TextCodec.html#isEncoderNotDefined" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-262144-path"></use><use href="#icon-262144-text"></use></svg>is<wbr/>Encoder<wbr/>Not<wbr/>Defined</a></li>
-<li class="tsd-kind-method tsd-parent-kind-class"><a href="TextCodec.html#decode" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg>decode</a></li>
-<li class="tsd-kind-method tsd-parent-kind-class"><a href="TextCodec.html#encode" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg>encode</a></li></ul></li></ul></nav></div></div>
-<div class="container tsd-generator">
+<li><a href="#constructor" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-512"></use></svg><span>constructor</span></a></li>
+<li><a href="#decoder" class="tsd-is-private"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>decoder</span></a></li>
+<li><a href="#encoder" class="tsd-is-private"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>encoder</span></a></li>
+<li><a href="#isDecoderDefined" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-262144"></use></svg><span>is<wbr/>Decoder<wbr/>Defined</span></a></li>
+<li><a href="#isDecoderNotDefined" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-262144"></use></svg><span>is<wbr/>Decoder<wbr/>Not<wbr/>Defined</span></a></li>
+<li><a href="#isEncoderDefined" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-262144"></use></svg><span>is<wbr/>Encoder<wbr/>Defined</span></a></li>
+<li><a href="#isEncoderNotDefined" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-262144"></use></svg><span>is<wbr/>Encoder<wbr/>Not<wbr/>Defined</span></a></li>
+<li><a href="#decode" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>decode</span></a></li>
+<li><a href="#encode" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>encode</span></a></li></ul></div></details></div>
+<div class="site-menu">
+<nav class="tsd-navigation"><a href="../modules.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><g id="icon-4"><rect fill="var(--color-icon-background)" stroke="var(--color-ts-namespace)" stroke-width="1.5" x="1" y="1" width="22" height="22" rx="6"></rect><path d="M9.33 16V7.24H10.77L13.446 14.74C13.43 14.54 13.41 14.296 13.386 14.008C13.37 13.712 13.354 13.404 13.338 13.084C13.33 12.756 13.326 12.448 13.326 12.16V7.24H14.37V16H12.93L10.266 8.5C10.282 8.692 10.298 8.936 10.314 9.232C10.33 9.52 10.342 9.828 10.35 10.156C10.366 10.476 10.374 10.784 10.374 11.08V16H9.33Z" fill="var(--color-text)"></path></g></svg><span>@aracna/core -<wbr/> v1.1.54</span></a>
+<ul class="tsd-small-nested-navigation">
+<li><a href="../modules/KeyOf.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-4"></use></svg><span>Key<wbr/>Of</span></a></li>
+<li><a href="../enums/CoreLoggerName.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><g id="icon-8"><rect fill="var(--color-icon-background)" stroke="var(--color-ts-enum)" stroke-width="1.5" x="1" y="1" width="22" height="22" rx="6"></rect><path d="M9.45 16V7.24H14.49V8.224H10.518V10.936H14.07V11.908H10.518V15.016H14.49V16H9.45Z" fill="var(--color-text)"></path></g></svg><span>Core<wbr/>Logger<wbr/>Name</span></a></li>
+<li><a href="../enums/CoreStorageName.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-8"></use></svg><span>Core<wbr/>Storage<wbr/>Name</span></a></li>
+<li><a href="../enums/PromiseState.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-8"></use></svg><span>Promise<wbr/>State</span></a></li>
+<li><a href="API.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><g id="icon-128"><rect fill="var(--color-icon-background)" stroke="var(--color-ts-class)" stroke-width="1.5" x="1" y="1" width="22" height="22" rx="6"></rect><path d="M11.898 16.1201C11.098 16.1201 10.466 15.8961 10.002 15.4481C9.53803 15.0001 9.30603 14.3841 9.30603 13.6001V9.64012C9.30603 8.85612 9.53803 8.24012 10.002 7.79212C10.466 7.34412 11.098 7.12012 11.898 7.12012C12.682 7.12012 13.306 7.34812 13.77 7.80412C14.234 8.25212 14.466 8.86412 14.466 9.64012H13.386C13.386 9.14412 13.254 8.76412 12.99 8.50012C12.734 8.22812 12.37 8.09212 11.898 8.09212C11.426 8.09212 11.054 8.22412 10.782 8.48812C10.518 8.75212 10.386 9.13212 10.386 9.62812V13.6001C10.386 14.0961 10.518 14.4801 10.782 14.7521C11.054 15.0161 11.426 15.1481 11.898 15.1481C12.37 15.1481 12.734 15.0161 12.99 14.7521C13.254 14.4801 13.386 14.0961 13.386 13.6001H14.466C14.466 14.3761 14.234 14.9921 13.77 15.4481C13.306 15.8961 12.682 16.1201 11.898 16.1201Z" fill="var(--color-text)"></path></g></svg><span>API</span></a></li>
+<li><a href="Appearence.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-128"></use></svg><span>Appearence</span></a></li>
+<li><a href="AracnaBlob.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-128"></use></svg><span>Aracna<wbr/>Blob</span></a></li>
+<li><a href="AracnaFile.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-128"></use></svg><span>Aracna<wbr/>File</span></a></li>
+<li><a href="AsyncStorage.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-128"></use></svg><span>Async<wbr/>Storage</span></a></li>
+<li><a href="Base16.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-128"></use></svg><span>Base16</span></a></li>
+<li><a href="Base32.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-128"></use></svg><span>Base32</span></a></li>
+<li><a href="Base64.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-128"></use></svg><span>Base64</span></a></li>
+<li><a href="Cookie.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-128"></use></svg><span>Cookie</span></a></li>
+<li><a href="CoreConfiguration.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-128"></use></svg><span>Core<wbr/>Configuration</span></a></li>
+<li><a href="DeferredPromise.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-128"></use></svg><span>Deferred<wbr/>Promise</span></a></li>
+<li><a href="Environment.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-128"></use></svg><span>Environment</span></a></li>
+<li><a href="Fetch.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-128"></use></svg><span>Fetch</span></a></li>
+<li><a href="FetchError.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-128"></use></svg><span>Fetch<wbr/>Error</span></a></li>
+<li><a href="FetchResponse.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-128"></use></svg><span>Fetch<wbr/>Response</span></a></li>
+<li><a href="GraphQLAPI.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-128"></use></svg><span>GraphQLAPI</span></a></li>
+<li><a href="History.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-128"></use></svg><span>History</span></a></li>
+<li><a href="ID.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-128"></use></svg><span>ID</span></a></li>
+<li><a href="Interval.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-128"></use></svg><span>Interval</span></a></li>
+<li><a href="Localization.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-128"></use></svg><span>Localization</span></a></li>
+<li><a href="Logger.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-128"></use></svg><span>Logger</span></a></li>
+<li><a href="STUB_BLOB.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-128"></use></svg><span>STUB_<wbr/>BLOB</span></a></li>
+<li><a href="STUB_FILE.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-128"></use></svg><span>STUB_<wbr/>FILE</span></a></li>
+<li><a href="Status.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-128"></use></svg><span>Status</span></a></li>
+<li><a href="SyncStorage.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-128"></use></svg><span>Sync<wbr/>Storage</span></a></li>
+<li><a href="TextCodec.html" class="current"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-128"></use></svg><span>Text<wbr/>Codec</span></a></li>
+<li><a href="Timeout.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-128"></use></svg><span>Timeout</span></a></li>
+<li><a href="Typeahead.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-128"></use></svg><span>Typeahead</span></a></li>
+<li><a href="VisibilityController.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-128"></use></svg><span>Visibility<wbr/>Controller</span></a></li>
+<li><a href="../interfaces/APIConfig.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><g id="icon-256"><rect fill="var(--color-icon-background)" stroke="var(--color-ts-interface)" stroke-width="1.5" x="1" y="1" width="22" height="22" rx="6"></rect><path d="M9.51 16V15.016H11.298V8.224H9.51V7.24H14.19V8.224H12.402V15.016H14.19V16H9.51Z" fill="var(--color-text)"></path></g></svg><span>APIConfig</span></a></li>
+<li><a href="../interfaces/AracnaBlobJSON.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-256"></use></svg><span>Aracna<wbr/>BlobJSON</span></a></li>
+<li><a href="../interfaces/AracnaFileJSON.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-256"></use></svg><span>Aracna<wbr/>FileJSON</span></a></li>
+<li><a href="../interfaces/CookieItem.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-256"></use></svg><span>Cookie<wbr/>Item</span></a></li>
+<li><a href="../interfaces/CookieObject.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-256"></use></svg><span>Cookie<wbr/>Object</span></a></li>
+<li><a href="../interfaces/CookieSource.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-256"></use></svg><span>Cookie<wbr/>Source</span></a></li>
+<li><a href="../interfaces/CoreConfigurationModule.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-256"></use></svg><span>Core<wbr/>Configuration<wbr/>Module</span></a></li>
+<li><a href="../interfaces/DeserializeBlobOptions.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-256"></use></svg><span>Deserialize<wbr/>Blob<wbr/>Options</span></a></li>
+<li><a href="../interfaces/DeserializeFileOptions.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-256"></use></svg><span>Deserialize<wbr/>File<wbr/>Options</span></a></li>
+<li><a href="../interfaces/FetchRequestInit.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-256"></use></svg><span>Fetch<wbr/>Request<wbr/>Init</span></a></li>
+<li><a href="../interfaces/FlattenObjectOptions.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-256"></use></svg><span>Flatten<wbr/>Object<wbr/>Options</span></a></li>
+<li><a href="../interfaces/GraphQLAPIConfig.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-256"></use></svg><span>GraphQLAPIConfig</span></a></li>
+<li><a href="../interfaces/GraphQLAPIRequestBody.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-256"></use></svg><span>GraphQLAPIRequest<wbr/>Body</span></a></li>
+<li><a href="../interfaces/GraphQLAPIResponse.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-256"></use></svg><span>GraphQLAPIResponse</span></a></li>
+<li><a href="../interfaces/GraphQLAPIResponseBody.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-256"></use></svg><span>GraphQLAPIResponse<wbr/>Body</span></a></li>
+<li><a href="../interfaces/GraphQLAPIResponseBodyError.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-256"></use></svg><span>GraphQLAPIResponse<wbr/>Body<wbr/>Error</span></a></li>
+<li><a href="../interfaces/GraphQLAPIResponseBodyErrorLocation.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-256"></use></svg><span>GraphQLAPIResponse<wbr/>Body<wbr/>Error<wbr/>Location</span></a></li>
+<li><a href="../interfaces/HistoryDataTarget.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-256"></use></svg><span>History<wbr/>Data<wbr/>Target</span></a></li>
+<li><a href="../interfaces/IDGenerateOptions.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-256"></use></svg><span>IDGenerate<wbr/>Options</span></a></li>
+<li><a href="../interfaces/LocalizationPack.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-256"></use></svg><span>Localization<wbr/>Pack</span></a></li>
+<li><a href="../interfaces/LocalizationPackData.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-256"></use></svg><span>Localization<wbr/>Pack<wbr/>Data</span></a></li>
+<li><a href="../interfaces/LocalizationVariables.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-256"></use></svg><span>Localization<wbr/>Variables</span></a></li>
+<li><a href="../interfaces/NodeFetch.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-256"></use></svg><span>Node<wbr/>Fetch</span></a></li>
+<li><a href="../interfaces/StorageItem.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-256"></use></svg><span>Storage<wbr/>Item</span></a></li>
+<li><a href="../interfaces/StorageTarget.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-256"></use></svg><span>Storage<wbr/>Target</span></a></li>
+<li><a href="../interfaces/WithWriteMode.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-256"></use></svg><span>With<wbr/>Write<wbr/>Mode</span></a></li>
+<li><a href="../types/ArrayIncludes.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><g id="icon-4194304"><rect fill="var(--color-icon-background)" stroke="var(--color-ts-type-alias)" stroke-width="1.5" x="1" y="1" width="22" height="22" rx="6"></rect><path d="M11.31 16V8.224H8.91V7.24H14.79V8.224H12.39V16H11.31Z" fill="var(--color-text)"></path></g></svg><span>Array<wbr/>Includes</span></a></li>
+<li><a href="../types/ArrayRemoves.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-4194304"></use></svg><span>Array<wbr/>Removes</span></a></li>
+<li><a href="../types/DebounceMapKey.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-4194304"></use></svg><span>Debounce<wbr/>Map<wbr/>Key</span></a></li>
+<li><a href="../types/DebounceMapValue.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-4194304"></use></svg><span>Debounce<wbr/>Map<wbr/>Value</span></a></li>
+<li><a href="../types/FetchRequestInfo.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-4194304"></use></svg><span>Fetch<wbr/>Request<wbr/>Info</span></a></li>
+<li><a href="../types/IntervalMapKey.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-4194304"></use></svg><span>Interval<wbr/>Map<wbr/>Key</span></a></li>
+<li><a href="../types/IntervalMapValue.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-4194304"></use></svg><span>Interval<wbr/>Map<wbr/>Value</span></a></li>
+<li><a href="../types/IsEqual.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-4194304"></use></svg><span>Is<wbr/>Equal</span></a></li>
+<li><a href="../types/LoggerLevel.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-4194304"></use></svg><span>Logger<wbr/>Level</span></a></li>
+<li><a href="../types/LoggerStatus.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-4194304"></use></svg><span>Logger<wbr/>Status</span></a></li>
+<li><a href="../types/Primitive.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-4194304"></use></svg><span>Primitive</span></a></li>
+<li><a href="../types/ProcessEnvValue.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-4194304"></use></svg><span>Process<wbr/>Env<wbr/>Value</span></a></li>
+<li><a href="../types/RequestMethod.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-4194304"></use></svg><span>Request<wbr/>Method</span></a></li>
+<li><a href="../types/StatusTransformer.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-4194304"></use></svg><span>Status<wbr/>Transformer</span></a></li>
+<li><a href="../types/Theme.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-4194304"></use></svg><span>Theme</span></a></li>
+<li><a href="../types/ThrottleMapKey.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-4194304"></use></svg><span>Throttle<wbr/>Map<wbr/>Key</span></a></li>
+<li><a href="../types/ThrottleMapValue.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-4194304"></use></svg><span>Throttle<wbr/>Map<wbr/>Value</span></a></li>
+<li><a href="../types/TimeoutMapKey.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-4194304"></use></svg><span>Timeout<wbr/>Map<wbr/>Key</span></a></li>
+<li><a href="../types/TimeoutMapValue.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-4194304"></use></svg><span>Timeout<wbr/>Map<wbr/>Value</span></a></li>
+<li><a href="../types/TypeaheadOnMatch.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-4194304"></use></svg><span>Typeahead<wbr/>On<wbr/>Match</span></a></li>
+<li><a href="../types/TypeaheadPredicate.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-4194304"></use></svg><span>Typeahead<wbr/>Predicate</span></a></li>
+<li><a href="../types/WriteMode.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-4194304"></use></svg><span>Write<wbr/>Mode</span></a></li>
+<li><a href="../variables/CoreClassLogger.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><g id="icon-32"><rect fill="var(--color-icon-background)" stroke="var(--color-ts-variable)" stroke-width="1.5" x="1" y="1" width="22" height="22" rx="6"></rect><path d="M11.106 16L8.85 7.24H9.966L11.454 13.192C11.558 13.608 11.646 13.996 11.718 14.356C11.79 14.708 11.842 14.976 11.874 15.16C11.906 14.976 11.954 14.708 12.018 14.356C12.09 13.996 12.178 13.608 12.282 13.192L13.758 7.24H14.85L12.582 16H11.106Z" fill="var(--color-text)"></path></g></svg><span>Core<wbr/>Class<wbr/>Logger</span></a></li>
+<li><a href="../variables/CoreFunctionLogger.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-32"></use></svg><span>Core<wbr/>Function<wbr/>Logger</span></a></li>
+<li><a href="../variables/CoreModuleLogger.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-32"></use></svg><span>Core<wbr/>Module<wbr/>Logger</span></a></li>
+<li><a href="../variables/CoreUtilLogger.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-32"></use></svg><span>Core<wbr/>Util<wbr/>Logger</span></a></li>
+<li><a href="../variables/ID_ALPHABET_ALPHANUMERIC.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-32"></use></svg><span>ID_<wbr/>ALPHABET_<wbr/>ALPHANUMERIC</span></a></li>
+<li><a href="../variables/ID_ALPHABET_HEX_LOWERCASE.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-32"></use></svg><span>ID_<wbr/>ALPHABET_<wbr/>HEX_<wbr/>LOWERCASE</span></a></li>
+<li><a href="../variables/ID_ALPHABET_HEX_UPPERCASE.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-32"></use></svg><span>ID_<wbr/>ALPHABET_<wbr/>HEX_<wbr/>UPPERCASE</span></a></li>
+<li><a href="../variables/ID_ALPHABET_LOWERCASE.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-32"></use></svg><span>ID_<wbr/>ALPHABET_<wbr/>LOWERCASE</span></a></li>
+<li><a href="../variables/ID_ALPHABET_NO_LOOK_ALIKES.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-32"></use></svg><span>ID_<wbr/>ALPHABET_<wbr/>NO_<wbr/>LOOK_<wbr/>ALIKES</span></a></li>
+<li><a href="../variables/ID_ALPHABET_NO_LOOK_ALIKES_SAFE.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-32"></use></svg><span>ID_<wbr/>ALPHABET_<wbr/>NO_<wbr/>LOOK_<wbr/>ALIKES_<wbr/>SAFE</span></a></li>
+<li><a href="../variables/ID_ALPHABET_NUMBERS.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-32"></use></svg><span>ID_<wbr/>ALPHABET_<wbr/>NUMBERS</span></a></li>
+<li><a href="../variables/ID_ALPHABET_UPPERCASE.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-32"></use></svg><span>ID_<wbr/>ALPHABET_<wbr/>UPPERCASE</span></a></li>
+<li><a href="../variables/STUB_TEXT_DECODER.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-32"></use></svg><span>STUB_<wbr/>TEXT_<wbr/>DECODER</span></a></li>
+<li><a href="../variables/STUB_TEXT_ENCODER.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-32"></use></svg><span>STUB_<wbr/>TEXT_<wbr/>ENCODER</span></a></li>
+<li><a href="../functions/EMPTY_OBJECT.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><g id="icon-64"><rect fill="var(--color-icon-background)" stroke="var(--color-ts-function)" stroke-width="1.5" x="1" y="1" width="22" height="22" rx="6"></rect><path d="M9.39 16V7.24H14.55V8.224H10.446V11.128H14.238V12.112H10.47V16H9.39Z" fill="var(--color-text)"></path></g></svg><span>EMPTY_<wbr/>OBJECT</span></a></li>
+<li><a href="../functions/STUB_COOKIE_GET.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>STUB_<wbr/>COOKIE_<wbr/>GET</span></a></li>
+<li><a href="../functions/STUB_COOKIE_SET.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>STUB_<wbr/>COOKIE_<wbr/>SET</span></a></li>
+<li><a href="../functions/STUB_STORAGE.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>STUB_<wbr/>STORAGE</span></a></li>
+<li><a href="../functions/appendSearchParamsToURL.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>append<wbr/>Search<wbr/>Params<wbr/>ToURL</span></a></li>
+<li><a href="../functions/chainPromises.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>chain<wbr/>Promises</span></a></li>
+<li><a href="../functions/chainTruthyPromises.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>chain<wbr/>Truthy<wbr/>Promises</span></a></li>
+<li><a href="../functions/cloneDeepObject.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>clone<wbr/>Deep<wbr/>Object</span></a></li>
+<li><a href="../functions/cloneShallowArray.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>clone<wbr/>Shallow<wbr/>Array</span></a></li>
+<li><a href="../functions/cloneShallowObject.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>clone<wbr/>Shallow<wbr/>Object</span></a></li>
+<li><a href="../functions/concatURL.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>concatURL</span></a></li>
+<li><a href="../functions/copyObjectProperty.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>copy<wbr/>Object<wbr/>Property</span></a></li>
+<li><a href="../functions/debounce.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>debounce</span></a></li>
+<li><a href="../functions/deleteDeepObjectUndefinedProperties.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>delete<wbr/>Deep<wbr/>Object<wbr/>Undefined<wbr/>Properties</span></a></li>
+<li><a href="../functions/deleteFetchRequestInitHeader.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>delete<wbr/>Fetch<wbr/>Request<wbr/>Init<wbr/>Header</span></a></li>
+<li><a href="../functions/deleteObjectProperty.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>delete<wbr/>Object<wbr/>Property</span></a></li>
+<li><a href="../functions/deleteShallowObjectUndefinedProperties.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>delete<wbr/>Shallow<wbr/>Object<wbr/>Undefined<wbr/>Properties</span></a></li>
+<li><a href="../functions/deserializeBlob.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>deserialize<wbr/>Blob</span></a></li>
+<li><a href="../functions/deserializeCookie.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>deserialize<wbr/>Cookie</span></a></li>
+<li><a href="../functions/deserializeFile.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>deserialize<wbr/>File</span></a></li>
+<li><a href="../functions/deserializeFormData.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>deserialize<wbr/>Form<wbr/>Data</span></a></li>
+<li><a href="../functions/deserializeQueryParameters.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>deserialize<wbr/>Query<wbr/>Parameters</span></a></li>
+<li><a href="../functions/flattenObject.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>flatten<wbr/>Object</span></a></li>
+<li><a href="../functions/getAbsoluteNumber.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>get<wbr/>Absolute<wbr/>Number</span></a></li>
+<li><a href="../functions/getArrayLastItem.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>get<wbr/>Array<wbr/>Last<wbr/>Item</span></a></li>
+<li><a href="../functions/getArraysDifference.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>get<wbr/>Arrays<wbr/>Difference</span></a></li>
+<li><a href="../functions/getArraysIntersection.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>get<wbr/>Arrays<wbr/>Intersection</span></a></li>
+<li><a href="../functions/getCamelCaseString.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>get<wbr/>Camel<wbr/>Case<wbr/>String</span></a></li>
+<li><a href="../functions/getCapitalizedString.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>get<wbr/>Capitalized<wbr/>String</span></a></li>
+<li><a href="../functions/getDateUnixTime.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>get<wbr/>Date<wbr/>Unix<wbr/>Time</span></a></li>
+<li><a href="../functions/getEmojiFromCountryCode.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>get<wbr/>Emoji<wbr/>From<wbr/>Country<wbr/>Code</span></a></li>
+<li><a href="../functions/getFetchRequestInitHeader.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>get<wbr/>Fetch<wbr/>Request<wbr/>Init<wbr/>Header</span></a></li>
+<li><a href="../functions/getFetchRequestInitHeadersEntries.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>get<wbr/>Fetch<wbr/>Request<wbr/>Init<wbr/>Headers<wbr/>Entries</span></a></li>
+<li><a href="../functions/getFetchRequestInitHeadersLength.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>get<wbr/>Fetch<wbr/>Request<wbr/>Init<wbr/>Headers<wbr/>Length</span></a></li>
+<li><a href="../functions/getHighestNumber.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>get<wbr/>Highest<wbr/>Number</span></a></li>
+<li><a href="../functions/getKebabCaseString.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>get<wbr/>Kebab<wbr/>Case<wbr/>String</span></a></li>
+<li><a href="../functions/getLimitedNumber.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>get<wbr/>Limited<wbr/>Number</span></a></li>
+<li><a href="../functions/getLowestNumber.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>get<wbr/>Lowest<wbr/>Number</span></a></li>
+<li><a href="../functions/getNumberPercentage.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>get<wbr/>Number<wbr/>Percentage</span></a></li>
+<li><a href="../functions/getNumbersDistance.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>get<wbr/>Numbers<wbr/>Distance</span></a></li>
+<li><a href="../functions/getObjectProperty.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>get<wbr/>Object<wbr/>Property</span></a></li>
+<li><a href="../functions/getPascalCaseString.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>get<wbr/>Pascal<wbr/>Case<wbr/>String</span></a></li>
+<li><a href="../functions/getSnakeCaseString.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>get<wbr/>Snake<wbr/>Case<wbr/>String</span></a></li>
+<li><a href="../functions/getSymbolCaseString.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>get<wbr/>Symbol<wbr/>Case<wbr/>String</span></a></li>
+<li><a href="../functions/gql.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>gql</span></a></li>
+<li><a href="../functions/hasFetchRequestInitHeader.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>has<wbr/>Fetch<wbr/>Request<wbr/>Init<wbr/>Header</span></a></li>
+<li><a href="../functions/hasObjectProperty.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>has<wbr/>Object<wbr/>Property</span></a></li>
+<li><a href="../functions/importNodeFetch.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>import<wbr/>Node<wbr/>Fetch</span></a></li>
+<li><a href="../functions/isArray.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>is<wbr/>Array</span></a></li>
+<li><a href="../functions/isError.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>is<wbr/>Error</span></a></li>
+<li><a href="../functions/isInstanceOf.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>is<wbr/>Instance<wbr/>Of</span></a></li>
+<li><a href="../functions/isNotError.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>is<wbr/>Not<wbr/>Error</span></a></li>
+<li><a href="../functions/isNotInstanceOf.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>is<wbr/>Not<wbr/>Instance<wbr/>Of</span></a></li>
+<li><a href="../functions/isNotPromise.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>is<wbr/>Not<wbr/>Promise</span></a></li>
+<li><a href="../functions/isNumberEven.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>is<wbr/>Number<wbr/>Even</span></a></li>
+<li><a href="../functions/isNumberMultipleOf.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>is<wbr/>Number<wbr/>Multiple<wbr/>Of</span></a></li>
+<li><a href="../functions/isNumberOdd.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>is<wbr/>Number<wbr/>Odd</span></a></li>
+<li><a href="../functions/isObject.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>is<wbr/>Object</span></a></li>
+<li><a href="../functions/isObjectClonable.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>is<wbr/>Object<wbr/>Clonable</span></a></li>
+<li><a href="../functions/isObjectFlattenable.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>is<wbr/>Object<wbr/>Flattenable</span></a></li>
+<li><a href="../functions/isObjectKeysPopulated.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>is<wbr/>Object<wbr/>Keys<wbr/>Populated</span></a></li>
+<li><a href="../functions/isObjectValuesPopulated.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>is<wbr/>Object<wbr/>Values<wbr/>Populated</span></a></li>
+<li><a href="../functions/isPlainObject.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>is<wbr/>Plain<wbr/>Object</span></a></li>
+<li><a href="../functions/isPromise.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>is<wbr/>Promise</span></a></li>
+<li><a href="../functions/isStringFloat.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>is<wbr/>String<wbr/>Float</span></a></li>
+<li><a href="../functions/isStringInt.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>is<wbr/>String<wbr/>Int</span></a></li>
+<li><a href="../functions/isStringJSON.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>is<wbr/>StringJSON</span></a></li>
+<li><a href="../functions/isStringNotJSON.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>is<wbr/>String<wbr/>NotJSON</span></a></li>
+<li><a href="../functions/isStringNotURL.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>is<wbr/>String<wbr/>NotURL</span></a></li>
+<li><a href="../functions/isStringURL.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>is<wbr/>StringURL</span></a></li>
+<li><a href="../functions/ma.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>ma</span></a></li>
+<li><a href="../functions/mergeFetchRequestInits.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>merge<wbr/>Fetch<wbr/>Request<wbr/>Inits</span></a></li>
+<li><a href="../functions/mergeObjects.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>merge<wbr/>Objects</span></a></li>
+<li><a href="../functions/mtc.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>mtc</span></a></li>
+<li><a href="../functions/mtcp.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>mtcp</span></a></li>
+<li><a href="../functions/noop.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>noop</span></a></li>
+<li><a href="../functions/omitObjectProperties.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>omit<wbr/>Object<wbr/>Properties</span></a></li>
+<li><a href="../functions/parseBigInt.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>parse<wbr/>Big<wbr/>Int</span></a></li>
+<li><a href="../functions/parseNumber.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>parse<wbr/>Number</span></a></li>
+<li><a href="../functions/pickObjectProperties.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>pick<wbr/>Object<wbr/>Properties</span></a></li>
+<li><a href="../functions/rc.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>rc</span></a></li>
+<li><a href="../functions/rcp.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>rcp</span></a></li>
+<li><a href="../functions/removeArrayDuplicates.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>remove<wbr/>Array<wbr/>Duplicates</span></a></li>
+<li><a href="../functions/removeArrayItems.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>remove<wbr/>Array<wbr/>Items</span></a></li>
+<li><a href="../functions/removeSearchParamsFromURL.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>remove<wbr/>Search<wbr/>Params<wbr/>FromURL</span></a></li>
+<li><a href="../functions/rne.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>rne</span></a></li>
+<li><a href="../functions/rv.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>rv</span></a></li>
+<li><a href="../functions/rvp.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>rvp</span></a></li>
+<li><a href="../functions/serializeBlob.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>serialize<wbr/>Blob</span></a></li>
+<li><a href="../functions/serializeCookie.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>serialize<wbr/>Cookie</span></a></li>
+<li><a href="../functions/serializeFile.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>serialize<wbr/>File</span></a></li>
+<li><a href="../functions/serializeFormData.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>serialize<wbr/>Form<wbr/>Data</span></a></li>
+<li><a href="../functions/serializeQueryParameters.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>serialize<wbr/>Query<wbr/>Parameters</span></a></li>
+<li><a href="../functions/setFetchRequestInitHeader.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>set<wbr/>Fetch<wbr/>Request<wbr/>Init<wbr/>Header</span></a></li>
+<li><a href="../functions/setFetchRequestInitHeaderWhenUnset.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>set<wbr/>Fetch<wbr/>Request<wbr/>Init<wbr/>Header<wbr/>When<wbr/>Unset</span></a></li>
+<li><a href="../functions/setObjectProperty.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>set<wbr/>Object<wbr/>Property</span></a></li>
+<li><a href="../functions/sleep.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>sleep</span></a></li>
+<li><a href="../functions/tc.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>tc</span></a></li>
+<li><a href="../functions/tcp.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>tcp</span></a></li>
+<li><a href="../functions/throttle.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>throttle</span></a></li>
+<li><a href="../functions/tie.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>tie</span></a></li>
+<li><a href="../functions/tne.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>tne</span></a></li>
+<li><a href="../functions/toFixedNumber.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>to<wbr/>Fixed<wbr/>Number</span></a></li>
+<li><a href="../functions/toLoggableFetchRequestInit.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>to<wbr/>Loggable<wbr/>Fetch<wbr/>Request<wbr/>Init</span></a></li>
+<li><a href="../functions/toLoggableNativeFetchRequestInit.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>to<wbr/>Loggable<wbr/>Native<wbr/>Fetch<wbr/>Request<wbr/>Init</span></a></li>
+<li><a href="../functions/toNativeFetchRequestInit.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>to<wbr/>Native<wbr/>Fetch<wbr/>Request<wbr/>Init</span></a></li>
+<li><a href="../functions/useNodeFetch.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>use<wbr/>Node<wbr/>Fetch</span></a></li>
+<li><a href="../functions/wf.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>wf</span></a></li>
+<li><a href="../functions/wfp.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>wfp</span></a></li></ul></nav></div></div></div>
+<div class="tsd-generator">
 <p>Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p></div>
-<div class="overlay"></div><script src="../assets/main.js"></script></body></html>
+<div class="overlay"></div></body></html>

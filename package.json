@@ -1,26 +1,31 @@
 {
   "author": "Dario Sechi",
   "dependencies": {
-    "@types/cookie": "^0.5.1",
+    "@types/cookie": "^0.5.4",
     "cookie": "^0.5.0",
-    "nanoid": "^3.3.6",
+    "nanoid": "^3.3.7",
     "node-fetch": "^3.3.2",
-    "rfc4648": "^1.5.2"
+    "rfc4648": "^1.5.3"
   },
   "devDependencies": {
-    "@microsoft/api-extractor": "^7.36.4",
-    "@vitest/coverage-v8": "^0.34.2",
-    "@vitest/ui": "^0.34.2",
-    "esbuild": "^0.19.2",
-    "fastify": "^4.21.0",
-    "glob": "^10.3.3",
-    "graphql": "^16.8.0",
-    "mercurius": "^13.1.0",
-    "prettier": "^3.0.2",
-    "tslib": "^2.6.1",
+    "@microsoft/api-extractor": "^7.38.3",
+    "@types/node": "^20.9.0",
+    "@vitest/coverage-v8": "^0.34.6",
+    "@vitest/ui": "^0.34.6",
+    "esbuild": "^0.19.5",
+    "fastify": "^4.24.3",
+    "glob": "^10.3.10",
+    "graphql": "^16.8.1",
+    "mercurius": "^13.3.0",
+    "prettier": "^3.1.0",
+    "tslib": "^2.6.2",
     "typedoc": "^0.24.8",
-    "typescript": "^5.1.6",
-    "vitest": "^0.34.2"
+    "typescript": "^5.2.2",
+    "vitest": "^0.34.6"
+  },
+  "engines": {
+    "node": ">=20",
+    "pnpm": ">=8"
   },
   "exports": {
     "import": "./index.js",
@@ -34,10 +39,11 @@
   "private": false,
   "repository": "https://github.com/aracna/core",
   "scripts": {
-    "test": "vitest run",
-    "build": "rm -rf dist && node esbuild.mjs && yarn tsc && yarn api-extractor run --local",
-    "tarball": "yarn version && cp LICENSE package.json README.md dist/. && cd dist && yarn pack",
-    "deploy": "yarn test && yarn build && yarn tarball && yarn publish dist/*.tgz"
+    "build": "rm -rf dist && node esbuild.mjs && pnpm tsc && pnpm api-extractor run --local",
+    "prepack": "pnpm build",
+    "prepublish": "pnpm version patch && cp LICENSE package.json README.md dist/. && cd dist && pnpm pack",
+    "publish": "publish dist/*.tgz",
+    "test": "vitest run"
   },
   "sideEffects": false,
   "type": "module",
