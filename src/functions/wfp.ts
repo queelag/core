@@ -16,13 +16,13 @@ export async function wfp(fn: () => Promise<any>, ms: number = DEFAULT_WFP_MS, t
         return resolve(new Error('The wait for timed out.'))
       }
 
-      tcp(() => fn()).then((result: unknown | Error) => {
+      tcp(() => fn()).then((result: unknown) => {
         if (result instanceof Error) {
           clearInterval(interval)
           return resolve(result)
         }
 
-        if (Boolean(result)) {
+        if (result) {
           clearInterval(interval)
           resolve()
         }

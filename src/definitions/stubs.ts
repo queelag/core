@@ -35,7 +35,7 @@ export class StubBlob {
     return new ArrayBuffer(0)
   }
 
-  slice(start?: number, end?: number, contentType?: string): StubBlob {
+  slice(start?: number, end?: number, contentType?: string): this {
     return this
   }
 

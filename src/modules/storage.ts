@@ -3,11 +3,22 @@ import { KeyOf } from '../definitions/types.js'
 import { ModuleLogger } from '../loggers/module-logger.js'
 import { copyObjectProperty, deleteObjectProperty, hasObjectProperty } from '../utils/object-utils.js'
 
-type Clear = () => void | Error | Promise<void | Error>
-type Get = <T extends StorageItem>(key: string) => T | Error | Promise<T | Error>
-type Has = (key: string) => boolean | Error | Promise<boolean | Error>
-type Remove = (key: string) => void | Error | Promise<void | Error>
-type Set = <T extends StorageItem>(key: string, item: T) => void | Error | Promise<void | Error>
+type Clear = () => ClearReturn
+type ClearReturn = void | Error | Promise<void | Error>
+
+type CopyReturn = void | Error | Promise<void | Error>
+
+type Get = <T extends StorageItem>(key: string) => GetReturn<T>
+type GetReturn<T extends StorageItem> = T | Error | Promise<T | Error>
+
+type Has = (key: string) => HasReturn
+type HasReturn = boolean | Error | Promise<boolean | Error>
+
+type Remove = (key: string) => RemoveReturn
+type RemoveReturn = void | Error | Promise<void | Error>
+
+type Set = <T extends StorageItem>(key: string, item: T) => SetReturn
+type SetReturn = void | Error | Promise<void | Error>
 
 /**
  * @category Module
@@ -36,7 +47,7 @@ export class Storage {
     ModuleLogger.debug(this.name, 'get', `The storage has been cleared.`)
   }
 
-  clear(): void | Error | Promise<void | Error> {
+  clear(): ClearReturn {
     return this.clear_(this._clear() as void | Error)
   }
 
@@ -46,7 +57,7 @@ export class Storage {
     return item
   }
 
-  get<T extends StorageItem>(key: string): T | Error | Promise<T | Error> {
+  get<T extends StorageItem>(key: string): GetReturn<T> {
     return this.get_(key, this._get(key) as T | Error)
   }
 
@@ -71,7 +82,7 @@ export class Storage {
     ModuleLogger.debug(this.name, 'remove', `The item ${key} has been set.`, item)
   }
 
-  remove<T extends StorageItem>(key: string, keys?: KeyOf.Deep<T>[]): void | Error | Promise<void | Error> {
+  remove<T extends StorageItem>(key: string, keys?: KeyOf.Deep<T>[]): RemoveReturn {
     let item: T | Error
 
     if (typeof keys === 'undefined') {
@@ -101,7 +112,7 @@ export class Storage {
     return current
   }
 
-  set<T extends StorageItem>(key: string, item: T, keys?: KeyOf.Deep<T>[]): void | Error | Promise<void | Error> {
+  set<T extends StorageItem>(key: string, item: T, keys?: KeyOf.Deep<T>[]): SetReturn {
     let current: T | Error
 
     if (typeof keys === 'undefined') {
@@ -138,11 +149,7 @@ export class Storage {
     }
   }
 
-  copy<T1 extends StorageItem, T2 extends StorageTarget, T extends T1 & T2>(
-    key: string,
-    target: T2,
-    keys?: KeyOf.Deep<T>[]
-  ): void | Error | Promise<void | Error> {
+  copy<T1 extends StorageItem, T2 extends StorageTarget, T extends T1 & T2>(key: string, target: T2, keys?: KeyOf.Deep<T>[]): CopyReturn {
     return this.copy_(key, target, keys, this._get(key))
   }
 
@@ -164,7 +171,7 @@ export class Storage {
     return true
   }
 
-  has<T extends StorageItem>(key: string, keys?: KeyOf.Deep<T>[]): boolean | Promise<boolean> {
+  has<T extends StorageItem>(key: string, keys?: KeyOf.Deep<T>[]): HasReturn {
     let has: boolean | Error
 
     has = this._has(key) as boolean | Error
