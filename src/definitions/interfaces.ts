@@ -23,6 +23,10 @@ export interface AracnaFileJSON extends AracnaBlobJSON {
   webkitRelativePath: string
 }
 
+export interface Constructor<T> {
+  new (): T
+}
+
 export interface CookieObject extends Record<string, string> {}
 
 export interface CookieSource {
