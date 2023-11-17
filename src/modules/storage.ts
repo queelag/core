@@ -3,26 +3,25 @@ import { KeyOf } from '../definitions/types.js'
 import { ModuleLogger } from '../loggers/module-logger.js'
 import { copyObjectProperty, deleteObjectProperty, hasObjectProperty } from '../utils/object-utils.js'
 
+type Clear = () => void | Error | Promise<void | Error>
+type Get = <T extends StorageItem>(key: string) => T | Error | Promise<T | Error>
+type Has = (key: string) => boolean | Error | Promise<boolean | Error>
+type Remove = (key: string) => void | Error | Promise<void | Error>
+type Set = <T extends StorageItem>(key: string, item: T) => void | Error | Promise<void | Error>
+
 /**
  * @category Module
  */
 export class Storage {
   readonly name: string
 
-  protected readonly _clear: () => void | Error | Promise<void | Error>
-  protected readonly _get: <T extends StorageItem>(key: string) => T | Error | Promise<T | Error>
-  protected readonly _has: (key: string) => boolean | Error | Promise<boolean | Error>
-  protected readonly _remove: (key: string) => void | Error | Promise<void | Error>
-  protected readonly _set: <T extends StorageItem>(key: string, item: T) => void | Error | Promise<void | Error>
+  protected readonly _clear: Clear
+  protected readonly _get: Get
+  protected readonly _has: Has
+  protected readonly _remove: Remove
+  protected readonly _set: Set
 
-  constructor(
-    name: string,
-    clear: () => void | Error | Promise<void | Error>,
-    get: <T extends StorageItem>(key: string) => T | Error | Promise<T | Error>,
-    has: (key: string) => boolean | Error | Promise<boolean | Error>,
-    remove: (key: string) => void | Error | Promise<void | Error>,
-    set: <T extends StorageItem>(key: string, item: T) => void | Error | Promise<void | Error>
-  ) {
+  constructor(name: string, clear: Clear, get: Get, has: Has, remove: Remove, set: Set) {
     this.name = name
 
     this._clear = clear

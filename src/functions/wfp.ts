@@ -10,26 +10,25 @@ export async function wfp(fn: () => Promise<any>, ms: number = DEFAULT_WFP_MS, t
      */
     et = 0
 
-    interval = setInterval(async () => {
-      let result: any | Error
-
+    interval = setInterval(() => {
       if (et >= timeout) {
         clearInterval(interval)
         return resolve(new Error('The wait for timed out.'))
       }
 
-      result = await tcp(() => fn())
-      if (result instanceof Error) {
-        clearInterval(interval)
-        return resolve(result)
-      }
+      tcp(() => fn()).then((result: unknown | Error) => {
+        if (result instanceof Error) {
+          clearInterval(interval)
+          return resolve(result)
+        }
 
-      if (Boolean(result)) {
-        clearInterval(interval)
-        resolve()
-      }
+        if (Boolean(result)) {
+          clearInterval(interval)
+          resolve()
+        }
 
-      et += ms
+        et += ms
+      })
     }, ms)
   })
 }

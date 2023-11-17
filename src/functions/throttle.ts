@@ -11,7 +11,7 @@ export function throttle(...args: any[]): void {
   fn = typeof args[0] === 'function' ? args[0] : args[1]
   ms = typeof args[0] === 'function' ? args[1] : args[2]
 
-  previous = THROTTLE_MAP.get(key) || Date.now() - ms
+  previous = THROTTLE_MAP.get(key) ?? Date.now() - ms
   if (Date.now() - previous < ms)
     return FunctionLogger.verbose('Throttle', 'handle', `The current date minus the stored one is greater than or equal to ms`, [
       Date.now(),

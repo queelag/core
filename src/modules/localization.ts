@@ -16,7 +16,7 @@ export class Localization {
   storage?: AsyncStorage | SyncStorage
   variables: LocalizationVariables
 
-  constructor(language: string, packs: LocalizationPack[] = [], storage: AsyncStorage | SyncStorage, variables: LocalizationVariables = {}) {
+  constructor(language: string, packs: LocalizationPack[] = [], storage?: AsyncStorage | SyncStorage, variables: LocalizationVariables = {}) {
     this.language = language
     this.packs = packs
     this.storage = storage

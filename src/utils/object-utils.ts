@@ -200,9 +200,9 @@ export function pickObjectProperties<T extends object, K extends keyof T>(object
   return pick
 }
 
-export function setObjectProperty<T extends object, U extends unknown>(object: T, key: KeyOf.Deep<T>, value: U): void | Error
-export function setObjectProperty<T extends object, U extends unknown>(object: T, key: string, value: U): void | Error
-export function setObjectProperty<T extends object, U extends unknown>(object: T, key: KeyOf.Deep<T>, value: U): void | Error {
+export function setObjectProperty<T extends object, U>(object: T, key: KeyOf.Deep<T>, value: U): void | Error
+export function setObjectProperty<T extends object, U>(object: T, key: string, value: U): void | Error
+export function setObjectProperty<T extends object, U>(object: T, key: KeyOf.Deep<T>, value: U): void | Error {
   switch (typeof key) {
     case 'number':
     case 'symbol':

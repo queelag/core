@@ -1,5 +1,5 @@
 import { AracnaBlobJSON } from '../definitions/interfaces.js'
-import { STUB_BLOB } from '../definitions/stubs.js'
+import { StubBlob } from '../definitions/stubs.js'
 import { tcp } from '../functions/tcp.js'
 import { Base64 } from '../modules/base64.js'
 import { Environment } from '../modules/environment.js'
@@ -73,7 +73,7 @@ export class AracnaBlob {
   }
 
   get arrayBuffer(): ArrayBuffer {
-    return this._arrayBuffer || new ArrayBuffer(0)
+    return this._arrayBuffer ?? new ArrayBuffer(0)
   }
 
   get base64(): string {
@@ -94,7 +94,7 @@ export class AracnaBlob {
   }
 
   get text(): string {
-    return this._text || ''
+    return this._text ?? ''
   }
 
   get type(): string {
@@ -115,7 +115,7 @@ export class AracnaBlob {
 
   static get EMPTY(): AracnaBlob {
     if (Environment.isBlobNotDefined) {
-      return new AracnaBlob(new STUB_BLOB() as Blob)
+      return new AracnaBlob(new StubBlob() as Blob)
     }
 
     return new AracnaBlob(new Blob())

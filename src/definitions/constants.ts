@@ -1,16 +1,6 @@
 import { noop } from '../functions/noop.js'
 import { ConfigurationModule } from './interfaces.js'
-import {
-  ArrayIncludes,
-  ArrayRemoves,
-  DebounceMapKey,
-  DebounceMapValue,
-  LoggerLevel,
-  LoggerStatus,
-  StatusTransformer,
-  ThrottleMapKey,
-  ThrottleMapValue
-} from './types.js'
+import { ArrayIncludes, ArrayRemoves, DebounceMapKey, DebounceMapValue, LoggerLevel, LoggerStatus, StatusTransformer, ThrottleMapKey } from './types.js'
 
 /**
  * Any
@@ -100,7 +90,7 @@ export const REGEXP_UPPERCASE_LETTERS: RegExp = /[A-Z]/g
 /**
  * Throttle
  */
-export const THROTTLE_MAP: Map<ThrottleMapKey, ThrottleMapValue> = new Map()
+export const THROTTLE_MAP: Map<ThrottleMapKey, number> = new Map()
 
 /**
  * Typeahead

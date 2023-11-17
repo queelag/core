@@ -11,7 +11,7 @@ export async function wf(fn: () => any, ms: number = DEFAULT_WF_MS, timeout: num
     et = 0
 
     interval = setInterval(() => {
-      let result: any | Error
+      let result: unknown | Error
 
       if (et >= timeout) {
         clearInterval(interval)

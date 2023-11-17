@@ -1,5 +1,5 @@
 import { AracnaFileJSON } from '../definitions/interfaces.js'
-import { STUB_FILE } from '../definitions/stubs.js'
+import { StubFile } from '../definitions/stubs.js'
 import { Environment } from '../modules/environment.js'
 import { AracnaBlob } from './aracna-blob.js'
 
@@ -52,7 +52,7 @@ export class AracnaFile extends AracnaBlob {
 
   static get EMPTY(): AracnaFile {
     if (Environment.isFileNotDefined) {
-      return new AracnaFile(new STUB_FILE([], '') as File)
+      return new AracnaFile(new StubFile([], '') as File)
     }
 
     return new AracnaFile(new File([], ''))

@@ -22,7 +22,7 @@ export const STUB_COOKIE_SET: (map: Map<string, string>, deserialize?: Function)
     }
   }
 
-export class STUB_BLOB {
+export class StubBlob {
   readonly size: number
   readonly type: string
 
@@ -35,7 +35,7 @@ export class STUB_BLOB {
     return new ArrayBuffer(0)
   }
 
-  slice(start?: number, end?: number, contentType?: string): STUB_BLOB {
+  slice(start?: number, end?: number, contentType?: string): StubBlob {
     return this
   }
 
@@ -48,7 +48,7 @@ export class STUB_BLOB {
   }
 }
 
-export class STUB_FILE extends STUB_BLOB {
+export class StubFile extends StubBlob {
   readonly lastModified: number
   readonly name: string
   readonly webkitRelativePath: string

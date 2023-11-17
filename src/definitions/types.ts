@@ -33,7 +33,6 @@ export type StatusTransformer = (keys: string[]) => string
 export type Theme = 'dark' | 'light' | 'system'
 
 export type ThrottleMapKey = Function | string
-export type ThrottleMapValue = number
 
 export type TimeoutMapKey = Function | string
 export type TimeoutMapValue = NodeJS.Timeout | number

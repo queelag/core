@@ -18,7 +18,9 @@ export function deserializeFormData<T extends object>(data: FormData): T {
 }
 
 export function serializeFormData<T extends object>(object: T): FormData {
-  let data: FormData = new FormData()
+  let data: FormData, stringified: string | Error
+
+  data = new FormData()
 
   for (let [k, v] of Object.entries(object)) {
     switch (typeof v) {
@@ -32,8 +34,6 @@ export function serializeFormData<T extends object>(object: T): FormData {
       case 'undefined':
         continue
       case 'object':
-        let stringified: string | Error
-
         if (v === null) {
           continue
         }

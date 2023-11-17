@@ -17,8 +17,8 @@ export class Logger {
 
   constructor(
     name: string,
-    level: LoggerLevel = Logger.getLevelFromEnvironment(name) || (Environment.isProduction ? 'error' : 'warn'),
-    status: LoggerStatus = Logger.getStatusFromEnvironment(name) || (Environment.isTest ? 'off' : 'on'),
+    level: LoggerLevel = Logger.getLevelFromEnvironment(name) ?? (Environment.isProduction ? 'error' : 'warn'),
+    status: LoggerStatus = Logger.getStatusFromEnvironment(name) ?? (Environment.isTest ? 'off' : 'on'),
     colors: boolean = DEFAULT_LOGGER_COLORS,
     separator: string = DEFAULT_LOGGER_SEPARATOR
   ) {

@@ -36,7 +36,9 @@ export class Typeahead<T> {
     debounce(this.debounceID, () => this.debouncefn(items), debounceTime ?? this.debounceTime)
   }
 
-  predicate(item: T, value: string, index: number, items: T[]) {}
+  predicate(item: T, value: string, index: number, items: T[]): unknown {
+    return
+  }
 
   private debouncefn(items: T[]): void {
     let match: T | undefined
