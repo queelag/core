@@ -1,10 +1,10 @@
 import { beforeAll, describe, expect, it } from 'vitest'
-import { deserializeFormData, noop, serializeFormData, useNodeFetch } from '../../src'
-import { Configuration } from '../../src/modules/configuration'
+import { deserializeFormData, importNodeFetch, noop, serializeFormData, useNodeFetch } from '../../src'
+import { Configuration } from '../../src/classes/configuration'
 
-describe('FormData', () => {
+describe('FormData Utils', () => {
   beforeAll(async () => {
-    await useNodeFetch(await import('node-fetch'))
+    await useNodeFetch(await importNodeFetch())
   })
 
   it('deserializes form data to object', () => {
@@ -37,7 +37,7 @@ describe('FormData', () => {
   it('serializes an object to form data', async () => {
     let object: Record<PropertyKey, any>, data: FormData
 
-    await useNodeFetch(await import('node-fetch'))
+    await useNodeFetch(await importNodeFetch())
 
     object = {
       do1: { a1: [0], n1: 0, s1: '' },

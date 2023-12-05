@@ -1,10 +1,10 @@
 import { AracnaBlobJSON } from '../definitions/interfaces.js'
 import { StubBlob } from '../definitions/stubs.js'
 import { tcp } from '../functions/tcp.js'
-import { Base64 } from '../modules/base64.js'
-import { Environment } from '../modules/environment.js'
-import { ID } from '../modules/id.js'
-import { TextCodec } from '../modules/text-codec.js'
+import { encodeBase64 } from '../utils/base64-utils.js'
+import { generateRandomString } from '../utils/string-utils.js'
+import { encodeText } from '../utils/text-utils.js'
+import { Environment } from './environment.js'
 
 export class AracnaBlob {
   private _arrayBuffer?: ArrayBuffer
@@ -23,7 +23,7 @@ export class AracnaBlob {
 
     if (typeof blob.arrayBuffer === 'function') {
       this.blob = blob
-      this.id = ID.generate()
+      this.id = generateRandomString()
 
       return
     }
@@ -83,7 +83,7 @@ export class AracnaBlob {
       return this._base64
     }
 
-    base64 = Base64.encode(this.uInt8Array)
+    base64 = encodeBase64(this.uInt8Array)
     this._base64 = base64
 
     return this._base64
@@ -107,7 +107,7 @@ export class AracnaBlob {
     }
 
     if (this._text) {
-      return TextCodec.encode(this._text)
+      return encodeText(this._text)
     }
 
     return new Uint8Array()

@@ -1,4 +1,4 @@
-import { Configuration } from '../modules/configuration.js'
+import { Configuration } from '../classes/configuration.js'
 
 export function tc<T, U extends Error = Error>(fn: () => T, log: boolean = Configuration.module.tc.log): T | U {
   try {

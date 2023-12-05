@@ -1,0 +1,101 @@
+import { describe, expect, it } from 'vitest'
+import { Environment, importNodeFetch, useNodeFetch } from '../../src'
+
+describe('Environment', () => {
+  let env: NodeJS.ProcessEnv
+
+  it('gets a variable from process.env', () => {
+    expect(Environment.get('NODE_ENV')).toBe('test')
+    expect(Environment.get('UNKNOWN')).toBe('')
+
+    env = process.env
+    // @ts-ignore
+    delete process.env
+
+    expect(Environment.get('')).toBe('')
+
+    process.env = env
+  })
+
+  it('check if a variable is inside process.env', () => {
+    expect(Environment.has('NODE_ENV')).toBeTruthy()
+    expect(Environment.has('UNKNOWN')).toBeFalsy()
+  })
+
+  it('checks if blob is defined', async () => {
+    await useNodeFetch(await importNodeFetch())
+
+    expect(Environment.isBlobDefined).toBeTruthy()
+    expect(Environment.isBlobNotDefined).toBeFalsy()
+  })
+
+  it('checks if NODE_ENV is development', () => {
+    expect(Environment.isDevelopment).toBeFalsy()
+    expect(Environment.isNotDevelopment).toBeTruthy()
+  })
+
+  it('checks if document is defined', () => {
+    expect(Environment.isDocumentDefined).toBeFalsy()
+    expect(Environment.isDocumentNotDefined).toBeTruthy()
+  })
+
+  it('checks if fetch is defined', async () => {
+    await useNodeFetch(await importNodeFetch())
+
+    expect(Environment.isFetchDefined).toBeTruthy()
+    expect(Environment.isFetchNotDefined).toBeFalsy()
+  })
+
+  it('checks if file is defined', async () => {
+    await useNodeFetch(await importNodeFetch())
+
+    expect(Environment.isFileDefined).toBeTruthy()
+    expect(Environment.isFileNotDefined).toBeFalsy()
+  })
+
+  it('checks if form data is defined', async () => {
+    await useNodeFetch(await importNodeFetch())
+
+    expect(Environment.isFormDataDefined).toBeTruthy()
+    expect(Environment.isFormDataNotDefined).toBeFalsy()
+  })
+
+  it('checks if JEST_WORKER_ID is defined', () => {
+    expect(Environment.isJestDefined).toBeFalsy()
+    expect(Environment.isJestNotDefined).toBeTruthy()
+  })
+
+  it('checks if NODE_ENV is production', () => {
+    expect(Environment.isProduction).toBeFalsy()
+    expect(Environment.isNotProduction).toBeTruthy()
+  })
+
+  it('checks if NODE_ENV is test', () => {
+    expect(Environment.isTest).toBeTruthy()
+    expect(Environment.isNotTest).toBeFalsy()
+  })
+
+  it('checks if process is defined', () => {
+    expect(Environment.isProcessDefined).toBeTruthy()
+    expect(Environment.isProcessNotDefined).toBeFalsy()
+  })
+
+  it('checks if window is defined', () => {
+    expect(Environment.isWindowDefined).toBeFalsy()
+    expect(Environment.isWindowNotDefined).toBeTruthy()
+  })
+
+  it('returns the NODE_ENV value', () => {
+    expect(Environment.NODE_ENV).toBe('test')
+
+    env = process.env
+    // @ts-ignore
+    delete process.env
+
+    expect(Environment.NODE_ENV).toBe('')
+    process.env = {}
+    expect(Environment.NODE_ENV).toBe('')
+
+    process.env = env
+  })
+})

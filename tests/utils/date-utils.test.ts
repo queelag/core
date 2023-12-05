@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { getDateUnixTime } from '../../src'
 
-describe('DateUtils', () => {
+describe('Date Utils', () => {
   it('gets date in ms', () => {
     let date: Date
 

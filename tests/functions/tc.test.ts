@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest'
 import { tc } from '../../src'
-import { Configuration } from '../../src/modules/configuration'
+import { Configuration } from '../../src/classes/configuration'
 
 describe('tc', () => {
   it('try catches', () => {

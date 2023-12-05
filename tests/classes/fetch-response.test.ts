@@ -1,12 +1,12 @@
 import { beforeAll, describe, expect, it } from 'vitest'
-import { FetchResponse, setObjectProperty, tne, useNodeFetch } from '../../src'
-import { Configuration } from '../../src/modules/configuration'
+import { FetchResponse, importNodeFetch, setObjectProperty, tne, useNodeFetch } from '../../src'
+import { Configuration } from '../../src/classes/configuration'
 
 describe('FetchResponse', () => {
   let response: FetchResponse<any>
 
   beforeAll(async () => {
-    await useNodeFetch(await import('node-fetch'))
+    await useNodeFetch(await importNodeFetch())
   })
 
   it('constructs', () => {

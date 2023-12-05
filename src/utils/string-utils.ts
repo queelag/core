@@ -1,5 +1,32 @@
-import { REGEXP_NOT_LETTERS_AND_NUMBERS, REGEXP_NOT_LOWERCASE_LETTERS_AND_NUMBERS, REGEXP_UPPERCASE_LETTERS } from '../definitions/constants.js'
+import { customRandom } from 'nanoid'
+import {
+  DEFAULT_GENERATE_RANDOM_STRING_ALPHABET,
+  DEFAULT_GENERATE_RANDOM_STRING_RANDOM,
+  DEFAULT_GENERATE_RANDOM_STRING_SEPARATOR,
+  DEFAULT_GENERATE_RANDOM_STRING_SIZE,
+  REGEXP_NOT_LETTERS_AND_NUMBERS,
+  REGEXP_NOT_LOWERCASE_LETTERS_AND_NUMBERS,
+  REGEXP_UPPERCASE_LETTERS
+} from '../definitions/constants.js'
+import { GenerateRandomStringOptions } from '../definitions/interfaces.js'
 import { tc } from '../functions/tc.js'
+
+export function generateRandomString(options?: GenerateRandomStringOptions): string {
+  let alphabet: string, blacklist: string[], random: (bytes: number) => Uint8Array, separator: string, size: number, id: string
+
+  alphabet = options?.alphabet || DEFAULT_GENERATE_RANDOM_STRING_ALPHABET
+  blacklist = options?.blacklist || []
+  random = options?.random || DEFAULT_GENERATE_RANDOM_STRING_RANDOM
+  separator = options?.separator || DEFAULT_GENERATE_RANDOM_STRING_SEPARATOR
+  size = options?.size || DEFAULT_GENERATE_RANDOM_STRING_SIZE
+
+  while (true) {
+    id = [options?.prefix, customRandom(alphabet, size, random)(), options?.suffix].filter(Boolean).join(options?.separator || '_')
+    if (!blacklist.includes(id)) break
+  }
+
+  return id
+}
 
 export function getCamelCaseString(string: string): string {
   let camel: string, ucnlcl: boolean

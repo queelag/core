@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest'
 import { tcp } from '../../src'
-import { Configuration } from '../../src/modules/configuration'
+import { Configuration } from '../../src/classes/configuration'
 
 describe('tcp', () => {
   it('try catches', async () => {

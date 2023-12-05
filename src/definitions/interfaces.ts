@@ -59,6 +59,16 @@ export interface FlattenObjectOptions {
   array: boolean
 }
 
+export interface GenerateRandomStringOptions {
+  alphabet?: string
+  blacklist?: string[]
+  prefix?: string
+  random?: (bytes: number) => Uint8Array
+  separator?: string
+  size?: number
+  suffix?: string
+}
+
 export interface GraphQLAPIConfig<T = unknown> extends APIConfig<T> {}
 
 export interface GraphQLAPIRequestBody<T = object> {
@@ -86,16 +96,6 @@ export interface GraphQLAPIResponseBodyErrorLocation {
 
 export interface HistoryDataTarget extends Record<PropertyKey, any> {}
 
-export interface IDGenerateOptions {
-  alphabet?: string
-  blacklist?: string[]
-  prefix?: string
-  random?: (bytes: number) => Uint8Array
-  separator?: string
-  size?: number
-  suffix?: string
-}
-
 export interface LocalizationPack {
   data: LocalizationPackData
   language: string
@@ -116,6 +116,27 @@ export interface NodeFetch {
   Request: any
   Response: any
 }
+
+export interface DecodeBase16Options {
+  loose?: boolean
+  out?: new (size: number) => {
+    [index: number]: number
+  }
+}
+
+export interface DecodeBase32Options extends DecodeBase16Options {}
+export interface DecodeBase32HexOptions extends DecodeBase32Options {}
+export interface DecodeBase64Options extends DecodeBase16Options {}
+export interface DecodeBase64URLOptions extends DecodeBase64Options {}
+
+export interface EncodeBase16Options {
+  pad?: boolean
+}
+
+export interface EncodeBase32Options extends EncodeBase16Options {}
+export interface EncodeBase32HexOptions extends EncodeBase32Options {}
+export interface EncodeBase64Options extends EncodeBase16Options {}
+export interface EncodeBase64URLOptions extends EncodeBase64Options {}
 
 export interface StorageItem extends Record<PropertyKey, any> {}
 export interface StorageTarget extends Record<PropertyKey, any> {}

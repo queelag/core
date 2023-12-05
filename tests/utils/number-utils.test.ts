@@ -13,9 +13,9 @@ import {
   parseNumber,
   toFixedNumber
 } from '../../src'
-import { Configuration } from '../../src/modules/configuration'
+import { Configuration } from '../../src/classes/configuration'
 
-describe('NumberUtils', () => {
+describe('Number Utils', () => {
   it('gets the absolute of a number', () => {
     expect(getAbsoluteNumber(-1)).toBe(1)
     expect(getAbsoluteNumber(-0)).toBe(0)

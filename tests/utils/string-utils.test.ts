@@ -1,5 +1,9 @@
+import { randomBytes } from 'crypto'
 import { describe, expect, it } from 'vitest'
 import {
+  ALPHABET_NUMBERS,
+  GenerateRandomStringRandom,
+  generateRandomString,
   getCamelCaseString,
   getCapitalizedString,
   getKebabCaseString,
@@ -13,7 +17,7 @@ import {
   isStringURL
 } from '../../src'
 
-describe('StringUtils', () => {
+describe('String Utils', () => {
   it('capitalizes string', () => {
     expect(getCapitalizedString('hello')).toBe('Hello')
     expect(getCapitalizedString('HELLO', true)).toBe('Hello')
@@ -75,5 +79,37 @@ describe('StringUtils', () => {
     expect(isStringURL('')).toBeFalsy()
     expect(isStringNotURL('https://localhost:3000')).toBeFalsy()
     expect(isStringNotURL('')).toBeTruthy()
+  })
+
+  it('generates random string', () => {
+    expect(generateRandomString()).toMatch(/[a-zA-Z0-9]{32}/)
+  })
+
+  it('generates random string with a prefix, suffix and custom separator', () => {
+    expect(generateRandomString({ prefix: 'prefix' })).toMatch(/prefix_[a-zA-Z0-9]{32}/)
+    expect(generateRandomString({ suffix: 'suffix' })).toMatch(/[a-zA-Z0-9]{32}_suffix/)
+    expect(generateRandomString({ prefix: 'prefix', suffix: 'suffix' })).toMatch(/prefix_[a-zA-Z0-9]{32}_suffix/)
+    expect(generateRandomString({ prefix: 'prefix', separator: '-', suffix: 'suffix' })).toMatch(/prefix-[a-zA-Z0-9]{32}-suffix/)
+  })
+
+  it('generates random string with a custom alphabet', () => {
+    expect(generateRandomString({ alphabet: ALPHABET_NUMBERS })).toMatch(/[0-9]{32}/)
+  })
+
+  it('generates random string with a custom random bytes generator', () => {
+    expect(generateRandomString({ random: (bytes: number) => randomBytes(bytes) })).toMatch(/[a-zA-Z0-9]{32}/)
+  })
+
+  it('generates random string with a custom size', () => {
+    expect(generateRandomString({ size: 16 })).toMatch(/[a-zA-Z0-9]{16}/)
+  })
+
+  it('generates random string without collisions', () => {
+    let random: GenerateRandomStringRandom, id: string
+
+    random = (bytes: number) => new Uint8Array(bytes).fill(Math.round(Math.random()))
+    id = generateRandomString({ random })
+
+    expect(generateRandomString({ blacklist: [id], random })).not.toBe(id)
   })
 })

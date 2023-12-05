@@ -1,7 +1,7 @@
 import { AracnaFileJSON } from '../definitions/interfaces.js'
 import { StubFile } from '../definitions/stubs.js'
-import { Environment } from '../modules/environment.js'
 import { AracnaBlob } from './aracna-blob.js'
+import { Environment } from './environment.js'
 
 export class AracnaFile extends AracnaBlob {
   readonly file: File

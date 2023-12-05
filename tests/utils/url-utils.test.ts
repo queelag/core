@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { appendSearchParamsToURL, concatURL, removeSearchParamsFromURL } from '../../src'
 
-describe('URLUtils', () => {
+describe('URL Utils', () => {
   it('concatenates an URL', () => {
     expect(concatURL('http://localhost:3000', 'route')).toBe('http://localhost:3000/route')
     expect(concatURL('http://localhost:3000', '/route')).toBe('http://localhost:3000/route')

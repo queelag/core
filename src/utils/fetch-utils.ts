@@ -1,4 +1,7 @@
-import { FetchRequestInit } from '../definitions/interfaces.js'
+import { Environment } from '../classes/environment.js'
+import { FetchRequestInit, NodeFetch } from '../definitions/interfaces.js'
+import { tcp } from '../functions/tcp.js'
+import { UtilLogger } from '../loggers/util-logger.js'
 import { isArray } from './array-utils.js'
 import { deserializeFormData } from './form-data-utils.js'
 import { mergeObjects, omitObjectProperties } from './object-utils.js'
@@ -67,6 +70,41 @@ export function getFetchRequestInitHeadersLength<T>(init: FetchRequestInit<T> | 
   return getFetchRequestInitHeadersEntries(init).length
 }
 
+export async function importNodeFetch(): Promise<NodeFetch | Error> {
+  if (Environment.isBlobDefined && Environment.isFetchDefined && Environment.isFileDefined && Environment.isFormDataDefined) {
+    return new Error(`The Fetch API is already defined.`)
+  }
+
+  if (Environment.isNotTest && Environment.isWindowDefined) {
+    return new Error('The Fetch API is already defined in the browser.')
+  }
+
+  return tcp(() => new Function(`return import('node-fetch')`)())
+}
+
+export function mergeFetchRequestInits<T>(target: FetchRequestInit<T>, ...sources: FetchRequestInit<T>[]): FetchRequestInit<T> {
+  let merged: FetchRequestInit<T>
+
+  merged = mergeObjects(target, ...sources)
+  merged.headers = new Headers()
+
+  for (let [k, v] of getFetchRequestInitHeadersEntries(target)) {
+    setFetchRequestInitHeader(merged, k, v)
+  }
+
+  for (let source of sources) {
+    for (let [k, v] of getFetchRequestInitHeadersEntries(source)) {
+      setFetchRequestInitHeader(merged, k, v)
+    }
+  }
+
+  if (getFetchRequestInitHeadersLength(merged) <= 0) {
+    delete merged.headers
+  }
+
+  return merged
+}
+
 export function setFetchRequestInitHeader<T>(init: FetchRequestInit<T> | RequestInit, name: string, value: string): void {
   if (typeof init.headers === 'undefined') {
     init.headers = new Headers()
@@ -97,27 +135,72 @@ export function setFetchRequestInitHeaderWhenUnset<T>(init: FetchRequestInit<T> 
   setFetchRequestInitHeader(init, name, value)
 }
 
-export function mergeFetchRequestInits<T>(target: FetchRequestInit<T>, ...sources: FetchRequestInit<T>[]): FetchRequestInit<T> {
-  let merged: FetchRequestInit<T>
-
-  merged = mergeObjects(target, ...sources)
-  merged.headers = new Headers()
-
-  for (let [k, v] of getFetchRequestInitHeadersEntries(target)) {
-    setFetchRequestInitHeader(merged, k, v)
+export async function useNodeFetch(NodeFetch: NodeFetch | Error): Promise<void> {
+  if (NodeFetch instanceof Error) {
+    return
   }
 
-  for (let source of sources) {
-    for (let [k, v] of getFetchRequestInitHeadersEntries(source)) {
-      setFetchRequestInitHeader(merged, k, v)
-    }
+  if (Environment.isNotTest && Environment.isWindowDefined) {
+    return
   }
 
-  if (getFetchRequestInitHeadersLength(merged) <= 0) {
-    delete merged.headers
+  if (Environment.isBlobNotDefined) {
+    global.Blob = NodeFetch.Blob
+    UtilLogger.debug('useNodeFetch', `The Blob object has been polyfilled with node-fetch.`)
   }
 
-  return merged
+  if (Environment.isFetchNotDefined) {
+    global.fetch = NodeFetch.default
+    global.Headers = NodeFetch.Headers
+    global.Request = NodeFetch.Request
+    global.Response = NodeFetch.Response
+
+    UtilLogger.debug('useNodeFetch', `The Fetch API has been polyfilled with node-fetch.`)
+  }
+
+  if (Environment.isFileNotDefined) {
+    global.File = NodeFetch.File
+    UtilLogger.debug('useNodeFetch', `The File object has been polyfilled with node-fetch.`)
+  }
+
+  if (Environment.isFormDataNotDefined) {
+    global.FormData = NodeFetch.FormData
+    UtilLogger.debug('useNodeFetch', `The FormData object has been polyfilled with node-fetch.`)
+  }
+}
+
+export function toLoggableFetchRequestInit<T>(init: FetchRequestInit<T>): FetchRequestInit {
+  let clone: FetchRequestInit
+
+  clone = omitObjectProperties(init, ['body'])
+  if (init.body === undefined) return clone
+
+  if (init.body instanceof FormData) {
+    clone.body = deserializeFormData(init.body)
+  }
+
+  return clone
+}
+
+export function toLoggableNativeFetchRequestInit(init: RequestInit): RequestInit {
+  let clone: RequestInit
+
+  clone = omitObjectProperties(init, ['body'])
+  if (init.body === undefined) return clone
+
+  if (init.body instanceof FormData) {
+    clone.body = deserializeFormData(init.body) as BodyInit
+    return clone
+  }
+
+  if (typeof init.body === 'string' && isStringJSON(init.body)) {
+    clone.body = JSON.parse(init.body)
+    return clone
+  }
+
+  clone.body = init.body
+
+  return clone
 }
 
 export function toNativeFetchRequestInit<T>(init: FetchRequestInit<T>): RequestInit {
@@ -157,40 +240,6 @@ export function toNativeFetchRequestInit<T>(init: FetchRequestInit<T>): RequestI
 
       break
   }
-
-  return clone
-}
-
-export function toLoggableFetchRequestInit<T>(init: FetchRequestInit<T>): FetchRequestInit {
-  let clone: FetchRequestInit
-
-  clone = omitObjectProperties(init, ['body'])
-  if (init.body === undefined) return clone
-
-  if (init.body instanceof FormData) {
-    clone.body = deserializeFormData(init.body)
-  }
-
-  return clone
-}
-
-export function toLoggableNativeFetchRequestInit(init: RequestInit): RequestInit {
-  let clone: RequestInit
-
-  clone = omitObjectProperties(init, ['body'])
-  if (init.body === undefined) return clone
-
-  if (init.body instanceof FormData) {
-    clone.body = deserializeFormData(init.body) as BodyInit
-    return clone
-  }
-
-  if (typeof init.body === 'string' && isStringJSON(init.body)) {
-    clone.body = JSON.parse(init.body)
-    return clone
-  }
-
-  clone.body = init.body
 
   return clone
 }

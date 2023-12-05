@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it } from 'vitest'
 import { cloneShallowArray, getArrayLastItem, getArraysDifference, getArraysIntersection, removeArrayDuplicates, removeArrayItems } from '../../src'
 
-describe('ArrayUtils', () => {
+describe('Array Utils', () => {
   let a1: number[], a2: number[], m1: number[][], m2: number[][]
 
   beforeEach(() => {

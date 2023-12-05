@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { chainPromises, chainTruthyPromises } from '../../src'
 
-describe('PromiseUtils', () => {
+describe('Promise Utils', () => {
   it('chains', async () => {
     let a1: number[], p1: () => Promise<number>, p2: () => Promise<number>
 

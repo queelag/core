@@ -1,5 +1,5 @@
+import { Environment } from '../classes/environment.js'
 import { tc } from '../functions/tc.js'
-import { Environment } from '../modules/environment.js'
 import { isStringJSON } from './string-utils.js'
 
 export function deserializeFormData<T extends object>(data: FormData): T {

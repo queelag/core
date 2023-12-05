@@ -1,12 +1,13 @@
 import { beforeAll, describe, expect, it } from 'vitest'
-import { AracnaBlob, Base64, TextCodec, useNodeFetch } from '../../src'
+import { AracnaBlob, encodeBase64, importNodeFetch, useNodeFetch } from '../../src'
 import { AracnaBlobJSON } from '../../src/definitions/interfaces'
+import { encodeText } from '../../src/utils/text-utils'
 
 describe('AracnaBlob', () => {
   let blob: Blob, qblob: AracnaBlob
 
   beforeAll(async () => {
-    await useNodeFetch(await import('node-fetch'))
+    await useNodeFetch(await importNodeFetch())
 
     blob = new Blob(['hello'], { type: 'text/plain' })
     qblob = new AracnaBlob(blob)
@@ -52,16 +53,16 @@ describe('AracnaBlob', () => {
   it('resolves array buffer', async () => {
     await qblob.resolveArrayBuffer()
 
-    expect(qblob.arrayBuffer).toStrictEqual(TextCodec.encode('hello').buffer)
-    expect(qblob.base64).toBe(Base64.encode(TextCodec.encode('hello')))
-    expect(qblob.uInt8Array).toStrictEqual(TextCodec.encode('hello'))
+    expect(qblob.arrayBuffer).toStrictEqual(encodeText('hello').buffer)
+    expect(qblob.base64).toBe(encodeBase64(encodeText('hello')))
+    expect(qblob.uInt8Array).toStrictEqual(encodeText('hello'))
   })
 
   it('resolves text', async () => {
     await qblob.resolveArrayBuffer()
 
-    expect(qblob.base64).toBe(Base64.encode(TextCodec.encode('hello')))
+    expect(qblob.base64).toBe(encodeBase64(encodeText('hello')))
     expect(qblob.text).toBe('hello')
-    expect(qblob.uInt8Array).toStrictEqual(TextCodec.encode('hello'))
+    expect(qblob.uInt8Array).toStrictEqual(encodeText('hello'))
   })
 })

@@ -37,7 +37,7 @@ interface Object {
   sy1: symbol
 }
 
-describe('ObjectUtils', () => {
+describe('Object Utils', () => {
   let o1: Object, o2: Object, clone: Record<PropertyKey, any>
 
   beforeEach(() => {

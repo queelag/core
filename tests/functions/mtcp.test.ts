@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { mtcp } from '../../src'
-import { Configuration } from '../../src/modules/configuration'
+import { Configuration } from '../../src/classes/configuration'
 
 describe('mtc', () => {
   it('makes async function try caught', async () => {

@@ -11,6 +11,8 @@ export type IsEqual<T1, T2> = (a: T1, b: T2) => boolean
 
 export type FetchRequestInfo = Request | string
 
+export type GenerateRandomStringRandom = (bytes: number) => Uint8Array
+
 export namespace KeyOf {
   // export type Deep<T, D extends number = 16> = keyof T | Path<T, D>
   export type Deep<T> = keyof T

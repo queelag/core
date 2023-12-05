@@ -1,6 +1,21 @@
+import { random } from 'nanoid'
 import { noop } from '../functions/noop.js'
 import { ConfigurationModule } from './interfaces.js'
-import { ArrayIncludes, ArrayRemoves, DebounceMapKey, DebounceMapValue, LoggerLevel, LoggerStatus, StatusTransformer, ThrottleMapKey } from './types.js'
+import {
+  ArrayIncludes,
+  ArrayRemoves,
+  DebounceMapKey,
+  DebounceMapValue,
+  GenerateRandomStringRandom,
+  IntervalMapKey,
+  IntervalMapValue,
+  LoggerLevel,
+  LoggerStatus,
+  StatusTransformer,
+  ThrottleMapKey,
+  TimeoutMapKey,
+  TimeoutMapValue
+} from './types.js'
 
 /**
  * Any
@@ -43,17 +58,9 @@ export const DEBOUNCE_MAP: Map<DebounceMapKey, DebounceMapValue> = new Map()
 export const DEFAULT_HISTORY_SIZE: number = 100
 
 /**
- * ID
+ * Interval
  */
-export const ID_ALPHABET_LOWERCASE: string = 'abcdefghijklmnopqrstuvwxyz'
-export const ID_ALPHABET_NO_LOOK_ALIKES_SAFE: string = '6789BCDFGHJKLMNPQRTWbcdfghjkmnpqrtwz'
-export const ID_ALPHABET_NO_LOOK_ALIKES: string = '346789ABCDEFGHJKLMNPQRTUVWXYabcdefghijkmnpqrtwxyz'
-export const ID_ALPHABET_NUMBERS: string = '0123456789'
-export const ID_ALPHABET_UPPERCASE: string = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
-
-export const ID_ALPHABET_ALPHANUMERIC: string = ID_ALPHABET_NUMBERS + ID_ALPHABET_LOWERCASE + ID_ALPHABET_UPPERCASE
-export const ID_ALPHABET_HEX_LOWERCASE: string = ID_ALPHABET_NUMBERS + 'abcdef'
-export const ID_ALPHABET_HEX_UPPERCASE: string = ID_ALPHABET_NUMBERS + 'ABCDEF'
+export const INTERVAL_MAP: Map<IntervalMapKey, IntervalMapValue> = new Map()
 
 /**
  * Localization
@@ -83,6 +90,21 @@ export const DEFAULT_STATUS_TRANSFORMER: StatusTransformer = (keys: string[]) =>
 /**
  * String Utils
  */
+export const ALPHABET_LOWERCASE: string = 'abcdefghijklmnopqrstuvwxyz'
+export const ALPHABET_NO_LOOK_ALIKES_SAFE: string = '6789BCDFGHJKLMNPQRTWbcdfghjkmnpqrtwz'
+export const ALPHABET_NO_LOOK_ALIKES: string = '346789ABCDEFGHJKLMNPQRTUVWXYabcdefghijkmnpqrtwxyz'
+export const ALPHABET_NUMBERS: string = '0123456789'
+export const ALPHABET_UPPERCASE: string = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+
+export const ALPHABET_ALPHANUMERIC: string = ALPHABET_NUMBERS + ALPHABET_LOWERCASE + ALPHABET_UPPERCASE
+export const ALPHABET_HEX_LOWERCASE: string = ALPHABET_NUMBERS + 'abcdef'
+export const ALPHABET_HEX_UPPERCASE: string = ALPHABET_NUMBERS + 'ABCDEF'
+
+export const DEFAULT_GENERATE_RANDOM_STRING_ALPHABET: string = ALPHABET_ALPHANUMERIC
+export const DEFAULT_GENERATE_RANDOM_STRING_RANDOM: GenerateRandomStringRandom = random
+export const DEFAULT_GENERATE_RANDOM_STRING_SEPARATOR: string = '-'
+export const DEFAULT_GENERATE_RANDOM_STRING_SIZE: number = 32
+
 export const REGEXP_NOT_LETTERS_AND_NUMBERS: RegExp = /[^a-zA-Z0-9]/g
 export const REGEXP_NOT_LOWERCASE_LETTERS_AND_NUMBERS: RegExp = /[^a-z0-9]/g
 export const REGEXP_UPPERCASE_LETTERS: RegExp = /[A-Z]/g
@@ -91,6 +113,11 @@ export const REGEXP_UPPERCASE_LETTERS: RegExp = /[A-Z]/g
  * Throttle
  */
 export const THROTTLE_MAP: Map<ThrottleMapKey, number> = new Map()
+
+/**
+ * Timeout
+ */
+export const TIMEOUT_MAP: Map<TimeoutMapKey, TimeoutMapValue> = new Map()
 
 /**
  * Typeahead
