@@ -2,8 +2,8 @@ import { EMPTY_OBJECT } from '../definitions/constants.js'
 import { APIConfig } from '../definitions/interfaces.js'
 import { RequestMethod, WriteMode } from '../definitions/types.js'
 import { rc } from '../functions/rc.js'
+import { serializeURLSearchParams } from '../index.js'
 import { importNodeFetch, mergeFetchRequestInits, useNodeFetch } from '../utils/fetch-utils.js'
-import { serializeQueryParameters } from '../utils/query-parameters-utils.js'
 import { appendSearchParamsToURL, concatURL } from '../utils/url-utils.js'
 import { FetchError } from './fetch-error.js'
 import { FetchResponse } from './fetch-response.js'
@@ -106,7 +106,7 @@ export class API<T extends APIConfig = APIConfig, U = undefined> {
 
   async transformQueryParameters<V>(method: RequestMethod, path: string, body: V | undefined, config: T): Promise<string> {
     if (typeof config.query === 'object') {
-      return serializeQueryParameters(config.query)
+      return serializeURLSearchParams(config.query).toString()
     }
 
     return config.query ?? ''

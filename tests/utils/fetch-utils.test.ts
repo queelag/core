@@ -102,6 +102,11 @@ describe('Fetch Utils', () => {
     expect(hasFetchRequestInitHeader(native, 'content-type')).toBeFalsy()
     expect(native.body).toStrictEqual(init.body)
 
+    init.body = new URLSearchParams()
+    native = toNativeFetchRequestInit(init)
+    expect(getFetchRequestInitHeader(native, 'content-type')).toBe('application/x-www-form-urlencoded')
+    expect(native.body).toStrictEqual(init.body)
+
     inits = [{ body: 0n }, { body: false }, { body: noop }, { body: 0 }, { body: 'hello' }, { body: Symbol() }]
     for (let init of inits) {
       native = toNativeFetchRequestInit(init)
@@ -124,6 +129,12 @@ describe('Fetch Utils', () => {
     loggable = toLoggableFetchRequestInit(init)
     expect(loggable.body).toStrictEqual({ name: 'john' })
 
+    init.body = new URLSearchParams()
+    init.body.set('name', 'john')
+
+    loggable = toLoggableFetchRequestInit(init)
+    expect(loggable.body).toStrictEqual({ name: 'john' })
+
     delete init.body
     expect(toLoggableFetchRequestInit(init)).toStrictEqual({})
   })
@@ -135,6 +146,12 @@ describe('Fetch Utils', () => {
     native.body.append('name', 'john')
 
     loggable = toLoggableNativeFetchRequestInit(native)
+    expect(loggable.body).toStrictEqual({ name: 'john' })
+
+    init.body = new URLSearchParams()
+    init.body.set('name', 'john')
+
+    loggable = toLoggableNativeFetchRequestInit(init)
     expect(loggable.body).toStrictEqual({ name: 'john' })
 
     native.body = '{}'

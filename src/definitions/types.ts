@@ -4,6 +4,9 @@ export type ArrayRemoves<T> = (array: T[], item: T) => boolean
 export type DebounceMapKey = Function | string
 export type DebounceMapValue = NodeJS.Timeout | number
 
+export type DeserializeURLSearchParamsType = 'array' | 'object' | 'string'
+export type SerializeURLSearchParamsType = 'string' | 'url-search-params'
+
 export type IntervalMapKey = Function | string
 export type IntervalMapValue = NodeJS.Timeout | number
 

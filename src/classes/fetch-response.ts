@@ -55,7 +55,16 @@ export class FetchResponse<T = unknown> implements Response {
         ClassLogger.debug('FetchResponse', 'parse', `The data has been parsed as JSON.`, json)
 
         break
-      // istanbul ignore next
+      case this.ContentType.startsWith('application/') && this.ContentType.includes('x-www-form-urlencoded'):
+        let params: string | Error
+
+        params = await tcp(() => this.text())
+        if (params instanceof Error) return this.setData(new URLSearchParams())
+
+        this.setData(new URLSearchParams(params))
+        ClassLogger.debug('FetchResponse', 'parse', `The data has been parsed as URLSearchParams.`, new URLSearchParams(params))
+
+        break
       case this.ContentType.startsWith('multipart/') && this.ContentType.includes('form-data'):
         let form: FormData | Error
 

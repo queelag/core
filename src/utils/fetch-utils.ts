@@ -6,6 +6,7 @@ import { isArray } from './array-utils.js'
 import { deserializeFormData } from './form-data-utils.js'
 import { mergeObjects, omitObjectProperties } from './object-utils.js'
 import { isStringJSON } from './string-utils.js'
+import { deserializeURLSearchParams } from './url-search-params-utils.js'
 
 export function deleteFetchRequestInitHeader<T>(init: FetchRequestInit<T> | RequestInit, name: string): void {
   if (typeof init.headers === 'undefined') {
@@ -177,7 +178,15 @@ export function toLoggableFetchRequestInit<T>(init: FetchRequestInit<T>): FetchR
 
   if (init.body instanceof FormData) {
     clone.body = deserializeFormData(init.body)
+    return clone
   }
+
+  if (init.body instanceof URLSearchParams) {
+    clone.body = deserializeURLSearchParams(init.body)
+    return clone
+  }
+
+  clone.body = init.body
 
   return clone
 }
@@ -194,6 +203,11 @@ export function toLoggableNativeFetchRequestInit(init: RequestInit): RequestInit
 
   if (init.body instanceof FormData) {
     clone.body = deserializeFormData(init.body) as BodyInit
+    return clone
+  }
+
+  if (init.body instanceof URLSearchParams) {
+    clone.body = deserializeURLSearchParams(init.body) as any
     return clone
   }
 
@@ -222,7 +236,14 @@ export function toNativeFetchRequestInit<T>(init: FetchRequestInit<T>): RequestI
 
   if (init.body instanceof FormData) {
     clone.body = init.body
-    // this.setRequestInitHeaderOnlyIfUnset(clone, 'content-type', 'multipart/form-data')
+    // setFetchRequestInitHeaderWhenUnset(clone, 'content-type', 'multipart/form-data')
+
+    return clone
+  }
+
+  if (init.body instanceof URLSearchParams) {
+    clone.body = init.body
+    setFetchRequestInitHeaderWhenUnset(clone, 'content-type', 'application/x-www-form-urlencoded')
 
     return clone
   }

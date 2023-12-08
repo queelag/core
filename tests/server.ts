@@ -56,6 +56,11 @@ server.get('/text', (req: FastifyRequest, rep: FastifyReply) => {
   rep.send('hello')
 })
 
+server.get('/url-search-params', (req: FastifyRequest, rep: FastifyReply) => {
+  rep.header('content-type', 'application/x-www-form-urlencoded')
+  rep.send(new URLSearchParams('a=0').toString())
+})
+
 server.get('/any', (req: FastifyRequest, rep: FastifyReply) => rep.send())
 // server.head('/any', (req: FastifyRequest, rep: FastifyReply) => rep.send())
 server.options('/any', (req: FastifyRequest, rep: FastifyReply) => rep.send())

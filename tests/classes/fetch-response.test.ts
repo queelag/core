@@ -47,6 +47,10 @@ describe('FetchResponse', () => {
     await response.parse()
     expect(response.data).toStrictEqual({})
 
+    response.headers.set('content-type', 'application/x-www-form-urlencoded')
+    await response.parse()
+    expect(response.data).toBeInstanceOf(URLSearchParams)
+
     response.headers.set('content-type', 'multipart/form-data')
     await response.parse()
     expect(response.data).toStrictEqual(new FormData())

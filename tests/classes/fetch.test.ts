@@ -30,17 +30,21 @@ describe('Fetch', () => {
   it('handles get requests', async () => {
     response = await Fetch.get(`${address}/blob`)
     expect(tie<FetchResponse>(response).data).toBeInstanceOf(Blob)
-    // expect(await getResponseData<Blob>(response).arrayBuffer()).toStrictEqual([0])
+    // expect(tie<FetchResponse>(response).data).toStrictEqual([0])
 
     response = await Fetch.get(`${address}/buffer`)
     expect(tie<FetchResponse>(response).data).toBeInstanceOf(ArrayBuffer)
-    // expect(getResponseData(response)).toStrictEqual([0])
+    // expect(tie<FetchResponse>(response).data).toStrictEqual([0])
 
     response = await Fetch.get(`${address}/json`)
     expect(tie<FetchResponse>(response).data).toMatchObject({ a: 0 })
 
     response = await Fetch.get(`${address}/text`)
     expect(tie<FetchResponse>(response).data).toBe('hello')
+
+    response = await Fetch.get(`${address}/url-search-params`)
+    expect(tie<FetchResponse>(response).data).toBeInstanceOf(URLSearchParams)
+    expect(tie<FetchResponse<URLSearchParams>>(response).data.get('a')).toBe('0')
   })
 
   it('handles head requests', async () => {
