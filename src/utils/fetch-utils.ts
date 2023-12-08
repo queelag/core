@@ -188,6 +188,10 @@ export function toLoggableNativeFetchRequestInit(init: RequestInit): RequestInit
   clone = omitObjectProperties(init, ['body'])
   if (init.body === undefined) return clone
 
+  if (init.headers) {
+    clone.headers = getFetchRequestInitHeadersEntries(init) as HeadersInit
+  }
+
   if (init.body instanceof FormData) {
     clone.body = deserializeFormData(init.body) as BodyInit
     return clone
@@ -209,7 +213,7 @@ export function toNativeFetchRequestInit<T>(init: FetchRequestInit<T>): RequestI
   clone = omitObjectProperties(init, ['body'])
   if (init.body === undefined) return clone
 
-  if (init.body instanceof ArrayBuffer || init.body instanceof Blob) {
+  if (init.body instanceof ArrayBuffer || init.body instanceof Blob || init.body instanceof Uint8Array) {
     clone.body = init.body
     setFetchRequestInitHeaderWhenUnset(clone, 'content-type', 'application/octet-stream')
 
