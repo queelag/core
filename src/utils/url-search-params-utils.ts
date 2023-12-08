@@ -49,6 +49,7 @@ export function serializeURLSearchParams<T extends object>(params: string | stri
           case 'undefined':
             continue
           case 'string':
+            record[k] = v
             continue
         }
       }
