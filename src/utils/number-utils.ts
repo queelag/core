@@ -68,8 +68,8 @@ export function getLowestNumber(...args: any[]): number {
   return lowest
 }
 
-export function parseBigInt(value: string | number | bigint | boolean, fallback?: BigInt): BigInt {
-  let parsed: BigInt | Error
+export function parseBigInt(value: string | number | bigint | boolean, fallback?: bigint): bigint {
+  let parsed: bigint | Error
 
   parsed = tc(() => BigInt(value))
   if (parsed instanceof Error) return fallback ?? BigInt(0)
