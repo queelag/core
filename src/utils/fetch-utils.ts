@@ -1,8 +1,19 @@
-import { Environment } from '../classes/environment.js'
 import { FetchRequestInit, NodeFetch } from '../definitions/interfaces.js'
 import { tcp } from '../functions/tcp.js'
 import { UtilLogger } from '../loggers/util-logger.js'
 import { isArray } from './array-utils.js'
+import {
+  isBlobDefined,
+  isBlobNotDefined,
+  isFetchDefined,
+  isFetchNotDefined,
+  isFileDefined,
+  isFileNotDefined,
+  isFormDataDefined,
+  isFormDataNotDefined,
+  isNodeEnvNotTest,
+  isWindowDefined
+} from './environment-utils.js'
 import { deserializeFormData } from './form-data-utils.js'
 import { mergeObjects, omitObjectProperties } from './object-utils.js'
 import { isStringJSON } from './string-utils.js'
@@ -72,11 +83,11 @@ export function getFetchRequestInitHeadersLength<T>(init: FetchRequestInit<T> | 
 }
 
 export async function importNodeFetch(): Promise<NodeFetch | Error> {
-  if (Environment.isBlobDefined && Environment.isFetchDefined && Environment.isFileDefined && Environment.isFormDataDefined) {
+  if (isBlobDefined() && isFetchDefined() && isFileDefined() && isFormDataDefined()) {
     return new Error(`The Fetch API is already defined.`)
   }
 
-  if (Environment.isNotTest && Environment.isWindowDefined) {
+  if (isNodeEnvNotTest() && isWindowDefined()) {
     return new Error('The Fetch API is already defined in the browser.')
   }
 
@@ -141,16 +152,16 @@ export async function useNodeFetch(NodeFetch: NodeFetch | Error): Promise<void> 
     return
   }
 
-  if (Environment.isNotTest && Environment.isWindowDefined) {
+  if (isNodeEnvNotTest() && isWindowDefined()) {
     return
   }
 
-  if (Environment.isBlobNotDefined) {
+  if (isBlobNotDefined()) {
     global.Blob = NodeFetch.Blob
     UtilLogger.debug('useNodeFetch', `The Blob object has been polyfilled with node-fetch.`)
   }
 
-  if (Environment.isFetchNotDefined) {
+  if (isFetchNotDefined()) {
     global.fetch = NodeFetch.default
     global.Headers = NodeFetch.Headers
     global.Request = NodeFetch.Request
@@ -159,12 +170,12 @@ export async function useNodeFetch(NodeFetch: NodeFetch | Error): Promise<void> 
     UtilLogger.debug('useNodeFetch', `The Fetch API has been polyfilled with node-fetch.`)
   }
 
-  if (Environment.isFileNotDefined) {
+  if (isFileNotDefined()) {
     global.File = NodeFetch.File
     UtilLogger.debug('useNodeFetch', `The File object has been polyfilled with node-fetch.`)
   }
 
-  if (Environment.isFormDataNotDefined) {
+  if (isFormDataNotDefined()) {
     global.FormData = NodeFetch.FormData
     UtilLogger.debug('useNodeFetch', `The FormData object has been polyfilled with node-fetch.`)
   }

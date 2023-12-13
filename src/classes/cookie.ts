@@ -3,7 +3,7 @@ import { DEFAULT_COOKIE_SEPARATOR } from '../definitions/constants.js'
 import { CookieItem, CookieObject } from '../definitions/interfaces.js'
 import { KeyOf, Primitive } from '../definitions/types.js'
 import { mtc } from '../functions/mtc.js'
-import { ModuleLogger } from '../loggers/module-logger.js'
+import { ClassLogger } from '../loggers/class-logger.js'
 import { deserializeCookie, serializeCookie } from '../utils/cookie-utils.js'
 import { setObjectProperty } from '../utils/object-utils.js'
 
@@ -37,7 +37,7 @@ export class Cookie {
       set = this._set(serialized)
       if (set instanceof Error) return set
 
-      ModuleLogger.debug(this.name, 'remove', `The cookie ${key} has been removed.`)
+      ClassLogger.debug(this.name, 'remove', `The cookie ${key} has been removed.`)
     }
   }
 
@@ -47,18 +47,18 @@ export class Cookie {
     object = this.deserialize()
     if (object instanceof Error) return object
 
-    ModuleLogger.debug(this.name, 'get', `The cookies have been parsed.`, object)
+    ClassLogger.debug(this.name, 'get', `The cookies have been parsed.`, object)
 
     item = {} as T
 
     for (let k in object) {
       if (!k.startsWith(key + this.separator)) {
-        ModuleLogger.debug(this.name, 'get', `The cookie ${k} has been skipped.`)
+        ClassLogger.debug(this.name, 'get', `The cookie ${k} has been skipped.`)
         continue
       }
 
       setObjectProperty(item, this.toCookieItemKey(key, k), object[k])
-      ModuleLogger.debug(this.name, 'get', `The cookie ${k} has been set to the item.`, item)
+      ClassLogger.debug(this.name, 'get', `The cookie ${k} has been set to the item.`, item)
     }
 
     return item
@@ -75,12 +75,12 @@ export class Cookie {
 
       for (let k in object) {
         if (!k.startsWith(key)) {
-          ModuleLogger.debug(this.name, 'get', `The key ${k} has been skipped.`)
+          ClassLogger.debug(this.name, 'get', `The key ${k} has been skipped.`)
           continue
         }
 
         keys.push(this.toCookieItemKey(key, k))
-        ModuleLogger.debug(this.name, 'get', `The key ${k} has been pushed to the keys.`, keys)
+        ClassLogger.debug(this.name, 'get', `The key ${k} has been pushed to the keys.`, keys)
       }
     }
 
@@ -93,14 +93,14 @@ export class Cookie {
       set = this._set(serialized)
       if (set instanceof Error) return set
 
-      ModuleLogger.debug(this.name, 'remove', `The key ${String(k)} has been removed.`)
+      ClassLogger.debug(this.name, 'remove', `The key ${String(k)} has been removed.`)
     }
   }
 
   set<T extends CookieItem>(key: string, item: T, options: CookieSerializeOptions = {}, keys?: KeyOf.Shallow<T>[]): void | Error {
     if (typeof keys === 'undefined') {
       keys = Object.keys(item)
-      ModuleLogger.debug(this.name, 'set', `The keys have been derived from the item.`, keys)
+      ClassLogger.debug(this.name, 'set', `The keys have been derived from the item.`, keys)
     }
 
     for (let k of keys) {
@@ -112,7 +112,7 @@ export class Cookie {
       set = this._set(serialized)
       if (set instanceof Error) return set
 
-      ModuleLogger.debug(this.name, 'set', `The key ${String(k)} has been set.`, this._get(), options)
+      ClassLogger.debug(this.name, 'set', `The key ${String(k)} has been set.`, this._get(), options)
     }
   }
 
@@ -126,25 +126,25 @@ export class Cookie {
     object = this.deserialize()
     if (object instanceof Error) return object
 
-    ModuleLogger.debug(this.name, 'copy', `The cookies have been parsed.`, object)
+    ClassLogger.debug(this.name, 'copy', `The cookies have been parsed.`, object)
 
     if (typeof keys === 'undefined') {
       keys = []
 
       for (let k in object) {
         if (!k.startsWith(key)) {
-          ModuleLogger.debug(this.name, 'parse', `The key ${k} has been skipped.`)
+          ClassLogger.debug(this.name, 'parse', `The key ${k} has been skipped.`)
           continue
         }
 
         keys.push(this.toCookieItemKey(key, k))
-        ModuleLogger.debug(this.name, 'parse', `The key ${k} has been pushed to the keys.`, keys)
+        ClassLogger.debug(this.name, 'parse', `The key ${k} has been pushed to the keys.`, keys)
       }
     }
 
     for (let k of keys) {
       target[k] = object[this.toDocumentCookieName(key, k)] as T2[keyof T]
-      ModuleLogger.debug(this.name, 'parse', `The cookie ${String(k)} has been copied to the target.`, target)
+      ClassLogger.debug(this.name, 'parse', `The cookie ${String(k)} has been copied to the target.`, target)
     }
   }
 
@@ -154,7 +154,7 @@ export class Cookie {
     object = this.deserialize()
     if (object instanceof Error) return false
 
-    ModuleLogger.debug(this.name, 'get', `The cookies have been parsed.`, object)
+    ClassLogger.debug(this.name, 'get', `The cookies have been parsed.`, object)
 
     if (typeof keys === 'undefined') {
       for (let k in object) {

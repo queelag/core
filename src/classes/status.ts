@@ -1,6 +1,6 @@
 import { DEFAULT_STATUS_TRANSFORMER } from '../definitions/constants.js'
 import { StatusTransformer } from '../definitions/types.js'
-import { ModuleLogger } from '../loggers/module-logger.js'
+import { ClassLogger } from '../loggers/class-logger.js'
 
 export class Status {
   readonly data: Map<string, string>
@@ -33,12 +33,12 @@ export class Status {
 
   set(keys: string[], status: string): void {
     this.data.set(this.transformer(keys), status)
-    ModuleLogger.debug('Status', 'set', `The status for the key ${this.transformer(keys)} has been set to ${status}.`)
+    ClassLogger.debug('Status', 'set', `The status for the key ${this.transformer(keys)} has been set to ${status}.`)
   }
 
   clear(): void {
     this.data.clear()
-    ModuleLogger.debug('Status', 'clear', `Every status has been set to ${Status.IDLE}.`)
+    ClassLogger.debug('Status', 'clear', `Every status has been set to ${Status.IDLE}.`)
   }
 
   isIdle(...keys: string[]): boolean {

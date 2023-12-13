@@ -1,7 +1,7 @@
 import { DEFAULT_TYPEAHEAD_DEBOUNCE_TIME } from '../definitions/constants.js'
 import { TypeaheadOnMatch, TypeaheadPredicate } from '../definitions/types.js'
 import { debounce } from '../functions/debounce.js'
-import { ModuleLogger } from '../loggers/module-logger.js'
+import { ClassLogger } from '../loggers/class-logger.js'
 import { generateRandomString } from '../utils/string-utils.js'
 
 export class Typeahead<T> {
@@ -28,7 +28,7 @@ export class Typeahead<T> {
     }
 
     this.value += key
-    ModuleLogger.verbose('Typeahead', 'handle', `The typeahead value has been updated.`, [key, this.value])
+    ClassLogger.verbose('Typeahead', 'handle', `The typeahead value has been updated.`, [key, this.value])
 
     match = items.find((item: T, index: number, items: T[]) => this.predicate(item, this.value, index, items))
     if (match) this.onMatch(match)
@@ -47,6 +47,6 @@ export class Typeahead<T> {
     if (match) this.onMatch(match)
 
     this.value = ''
-    ModuleLogger.verbose('Typeahead', 'handle', `The typeahead value has been reset.`)
+    ClassLogger.verbose('Typeahead', 'handle', `The typeahead value has been reset.`)
   }
 }

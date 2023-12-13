@@ -1,6 +1,6 @@
 import { DEFAULT_HISTORY_SIZE } from '../definitions/constants.js'
 import { HistoryDataTarget } from '../definitions/interfaces.js'
-import { ModuleLogger } from '../loggers/module-logger.js'
+import { ClassLogger } from '../loggers/class-logger.js'
 import { cloneDeepObject } from '../utils/object-utils.js'
 
 export class History<T extends HistoryDataTarget = HistoryDataTarget, K extends keyof T = keyof T> {
@@ -20,7 +20,7 @@ export class History<T extends HistoryDataTarget = HistoryDataTarget, K extends 
 
   redo(): void {
     if (this.isNotRedoable) {
-      return ModuleLogger.warn('History', 'redo', `This is not redoable.`)
+      return ClassLogger.warn('History', 'redo', `This is not redoable.`)
     }
 
     this.setIndex(1)
@@ -28,7 +28,7 @@ export class History<T extends HistoryDataTarget = HistoryDataTarget, K extends 
 
   undo(): void {
     if (this.isNotUndoable) {
-      return ModuleLogger.warn('History', 'undo', `This is not undoable.`)
+      return ClassLogger.warn('History', 'undo', `This is not undoable.`)
     }
 
     this.setIndex(-1)
@@ -37,7 +37,7 @@ export class History<T extends HistoryDataTarget = HistoryDataTarget, K extends 
   push(): void {
     if (this.isNotPushable) {
       this.versions = this.versions.slice(1, this.size)
-      ModuleLogger.debug('History', 'push', `The first version has been removed.`)
+      ClassLogger.debug('History', 'push', `The first version has been removed.`)
     }
 
     this.versions = [...this.versions, cloneDeepObject(this.target[this.key])]

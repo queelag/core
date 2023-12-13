@@ -44,9 +44,14 @@ export function serializeURLSearchParams<T extends object>(params: string | stri
             record[k] = v.toString()
             continue
           case 'function':
-          case 'object':
           case 'symbol':
           case 'undefined':
+            continue
+          case 'object':
+            if (isArray(v)) {
+              record[k] = v.join(',')
+            }
+
             continue
           case 'string':
             record[k] = v

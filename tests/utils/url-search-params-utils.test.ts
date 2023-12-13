@@ -46,5 +46,7 @@ describe('Query Parameters Utils', () => {
 
     expect(serializeURLSearchParams('a=0&b=1').get('a')).toBe('0')
     expect(serializeURLSearchParams('a=0&b=1').get('b')).toBe('1')
+
+    expect(serializeURLSearchParams({ a: [0, 1] }).get('a')).toBe('0,1')
   })
 })

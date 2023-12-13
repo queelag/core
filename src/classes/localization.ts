@@ -1,32 +1,38 @@
-import { REGEXP_VARIABLE_INSIDE_CURLY_BRACKETS, SORT_REGEXP_VARIABLE_INSIDE_CURLY_BRACKETS_MATCHES_COMPARE_FN } from '../definitions/constants.js'
-import { StorageName } from '../definitions/enums.js'
+import {
+  DEFAULT_LOCALIZATION_STORAGE_KEY,
+  REGEXP_VARIABLE_INSIDE_CURLY_BRACKETS,
+  SORT_REGEXP_VARIABLE_INSIDE_CURLY_BRACKETS_MATCHES_COMPARE_FN
+} from '../definitions/constants.js'
 import { LocalizationPack, LocalizationVariables } from '../definitions/interfaces.js'
-import { ModuleLogger } from '../loggers/module-logger.js'
+import { Storage } from '../definitions/types.js'
+import { ClassLogger } from '../loggers/class-logger.js'
+import { MemoryStorage } from '../storages/memory-storage.js'
 import { isNotError } from '../utils/error-utils.js'
 import { getObjectProperty, hasObjectProperty, mergeObjects } from '../utils/object-utils.js'
-import { AsyncStorage } from './async-storage.js'
-import { SyncStorage } from './sync-storage.js'
 
 export class Localization {
   language: string
   packs: LocalizationPack[]
-  storage?: AsyncStorage | SyncStorage
+  storage: Storage
+  storageKey: string
   variables: LocalizationVariables
 
-  constructor(language: string, packs: LocalizationPack[] = [], storage?: AsyncStorage | SyncStorage, variables: LocalizationVariables = {}) {
+  constructor(
+    language: string,
+    packs: LocalizationPack[] = [],
+    storage: Storage = MemoryStorage,
+    storageKey: string = DEFAULT_LOCALIZATION_STORAGE_KEY,
+    variables: LocalizationVariables = {}
+  ) {
     this.language = language
     this.packs = packs
     this.storage = storage
+    this.storageKey = storageKey
     this.variables = variables
   }
 
   async initialize(): Promise<boolean> {
-    if (!this.storage) {
-      ModuleLogger.warn('Localization', 'storeLanguage', `This localization instance has no storage.`)
-      return false
-    }
-
-    return isNotError(await this.storage.copy(StorageName.LOCALIZATION, this, ['language']))
+    return isNotError(await this.storage.copy(this.storageKey, this, ['language']))
   }
 
   push(...packs: LocalizationPack[]): void {
@@ -37,13 +43,13 @@ export class Localization {
 
       if (potential.language) {
         potential.data = mergeObjects(potential.data, pack.data)
-        ModuleLogger.debug('Localization', 'add', `The pack data has been merged for the language ${pack.language}.`, [potential.data])
+        ClassLogger.debug('Localization', 'add', `The pack data has been merged for the language ${pack.language}.`, [potential.data])
 
         continue
       }
 
       this.packs.push(pack)
-      ModuleLogger.debug('Localization', 'add', `The pack for the language ${pack.language} has been pushed.`, pack)
+      ClassLogger.debug('Localization', 'add', `The pack for the language ${pack.language} has been pushed.`, pack)
     }
   }
 
@@ -83,22 +89,17 @@ export class Localization {
   }
 
   async storeLanguage(): Promise<boolean> {
-    if (!this.storage) {
-      ModuleLogger.warn('Localization', 'storeLanguage', `This localization instance has no storage.`)
-      return false
-    }
-
-    return isNotError(await this.storage.set(StorageName.LOCALIZATION, this, ['language']))
+    return isNotError(await this.storage.set(this.storageKey, this, ['language']))
   }
 
   setLanguage(language: string): void {
     this.language = language
-    ModuleLogger.debug('Localization', 'setLanguage', `The language has been set to ${this.language}.`)
+    ClassLogger.debug('Localization', 'setLanguage', `The language has been set to ${this.language}.`)
   }
 
   setVariables(variables: LocalizationVariables): void {
     this.variables = variables
-    ModuleLogger.debug('Localization', 'setVariables', `The variables have been set.`, variables)
+    ClassLogger.debug('Localization', 'setVariables', `The variables have been set.`, variables)
   }
 
   has(path: string): boolean

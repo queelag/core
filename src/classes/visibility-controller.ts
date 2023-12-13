@@ -1,35 +1,35 @@
 import { sleep } from '../functions/sleep.js'
-import { ModuleLogger } from '../loggers/module-logger.js'
+import { ClassLogger } from '../loggers/class-logger.js'
 
 export class VisibilityController {
   private data: Map<string, string> = new Map()
 
   async hide(name: string, delay: number = 0): Promise<void> {
     if (this.isHidden(name)) {
-      return ModuleLogger.warn('VisibilityController', 'hide', `The key ${name} is already hidden.`)
+      return ClassLogger.warn('VisibilityController', 'hide', `The key ${name} is already hidden.`)
     }
 
     this.data.set(name, VisibilityController.HIDING)
-    ModuleLogger.verbose('VisibilityController', 'hide', `The key ${name} is hiding.`)
+    ClassLogger.verbose('VisibilityController', 'hide', `The key ${name} is hiding.`)
 
     await sleep(delay)
 
     this.data.set(name, VisibilityController.HIDDEN)
-    ModuleLogger.verbose('VisibilityController', 'hide', `The key ${name} is hidden.`)
+    ClassLogger.verbose('VisibilityController', 'hide', `The key ${name} is hidden.`)
   }
 
   async show(name: string, delay: number = 0): Promise<void> {
     if (this.isVisible(name)) {
-      return ModuleLogger.warn('VisibilityController', 'show', `The key ${name} is already visible.`)
+      return ClassLogger.warn('VisibilityController', 'show', `The key ${name} is already visible.`)
     }
 
     this.data.set(name, VisibilityController.SHOWING)
-    ModuleLogger.verbose('VisibilityController', 'hide', `The key ${name} is showing.`)
+    ClassLogger.verbose('VisibilityController', 'hide', `The key ${name} is showing.`)
 
     await sleep(delay)
 
     this.data.set(name, VisibilityController.VISIBLE)
-    ModuleLogger.verbose('VisibilityController', 'hide', `The key ${name} is visible.`)
+    ClassLogger.verbose('VisibilityController', 'hide', `The key ${name} is visible.`)
   }
 
   async toggle(name: string, delay: number = 0): Promise<void> {
@@ -42,7 +42,7 @@ export class VisibilityController {
 
   clear(): void {
     this.data.clear()
-    ModuleLogger.verbose('VisibilityController', 'clear', `The data has been cleared.`)
+    ClassLogger.verbose('VisibilityController', 'clear', `The data has been cleared.`)
   }
 
   private get(name: string): string {

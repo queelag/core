@@ -1,7 +1,7 @@
 import { AracnaFileJSON } from '../definitions/interfaces.js'
 import { StubFile } from '../definitions/stubs.js'
+import { isFileNotDefined } from '../utils/environment-utils.js'
 import { AracnaBlob } from './aracna-blob.js'
-import { Environment } from './environment.js'
 
 export class AracnaFile extends AracnaBlob {
   readonly file: File
@@ -16,7 +16,7 @@ export class AracnaFile extends AracnaBlob {
     file = args[0]
     json = args[0]
 
-    if (Environment.isFileNotDefined || args[0] instanceof File) {
+    if (isFileNotDefined() || args[0] instanceof File) {
       this.file = file
 
       return
@@ -51,7 +51,7 @@ export class AracnaFile extends AracnaBlob {
   }
 
   static get EMPTY(): AracnaFile {
-    if (Environment.isFileNotDefined) {
+    if (isFileNotDefined()) {
       return new AracnaFile(new StubFile([], '') as File)
     }
 

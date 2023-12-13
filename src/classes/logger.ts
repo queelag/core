@@ -1,9 +1,9 @@
 import { DEFAULT_LOGGER_COLORS, DEFAULT_LOGGER_SEPARATOR, LOGGER_LEVELS, LOGGER_STATUSES } from '../definitions/constants.js'
 import { ANSIColor } from '../definitions/enums.js'
 import { LoggerLevel, LoggerStatus } from '../definitions/types.js'
+import { getProcessEnvKey, isFormDataDefined, isNodeEnvProduction, isNodeEnvTest, isWindowNotDefined } from '../utils/environment-utils.js'
 import { deserializeFormData } from '../utils/form-data-utils.js'
 import { getLoggerANSIColor } from '../utils/logger-utils.js'
-import { Environment } from './environment.js'
 
 export class Logger {
   colors: boolean
@@ -14,8 +14,8 @@ export class Logger {
 
   constructor(
     name: string,
-    level: LoggerLevel = Logger.getLevelFromEnvironment(name) ?? (Environment.isProduction ? 'error' : 'warn'),
-    status: LoggerStatus = Logger.getStatusFromEnvironment(name) ?? (Environment.isTest ? 'off' : 'on'),
+    level: LoggerLevel = Logger.getLevelFromEnvironment(name) ?? (isNodeEnvProduction() ? 'error' : 'warn'),
+    status: LoggerStatus = Logger.getStatusFromEnvironment(name) ?? (isNodeEnvTest() ? 'off' : 'on'),
     colors: boolean = DEFAULT_LOGGER_COLORS,
     separator: string = DEFAULT_LOGGER_SEPARATOR
   ) {
@@ -96,18 +96,18 @@ export class Logger {
 
       if (primitives.length > 0) {
         if (this.colors) {
-          Environment.isWindowNotDefined && print.push(getLoggerANSIColor(level))
+          isWindowNotDefined() && print.push(getLoggerANSIColor(level))
         }
 
         print.push(primitives.join(this.separator))
         primitives = []
 
         if (this.colors) {
-          Environment.isWindowNotDefined && print.push(ANSIColor.RESET)
+          isWindowNotDefined() && print.push(ANSIColor.RESET)
         }
       }
 
-      if (Environment.isFormDataDefined && arg instanceof FormData) {
+      if (isFormDataDefined() && arg instanceof FormData) {
         print.push(deserializeFormData(arg))
         continue
       }
@@ -117,7 +117,7 @@ export class Logger {
 
     if (primitives.length > 0) {
       if (this.colors) {
-        Environment.isWindowNotDefined && print.push(getLoggerANSIColor(level))
+        isWindowNotDefined() && print.push(getLoggerANSIColor(level))
       }
 
       print.push(primitives.join(this.separator))
@@ -129,7 +129,7 @@ export class Logger {
   static getLevelFromEnvironment(name: string): LoggerLevel | undefined {
     let value: string
 
-    value = Environment.get(`LOGGER_${name.toUpperCase()}_LEVEL`)
+    value = getProcessEnvKey(`LOGGER_${name.toUpperCase()}_LEVEL`)
     if (!LOGGER_LEVELS.includes(value as LoggerLevel)) return
 
     return value as LoggerLevel
@@ -138,7 +138,7 @@ export class Logger {
   static getStatusFromEnvironment(name: string): LoggerStatus | undefined {
     let value: string
 
-    value = Environment.get(`LOGGER_${name.toUpperCase()}_STATUS`)
+    value = getProcessEnvKey(`LOGGER_${name.toUpperCase()}_STATUS`)
     if (!LOGGER_STATUSES.includes(value as LoggerStatus)) return
 
     return value as LoggerStatus

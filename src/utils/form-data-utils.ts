@@ -1,5 +1,5 @@
-import { Environment } from '../classes/environment.js'
 import { tc } from '../functions/tc.js'
+import { isBlobDefined, isFileDefined } from './environment-utils.js'
 import { isStringJSON } from './string-utils.js'
 
 export function deserializeFormData<T extends object>(data: FormData): T {
@@ -39,8 +39,8 @@ export function serializeFormData<T extends object>(object: T): FormData {
         }
 
         switch (true) {
-          case Environment.isBlobDefined && v instanceof Blob:
-          case Environment.isFileDefined && v instanceof File:
+          case isBlobDefined() && v instanceof Blob:
+          case isFileDefined() && v instanceof File:
             data.append(k, v)
             continue
         }

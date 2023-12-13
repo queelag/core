@@ -1,9 +1,12 @@
 import { PromiseState } from '../definitions/enums.js'
 import { tcp } from '../functions/tcp.js'
+import { isPromiseLike } from '../utils/promise-utils.js'
 
 export class DeferredPromise<T> {
   instance: Promise<T>
+  reason?: any
   state: PromiseState
+  value?: T
 
   private _reject!: (reason?: any) => void
   private _resolve!: (value: T | PromiseLike<T>) => void
@@ -18,12 +21,24 @@ export class DeferredPromise<T> {
 
   reject(reason?: any): void {
     this._reject(reason)
+
+    this.reason = reason
     this.state = PromiseState.REJECTED
   }
 
   resolve(value: T | PromiseLike<T>): void {
     this._resolve(value)
     this.state = PromiseState.FULFILLED
+
+    if (isPromiseLike(value)) {
+      value.then((v: T) => {
+        this.value = v
+      })
+
+      return
+    }
+
+    this.value = value
   }
 
   /**

@@ -1,3 +1,6 @@
+import type { AsyncStorage } from '../classes/async-storage.js'
+import type { SyncStorage } from '../classes/sync-storage.js'
+
 export type ArrayIncludes<T> = (array: T[], item: T) => boolean
 export type ArrayRemoves<T> = (array: T[], item: T) => boolean
 
@@ -6,6 +9,10 @@ export type DebounceMapValue = NodeJS.Timeout | number
 
 export type DeserializeURLSearchParamsType = 'array' | 'object' | 'string'
 export type SerializeURLSearchParamsType = 'string' | 'url-search-params'
+
+export type EventEmitterEvents = Record<EventEmitterListenerName, EventEmitterListenerCallback>
+export type EventEmitterListenerName = string | symbol
+export type EventEmitterListenerCallback = (...args: any[]) => any
 
 export type IntervalMapKey = Function | string
 export type IntervalMapValue = NodeJS.Timeout | number
@@ -34,6 +41,8 @@ export type ProcessEnvValue = string | undefined
 export type RequestMethod = 'CONNECT' | 'DELETE' | 'GET' | 'HEAD' | 'OPTIONS' | 'PATCH' | 'POST' | 'PUT' | 'TRACE'
 
 export type StatusTransformer = (keys: string[]) => string
+
+export type Storage = AsyncStorage | SyncStorage
 
 export type Theme = 'dark' | 'light' | 'system'
 

@@ -7,6 +7,7 @@ export { Configuration as CoreConfiguration } from './classes/configuration.js'
 export * from './classes/cookie.js'
 export * from './classes/deferred-promise.js'
 export * from './classes/environment.js'
+export * from './classes/event-emitter.js'
 export * from './classes/fetch-error.js'
 export * from './classes/fetch-response.js'
 export * from './classes/fetch.js'
@@ -29,7 +30,7 @@ export {
   ALPHABET_UPPERCASE,
   EMPTY_OBJECT
 } from './definitions/constants.js'
-export { ANSIColor, LoggerName as CoreLoggerName, StorageName as CoreStorageName, PromiseState } from './definitions/enums.js'
+export { ANSIColor, LoggerName as CoreLoggerName, PromiseState } from './definitions/enums.js'
 export type {
   APIConfig,
   AracnaBlobJSON,
@@ -81,8 +82,8 @@ export * from './functions/wf.js'
 export * from './functions/wfp.js'
 export { ClassLogger as CoreClassLogger } from './loggers/class-logger.js'
 export { FunctionLogger as CoreFunctionLogger } from './loggers/function-logger.js'
-export { ModuleLogger as CoreModuleLogger } from './loggers/module-logger.js'
 export { UtilLogger as CoreUtilLogger } from './loggers/util-logger.js'
+export * from './storages/memory-storage.js'
 export * from './utils/array-utils.js'
 export * from './utils/base16-utils.js'
 export * from './utils/base32-utils.js'

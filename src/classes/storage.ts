@@ -1,6 +1,6 @@
 import { StorageItem, StorageTarget } from '../definitions/interfaces.js'
 import { KeyOf } from '../definitions/types.js'
-import { ModuleLogger } from '../loggers/module-logger.js'
+import { ClassLogger } from '../loggers/class-logger.js'
 import { copyObjectProperty, deleteObjectProperty, hasObjectProperty } from '../utils/object-utils.js'
 
 type Clear = () => ClearReturn
@@ -41,7 +41,7 @@ export class Storage {
 
   protected clear_(cleared: void | Error): void | Error {
     if (cleared instanceof Error) return cleared
-    ModuleLogger.debug(this.name, 'get', `The storage has been cleared.`)
+    ClassLogger.debug(this.name, 'get', `The storage has been cleared.`)
   }
 
   clear(): ClearReturn {
@@ -50,7 +50,7 @@ export class Storage {
 
   protected get_<T extends StorageItem>(key: string, item: T | Error): T | Error {
     if (item instanceof Error) return item
-    ModuleLogger.debug(this.name, 'get', `The item ${key} has been retrieved.`, item)
+    ClassLogger.debug(this.name, 'get', `The item ${key} has been retrieved.`, item)
     return item
   }
 
@@ -60,7 +60,7 @@ export class Storage {
 
   protected remove_(key: string, removed: void | Error): void | Error {
     if (removed instanceof Error) return removed
-    ModuleLogger.debug(this.name, 'remove', `The item ${key} has been removed.`)
+    ClassLogger.debug(this.name, 'remove', `The item ${key} has been removed.`)
   }
 
   protected remove__<T extends StorageItem>(key: string, keys: KeyOf.Deep<T>[], item: T | Error): T | Error {
@@ -68,7 +68,7 @@ export class Storage {
 
     for (let k of keys) {
       deleteObjectProperty(item, k)
-      ModuleLogger.debug(this.name, 'remove', `The key ${String(k)} has been removed from the item ${key}.`, keys)
+      ClassLogger.debug(this.name, 'remove', `The key ${String(k)} has been removed from the item ${key}.`, keys)
     }
 
     return item
@@ -76,7 +76,7 @@ export class Storage {
 
   protected remove___<T extends StorageItem>(key: string, item: T, set: void | Error): void | Error {
     if (set instanceof Error) return set
-    ModuleLogger.debug(this.name, 'remove', `The item ${key} has been set.`, item)
+    ClassLogger.debug(this.name, 'remove', `The item ${key} has been set.`, item)
   }
 
   remove<T extends StorageItem>(key: string, keys?: KeyOf.Deep<T>[]): RemoveReturn {
@@ -96,7 +96,7 @@ export class Storage {
     if (item instanceof Error) return item
     if (set instanceof Error) return set
 
-    ModuleLogger.debug(this.name, 'set', `The item ${key} has been set.`, item)
+    ClassLogger.debug(this.name, 'set', `The item ${key} has been set.`, item)
   }
 
   protected set__<T extends StorageItem>(item: T, keys: KeyOf.Deep<T>[], current: T | Error): T | Error {
@@ -130,7 +130,7 @@ export class Storage {
   ): void | Error {
     if (item instanceof Error) return item
 
-    ModuleLogger.debug(this.name, 'get', `The item ${key} has been retrieved.`, item)
+    ClassLogger.debug(this.name, 'get', `The item ${key} has been retrieved.`, item)
 
     if (typeof keys === 'undefined') {
       keys = Object.keys(item)
@@ -142,7 +142,7 @@ export class Storage {
       }
 
       copyObjectProperty(item, k, target)
-      ModuleLogger.debug(this.name, 'get', `The ${key} ${String(k)} property has been copied.`, target)
+      ClassLogger.debug(this.name, 'get', `The ${key} ${String(k)} property has been copied.`, target)
     }
   }
 

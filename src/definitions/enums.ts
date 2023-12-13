@@ -13,7 +13,6 @@ export enum ANSIColor {
 export enum LoggerName {
   CLASS = 'CORE_CLASS',
   FUNCTION = 'CORE_FUNCTION',
-  MODULE = 'CORE_MODULE',
   UTIL = 'CORE_UTIL'
 }
 
@@ -24,6 +23,5 @@ export enum PromiseState {
 }
 
 export enum StorageName {
-  APPEARENCE = 'APPEARENCE',
-  LOCALIZATION = 'LOCALIZATION'
+  MEMORY = 'CORE_MEMORY'
 }

@@ -2,9 +2,9 @@ import { AracnaBlobJSON } from '../definitions/interfaces.js'
 import { StubBlob } from '../definitions/stubs.js'
 import { tcp } from '../functions/tcp.js'
 import { encodeBase64 } from '../utils/base64-utils.js'
+import { isBlobNotDefined } from '../utils/environment-utils.js'
 import { generateRandomString } from '../utils/string-utils.js'
 import { encodeText } from '../utils/text-utils.js'
-import { Environment } from './environment.js'
 
 export class AracnaBlob {
   private _arrayBuffer?: ArrayBuffer
@@ -114,7 +114,7 @@ export class AracnaBlob {
   }
 
   static get EMPTY(): AracnaBlob {
-    if (Environment.isBlobNotDefined) {
+    if (isBlobNotDefined()) {
       return new AracnaBlob(new StubBlob() as Blob)
     }
 

@@ -1,5 +1,5 @@
 import type { FetchResponse } from '../classes/fetch-response.js'
-import type { Primitive, WriteMode } from './types.js'
+import type { EventEmitterEvents, Primitive, Theme, WriteMode } from './types.js'
 
 export interface APIConfig<T = unknown> extends FetchRequestInit<T> {
   query?: object | string
@@ -7,6 +7,10 @@ export interface APIConfig<T = unknown> extends FetchRequestInit<T> {
     blacklist?: string[]
     whitelist?: string[]
   }
+}
+
+export interface AppearenceEvents extends EventEmitterEvents {
+  'change-theme': (theme: Theme) => any
 }
 
 export interface AracnaBlobJSON {
@@ -49,6 +53,17 @@ export interface DeserializeBlobOptions {
 }
 
 export interface DeserializeFileOptions extends DeserializeBlobOptions {}
+
+export interface EventEmitterListener<T extends EventEmitterEvents = EventEmitterEvents, K extends keyof T = keyof T> {
+  callback: T[K]
+  name: K
+  options?: EventEmitterListenerOptions
+}
+
+export interface EventEmitterListenerOptions {
+  once?: boolean
+  prepend?: boolean
+}
 
 export interface FetchRequestInit<T = unknown> extends Omit<RequestInit, 'body'> {
   body?: T
