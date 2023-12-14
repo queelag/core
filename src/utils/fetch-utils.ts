@@ -17,7 +17,7 @@ import {
 import { deserializeFormData } from './form-data-utils.js'
 import { mergeObjects, omitObjectProperties } from './object-utils.js'
 import { isStringJSON } from './string-utils.js'
-import { deserializeURLSearchParams } from './url-search-params-utils.js'
+import { deserializeURLSearchParams } from './url-utils.js'
 
 export function deleteFetchRequestInitHeader<T>(init: FetchRequestInit<T> | RequestInit, name: string): void {
   if (typeof init.headers === 'undefined') {
