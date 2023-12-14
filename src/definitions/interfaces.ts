@@ -27,14 +27,14 @@ export interface AracnaFileJSON extends AracnaBlobJSON {
   webkitRelativePath: string
 }
 
+export interface CookieItem extends Record<PropertyKey, Primitive> {}
+
 export interface CookieObject extends Record<string, string> {}
 
 export interface CookieSource {
   get: () => string
   set: (string: string) => void
 }
-
-export interface CookieItem extends Record<PropertyKey, Primitive> {}
 
 export interface ConfigurationModule {
   tc: {
@@ -47,12 +47,33 @@ export interface ConfigurationModule {
   }
 }
 
+export interface DecodeBase16Options {
+  loose?: boolean
+  out?: new (size: number) => {
+    [index: number]: number
+  }
+}
+
+export interface DecodeBase32Options extends DecodeBase16Options {}
+export interface DecodeBase32HexOptions extends DecodeBase32Options {}
+export interface DecodeBase64Options extends DecodeBase16Options {}
+export interface DecodeBase64URLOptions extends DecodeBase64Options {}
+
 export interface DeserializeBlobOptions {
   resolveArrayBuffer?: boolean
   resolveText?: boolean
 }
 
 export interface DeserializeFileOptions extends DeserializeBlobOptions {}
+
+export interface EncodeBase16Options {
+  pad?: boolean
+}
+
+export interface EncodeBase32Options extends EncodeBase16Options {}
+export interface EncodeBase32HexOptions extends EncodeBase32Options {}
+export interface EncodeBase64Options extends EncodeBase16Options {}
+export interface EncodeBase64URLOptions extends EncodeBase64Options {}
 
 export interface EventEmitterListener<T extends EventEmitterEvents = EventEmitterEvents, K extends keyof T = keyof T> {
   callback: T[K]
@@ -131,27 +152,6 @@ export interface NodeFetch {
   Request: any
   Response: any
 }
-
-export interface DecodeBase16Options {
-  loose?: boolean
-  out?: new (size: number) => {
-    [index: number]: number
-  }
-}
-
-export interface DecodeBase32Options extends DecodeBase16Options {}
-export interface DecodeBase32HexOptions extends DecodeBase32Options {}
-export interface DecodeBase64Options extends DecodeBase16Options {}
-export interface DecodeBase64URLOptions extends DecodeBase64Options {}
-
-export interface EncodeBase16Options {
-  pad?: boolean
-}
-
-export interface EncodeBase32Options extends EncodeBase16Options {}
-export interface EncodeBase32HexOptions extends EncodeBase32Options {}
-export interface EncodeBase64Options extends EncodeBase16Options {}
-export interface EncodeBase64URLOptions extends EncodeBase64Options {}
 
 export interface StorageItem extends Record<PropertyKey, any> {}
 export interface StorageTarget extends Record<PropertyKey, any> {}

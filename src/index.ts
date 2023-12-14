@@ -28,19 +28,34 @@ export {
   ALPHABET_NO_LOOK_ALIKES_SAFE,
   ALPHABET_NUMBERS,
   ALPHABET_UPPERCASE,
-  EMPTY_OBJECT
+  EMPTY_OBJECT,
+  LOGGER_LEVELS,
+  LOGGER_STATUSES
 } from './definitions/constants.js'
-export { ANSIColor, LoggerName as CoreLoggerName, PromiseState } from './definitions/enums.js'
+export { ANSIColor, LoggerName as CoreLoggerName, StorageName as CoreStorageName, PromiseState } from './definitions/enums.js'
 export type {
   APIConfig,
+  AppearenceEvents,
   AracnaBlobJSON,
   AracnaFileJSON,
   CookieItem,
   CookieObject,
   CookieSource,
   ConfigurationModule as CoreConfigurationModule,
+  DecodeBase16Options,
+  DecodeBase32HexOptions,
+  DecodeBase32Options,
+  DecodeBase64Options,
+  DecodeBase64URLOptions,
   DeserializeBlobOptions,
   DeserializeFileOptions,
+  EncodeBase16Options,
+  EncodeBase32HexOptions,
+  EncodeBase32Options,
+  EncodeBase64Options,
+  EncodeBase64URLOptions,
+  EventEmitterListener,
+  EventEmitterListenerOptions,
   FetchRequestInit,
   FlattenObjectOptions,
   GenerateRandomStringOptions,
