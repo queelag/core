@@ -14,7 +14,7 @@ describe('MemoryStorage', () => {
   })
 
   it('gets', () => {
-    expect(MemoryStorage.get('person')).toBeUndefined()
+    expect(MemoryStorage.get('person')).toStrictEqual({})
     MemoryStorage.set('person', { name: 'john' })
     expect(MemoryStorage.get('person')).toStrictEqual({ name: 'john' })
   })
