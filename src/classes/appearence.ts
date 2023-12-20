@@ -7,6 +7,10 @@ import { isWindowNotDefined } from '../utils/environment-utils.js'
 import { isNotError } from '../utils/error-utils.js'
 import { EventEmitter } from './event-emitter.js'
 
+/**
+ * The Appearence class is a class that manages the theme of anything that can have an appearence.
+ * The theme will persist to a storage of your choice, by default it will be stored in memory.
+ */
 export class Appearence extends EventEmitter<AppearenceEvents> {
   storage: Storage
   storageKey: string
@@ -22,6 +26,9 @@ export class Appearence extends EventEmitter<AppearenceEvents> {
     this.registerThemeEventListener()
   }
 
+  /**
+   * Retrieves the theme from the storage and sets it.
+   */
   async initialize(): Promise<boolean> {
     let copied: void | Error
 
@@ -33,6 +40,10 @@ export class Appearence extends EventEmitter<AppearenceEvents> {
     return true
   }
 
+  /**
+   * Toggles the theme between dark and light.
+   * If the theme is set to system, it will be set to dark or light depending on the system theme.
+   */
   toggleTheme(): void {
     switch (this.theme) {
       case 'dark':
@@ -46,6 +57,10 @@ export class Appearence extends EventEmitter<AppearenceEvents> {
     }
   }
 
+  /**
+   * Sets the theme.
+   * It will emit a change-theme event.
+   */
   setTheme(theme: Theme): void {
     this.theme = theme
     ClassLogger.verbose('Appearence', 'setTheme', `The theme has been set to ${theme}.`)
@@ -64,10 +79,16 @@ export class Appearence extends EventEmitter<AppearenceEvents> {
     }
   }
 
+  /**
+   * Stores the theme in the storage.
+   */
   async store(): Promise<boolean> {
     return isNotError(await this.storage.set(this.storageKey, this, ['theme']))
   }
 
+  /**
+   * Registers the theme event listener in environments that support it.
+   */
   private registerThemeEventListener(): void {
     let media: MediaQueryList
 
@@ -86,6 +107,9 @@ export class Appearence extends EventEmitter<AppearenceEvents> {
     media.addEventListener('change', (v: MediaQueryListEvent) => this.isThemeSystem && this.setTheme('system'))
   }
 
+  /**
+   * Returns the theme depending on the system theme.
+   */
   get themeByPrefersColorScheme(): Theme {
     if (isWindowNotDefined()) {
       ClassLogger.warn('Appearence', 'themeByPrefersColorScheme', `window is not defined.`)
@@ -100,6 +124,9 @@ export class Appearence extends EventEmitter<AppearenceEvents> {
     return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
   }
 
+  /**
+   * Checks if the theme is dark.
+   */
   get isThemeDark(): boolean {
     switch (this.theme) {
       case 'dark':
@@ -113,6 +140,9 @@ export class Appearence extends EventEmitter<AppearenceEvents> {
     }
   }
 
+  /**
+   * Checks if the theme is light.
+   */
   get isThemeLight(): boolean {
     switch (this.theme) {
       case 'dark':
@@ -126,6 +156,9 @@ export class Appearence extends EventEmitter<AppearenceEvents> {
     }
   }
 
+  /**
+   * Checks if the theme is system.
+   */
   get isThemeSystem(): boolean {
     return this.theme === 'system'
   }

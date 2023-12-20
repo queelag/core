@@ -1,4 +1,3 @@
-export * from './classes/api.js'
 export * from './classes/appearence.js'
 export * from './classes/aracna-blob.js'
 export * from './classes/aracna-file.js'
@@ -15,6 +14,7 @@ export * from './classes/graphql-api.js'
 export * from './classes/history.js'
 export * from './classes/localization.js'
 export * from './classes/logger.js'
+export * from './classes/rest-api.js'
 export * from './classes/status.js'
 export * from './classes/sync-storage.js'
 export * from './classes/typeahead.js'
@@ -59,12 +59,12 @@ export type {
   FetchRequestInit,
   FlattenObjectOptions,
   GenerateRandomStringOptions,
-  GraphQLAPIConfig,
-  GraphQLAPIRequestBody,
-  GraphQLAPIResponse,
-  GraphQLAPIResponseBody,
-  GraphQLAPIResponseBodyError,
-  GraphQLAPIResponseBodyErrorLocation,
+  GraphQlApiConfig,
+  GraphQlApiRequestBody,
+  GraphQlApiResponse,
+  GraphQlApiResponseBody,
+  GraphQlApiResponseBodyError,
+  GraphQlApiResponseBodyErrorLocation,
   HistoryDataTarget,
   LocalizationPack,
   LocalizationPackData,

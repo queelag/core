@@ -1,14 +1,6 @@
 import type { FetchResponse } from '../classes/fetch-response.js'
 import type { EventEmitterEvents, Primitive, Theme, WriteMode } from './types.js'
 
-export interface APIConfig<T = unknown> extends FetchRequestInit<T> {
-  query?: object | string
-  status?: {
-    blacklist?: string[]
-    whitelist?: string[]
-  }
-}
-
 export interface AppearenceEvents extends EventEmitterEvents {
   'change-theme': (theme: Theme) => any
 }
@@ -105,27 +97,27 @@ export interface GenerateRandomStringOptions {
   suffix?: string
 }
 
-export interface GraphQLAPIConfig<T = unknown> extends APIConfig<T> {}
+export interface GraphQlApiConfig<T = unknown> extends RestApiConfig<T> {}
 
-export interface GraphQLAPIRequestBody<T = object> {
+export interface GraphQlApiRequestBody<T = object> {
   query: string
   variables?: T | null
 }
 
-export interface GraphQLAPIResponse<T = any> extends FetchResponse<GraphQLAPIResponseBody<T>> {}
+export interface GraphQlApiResponse<T = any> extends FetchResponse<GraphQlApiResponseBody<T>> {}
 
-export interface GraphQLAPIResponseBody<T = any> {
+export interface GraphQlApiResponseBody<T = any> {
   data: T
   errors?: any[]
 }
 
-export interface GraphQLAPIResponseBodyError<T = any> {
+export interface GraphQlApiResponseBodyError<T = any> {
   extensions?: T[]
-  locations: GraphQLAPIResponseBodyErrorLocation[]
+  locations: GraphQlApiResponseBodyErrorLocation[]
   message: string
 }
 
-export interface GraphQLAPIResponseBodyErrorLocation {
+export interface GraphQlApiResponseBodyErrorLocation {
   column: number
   line: number
 }
@@ -151,6 +143,14 @@ export interface NodeFetch {
   Headers: typeof Headers
   Request: any
   Response: any
+}
+
+export interface RestApiConfig<T = unknown> extends FetchRequestInit<T> {
+  query?: object | string
+  status?: {
+    blacklist?: string[]
+    whitelist?: string[]
+  }
 }
 
 export interface StorageItem extends Record<PropertyKey, any> {}

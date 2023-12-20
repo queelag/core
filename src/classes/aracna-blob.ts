@@ -6,6 +6,9 @@ import { isBlobNotDefined } from '../utils/environment-utils.js'
 import { generateRandomString } from '../utils/string-utils.js'
 import { encodeText } from '../utils/text-utils.js'
 
+/**
+ * The AracnaBlob class is a class that is built on top of the Blob class.
+ */
 export class AracnaBlob {
   private _arrayBuffer?: ArrayBuffer
   private _base64?: string
