@@ -1,5 +1,5 @@
 import { afterAll, beforeAll, beforeEach, describe, expect, it } from 'vitest'
-import { FetchError, gql, GraphQLAPI, GraphQLAPIResponse, tie } from '../../src'
+import { FetchError, GraphQlAPI, GraphQlApiResponse, gql, tie } from '../../src'
 import { closeServer, openServer } from '../server'
 
 const QUERY_GET_TEXT: string = gql`
@@ -17,15 +17,15 @@ const MUTATION_SET_TEXT: string = gql`
 `
 // jest.setTimeout(900719925)
 
-describe('GraphQLAPI', () => {
-  let address: string, api: GraphQLAPI, response: GraphQLAPIResponse<any> | FetchError<any>
+describe('GraphQlAPI', () => {
+  let address: string, api: GraphQlAPI, response: GraphQlApiResponse<any> | FetchError<any>
 
   beforeAll(async () => {
     address = await openServer(3002)
   })
 
   beforeEach(() => {
-    api = new GraphQLAPI(address + '/graphql')
+    api = new GraphQlAPI(address + '/graphql')
   })
 
   afterAll(async () => {
@@ -34,11 +34,11 @@ describe('GraphQLAPI', () => {
 
   it('queries', async () => {
     response = await api.query(QUERY_GET_TEXT)
-    expect(tie<GraphQLAPIResponse>(response).data.data).toMatchObject({ text: 'hello' })
+    expect(tie<GraphQlApiResponse>(response).data.data).toMatchObject({ text: 'hello' })
   })
 
   it('mutates', async () => {
     response = await api.mutation(MUTATION_SET_TEXT, { text: 'hello' })
-    expect(tie<GraphQLAPIResponse>(response).data.data).toMatchObject({ setText: { text: 'hello' } })
+    expect(tie<GraphQlApiResponse>(response).data.data).toMatchObject({ setText: { text: 'hello' } })
   })
 })

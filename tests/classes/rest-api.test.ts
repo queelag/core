@@ -1,5 +1,5 @@
 import { afterAll, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest'
-import { API, CoreConfiguration, FetchError, FetchResponse, Status } from '../../src'
+import { CoreConfiguration, FetchError, FetchResponse, RestAPI, Status } from '../../src'
 import { closeServer, openServer } from '../server'
 
 function getResponseData<T>(response: FetchResponse<T> | FetchError<any>): T {
@@ -19,14 +19,14 @@ function getResponseHeaders<T>(response: FetchResponse<T> | FetchError<any>): He
 }
 
 describe('API', () => {
-  let address: string, api: API, response: FetchResponse<any> | FetchError<any>
+  let address: string, api: RestAPI, response: FetchResponse<any> | FetchError<any>
 
   beforeAll(async () => {
     address = await openServer(3000)
   })
 
   beforeEach(() => {
-    api = new API(address)
+    api = new RestAPI(address)
   })
 
   afterAll(async () => {
@@ -34,15 +34,15 @@ describe('API', () => {
   })
 
   it('constructs', () => {
-    api = new API()
+    api = new RestAPI()
     expect(api.baseURL).toBe('')
     expect(api.config).toStrictEqual({})
 
-    api = new API(address)
+    api = new RestAPI(address)
     expect(api.baseURL).toBe(address)
     expect(api.config).toStrictEqual({})
 
-    api = new API(address, { headers: [['authorization', 'token']] })
+    api = new RestAPI(address, { headers: [['authorization', 'token']] })
     expect(api.baseURL).toBe(address)
     expect(api.config).toStrictEqual({ headers: [['authorization', 'token']] })
   })
