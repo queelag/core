@@ -1,6 +1,5 @@
 import { random } from 'nanoid'
-import { noop } from '../functions/noop.js'
-import { ConfigurationModule } from './interfaces.js'
+import { ConfigurationFunctions } from './interfaces.js'
 import {
   ArrayIncludes,
   ArrayRemoves,
@@ -40,14 +39,14 @@ export const DEFAULT_ARRAY_REMOVES: ArrayRemoves<any> = (array: any[], item: any
  * Configuration
  */
 /** */
-export const DEFAULT_CONFIGURATION_MODULE: () => ConfigurationModule = () => ({
+export const DEFAULT_FUNCTIONS_CONFIGURATION: () => ConfigurationFunctions = () => ({
   tc: {
     log: true,
-    onCatch: noop
+    onCatch: () => {}
   },
   tcp: {
     log: true,
-    onCatch: noop
+    onCatch: () => {}
   }
 })
 

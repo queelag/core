@@ -1,11 +1,6 @@
 import { tcp } from '../functions/tcp.js'
 import { ClassLogger } from '../loggers/class-logger.js'
 
-/**
- * A class which extends the default Response one, it includes a parse method.
- *
- * @category Class
- */
 export class FetchResponse<T = unknown> implements Response {
   readonly body: ReadableStream<Uint8Array> | null
   readonly bodyUsed: boolean

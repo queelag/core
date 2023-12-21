@@ -3,7 +3,15 @@ import { StubFile } from '../definitions/stubs.js'
 import { isFileNotDefined } from '../utils/environment-utils.js'
 import { AracnaBlob } from './aracna-blob.js'
 
+/**
+ * The AracnaFile class extends the AracnaBlob class and is built on top of the File class.
+ * The data contained in the File can be resolved asynchronously and accessed at a later time from the instance itself.
+ * The instance supports JSON serialization and deserialization out of the box unlike the File class.
+ */
 export class AracnaFile extends AracnaBlob {
+  /**
+   * The File instance.
+   */
   readonly file: File
 
   constructor(file: File)
@@ -34,22 +42,31 @@ export class AracnaFile extends AracnaBlob {
     }
   }
 
+  /** [MDN Reference](https://developer.mozilla.org/docs/Web/API/File/lastModified) */
   get lastModified(): number {
     return this.file.lastModified
   }
 
+  /**
+   * Returns the last modified date of the file.
+   */
   get lastModifiedDate(): Date {
     return new Date(this.file.lastModified)
   }
 
+  /** [MDN Reference](https://developer.mozilla.org/docs/Web/API/File/name) */
   get name(): string {
     return this.file.name
   }
 
+  /** [MDN Reference](https://developer.mozilla.org/docs/Web/API/File/webkitRelativePath) */
   get webkitRelativePath(): string {
     return this.file.webkitRelativePath
   }
 
+  /**
+   * Returns an empty AracnaFile instance.
+   */
   static get EMPTY(): AracnaFile {
     if (isFileNotDefined()) {
       return new AracnaFile(new StubFile([], '') as File)

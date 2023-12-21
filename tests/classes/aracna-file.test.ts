@@ -14,7 +14,6 @@ describe('AracnaFile', () => {
 
   it('constructs from file', () => {
     expect(qfile.arrayBuffer).toStrictEqual(new ArrayBuffer(0))
-    expect(qfile.base64).toBe('')
     expect(qfile.file).toBe(file)
     expect(qfile.id).toHaveLength(32)
     expect(qfile.size).toBe(5)
@@ -35,7 +34,6 @@ describe('AracnaFile', () => {
     expect(json.lastModified).toBe(qfile.lastModified)
     expect(json.name).toBe(qfile.name)
     expect(json.size).toBe(qfile.size)
-    expect(json.text).toBe(qfile.text)
     expect(json.type).toBe(qfile.type)
     expect(json.uInt8Array).toStrictEqual({ ...qfile.uInt8Array })
     expect(json.webkitRelativePath).toBeUndefined()
@@ -43,7 +41,6 @@ describe('AracnaFile', () => {
     qfile2 = new AracnaFile(json)
 
     expect(qfile2.arrayBuffer).toStrictEqual(qfile.arrayBuffer)
-    expect(qfile2.base64).toBe(qfile.base64)
     expect(qfile2.file).toStrictEqual(file)
     expect(qfile2.id).toBe(qfile.id)
     // expect(qfile2.lastModified).toBe(qfile.lastModified)

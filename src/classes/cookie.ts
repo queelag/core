@@ -7,9 +7,18 @@ import { ClassLogger } from '../loggers/class-logger.js'
 import { deserializeCookie, serializeCookie } from '../utils/cookie-utils.js'
 import { setObjectProperty } from '../utils/object-utils.js'
 
+/**
+ * The Cookie class is an abstraction to implement any cookie API in an uniform way.
+ */
 export class Cookie {
-  name: string
-  separator: string = DEFAULT_COOKIE_SEPARATOR
+  /**
+   * The cookie instance name.
+   */
+  readonly name: string
+  /**
+   * The cookie separator used to separate the cookie name from the cookie item key.
+   */
+  readonly separator: string = DEFAULT_COOKIE_SEPARATOR
 
   private readonly _get: () => string | Error
   private readonly _set: (cookies: string) => void | Error
@@ -22,6 +31,9 @@ export class Cookie {
     this._set = mtc(set)
   }
 
+  /**
+   * Clears all cookies.
+   */
   clear(options: CookieSerializeOptions = {}): void | Error {
     let object: CookieObject | Error
 
@@ -41,6 +53,9 @@ export class Cookie {
     }
   }
 
+  /**
+   * Retrieves an item from the cookies.
+   */
   get<T extends CookieItem>(key: string): T | Error {
     let object: CookieObject | Error, item: T
 
@@ -64,6 +79,10 @@ export class Cookie {
     return item
   }
 
+  /**
+   * Removes an item from the cookies.
+   * Optionally you can specify the keys of the item that you want to remove, if you don't specify any key the whole item will be removed.
+   */
   remove<T extends CookieItem>(key: string, options: CookieSerializeOptions = {}, keys?: KeyOf.Shallow<T>[]): void | Error {
     if (typeof keys === 'undefined') {
       let object: CookieObject | Error
@@ -97,6 +116,10 @@ export class Cookie {
     }
   }
 
+  /**
+   * Sets an item in the cookies.
+   * Optionally you can specify the keys of the item that you want to set, if you don't specify any key the whole item will be set.
+   */
   set<T extends CookieItem>(key: string, item: T, options: CookieSerializeOptions = {}, keys?: KeyOf.Shallow<T>[]): void | Error {
     if (typeof keys === 'undefined') {
       keys = Object.keys(item)
@@ -116,6 +139,10 @@ export class Cookie {
     }
   }
 
+  /**
+   * Copies an item from the cookies to a target object.
+   * Optionally you can specify the keys of the item that you want to copy, if you don't specify any key the whole item will be copied.
+   */
   copy<T1 extends CookieItem, T2 extends CookieItem = CookieItem, T extends T1 & T2 = T1 & T2>(
     key: string,
     target: T2,
@@ -148,6 +175,10 @@ export class Cookie {
     }
   }
 
+  /**
+   * Checks if an item exists in the cookies.
+   * Optionally you can specify the keys of the item that you want to check, if you don't specify any key the whole item will be checked.
+   */
   has<T extends CookieItem>(key: string, keys?: KeyOf.Shallow<T>[]): boolean {
     let object: CookieObject | Error
 

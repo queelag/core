@@ -1,5 +1,5 @@
 import { beforeAll, describe, expect, it } from 'vitest'
-import { AracnaBlob, encodeBase64, importNodeFetch, useNodeFetch } from '../../src'
+import { AracnaBlob, importNodeFetch, useNodeFetch } from '../../src'
 import { AracnaBlobJSON } from '../../src/definitions/interfaces'
 import { encodeText } from '../../src/utils/text-utils'
 
@@ -15,7 +15,6 @@ describe('AracnaBlob', () => {
 
   it('constructs from blob', () => {
     expect(qblob.arrayBuffer).toStrictEqual(new ArrayBuffer(0))
-    expect(qblob.base64).toBe('')
     expect(qblob.blob).toBe(blob)
     expect(qblob.id).toHaveLength(32)
     expect(qblob.size).toBe(5)
@@ -34,14 +33,12 @@ describe('AracnaBlob', () => {
 
     expect(json.id).toBe(qblob.id)
     expect(json.size).toBe(qblob.size)
-    expect(json.text).toBe(qblob.text)
     expect(json.type).toBe(qblob.type)
     expect(json.uInt8Array).toStrictEqual({ ...qblob.uInt8Array })
 
     qblob2 = new AracnaBlob(json)
 
     expect(qblob2.arrayBuffer).toStrictEqual(qblob.arrayBuffer)
-    expect(qblob2.base64).toBe(qblob.base64)
     expect(qblob2.blob).toStrictEqual(blob)
     expect(qblob2.id).toBe(qblob.id)
     expect(qblob2.size).toBe(qblob.size)
@@ -54,14 +51,12 @@ describe('AracnaBlob', () => {
     await qblob.resolveArrayBuffer()
 
     expect(qblob.arrayBuffer).toStrictEqual(encodeText('hello').buffer)
-    expect(qblob.base64).toBe(encodeBase64(encodeText('hello')))
     expect(qblob.uInt8Array).toStrictEqual(encodeText('hello'))
   })
 
   it('resolves text', async () => {
     await qblob.resolveArrayBuffer()
 
-    expect(qblob.base64).toBe(encodeBase64(encodeText('hello')))
     expect(qblob.text).toBe('hello')
     expect(qblob.uInt8Array).toStrictEqual(encodeText('hello'))
   })

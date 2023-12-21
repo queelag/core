@@ -1,6 +1,12 @@
-import { DEFAULT_CONFIGURATION_MODULE } from '../definitions/constants.js'
-import { ConfigurationModule } from '../definitions/interfaces.js'
+import { DEFAULT_FUNCTIONS_CONFIGURATION } from '../definitions/constants.js'
+import { ConfigurationFunctions } from '../definitions/interfaces.js'
 
+/**
+ * The Configuration class is used to configure the library.
+ */
 export class Configuration {
-  static module: ConfigurationModule = DEFAULT_CONFIGURATION_MODULE()
+  /**
+   * The functions configuration.
+   */
+  static functions: ConfigurationFunctions = DEFAULT_FUNCTIONS_CONFIGURATION()
 }

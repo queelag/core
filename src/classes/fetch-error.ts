@@ -1,10 +1,5 @@
 import { FetchResponse } from './fetch-response.js'
 
-/**
- * A class made for Fetch errors.
- *
- * @category Class
- */
 export class FetchError<T = unknown> extends Error {
   response: FetchResponse<T>
 

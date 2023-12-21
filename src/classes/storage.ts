@@ -21,6 +21,9 @@ type Set = <T extends StorageItem>(key: string, item: T) => SetReturn
 type SetReturn = void | Error | Promise<void | Error>
 
 export class Storage {
+  /**
+   * The storage instance name.
+   */
   readonly name: string
 
   protected readonly _clear: Clear

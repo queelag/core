@@ -8,7 +8,6 @@ export interface AppearenceEvents extends EventEmitterEvents {
 export interface AracnaBlobJSON {
   id: string
   size: number
-  text?: string
   type: string
   uInt8Array: Uint8Array
 }
@@ -28,7 +27,7 @@ export interface CookieSource {
   set: (string: string) => void
 }
 
-export interface ConfigurationModule {
+export interface ConfigurationFunctions {
   tc: {
     log: boolean
     onCatch: <T extends Error>(error: T, log: boolean) => any

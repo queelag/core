@@ -2,10 +2,25 @@ import { PromiseState } from '../definitions/enums.js'
 import { tcp } from '../functions/tcp.js'
 import { isPromiseLike } from '../utils/promise-utils.js'
 
+/**
+ * The DeferredPromise class is built on top of the native Promise class. It provides a way to resolve or reject a promise from the outside.
+ */
 export class DeferredPromise<T> {
-  instance: Promise<T>
+  /**
+   * The native promise instance.
+   */
+  readonly instance: Promise<T>
+  /**
+   * The reason for the rejection of the promise.
+   */
   reason?: any
+  /**
+   * The state of the promise, can be pending, fulfilled or rejected.
+   */
   state: PromiseState
+  /**
+   * The value of the resolved promise.
+   */
   value?: T
 
   private _reject!: (reason?: any) => void
@@ -26,6 +41,9 @@ export class DeferredPromise<T> {
     this.state = PromiseState.REJECTED
   }
 
+  /**
+   * Resolves the promise with a value or the result of another promise.
+   */
   resolve(value: T | PromiseLike<T>): void {
     this._resolve(value)
     this.state = PromiseState.FULFILLED
@@ -76,18 +94,30 @@ export class DeferredPromise<T> {
     return this
   }
 
+  /**
+   * Checks if the promise is fulfilled.
+   */
   get isFulfilled(): boolean {
     return this.state === PromiseState.FULFILLED
   }
 
+  /**
+   * Checks if the promise is pending.
+   */
   get isPending(): boolean {
     return this.state === PromiseState.PENDING
   }
 
+  /**
+   * Checks if the promise is rejected.
+   */
   get isRejected(): boolean {
     return this.state === PromiseState.REJECTED
   }
 
+  /**
+   * Checks if the promise is resolved.
+   */
   get isResolved(): boolean {
     return this.isFulfilled
   }

@@ -1,18 +1,24 @@
 import { AracnaBlobJSON } from '../definitions/interfaces.js'
 import { StubBlob } from '../definitions/stubs.js'
 import { tcp } from '../functions/tcp.js'
-import { encodeBase64 } from '../utils/base64-utils.js'
 import { isBlobNotDefined } from '../utils/environment-utils.js'
 import { generateRandomString } from '../utils/string-utils.js'
-import { encodeText } from '../utils/text-utils.js'
+import { decodeText, encodeText } from '../utils/text-utils.js'
 
 /**
- * The AracnaBlob class is a class that is built on top of the Blob class.
+ * The AracnaBlob class is built on top of the Blob class.
+ * The data contained in the Blob can be resolved asynchronously and accessed at a later time from the instance itself.
+ * The instance supports JSON serialization and deserialization out of the box unlike the Blob class.
  */
 export class AracnaBlob {
   private _arrayBuffer?: ArrayBuffer
-  private _base64?: string
+  /**
+   * The Blob instance.
+   */
   readonly blob: Blob
+  /**
+   * The unique identifier of the instance.
+   */
   readonly id: string
   private _text?: string
 
@@ -34,9 +40,12 @@ export class AracnaBlob {
     this._arrayBuffer = new Uint8Array(Object.values(json.uInt8Array)).buffer
     this.blob = new Blob([this._arrayBuffer], { type: json.type })
     this.id = json.id
-    this._text = json.text
+    this._text = decodeText(new Uint8Array(Object.values(json.uInt8Array)))
   }
 
+  /**
+   * Resolves the data contained in the Blob as an ArrayBuffer.
+   */
   async resolveArrayBuffer(): Promise<void> {
     let buffer: ArrayBuffer | Error
 
@@ -46,6 +55,9 @@ export class AracnaBlob {
     this._arrayBuffer = buffer
   }
 
+  /**
+   * Resolves the data contained in the Blob as a string.
+   */
   async resolveText(): Promise<void> {
     let text: string | Error
 
@@ -55,55 +67,60 @@ export class AracnaBlob {
     this._text = text
   }
 
+  /** [MDN Reference](https://developer.mozilla.org/docs/Web/API/Blob/slice) */
   slice(start?: number, end?: number, contentType?: string): Blob {
     return this.blob.slice(start, end, contentType)
   }
 
+  /** [MDN Reference](https://developer.mozilla.org/docs/Web/API/Blob/stream) */
   stream(): ReadableStream<Uint8Array>
   stream(): NodeJS.ReadableStream
   stream(): any {
     return this.blob.stream()
   }
 
+  /**
+   * Serializes the instance into a JSON object.
+   */
   toJSON(): AracnaBlobJSON {
     return {
       id: this.id,
       size: this.size,
-      text: this._text,
       type: this.type,
       uInt8Array: this.uInt8Array
     }
   }
 
+  /**
+   * Returns the data contained in the Blob as an ArrayBuffer.
+   * You need to call the "resolveArrayBuffer" method before accessing this property.
+   */
   get arrayBuffer(): ArrayBuffer {
     return this._arrayBuffer ?? new ArrayBuffer(0)
   }
 
-  get base64(): string {
-    let base64: string
-
-    if (this._base64) {
-      return this._base64
-    }
-
-    base64 = encodeBase64(this.uInt8Array)
-    this._base64 = base64
-
-    return this._base64
-  }
-
+  /** [MDN Reference](https://developer.mozilla.org/docs/Web/API/Blob/size) */
   get size(): number {
     return this.blob.size
   }
 
+  /**
+   * Returns the data contained in the Blob as a string.
+   * You need to call the "resolveText" method before accessing this property.
+   */
   get text(): string {
     return this._text ?? ''
   }
 
+  /** [MDN Reference](https://developer.mozilla.org/docs/Web/API/Blob/type) */
   get type(): string {
     return this.blob.type || 'application/octet-stream'
   }
 
+  /**
+   * Returns the data contained in the Blob as a Uint8Array.
+   * You need to call the "resolveArrayBuffer" or "resolveText" method before accessing this property.
+   */
   get uInt8Array(): Uint8Array {
     if (this._arrayBuffer) {
       return new Uint8Array(this._arrayBuffer)
@@ -116,6 +133,9 @@ export class AracnaBlob {
     return new Uint8Array()
   }
 
+  /**
+   * Returns an empty AracnaBlob instance.
+   */
   static get EMPTY(): AracnaBlob {
     if (isBlobNotDefined()) {
       return new AracnaBlob(new StubBlob() as Blob)

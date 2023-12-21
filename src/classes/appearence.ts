@@ -8,12 +8,21 @@ import { isNotError } from '../utils/error-utils.js'
 import { EventEmitter } from './event-emitter.js'
 
 /**
- * The Appearence class is a class that manages the theme of anything that can have an appearence.
+ * The Appearence class manages the theme of anything that can have an appearence.
  * The theme will persist to a storage of your choice, by default it will be stored in memory.
  */
 export class Appearence extends EventEmitter<AppearenceEvents> {
+  /**
+   * The storage that will be used to store the theme.
+   */
   storage: Storage
+  /**
+   * The key that will be used to store the theme.
+   */
   storageKey: string
+  /**
+   * The theme, can be dark, light or system.
+   */
   theme: Theme
 
   constructor(theme: Theme = 'system', storage: Storage = MemoryStorage, storageKey: string = DEFAULT_APPEARENCE_STORAGE_KEY) {
@@ -44,7 +53,7 @@ export class Appearence extends EventEmitter<AppearenceEvents> {
    * Toggles the theme between dark and light.
    * If the theme is set to system, it will be set to dark or light depending on the system theme.
    */
-  toggleTheme(): void {
+  toggleTheme(): this {
     switch (this.theme) {
       case 'dark':
         return this.setTheme('light')
@@ -53,15 +62,15 @@ export class Appearence extends EventEmitter<AppearenceEvents> {
       case 'system':
         return this.setTheme(this.themeByPrefersColorScheme === 'dark' ? 'light' : 'dark')
       default:
-        return
+        return this
     }
   }
 
   /**
    * Sets the theme.
-   * It will emit a change-theme event.
+   * The "change-theme" event will be emitted.
    */
-  setTheme(theme: Theme): void {
+  setTheme(theme: Theme): this {
     this.theme = theme
     ClassLogger.verbose('Appearence', 'setTheme', `The theme has been set to ${theme}.`)
 
@@ -77,6 +86,8 @@ export class Appearence extends EventEmitter<AppearenceEvents> {
         this.emit('change-theme', theme)
         break
     }
+
+    return this
   }
 
   /**
