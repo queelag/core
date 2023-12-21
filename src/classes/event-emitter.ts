@@ -19,36 +19,6 @@ export class EventEmitter<T extends EventEmitterEvents = EventEmitterEvents> {
   }
 
   /**
-   * Adds a listener, which will be called when the event is emitted.
-   *
-   * Optionally the listener can be removed after the first call with the `once` option.
-   * Optionally the listener can be prepended to the listeners array with the `prepend` option.
-   */
-  addListener<K extends keyof T>(name: K, callback: T[K], options?: EventEmitterListenerOptions): this {
-    let count: number, listener: EventEmitterListener<T, K>
-
-    count = this.countListeners(name, callback, options)
-    listener = { callback, name, options }
-
-    if (count >= this.maxListeners) {
-      ClassLogger.warn('EventEmitter', 'addListener', `The maximum number of listeners has been reached.`, listener, [count, this.maxListeners])
-      return this
-    }
-
-    if (options?.prepend) {
-      this.listeners.unshift(listener)
-      ClassLogger.verbose('EventEmitter', 'addListener', `The listener has been unshifted.`, listener)
-
-      return this
-    }
-
-    this.listeners.push(listener)
-    ClassLogger.verbose('EventEmitter', 'addListener', `The listener has been pushed.`, listener)
-
-    return this
-  }
-
-  /**
    * Returns the number of listeners.
    * Optionally the number of listeners can be filtered by name, callback and options.
    */
@@ -112,45 +82,6 @@ export class EventEmitter<T extends EventEmitterEvents = EventEmitterEvents> {
    * If no arguments are passed, all listeners will be removed.
    */
   off<K extends keyof T>(name?: K, callback?: T[K], options?: EventEmitterListenerOptions): this {
-    return this.removeListeners<K>(name, callback, options)
-  }
-
-  /**
-   * Adds a listener, which will be called when the event is emitted.
-   *
-   * Optionally the listener can be removed after the first call with the `once` option.
-   * Optionally the listener can be prepended to the listeners array with the `prepend` option.
-   */
-  on<K extends keyof T>(name: K, callback: T[K], options?: EventEmitterListenerOptions): this {
-    return this.addListener<K>(name, callback, options)
-  }
-
-  /**
-   * Adds a listener, which will be called only once when the event is emitted.
-   */
-  once<K extends keyof T>(name: K, callback: T[K]): this {
-    return this.addListener<K>(name, callback, { once: true })
-  }
-
-  /**
-   * Adds a listener, which will be called before any other listener when the event is emitted.
-   */
-  prependListener<K extends keyof T>(name: K, callback: T[K], options: EventEmitterListenerOptions): this {
-    return this.addListener(name, callback, { ...options, prepend: true })
-  }
-
-  /**
-   * Adds a listener, which will be called only once before any other listener when the event is emitted.
-   */
-  prependOnceListener<K extends keyof T>(name: K, callback: T[K]): this {
-    return this.addListener(name, callback, { once: true, prepend: true })
-  }
-
-  /**
-   * Removes the listeners that match the name, callback and options.
-   * If no arguments are passed, all listeners will be removed.
-   */
-  removeListeners<K extends keyof T>(name?: K, callback?: T[K], options?: EventEmitterListenerOptions): this {
     this.listeners = removeArrayItems(this.listeners, (_, listener: EventEmitterListener<T, keyof T>) =>
       [
         typeof name === 'string' ? listener.name === name : true,
@@ -162,6 +93,43 @@ export class EventEmitter<T extends EventEmitterEvents = EventEmitterEvents> {
     ClassLogger.verbose('EventEmitter', 'removeListener', `The matching listeners have been removed.`, [name, callback, options])
 
     return this
+  }
+
+  /**
+   * Adds a listener, which will be called when the event is emitted.
+   *
+   * Optionally the listener can be removed after the first call with the `once` option.
+   * Optionally the listener can be prepended to the listeners array with the `prepend` option.
+   */
+  on<K extends keyof T>(name: K, callback: T[K], options?: EventEmitterListenerOptions): this {
+    let count: number, listener: EventEmitterListener<T, K>
+
+    count = this.countListeners(name, callback, options)
+    listener = { callback, name, options }
+
+    if (count >= this.maxListeners) {
+      ClassLogger.warn('EventEmitter', 'addListener', `The maximum number of listeners has been reached.`, listener, [count, this.maxListeners])
+      return this
+    }
+
+    if (options?.prepend) {
+      this.listeners.unshift(listener)
+      ClassLogger.verbose('EventEmitter', 'addListener', `The listener has been unshifted.`, listener)
+
+      return this
+    }
+
+    this.listeners.push(listener)
+    ClassLogger.verbose('EventEmitter', 'addListener', `The listener has been pushed.`, listener)
+
+    return this
+  }
+
+  /**
+   * Adds a listener, which will be called only once when the event is emitted.
+   */
+  once<K extends keyof T>(name: K, callback: T[K], options?: EventEmitterListenerOptions): this {
+    return this.on<K>(name, callback, { ...options, once: true })
   }
 
   /**
