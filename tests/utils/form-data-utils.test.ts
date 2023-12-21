@@ -54,9 +54,9 @@ describe('FormData Utils', () => {
     object.file = new File([], '')
     object.do2 = object
 
-    Configuration.module.tc.log = false
+    Configuration.functions.tc.log = false
     data = serializeFormData(object)
-    Configuration.module.tc.log = true
+    Configuration.functions.tc.log = true
 
     expect(data.get('sbi1')).toBe('0')
     expect(data.get('sbo1')).toBe('false')

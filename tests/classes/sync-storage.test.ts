@@ -74,7 +74,7 @@ describe('Storage', () => {
 
     backup = cloneShallowObject(storage)
 
-    Configuration.module.tcp.log = false
+    Configuration.functions.tcp.log = false
 
     setObjectProperty(storage, '_clear', rne)
     expect(storage.clear()).toBeInstanceOf(Error)
@@ -116,6 +116,6 @@ describe('Storage', () => {
     copyObjectProperty(backup, '_get', storage)
     copyObjectProperty(backup, '_has', storage)
 
-    Configuration.module.tcp.log = true
+    Configuration.functions.tcp.log = true
   })
 })

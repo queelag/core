@@ -1,6 +1,6 @@
 import { Configuration } from '../classes/configuration.js'
 
-export function tc<T, U extends Error = Error>(fn: () => T, log: boolean = Configuration.module.tc.log): T | U {
+export function tc<T, U extends Error = Error>(fn: () => T, log: boolean = Configuration.functions.tc.log): T | U {
   try {
     return fn()
   } catch (error: any) {
@@ -8,7 +8,7 @@ export function tc<T, U extends Error = Error>(fn: () => T, log: boolean = Confi
       console.error(error)
     }
 
-    Configuration.module.tc.onCatch<U>(error, log)
+    Configuration.functions.tc.onCatch<U>(error, log)
 
     return error
   }

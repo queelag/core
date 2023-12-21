@@ -48,12 +48,12 @@ describe('API', () => {
   })
 
   it('handles connect requests', async () => {
-    CoreConfiguration.module.tcp.log = false
+    CoreConfiguration.functions.tcp.log = false
 
     response = await api.connect('any')
     expect(response).toBeInstanceOf(Error)
 
-    CoreConfiguration.module.tcp.log = true
+    CoreConfiguration.functions.tcp.log = true
   })
 
   it('handles delete requests', async () => {
@@ -103,12 +103,12 @@ describe('API', () => {
   })
 
   it('handles trace requests', async () => {
-    CoreConfiguration.module.tcp.log = false
+    CoreConfiguration.functions.tcp.log = false
 
     response = await api.trace('any')
     expect(response).toBeInstanceOf(Error)
 
-    CoreConfiguration.module.tcp.log = true
+    CoreConfiguration.functions.tcp.log = true
   })
 
   it('handles write', async () => {

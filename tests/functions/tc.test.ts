@@ -13,11 +13,11 @@ describe('tc', () => {
   })
 
   it('calls the onCatch callback if the fn throws', () => {
-    Configuration.module.tc.onCatch = vi.fn()
+    Configuration.functions.tc.onCatch = vi.fn()
     tc(() => {
       throw new Error()
     }, false)
-    expect(Configuration.module.tc.onCatch).toBeCalled()
+    expect(Configuration.functions.tc.onCatch).toBeCalled()
   })
 
   it('does log if log is true', () => {

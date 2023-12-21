@@ -72,9 +72,9 @@ describe('Number Utils', () => {
     expect(parseBigInt(false)).toBe(0n)
     expect(parseBigInt(true)).toBe(1n)
 
-    Configuration.module.tc.log = false
+    Configuration.functions.tc.log = false
     expect(parseBigInt(NaN)).toBe(0n)
-    Configuration.module.tc.log = true
+    Configuration.functions.tc.log = true
   })
 
   it('parses int and float', () => {

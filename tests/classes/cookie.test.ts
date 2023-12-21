@@ -83,9 +83,9 @@ describe('Cookie', () => {
   it('fails to serialize', () => {
     let serialize: Function
 
-    Configuration.module.tc.log = false
+    Configuration.functions.tc.log = false
     expect(cookie.set('test', { a: 0 }, { maxAge: NaN })).toBeInstanceOf(Error)
-    Configuration.module.tc.log = false
+    Configuration.functions.tc.log = false
 
     serialize = getObjectProperty(cookie, 'serialize', noop)
     setObjectProperty(cookie, 'serialize', () => new Error())
@@ -101,7 +101,7 @@ describe('Cookie', () => {
 
     backup = cloneDeepObject(cookie)
 
-    Configuration.module.tcp.log = false
+    Configuration.functions.tcp.log = false
 
     setObjectProperty(cookie, '_set', rne)
     expect(cookie.clear()).toBeInstanceOf(Error)
@@ -113,6 +113,6 @@ describe('Cookie', () => {
     expect(cookie.clear()).toBeInstanceOf(Error)
     copyObjectProperty(backup, '_get', cookie)
 
-    Configuration.module.tcp.log = true
+    Configuration.functions.tcp.log = true
   })
 })

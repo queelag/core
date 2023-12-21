@@ -14,12 +14,12 @@ describe('Fetch', () => {
   })
 
   it('handles connect requests', async () => {
-    CoreConfiguration.module.tcp.log = false
+    CoreConfiguration.functions.tcp.log = false
 
     response = await Fetch.connect(`${address}/any`)
     expect(response).toBeInstanceOf(Error)
 
-    CoreConfiguration.module.tcp.log = true
+    CoreConfiguration.functions.tcp.log = true
   })
 
   it('handles delete requests', async () => {
@@ -73,12 +73,12 @@ describe('Fetch', () => {
   })
 
   it('handles trace requests', async () => {
-    CoreConfiguration.module.tcp.log = false
+    CoreConfiguration.functions.tcp.log = false
 
     response = await Fetch.trace(`${address}/any`)
     expect(response).toBeInstanceOf(Error)
 
-    CoreConfiguration.module.tcp.log = true
+    CoreConfiguration.functions.tcp.log = true
   })
 
   it('can throw during request', async () => {
@@ -86,12 +86,12 @@ describe('Fetch', () => {
       throw new Error()
     })
 
-    CoreConfiguration.module.tcp.log = false
+    CoreConfiguration.functions.tcp.log = false
 
     response = await Fetch.get(`${address}/any`)
     expect(response).toBeInstanceOf(Error)
 
-    CoreConfiguration.module.tcp.log = true
+    CoreConfiguration.functions.tcp.log = true
   })
 
   it('works without request init', async () => {

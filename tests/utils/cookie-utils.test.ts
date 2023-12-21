@@ -4,8 +4,8 @@ import { Configuration } from '../../src/classes/configuration'
 
 describe('Cookie Utils', () => {
   it('returns an empty object if deserialize fails', () => {
-    Configuration.module.tc.log = false
+    Configuration.functions.tc.log = false
     expect(deserializeCookie(0 as any)).toStrictEqual({})
-    Configuration.module.tc.log = true
+    Configuration.functions.tc.log = true
   })
 })

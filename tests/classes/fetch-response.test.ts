@@ -37,7 +37,7 @@ describe('FetchResponse', () => {
     setObjectProperty(response, 'json', tne)
     setObjectProperty(response, 'text', tne)
 
-    Configuration.module.tcp.log = false
+    Configuration.functions.tcp.log = false
 
     response.headers.set('content-type', 'application/octet-stream')
     await response.parse()
@@ -63,6 +63,6 @@ describe('FetchResponse', () => {
     await response.parse()
     expect(response.data).toStrictEqual(new ArrayBuffer(0))
 
-    Configuration.module.tcp.log = false
+    Configuration.functions.tcp.log = false
   })
 })

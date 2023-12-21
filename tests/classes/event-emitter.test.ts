@@ -15,28 +15,28 @@ describe('EventEmitter', () => {
   })
 
   it('adds a listener', () => {
-    emitter.addListener('one', noop)
-    expect(emitter.getListeners()).toStrictEqual([{ callback: noop, name: 'one', options: undefined }])
-
-    emitter.removeListeners()
     emitter.on('one', noop)
     expect(emitter.getListeners()).toStrictEqual([{ callback: noop, name: 'one', options: undefined }])
 
-    emitter.removeListeners()
+    emitter.off()
+    emitter.on('one', noop)
+    expect(emitter.getListeners()).toStrictEqual([{ callback: noop, name: 'one', options: undefined }])
+
+    emitter.off()
     emitter.once('one', noop)
     expect(emitter.getListeners()).toStrictEqual([{ callback: noop, name: 'one', options: { once: true } }])
 
-    emitter.removeListeners()
-    emitter.prependListener('one', noop)
+    emitter.off()
+    emitter.on('one', noop, { prepend: true })
     expect(emitter.getListeners()).toStrictEqual([{ callback: noop, name: 'one', options: { prepend: true } }])
 
-    emitter.removeListeners()
-    emitter.prependOnceListener('one', noop)
+    emitter.off()
+    emitter.once('one', noop, { prepend: true })
     expect(emitter.getListeners()).toStrictEqual([{ callback: noop, name: 'one', options: { prepend: true, once: true } }])
   })
 
   it('counts listeners', () => {
-    emitter.addListener('one', noop)
+    emitter.on('one', noop)
 
     expect(emitter.countListeners()).toBe(1)
     expect(emitter.countListeners('one')).toBe(1)
@@ -45,8 +45,8 @@ describe('EventEmitter', () => {
     expect(emitter.countListeners('one', noop, { prepend: false })).toBe(1)
     expect(emitter.countListeners('one', noop, { once: false, prepend: false })).toBe(1)
 
-    emitter.removeListeners()
-    emitter.addListener('one', noop, { once: true })
+    emitter.off()
+    emitter.on('one', noop, { once: true })
 
     expect(emitter.countListeners()).toBe(1)
     expect(emitter.countListeners('one')).toBe(1)
@@ -55,8 +55,8 @@ describe('EventEmitter', () => {
     expect(emitter.countListeners('one', noop, { prepend: false })).toBe(1)
     expect(emitter.countListeners('one', noop, { once: true, prepend: false })).toBe(1)
 
-    emitter.removeListeners()
-    emitter.addListener('one', noop, { prepend: true })
+    emitter.off()
+    emitter.on('one', noop, { prepend: true })
 
     expect(emitter.countListeners()).toBe(1)
     expect(emitter.countListeners('one')).toBe(1)
@@ -65,8 +65,8 @@ describe('EventEmitter', () => {
     expect(emitter.countListeners('one', noop, { prepend: true })).toBe(1)
     expect(emitter.countListeners('one', noop, { once: false, prepend: true })).toBe(1)
 
-    emitter.removeListeners()
-    emitter.addListener('one', noop, { once: true, prepend: true })
+    emitter.off()
+    emitter.on('one', noop, { once: true, prepend: true })
 
     expect(emitter.countListeners()).toBe(1)
     expect(emitter.countListeners('one')).toBe(1)
@@ -79,7 +79,7 @@ describe('EventEmitter', () => {
   it('emits event', () => {
     let callback: Mock = vitest.fn()
 
-    emitter.addListener('one', callback)
+    emitter.on('one', callback)
     emitter.emit('one', 1)
 
     expect(callback).toHaveBeenCalledTimes(1)
@@ -87,12 +87,12 @@ describe('EventEmitter', () => {
   })
 
   it('returns event names', () => {
-    emitter.addListener('one', noop)
+    emitter.on('one', noop)
     expect(emitter.eventNames()).toStrictEqual(['one'])
   })
 
   it('gets listeners', () => {
-    emitter.addListener('one', noop)
+    emitter.on('one', noop)
 
     expect(emitter.getListeners()).toStrictEqual([{ callback: noop, name: 'one', options: undefined }])
     expect(emitter.getListeners('one')).toStrictEqual([{ callback: noop, name: 'one', options: undefined }])
@@ -100,8 +100,8 @@ describe('EventEmitter', () => {
     expect(emitter.getListeners('one', noop, { prepend: false })).toStrictEqual([{ callback: noop, name: 'one', options: undefined }])
     expect(emitter.getListeners('one', noop, { once: false, prepend: false })).toStrictEqual([{ callback: noop, name: 'one', options: undefined }])
 
-    emitter.removeListeners()
-    emitter.addListener('one', noop, { once: true })
+    emitter.off()
+    emitter.on('one', noop, { once: true })
 
     expect(emitter.getListeners()).toStrictEqual([{ callback: noop, name: 'one', options: { once: true } }])
     expect(emitter.getListeners('one')).toStrictEqual([{ callback: noop, name: 'one', options: { once: true } }])
@@ -109,8 +109,8 @@ describe('EventEmitter', () => {
     expect(emitter.getListeners('one', noop, { prepend: false })).toStrictEqual([{ callback: noop, name: 'one', options: { once: true } }])
     expect(emitter.getListeners('one', noop, { once: true, prepend: false })).toStrictEqual([{ callback: noop, name: 'one', options: { once: true } }])
 
-    emitter.removeListeners()
-    emitter.addListener('one', noop, { prepend: true })
+    emitter.off()
+    emitter.on('one', noop, { prepend: true })
 
     expect(emitter.getListeners()).toStrictEqual([{ callback: noop, name: 'one', options: { prepend: true } }])
     expect(emitter.getListeners('one')).toStrictEqual([{ callback: noop, name: 'one', options: { prepend: true } }])
@@ -118,8 +118,8 @@ describe('EventEmitter', () => {
     expect(emitter.getListeners('one', noop, { prepend: true })).toStrictEqual([{ callback: noop, name: 'one', options: { prepend: true } }])
     expect(emitter.getListeners('one', noop, { once: false, prepend: true })).toStrictEqual([{ callback: noop, name: 'one', options: { prepend: true } }])
 
-    emitter.removeListeners()
-    emitter.addListener('one', noop, { once: true, prepend: true })
+    emitter.off()
+    emitter.on('one', noop, { once: true, prepend: true })
 
     expect(emitter.getListeners()).toStrictEqual([{ callback: noop, name: 'one', options: { once: true, prepend: true } }])
     expect(emitter.getListeners('one')).toStrictEqual([{ callback: noop, name: 'one', options: { once: true, prepend: true } }])
@@ -150,19 +150,19 @@ describe('EventEmitter', () => {
     emitter.off('one', noop)
     expect(emitter.countListeners()).toBe(0)
 
-    emitter.addListener('one', noop)
-    emitter.addListener('one', noop, { once: true })
-    emitter.addListener('one', noop, { prepend: true })
-    emitter.addListener('one', noop, { once: true, prepend: true })
+    emitter.on('one', noop)
+    emitter.on('one', noop, { once: true })
+    emitter.on('one', noop, { prepend: true })
+    emitter.on('one', noop, { once: true, prepend: true })
     expect(emitter.countListeners()).toBe(4)
 
-    emitter.removeListeners('one', noop, { once: true, prepend: true })
+    emitter.off('one', noop, { once: true, prepend: true })
     expect(emitter.countListeners()).toBe(3)
-    emitter.removeListeners('one', noop, { prepend: true })
+    emitter.off('one', noop, { prepend: true })
     expect(emitter.countListeners()).toBe(2)
-    emitter.removeListeners('one', noop, { once: true })
+    emitter.off('one', noop, { once: true })
     expect(emitter.countListeners()).toBe(1)
-    emitter.removeListeners('one', noop)
+    emitter.off('one', noop)
     expect(emitter.countListeners()).toBe(0)
   })
 
@@ -174,9 +174,9 @@ describe('EventEmitter', () => {
 
   it('respects max listeners', () => {
     emitter.setMaxListeners(1)
-    emitter.addListener('one', noop)
+    emitter.on('one', noop)
     expect(emitter.countListeners()).toBe(1)
-    emitter.addListener('one', noop)
+    emitter.on('one', noop)
     expect(emitter.countListeners()).toBe(1)
   })
 
@@ -193,8 +193,8 @@ describe('EventEmitter', () => {
       t2 = performance.now()
     })
 
-    emitter.addListener('one', c1)
-    emitter.addListener('one', c2, { prepend: true })
+    emitter.on('one', c1)
+    emitter.on('one', c2, { prepend: true })
     emitter.emit('one', 1)
 
     expect(c1).toHaveBeenCalledOnce()
@@ -206,7 +206,7 @@ describe('EventEmitter', () => {
   it('runs listener with once option only one time', () => {
     let callback: Mock = vitest.fn()
 
-    emitter.addListener('one', callback, { once: true })
+    emitter.on('one', callback, { once: true })
     emitter.emit('one', 1)
     emitter.emit('one', 2)
 

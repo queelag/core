@@ -4,12 +4,12 @@ import { Configuration } from '../../src/classes/configuration'
 
 describe('mtc', () => {
   it('makes async function try caught', async () => {
-    Configuration.module.tcp.log = false
+    Configuration.functions.tcp.log = false
     expect(
       await mtcp(async () => {
         throw new Error()
       })()
     ).toBeInstanceOf(Error)
-    Configuration.module.tcp.log = true
+    Configuration.functions.tcp.log = true
   })
 })

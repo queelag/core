@@ -13,11 +13,11 @@ describe('tcp', () => {
   })
 
   it('calls the onCatch callback if the fn throws', async () => {
-    Configuration.module.tcp.onCatch = vi.fn()
+    Configuration.functions.tcp.onCatch = vi.fn()
     await tcp(async () => {
       throw new Error()
     }, false)
-    expect(Configuration.module.tcp.onCatch).toBeCalled()
+    expect(Configuration.functions.tcp.onCatch).toBeCalled()
   })
 
   it('does log if log is true', () => {
