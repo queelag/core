@@ -73,6 +73,27 @@ export class Typeahead<T> extends EventEmitter<TypeaheadEvents<T>> {
   }
 
   /**
+   * Returns the debounce time.
+   */
+  getDebounceTime(): number {
+    return this.debounceTime
+  }
+
+  /**
+   * Returns the items.
+   */
+  getItems(): T[] {
+    return this.items
+  }
+
+  /**
+   * Returns the predicate function.
+   */
+  getPredicate(): TypeaheadPredicate<T> {
+    return this.predicate
+  }
+
+  /**
    * Returns the query string.
    */
   getQuery(): string {
@@ -90,16 +111,16 @@ export class Typeahead<T> extends EventEmitter<TypeaheadEvents<T>> {
   /**
    * Sets the debounce time.
    */
-  setDebounceTime(debounceTime: number | undefined): this {
-    this.debounceTime = debounceTime ?? this.debounceTime
+  setDebounceTime(debounceTime: number): this {
+    this.debounceTime = debounceTime
     return this
   }
 
   /**
    * Sets the items.
    */
-  setItems(items: T[] | undefined): this {
-    this.items = items ?? this.items
+  setItems(items: T[]): this {
+    this.items = items
     return this
   }
 
@@ -114,8 +135,8 @@ export class Typeahead<T> extends EventEmitter<TypeaheadEvents<T>> {
   /**
    * Sets the predicate function.
    */
-  setPredicate(predicate: TypeaheadPredicate<T> | undefined): this {
-    this.predicate = predicate ?? this.predicate
+  setPredicate(predicate: TypeaheadPredicate<T>): this {
+    this.predicate = predicate
     return this
   }
 }

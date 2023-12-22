@@ -164,6 +164,7 @@ export interface TypeaheadOptions<T> {
   items?: T[]
   listeners?: EventEmitterListener<TypeaheadEvents<T>>[]
   predicate?: TypeaheadPredicate<T>
+  search?: boolean
 }
 
 export interface WithWriteMode {

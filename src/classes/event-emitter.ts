@@ -147,6 +147,16 @@ export class EventEmitter<T extends EventEmitterEvents = EventEmitterEvents> {
   }
 
   /**
+   * Sets the listeners.
+   */
+  setListeners(listeners: EventEmitterListener<T, keyof T>[]): this {
+    this.listeners = listeners
+    ClassLogger.verbose('EventEmitter', 'setListeners', `The listeners have been set.`, listeners)
+
+    return this
+  }
+
+  /**
    * Sets the maximum number of listeners that can be registered for a single event.
    */
   setMaxListeners(n: number): this {

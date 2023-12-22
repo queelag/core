@@ -11,16 +11,18 @@ export function typeahead<T>(name: string, key: string, options?: TypeaheadOptio
   instance = instance ?? new Typeahead(name, options?.items, options?.predicate, options?.debounceTime)
 
   instance.pushKey(key)
-  instance.setDebounceTime(options?.debounceTime)
-  instance.setItems(options?.items)
-  instance.setPredicate(options?.predicate)
-
-  for (let listener of options?.listeners ?? []) {
-    instance.on(listener.name, listener.callback, listener.options)
-  }
+  instance.setDebounceTime(options?.debounceTime ?? instance.getDebounceTime())
+  instance.setItems(options?.items ?? instance.getItems())
+  instance.setListeners(options?.listeners ?? instance.getListeners())
+  instance.setPredicate(options?.predicate ?? instance.getPredicate())
 
   TYPEAHEAD_MAP.set(name, instance)
   FunctionLogger.verbose('typeahead', name, `The instance has been set.`, instance)
 
-  return instance.search()
+  if (options?.search !== false) {
+    FunctionLogger.verbose('typeahead', name, `Calling the search function.`)
+    instance.search()
+  }
+
+  return instance
 }
