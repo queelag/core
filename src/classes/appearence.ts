@@ -9,7 +9,9 @@ import { EventEmitter } from './event-emitter.js'
 
 /**
  * The Appearence class manages the theme of anything that can have an appearence.
- * The theme will persist to a storage of your choice, by default it will be stored in memory.
+ *
+ * - The theme will persist to a storage of your choice, by default it will be stored in memory.
+ * - The default theme is system, which means that the theme will be dark or light depending on the system theme.
  */
 export class Appearence extends EventEmitter<AppearenceEvents> {
   /**
@@ -100,7 +102,7 @@ export class Appearence extends EventEmitter<AppearenceEvents> {
   /**
    * Registers the theme event listener in environments that support it.
    */
-  private registerThemeEventListener(): void {
+  protected registerThemeEventListener(): void {
     let media: MediaQueryList
 
     if (isWindowNotDefined()) {

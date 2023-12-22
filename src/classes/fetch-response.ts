@@ -8,7 +8,7 @@ export class FetchResponse<T = unknown> implements Response {
   readonly headers: Headers
   readonly ok: boolean
   readonly redirected: boolean
-  private readonly response: Response
+  protected readonly response: Response
   readonly status: number
   readonly statusText: string
   readonly type: ResponseType
@@ -118,7 +118,7 @@ export class FetchResponse<T = unknown> implements Response {
     return this.response.text()
   }
 
-  private setData(data: any): void {
+  protected setData(data: any): void {
     this.data = data
   }
 
@@ -132,7 +132,7 @@ export class FetchResponse<T = unknown> implements Response {
     return new FetchResponse(new Response(), args[0])
   }
 
-  private get ContentType(): string {
+  protected get ContentType(): string {
     return this.headers.get('content-type') || ''
   }
 }

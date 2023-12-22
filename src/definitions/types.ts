@@ -1,5 +1,6 @@
 import type { AsyncStorage } from '../classes/async-storage.js'
 import type { SyncStorage } from '../classes/sync-storage.js'
+import type { Typeahead } from '../classes/typeahead.js'
 
 export type ArrayIncludes<T> = (array: T[], item: T) => boolean
 export type ArrayRemoves<T> = (array: T[], item: T) => boolean
@@ -52,6 +53,15 @@ export type TimeoutMapKey = Function | string
 export type TimeoutMapValue = NodeJS.Timeout | number
 
 export type TypeaheadOnMatch<T> = (item: T) => any
-export type TypeaheadPredicate<T> = (item: T, value: string, index: number, items: T[]) => unknown
+export type TypeaheadMapKey = Function | string
+export type TypeaheadMapValue = Typeahead<any>
+export type TypeaheadPredicate<T> = (item: T, query: string, index: number, items: T[]) => unknown
+
+export type VisibilityControllerToggleDelay =
+  | number
+  | {
+      hide?: number
+      show?: number
+    }
 
 export type WriteMode = 'create' | 'update'

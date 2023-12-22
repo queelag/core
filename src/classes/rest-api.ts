@@ -10,11 +10,25 @@ import { Fetch } from './fetch.js'
 import { Status } from './status.js'
 
 /**
- * The RestAPI class is a class that manages the requests to a REST API.
+ * The RestAPI class manages the requests to a REST API.
+ *
+ * - The base URL of the API is automatically concatenated to the path of the requests.
+ * - The config of the API is automatically merged with the config of the requests.
+ * - The status of the requests is automatically tracked and can be accessed through the status property.
+ * - The requests are sent with the Fetch class, so all features of the Fetch class are available.
  */
 export class RestAPI<T extends RestApiConfig = RestApiConfig, U = undefined> {
+  /**
+   * The base URL of the REST API.
+   */
   readonly baseURL: string
+  /**
+   * The default config of the REST API.
+   */
   readonly config: T
+  /**
+   * The status of the requests.
+   */
   readonly status: Status
 
   constructor(baseURL: string = '', config: T = EMPTY_OBJECT()) {
@@ -39,7 +53,7 @@ export class RestAPI<T extends RestApiConfig = RestApiConfig, U = undefined> {
     handled = await this.handlePending(method, path, tbody, config)
     if (!handled) return rc(() => this.setCallStatus(method, path, config, Status.ERROR), FetchError.from())
 
-    response = await Fetch.handle(appendSearchParamsToURL(concatURL(this.baseURL, path), query), {
+    response = await Fetch.send(appendSearchParamsToURL(concatURL(this.baseURL, path), query), {
       body: tbody,
       method,
       ...mergeFetchRequestInits(this.config, config)
@@ -174,10 +188,8 @@ export class RestAPI<T extends RestApiConfig = RestApiConfig, U = undefined> {
 
   /**
    * Sets the status of the request.
-   *
-   * @internal
    */
-  private setCallStatus(method: RequestMethod, path: string, config: T, status: string): void {
+  protected setCallStatus(method: RequestMethod, path: string, config: T, status: string): void {
     if (this.isConfigStatusSettable(config, status)) {
       this.status.set([method, path], status)
     }
@@ -185,10 +197,8 @@ export class RestAPI<T extends RestApiConfig = RestApiConfig, U = undefined> {
 
   /**
    * Checks if the config status is settable.
-   *
-   * @internal
    */
-  private isConfigStatusSettable(config: RestApiConfig, status: string): boolean {
+  protected isConfigStatusSettable(config: RestApiConfig, status: string): boolean {
     if (config.status?.blacklist) {
       return !config.status.blacklist.includes(status)
     }

@@ -208,7 +208,7 @@ export class Cookie {
     return true
   }
 
-  private deserialize(options?: CookieParseOptions): CookieObject | Error {
+  protected deserialize(options?: CookieParseOptions): CookieObject | Error {
     let cookie: string | Error
 
     cookie = this._get()
@@ -217,9 +217,9 @@ export class Cookie {
     return deserializeCookie(cookie, options)
   }
 
-  private serialize(key: string, value: string, options?: CookieSerializeOptions): string | Error
-  private serialize<T extends CookieItem>(key: string, ik: keyof T, value: Primitive, options?: CookieSerializeOptions): string | Error
-  private serialize<T extends CookieItem>(...args: any[]): string | Error {
+  protected serialize(key: string, value: string, options?: CookieSerializeOptions): string | Error
+  protected serialize<T extends CookieItem>(key: string, ik: keyof T, value: Primitive, options?: CookieSerializeOptions): string | Error
+  protected serialize<T extends CookieItem>(...args: any[]): string | Error {
     let key: string, ik: keyof T | undefined, value: Primitive, options: CookieSerializeOptions | undefined
 
     key = args[0]
@@ -230,11 +230,11 @@ export class Cookie {
     return serializeCookie(typeof ik === 'undefined' ? key : this.toDocumentCookieName(key, ik), String(value), options)
   }
 
-  private toCookieItemKey<T extends CookieItem>(key: string, ik: KeyOf.Shallow<T>): string {
+  protected toCookieItemKey<T extends CookieItem>(key: string, ik: KeyOf.Shallow<T>): string {
     return String(ik).replace(key + this.separator, '')
   }
 
-  private toDocumentCookieName<T extends CookieItem>(key: string, ik: KeyOf.Shallow<T>): string {
+  protected toDocumentCookieName<T extends CookieItem>(key: string, ik: KeyOf.Shallow<T>): string {
     return key + this.separator + String(ik)
   }
 }

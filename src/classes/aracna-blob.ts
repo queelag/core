@@ -7,8 +7,9 @@ import { decodeText, encodeText } from '../utils/text-utils.js'
 
 /**
  * The AracnaBlob class is built on top of the Blob class.
- * The data contained in the Blob can be resolved asynchronously and accessed at a later time from the instance itself.
- * The instance supports JSON serialization and deserialization out of the box unlike the Blob class.
+ *
+ * - The data contained in the Blob can be resolved asynchronously and accessed at a later time from the instance itself.
+ * - The instance supports JSON serialization and deserialization out of the box unlike the Blob class.
  */
 export class AracnaBlob {
   private _arrayBuffer?: ArrayBuffer

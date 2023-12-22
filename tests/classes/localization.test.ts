@@ -93,7 +93,7 @@ describe('Localization', () => {
 
   it('stores language', async () => {
     localization.setLanguage('it')
-    expect(await localization.storeLanguage()).toBeTruthy()
+    expect(await localization.store()).toBeTruthy()
     localization.setLanguage('en')
     expect(await localization.initialize()).toBeTruthy()
     expect(localization.language).toBe('it')

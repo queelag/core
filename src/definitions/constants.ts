@@ -13,7 +13,9 @@ import {
   StatusTransformer,
   ThrottleMapKey,
   TimeoutMapKey,
-  TimeoutMapValue
+  TimeoutMapValue,
+  TypeaheadMapKey,
+  TypeaheadMapValue
 } from './types.js'
 
 /**
@@ -92,7 +94,6 @@ export const SORT_REGEXP_VARIABLE_INSIDE_CURLY_BRACKETS_MATCHES_COMPARE_FN: (a: 
  * Logger
  */
 /** */
-export const DEFAULT_LOGGER_COLORS: boolean = true
 export const DEFAULT_LOGGER_SEPARATOR: string = ' -> '
 export const LOGGER_LEVELS: LoggerLevel[] = ['debug', 'error', 'info', 'verbose', 'warn']
 export const LOGGER_STATUSES: LoggerStatus[] = ['off', 'on']
@@ -156,6 +157,7 @@ export const TIMEOUT_MAP: Map<TimeoutMapKey, TimeoutMapValue> = new Map()
  */
 /** */
 export const DEFAULT_TYPEAHEAD_DEBOUNCE_TIME: number = 100
+export const TYPEAHEAD_MAP: Map<TypeaheadMapKey, TypeaheadMapValue> = new Map()
 
 /**
  * URL Utils

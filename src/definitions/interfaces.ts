@@ -1,5 +1,5 @@
 import type { FetchResponse } from '../classes/fetch-response.js'
-import type { EventEmitterEvents, Primitive, Theme, WriteMode } from './types.js'
+import type { EventEmitterEvents, Primitive, Theme, TypeaheadPredicate, WriteMode } from './types.js'
 
 export interface AppearenceEvents extends EventEmitterEvents {
   'change-theme': (theme: Theme) => any
@@ -154,6 +154,17 @@ export interface RestApiConfig<T = unknown> extends FetchRequestInit<T> {
 
 export interface StorageItem extends Record<PropertyKey, any> {}
 export interface StorageTarget extends Record<PropertyKey, any> {}
+
+export interface TypeaheadEvents<T> extends EventEmitterEvents {
+  match: (item: T) => any
+}
+
+export interface TypeaheadOptions<T> {
+  debounceTime?: number
+  items?: T[]
+  listeners?: EventEmitterListener<TypeaheadEvents<T>>[]
+  predicate?: TypeaheadPredicate<T>
+}
 
 export interface WithWriteMode {
   mode?: WriteMode

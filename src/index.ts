@@ -34,14 +34,13 @@ export {
 } from './definitions/constants.js'
 export { ANSIColor, LoggerName as CoreLoggerName, StorageName as CoreStorageName, PromiseState } from './definitions/enums.js'
 export type {
-  APIConfig,
   AppearenceEvents,
   AracnaBlobJSON,
   AracnaFileJSON,
   CookieItem,
   CookieObject,
   CookieSource,
-  ConfigurationModule as CoreConfigurationModule,
+  ConfigurationFunctions as CoreConfigurationFunctions,
   DecodeBase16Options,
   DecodeBase32HexOptions,
   DecodeBase32Options,
@@ -70,8 +69,11 @@ export type {
   LocalizationPackData,
   LocalizationVariables,
   NodeFetch,
+  RestApiConfig,
   StorageItem,
   StorageTarget,
+  TypeaheadEvents,
+  TypeaheadOptions,
   WithWriteMode
 } from './definitions/interfaces.js'
 export * from './definitions/stubs.js'
@@ -93,6 +95,7 @@ export * from './functions/tcp.js'
 export * from './functions/throttle.js'
 export * from './functions/tie.js'
 export * from './functions/tne.js'
+export * from './functions/typeahead.js'
 export * from './functions/wf.js'
 export * from './functions/wfp.js'
 export { ClassLogger as CoreClassLogger } from './loggers/class-logger.js'

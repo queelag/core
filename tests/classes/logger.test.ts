@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { Logger, noop, useNodeFetch } from '../../src'
+import { Logger, importNodeFetch, noop, useNodeFetch } from '../../src'
 import { ANSIColor } from '../../src/definitions/enums'
 
 describe('Logger', () => {
@@ -120,6 +120,8 @@ describe('Logger', () => {
     // @ts-ignore
     global.window = {}
 
+    logger = new Logger('TEST', 'verbose', 'on')
+
     expect(logger.format('debug', 'bigint', 0n)).toStrictEqual(['bigint -> 0'])
     expect(logger.format('debug', 'boolean', false)).toStrictEqual(['boolean -> false'])
     expect(logger.format('debug', 'function', () => true)).toStrictEqual(['function -> () => true'])
@@ -132,7 +134,7 @@ describe('Logger', () => {
     expect(logger.format('debug', 'symbol', Symbol())).toStrictEqual(['symbol -> Symbol()'])
     expect(logger.format('debug', 'undefined', undefined)).toStrictEqual(['undefined -> undefined'])
 
-    await useNodeFetch(await import('node-fetch'))
+    await useNodeFetch(await importNodeFetch())
 
     data = new FormData()
     data.append('name', 'john')
@@ -147,13 +149,15 @@ describe('Logger', () => {
     // @ts-ignore
     delete global.window
 
-    expect(logger.format('verbose', 'number', 0)).toStrictEqual([ANSIColor.WHITE, 'number -> 0'])
+    logger = new Logger('TEST', 'verbose', 'on')
+
+    expect(logger.format('verbose', 'number', 0)).toStrictEqual([ANSIColor.WHITE, 'number -> 0', ANSIColor.RESET])
     expect(logger.format('verbose', 'object', {})).toStrictEqual([ANSIColor.WHITE, 'object', ANSIColor.RESET, {}])
 
-    expect(logger.format('debug', 'number', 0)).toStrictEqual([ANSIColor.MAGENTA, 'number -> 0'])
-    expect(logger.format('info', 'number', 0)).toStrictEqual([ANSIColor.BLUE, 'number -> 0'])
-    expect(logger.format('warn', 'number', 0)).toStrictEqual([ANSIColor.YELLOW, 'number -> 0'])
-    expect(logger.format('error', 'number', 0)).toStrictEqual([ANSIColor.RED, 'number -> 0'])
+    expect(logger.format('debug', 'number', 0)).toStrictEqual([ANSIColor.MAGENTA, 'number -> 0', ANSIColor.RESET])
+    expect(logger.format('info', 'number', 0)).toStrictEqual([ANSIColor.BLUE, 'number -> 0', ANSIColor.RESET])
+    expect(logger.format('warn', 'number', 0)).toStrictEqual([ANSIColor.YELLOW, 'number -> 0', ANSIColor.RESET])
+    expect(logger.format('error', 'number', 0)).toStrictEqual([ANSIColor.RED, 'number -> 0', ANSIColor.RESET])
   })
 
   it('gets level and status from the environment', () => {

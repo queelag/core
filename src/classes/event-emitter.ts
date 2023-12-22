@@ -10,8 +10,8 @@ import { removeArrayItems } from '../utils/array-utils.js'
  * The API is based on the Node.js EventEmitter API.
  */
 export class EventEmitter<T extends EventEmitterEvents = EventEmitterEvents> {
-  private listeners: EventEmitterListener<T, keyof T>[]
-  private maxListeners: number
+  protected listeners: EventEmitterListener<T, keyof T>[]
+  protected maxListeners: number
 
   constructor() {
     this.listeners = []
@@ -19,8 +19,8 @@ export class EventEmitter<T extends EventEmitterEvents = EventEmitterEvents> {
   }
 
   /**
-   * Returns the number of listeners.
-   * Optionally the number of listeners can be filtered by name, callback and options.
+   * Counts the listeners that match the name, callback and options.
+   * If no arguments are passed, all listeners will be counted.
    */
   countListeners<K extends keyof T>(name?: K, callback?: T[K], options?: EventEmitterListenerOptions): number {
     return this.getListeners(name, callback, options).length
@@ -51,7 +51,7 @@ export class EventEmitter<T extends EventEmitterEvents = EventEmitterEvents> {
   /**
    * Returns the names of the events that have listeners.
    */
-  eventNames(): (keyof T)[] {
+  getEventNames(): (keyof T)[] {
     return this.listeners.map((listener) => listener.name)
   }
 
@@ -71,10 +71,17 @@ export class EventEmitter<T extends EventEmitterEvents = EventEmitterEvents> {
   }
 
   /**
-   * Returns the maximum number of listeners.
+   * Returns the maximum number of listeners that can be registered for a single event.
    */
   getMaxListeners(): number {
     return this.maxListeners
+  }
+
+  /**
+   * Checks if the event has listeners that match the name, callback and options.
+   */
+  hasListeners<K extends keyof T>(name?: K, callback?: T[K], options?: EventEmitterListenerOptions): boolean {
+    return this.countListeners(name, callback, options) > 0
   }
 
   /**
@@ -133,7 +140,14 @@ export class EventEmitter<T extends EventEmitterEvents = EventEmitterEvents> {
   }
 
   /**
-   * Sets the maximum number of listeners.
+   * Adds a listener, which will be called first when the event is emitted.
+   */
+  prepend<K extends keyof T>(name: K, callback: T[K], options?: EventEmitterListenerOptions): this {
+    return this.on<K>(name, callback, { ...options, prepend: true })
+  }
+
+  /**
+   * Sets the maximum number of listeners that can be registered for a single event.
    */
   setMaxListeners(n: number): this {
     this.maxListeners = n

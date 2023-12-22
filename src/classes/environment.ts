@@ -26,6 +26,9 @@ import {
   isWindowNotDefined
 } from '../utils/environment-utils.js'
 
+/**
+ * @deprecated
+ */
 export class Environment {
   static get(key: string): string {
     return getProcessEnvKey(key)

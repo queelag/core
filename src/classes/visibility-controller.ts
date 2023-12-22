@@ -1,99 +1,148 @@
+import { VisibilityControllerToggleDelay } from '../definitions/types.js'
 import { sleep } from '../functions/sleep.js'
 import { ClassLogger } from '../loggers/class-logger.js'
 
+/**
+ * The VisibilityController class is used to control the visibility of anything that can be hidden or shown.
+ */
 export class VisibilityController {
-  private data: Map<string, string> = new Map()
+  protected readonly data: Map<string, string> = new Map()
 
+  /**
+   * Hides the entity with the given name.
+   * Optionally a delay can be set.
+   */
   async hide(name: string, delay: number = 0): Promise<void> {
     if (this.isHidden(name)) {
       return ClassLogger.warn('VisibilityController', 'hide', `The key ${name} is already hidden.`)
     }
 
-    this.data.set(name, VisibilityController.HIDING)
-    ClassLogger.verbose('VisibilityController', 'hide', `The key ${name} is hiding.`)
+    if (delay > 0) {
+      this.data.set(name, VisibilityController.HIDING)
+      ClassLogger.verbose('VisibilityController', 'hide', `The key ${name} is hiding.`)
 
-    await sleep(delay)
+      await sleep(delay)
+    }
 
     this.data.set(name, VisibilityController.HIDDEN)
     ClassLogger.verbose('VisibilityController', 'hide', `The key ${name} is hidden.`)
   }
 
+  /**
+   * Shows the entity with the given name.
+   * Optionally a delay can be set.
+   */
   async show(name: string, delay: number = 0): Promise<void> {
     if (this.isVisible(name)) {
       return ClassLogger.warn('VisibilityController', 'show', `The key ${name} is already visible.`)
     }
 
-    this.data.set(name, VisibilityController.SHOWING)
-    ClassLogger.verbose('VisibilityController', 'hide', `The key ${name} is showing.`)
+    if (delay > 0) {
+      this.data.set(name, VisibilityController.SHOWING)
+      ClassLogger.verbose('VisibilityController', 'hide', `The key ${name} is showing.`)
 
-    await sleep(delay)
+      await sleep(delay)
+    }
 
     this.data.set(name, VisibilityController.VISIBLE)
     ClassLogger.verbose('VisibilityController', 'hide', `The key ${name} is visible.`)
   }
 
-  async toggle(name: string, delay: number = 0): Promise<void> {
+  /**
+   * Toggles the entity with the given name.
+   * Optionally a delay can be set, which can be different for hiding and showing.
+   */
+  async toggle(name: string, delay: VisibilityControllerToggleDelay = 0): Promise<void> {
     if (this.isHidden(name)) {
-      return this.show(name, delay)
+      return this.show(name, typeof delay === 'number' ? delay : delay.show)
     }
 
-    return this.hide(name, delay)
+    if (this.isVisible(name)) {
+      return this.hide(name, typeof delay === 'number' ? delay : delay.hide)
+    }
   }
 
+  /**
+   * Clears the visibility of all entities.
+   */
   clear(): void {
     this.data.clear()
     ClassLogger.verbose('VisibilityController', 'clear', `The data has been cleared.`)
   }
 
-  private get(name: string): string {
+  protected get(name: string): string {
     return this.data.get(name) ?? VisibilityController.HIDDEN
   }
 
+  /**
+   * Checks if the entity with the given name is hidden.
+   */
   isHidden(name: string): boolean {
     return this.get(name) === VisibilityController.HIDDEN
   }
 
+  /**
+   * Checks if the entity with the given name is hiding.
+   */
   isHiding(name: string): boolean {
     return this.get(name) === VisibilityController.HIDING
   }
 
+  /**
+   * Checks if the entity with the given name is showing.
+   */
   isShowing(name: string): boolean {
     return this.get(name) === VisibilityController.SHOWING
   }
 
+  /**
+   * Checks if the entity with the given name is visible.
+   */
   isVisible(name: string): boolean {
     return this.get(name) === VisibilityController.VISIBLE
   }
 
+  /**
+   * Checks if any entity is hidden.
+   */
   get hasHidden(): boolean {
     return [...this.data.values()].includes(VisibilityController.HIDDEN)
   }
 
+  /**
+   * Checks if any entity is hiding.
+   */
   get hasHiding(): boolean {
     return [...this.data.values()].includes(VisibilityController.HIDING)
   }
 
+  /**
+   * Checks if any entity is showing.
+   */
   get hasShowing(): boolean {
     return [...this.data.values()].includes(VisibilityController.SHOWING)
   }
 
+  /**
+   * Checks if any entity is visible.
+   */
   get hasVisible(): boolean {
     return [...this.data.values()].includes(VisibilityController.VISIBLE)
   }
 
-  private static get HIDDEN(): string {
+  protected static get HIDDEN(): string {
     return 'HIDDEN'
   }
 
-  private static get HIDING(): string {
+  protected static get HIDING(): string {
     return 'HIDING'
   }
 
-  private static get SHOWING(): string {
+  protected static get SHOWING(): string {
     return 'SHOWING'
   }
 
-  private static get VISIBLE(): string {
+  protected static get VISIBLE(): string {
     return 'VISIBLE'
   }
 }

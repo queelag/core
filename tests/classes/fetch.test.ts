@@ -95,7 +95,7 @@ describe('Fetch', () => {
   })
 
   it('works without request init', async () => {
-    response = await Fetch.handle(`${address}/any`)
+    response = await Fetch.send(`${address}/any`)
     expect(response).toBeInstanceOf(FetchResponse)
   })
 })

@@ -23,7 +23,7 @@ describe('EventEmitter', () => {
     expect(emitter.getListeners()).toStrictEqual([{ callback: noop, name: 'one', options: undefined }])
 
     emitter.off()
-    emitter.once('one', noop)
+    emitter.on('one', noop, { once: true })
     expect(emitter.getListeners()).toStrictEqual([{ callback: noop, name: 'one', options: { once: true } }])
 
     emitter.off()
@@ -31,7 +31,7 @@ describe('EventEmitter', () => {
     expect(emitter.getListeners()).toStrictEqual([{ callback: noop, name: 'one', options: { prepend: true } }])
 
     emitter.off()
-    emitter.once('one', noop, { prepend: true })
+    emitter.on('one', noop, { once: true, prepend: true })
     expect(emitter.getListeners()).toStrictEqual([{ callback: noop, name: 'one', options: { prepend: true, once: true } }])
   })
 
@@ -88,7 +88,7 @@ describe('EventEmitter', () => {
 
   it('returns event names', () => {
     emitter.on('one', noop)
-    expect(emitter.eventNames()).toStrictEqual(['one'])
+    expect(emitter.getEventNames()).toStrictEqual(['one'])
   })
 
   it('gets listeners', () => {

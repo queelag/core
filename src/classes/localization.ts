@@ -10,19 +10,42 @@ import { MemoryStorage } from '../storages/memory-storage.js'
 import { isNotError } from '../utils/error-utils.js'
 import { getObjectProperty, hasObjectProperty, mergeObjects } from '../utils/object-utils.js'
 
+/**
+ * The Localization class is used to localize anything that can be localized.
+ *
+ * - The language will persist in the storage, by default it will be stored in memory.
+ * - The path of the localized string supports dot notation, for example: 'path.to.the.value'.
+ * - The variables support dot notation as well and can be used inside the localized string, for example: 'Hello {name}!'.
+ * - The instance also supports default variables, which can be overridden by the variables passed to the get method.
+ */
 export class Localization {
+  /**
+   * The language that will be used to localize.
+   */
   language: string
+  /**
+   * The packs that will be used to localize.
+   */
   packs: LocalizationPack[]
+  /**
+   * The storage that will be used to store the language.
+   */
   storage: Storage
+  /**
+   * The key that will be used to store the language.
+   */
   storageKey: string
+  /**
+   * The default variables that will be used to localize.
+   */
   variables: LocalizationVariables
 
   constructor(
     language: string,
     packs: LocalizationPack[] = [],
+    variables: LocalizationVariables = {},
     storage: Storage = MemoryStorage,
-    storageKey: string = DEFAULT_LOCALIZATION_STORAGE_KEY,
-    variables: LocalizationVariables = {}
+    storageKey: string = DEFAULT_LOCALIZATION_STORAGE_KEY
   ) {
     this.language = language
     this.packs = packs
@@ -31,10 +54,23 @@ export class Localization {
     this.variables = variables
   }
 
+  /**
+   * Retrieves the language from the storage and sets it.
+   */
   async initialize(): Promise<boolean> {
     return isNotError(await this.storage.copy(this.storageKey, this, ['language']))
   }
 
+  /**
+   * Stores the language in the storage.
+   */
+  async store(): Promise<boolean> {
+    return isNotError(await this.storage.set(this.storageKey, this, ['language']))
+  }
+
+  /**
+   * Adds the packs to the instance, if a pack for the language already exists, the data will be merged.
+   */
   push(...packs: LocalizationPack[]): void {
     for (let pack of packs) {
       let potential: LocalizationPack
@@ -53,6 +89,10 @@ export class Localization {
     }
   }
 
+  /**
+   * Retrieves the localized string from the pack.
+   * Optionally you can pass variables that will be used to replace the variables inside the localized string.
+   */
   get<T extends object>(path: string, variables?: LocalizationVariables): string
   get<T extends object>(language: string, path: string, variables?: LocalizationVariables): string
   get<T extends object>(...args: any[]): string {
@@ -88,20 +128,25 @@ export class Localization {
     return localized
   }
 
-  async storeLanguage(): Promise<boolean> {
-    return isNotError(await this.storage.set(this.storageKey, this, ['language']))
-  }
-
+  /**
+   * Sets the language.
+   */
   setLanguage(language: string): void {
     this.language = language
     ClassLogger.debug('Localization', 'setLanguage', `The language has been set to ${this.language}.`)
   }
 
+  /**
+   * Sets the default variables.
+   */
   setVariables(variables: LocalizationVariables): void {
     this.variables = variables
     ClassLogger.debug('Localization', 'setVariables', `The variables have been set.`, variables)
   }
 
+  /**
+   * Checks if the pack has the path.
+   */
   has(path: string): boolean
   has(language: string, path: string): boolean
   has(...args: any[]): boolean {
@@ -116,6 +161,9 @@ export class Localization {
     return hasObjectProperty(pack.data, path)
   }
 
+  /**
+   * Retrieves the pack by the language.
+   */
   getPackByLanguage(language: string): LocalizationPack {
     return this.packs.find((v: LocalizationPack) => v.language === language) || { data: {}, language: '' }
   }
