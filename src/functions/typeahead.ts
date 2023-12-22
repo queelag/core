@@ -11,10 +11,10 @@ export function typeahead<T>(name: string, key: string, options?: TypeaheadOptio
   instance = instance ?? new Typeahead(name, options?.items, options?.predicate, options?.debounceTime)
 
   instance.pushKey(key)
-  instance.setDebounceTime(options?.debounceTime ?? instance.getDebounceTime())
-  instance.setItems(options?.items ?? instance.getItems())
+  instance.setDebounceTime(options?.debounceTime)
+  instance.setItems(options?.items)
   instance.setListeners(options?.listeners ?? instance.getListeners())
-  instance.setPredicate(options?.predicate ?? instance.getPredicate())
+  instance.setPredicate(options?.predicate)
 
   TYPEAHEAD_MAP.set(name, instance)
   FunctionLogger.verbose('typeahead', name, `The instance has been set.`, instance)

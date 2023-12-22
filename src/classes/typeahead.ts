@@ -87,6 +87,13 @@ export class Typeahead<T> extends EventEmitter<TypeaheadEvents<T>> {
   }
 
   /**
+   * Returns the name of the instance.
+   */
+  getName(): string {
+    return this.name
+  }
+
+  /**
    * Returns the predicate function.
    */
   getPredicate(): TypeaheadPredicate<T> {
@@ -111,32 +118,32 @@ export class Typeahead<T> extends EventEmitter<TypeaheadEvents<T>> {
   /**
    * Sets the debounce time.
    */
-  setDebounceTime(debounceTime: number): this {
-    this.debounceTime = debounceTime
+  setDebounceTime(debounceTime: number | undefined): this {
+    this.debounceTime = debounceTime ?? this.debounceTime
     return this
   }
 
   /**
    * Sets the items.
    */
-  setItems(items: T[]): this {
-    this.items = items
+  setItems(items: T[] | undefined): this {
+    this.items = items ?? this.items
     return this
   }
 
   /**
    * Sets the keys.
    */
-  setKeys(keys: string[]): this {
-    this.keys = keys
+  setKeys(keys: string[] | undefined): this {
+    this.keys = keys ?? this.keys
     return this
   }
 
   /**
    * Sets the predicate function.
    */
-  setPredicate(predicate: TypeaheadPredicate<T>): this {
-    this.predicate = predicate
+  setPredicate(predicate: TypeaheadPredicate<T> | undefined): this {
+    this.predicate = predicate ?? this.predicate
     return this
   }
 }
