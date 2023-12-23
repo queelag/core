@@ -102,7 +102,7 @@ export class Localization {
     path = typeof args[1] === 'string' ? args[1] : args[0]
 
     variables = typeof args[1] === 'string' ? args[2] : args[1]
-    variables = variables || {}
+    variables = variables ?? {}
 
     pack = this.getPackByLanguage(language)
     if (!pack.language) return path
@@ -165,6 +165,6 @@ export class Localization {
    * Retrieves the pack by the language.
    */
   getPackByLanguage(language: string): LocalizationPack {
-    return this.packs.find((v: LocalizationPack) => v.language === language) || { data: {}, language: '' }
+    return this.packs.find((v: LocalizationPack) => v.language === language) ?? { data: {}, language: '' }
   }
 }

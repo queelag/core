@@ -14,14 +14,14 @@ import { tc } from '../functions/tc.js'
 export function generateRandomString(options?: GenerateRandomStringOptions): string {
   let alphabet: string, blacklist: string[], random: (bytes: number) => Uint8Array, separator: string, size: number, id: string
 
-  alphabet = options?.alphabet || DEFAULT_GENERATE_RANDOM_STRING_ALPHABET
-  blacklist = options?.blacklist || []
-  random = options?.random || DEFAULT_GENERATE_RANDOM_STRING_RANDOM
-  separator = options?.separator || DEFAULT_GENERATE_RANDOM_STRING_SEPARATOR
-  size = options?.size || DEFAULT_GENERATE_RANDOM_STRING_SIZE
+  alphabet = options?.alphabet ?? DEFAULT_GENERATE_RANDOM_STRING_ALPHABET
+  blacklist = options?.blacklist ?? []
+  random = options?.random ?? DEFAULT_GENERATE_RANDOM_STRING_RANDOM
+  separator = options?.separator ?? DEFAULT_GENERATE_RANDOM_STRING_SEPARATOR
+  size = options?.size ?? DEFAULT_GENERATE_RANDOM_STRING_SIZE
 
   while (true) {
-    id = [options?.prefix, customRandom(alphabet, size, random)(), options?.suffix].filter(Boolean).join(options?.separator || '_')
+    id = [options?.prefix, customRandom(alphabet, size, random)(), options?.suffix].filter(Boolean).join(separator)
     if (!blacklist.includes(id)) break
   }
 

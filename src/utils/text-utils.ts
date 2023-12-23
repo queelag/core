@@ -1,7 +1,7 @@
 import { STUB_TEXT_DECODER, STUB_TEXT_ENCODER } from '../definitions/stubs.js'
 import { isTextDecoderDefined, isTextEncoderDefined } from './environment-utils.js'
 
-export function decodeText(input: Uint8Array, options?: TextDecodeOptions): string {
+export function decodeText(input: AllowSharedBufferSource, options?: TextDecodeOptions): string {
   return getTextDecoder().decode(input, options)
 }
 

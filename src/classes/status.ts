@@ -24,7 +24,7 @@ export class Status {
    * Retrieves the status of the given keys.
    */
   get(...keys: string[]): string {
-    return this.data.get(this.transformer(keys)) || Status.IDLE
+    return this.data.get(this.transformer(keys)) ?? Status.IDLE
   }
 
   /**

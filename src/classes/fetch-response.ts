@@ -133,6 +133,6 @@ export class FetchResponse<T = unknown> implements Response {
   }
 
   protected get ContentType(): string {
-    return this.headers.get('content-type') || ''
+    return this.headers.get('content-type') ?? ''
   }
 }

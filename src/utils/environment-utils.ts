@@ -1,15 +1,21 @@
 import { ProcessEnvValue } from '../definitions/types.js'
 import { tc } from '../functions/tc.js'
 
-export function getProcessEnvKey(key: string): string {
+/**
+ * Returns the value of a key in `process.env`.
+ */
+export function getProcessEnvKey(key: string): string | undefined {
   let value: ProcessEnvValue | Error
 
   value = tc(() => process.env[key], false)
-  if (value instanceof Error) return ''
+  if (value instanceof Error) return undefined
 
-  return value ?? ''
+  return value
 }
 
+/**
+ * Checks if a key exists in `process.env`.
+ */
 export function hasProcessEnvKey(key: string): boolean {
   let value: ProcessEnvValue | Error
 
@@ -19,115 +25,196 @@ export function hasProcessEnvKey(key: string): boolean {
   return true
 }
 
-export function getNodeEnv(): string {
+/**
+ * Returns the value of `process.env.NODE_ENV`.
+ */
+export function getNodeEnv(): string | undefined {
   let NODE_ENV: string | undefined | Error
 
   NODE_ENV = tc(() => process.env.NODE_ENV, false)
-  if (NODE_ENV instanceof Error) return ''
+  if (NODE_ENV instanceof Error) return undefined
 
-  return NODE_ENV ?? ''
+  return NODE_ENV
 }
 
+/**
+ * Checks if `Blob` is defined.
+ */
 export function isBlobDefined(): boolean {
   return typeof Blob !== 'undefined'
 }
 
+/**
+ * Checks if `Blob` is not defined.
+ */
 export function isBlobNotDefined(): boolean {
   return typeof Blob === 'undefined'
 }
 
+/**
+ * Checks if `document` is defined.
+ */
 export function isDocumentDefined(): boolean {
   return typeof document !== 'undefined'
 }
 
+/**
+ * Checks if `document` is not defined.
+ */
 export function isDocumentNotDefined(): boolean {
   return typeof document === 'undefined'
 }
 
+/**
+ * Checks if `fetch` is defined.
+ */
 export function isFetchDefined(): boolean {
   return typeof fetch !== 'undefined'
 }
 
+/**
+ * Checks if `fetch` is not defined.
+ */
 export function isFetchNotDefined(): boolean {
   return typeof fetch === 'undefined'
 }
 
+/**
+ * Checks if `File` is defined.
+ */
 export function isFileDefined(): boolean {
   return typeof File !== 'undefined'
 }
 
+/**
+ * Checks if `File` is not defined.
+ */
 export function isFileNotDefined(): boolean {
   return typeof File === 'undefined'
 }
 
+/**
+ * Checks if `FormData` is defined.
+ */
 export function isFormDataDefined(): boolean {
   return typeof FormData !== 'undefined'
 }
 
+/**
+ * Checks if `FormData` is not defined.
+ */
 export function isFormDataNotDefined(): boolean {
   return typeof FormData === 'undefined'
 }
 
+/**
+ * Checks if the `process.env.JEST_WORKER_ID` variable is defined.
+ */
 export function isJestDefined(): boolean {
   return typeof tc(() => process.env.JEST_WORKER_ID, false) === 'string'
 }
 
+/**
+ * Checks if the `process.env.JEST_WORKER_ID` variable is not defined.
+ */
 export function isJestNotDefined(): boolean {
   return typeof tc(() => process.env.JEST_WORKER_ID, false) !== 'string'
 }
 
+/**
+ * Checks if the `process.env.NODE_ENV` variable is set to `development`.
+ */
 export function isNodeEnvDevelopment(): boolean {
   return getNodeEnv() === 'development'
 }
 
+/**
+ * Checks if the `process.env.NODE_ENV` variable is not set to `development`.
+ */
 export function isNodeEnvNotDevelopment(): boolean {
   return getNodeEnv() !== 'development'
 }
 
+/**
+ * Checks if the `process.env.NODE_ENV` variable is set to `production`.
+ */
 export function isNodeEnvProduction(): boolean {
   return getNodeEnv() === 'production'
 }
 
+/**
+ * Checks if the `process.env.NODE_ENV` variable is not set to `production`.
+ */
 export function isNodeEnvNotProduction(): boolean {
   return getNodeEnv() !== 'production'
 }
 
+/**
+ * Checks if the `process.env.NODE_ENV` variable is set to `test`.
+ */
 export function isNodeEnvTest(): boolean {
   return getNodeEnv() === 'test'
 }
 
+/**
+ * Checks if the `process.env.NODE_ENV` variable is not set to `test`.
+ */
 export function isNodeEnvNotTest(): boolean {
   return getNodeEnv() !== 'test'
 }
 
+/**
+ * Checks if `process` is defined.
+ */
 export function isProcessDefined(): boolean {
   return typeof process !== 'undefined'
 }
 
+/**
+ * Checks if `process` is not defined.
+ */
 export function isProcessNotDefined(): boolean {
   return typeof process === 'undefined'
 }
 
+/**
+ * Checks if `TextDecoder` is defined.
+ */
 export function isTextDecoderDefined(): boolean {
   return typeof TextDecoder === 'function'
 }
 
+/**
+ * Checks if `TextDecoder` is not defined.
+ */
 export function isTextDecoderNotDefined(): boolean {
   return typeof TextDecoder !== 'function'
 }
 
+/**
+ * Checks if `TextEncoder` is defined.
+ */
 export function isTextEncoderDefined(): boolean {
   return typeof TextEncoder === 'function'
 }
 
+/**
+ * Checks if `TextEncoder` is not defined.
+ */
 export function isTextEncoderNotDefined(): boolean {
   return typeof TextEncoder !== 'function'
 }
 
+/**
+ * Checks if `window` is defined.
+ */
 export function isWindowDefined(): boolean {
   return typeof window !== 'undefined'
 }
 
+/**
+ * Checks if `window` is not defined.
+ */
 export function isWindowNotDefined(): boolean {
   return typeof window === 'undefined'
 }

@@ -19,6 +19,16 @@ import { mergeObjects, omitObjectProperties } from './object-utils.js'
 import { isStringJSON } from './string-utils.js'
 import { deserializeURLSearchParams } from './url-utils.js'
 
+/**
+ * Counts the number of headers in a `FetchRequestInit` or `RequestInit` object.
+ */
+export function countFetchRequestInitHeaders<T>(init: FetchRequestInit<T> | RequestInit): number {
+  return getFetchRequestInitHeadersEntries(init).length
+}
+
+/**
+ * Deletes a header from a `FetchRequestInit` or `RequestInit` object.
+ */
 export function deleteFetchRequestInitHeader<T>(init: FetchRequestInit<T> | RequestInit, name: string): void {
   if (typeof init.headers === 'undefined') {
     return
@@ -36,6 +46,9 @@ export function deleteFetchRequestInitHeader<T>(init: FetchRequestInit<T> | Requ
   delete init.headers[name]
 }
 
+/**
+ * Returns a header from a `FetchRequestInit` or `RequestInit` object.
+ */
 export function getFetchRequestInitHeader<T>(init: FetchRequestInit<T> | RequestInit, name: string): string | null {
   let value: string | undefined
 
@@ -62,6 +75,9 @@ export function getFetchRequestInitHeader<T>(init: FetchRequestInit<T> | Request
   return value
 }
 
+/**
+ * Returns the headers entries from a `FetchRequestInit` or `RequestInit` object.
+ */
 export function getFetchRequestInitHeadersEntries<T>(init: FetchRequestInit<T> | RequestInit): string[][] {
   if (typeof init.headers === 'undefined') {
     return []
@@ -78,10 +94,9 @@ export function getFetchRequestInitHeadersEntries<T>(init: FetchRequestInit<T> |
   return Object.entries(init.headers)
 }
 
-export function getFetchRequestInitHeadersLength<T>(init: FetchRequestInit<T> | RequestInit): number {
-  return getFetchRequestInitHeadersEntries(init).length
-}
-
+/**
+ * Imports `node-fetch` only if the Fetch API is not defined.
+ */
 export async function importNodeFetch(): Promise<NodeFetch | Error> {
   if (isBlobDefined() && isFetchDefined() && isFileDefined() && isFormDataDefined()) {
     return new Error(`The Fetch API is already defined.`)
@@ -94,6 +109,9 @@ export async function importNodeFetch(): Promise<NodeFetch | Error> {
   return tcp(() => new Function(`return import('node-fetch')`)())
 }
 
+/**
+ * Merges two or more `FetchRequestInit` or `RequestInit` objects.
+ */
 export function mergeFetchRequestInits<T>(target: FetchRequestInit<T>, ...sources: FetchRequestInit<T>[]): FetchRequestInit<T> {
   let merged: FetchRequestInit<T>
 
@@ -110,13 +128,16 @@ export function mergeFetchRequestInits<T>(target: FetchRequestInit<T>, ...source
     }
   }
 
-  if (getFetchRequestInitHeadersLength(merged) <= 0) {
+  if (countFetchRequestInitHeaders(merged) <= 0) {
     delete merged.headers
   }
 
   return merged
 }
 
+/**
+ * Sets a header in a `FetchRequestInit` or `RequestInit` object.
+ */
 export function setFetchRequestInitHeader<T>(init: FetchRequestInit<T> | RequestInit, name: string, value: string): void {
   if (typeof init.headers === 'undefined') {
     init.headers = new Headers()
@@ -139,6 +160,9 @@ export function setFetchRequestInitHeader<T>(init: FetchRequestInit<T> | Request
   init.headers[name] = value
 }
 
+/**
+ * Sets a header a `FetchRequestInit` or `RequestInit` object if it is not set.
+ */
 export function setFetchRequestInitHeaderWhenUnset<T>(init: FetchRequestInit<T> | RequestInit, name: string, value: string): void {
   if (hasFetchRequestInitHeader(init, name)) {
     return
@@ -147,6 +171,9 @@ export function setFetchRequestInitHeaderWhenUnset<T>(init: FetchRequestInit<T> 
   setFetchRequestInitHeader(init, name, value)
 }
 
+/**
+ * Polyfills the Fetch API with `node-fetch` if the Fetch API is not defined.
+ */
 export async function useNodeFetch(NodeFetch: NodeFetch | Error): Promise<void> {
   if (NodeFetch instanceof Error) {
     return
@@ -181,6 +208,9 @@ export async function useNodeFetch(NodeFetch: NodeFetch | Error): Promise<void> 
   }
 }
 
+/**
+ * Returns a version of a `FetchRequestInit` object that is easier to read in logs.
+ */
 export function toLoggableFetchRequestInit<T>(init: FetchRequestInit<T>): FetchRequestInit {
   let clone: FetchRequestInit
 
@@ -202,6 +232,9 @@ export function toLoggableFetchRequestInit<T>(init: FetchRequestInit<T>): FetchR
   return clone
 }
 
+/**
+ * Returns a version of a `RequestInit` object that is easier to read in logs.
+ */
 export function toLoggableNativeFetchRequestInit(init: RequestInit): RequestInit {
   let clone: RequestInit
 
@@ -232,6 +265,10 @@ export function toLoggableNativeFetchRequestInit(init: RequestInit): RequestInit
   return clone
 }
 
+/**
+ * Converts a `FetchRequestInit` object to a `RequestInit` object.
+ * Sets the `content-type` header based on the type of the body.
+ */
 export function toNativeFetchRequestInit<T>(init: FetchRequestInit<T>): RequestInit {
   let clone: RequestInit
 
@@ -280,6 +317,9 @@ export function toNativeFetchRequestInit<T>(init: FetchRequestInit<T>): RequestI
   return clone
 }
 
+/**
+ * Checks if a `FetchRequestInit` or `RequestInit` object has a header.
+ */
 export function hasFetchRequestInitHeader<T>(init: FetchRequestInit<T> | RequestInit, name: string): boolean {
   return getFetchRequestInitHeader(init, name) !== null
 }
