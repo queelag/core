@@ -32,7 +32,7 @@ export {
   LOGGER_LEVELS,
   LOGGER_STATUSES
 } from './definitions/constants.js'
-export { ANSIColor, LoggerName as CoreLoggerName, StorageName as CoreStorageName, PromiseState } from './definitions/enums.js'
+export { AnsiColor, LoggerName as CoreLoggerName, StorageName as CoreStorageName, PromiseState } from './definitions/enums.js'
 export type {
   AppearenceEvents,
   AracnaBlobJSON,

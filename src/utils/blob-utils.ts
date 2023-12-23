@@ -2,7 +2,7 @@ import { AracnaBlob } from '../classes/aracna-blob.js'
 import { DeserializeBlobOptions } from '../definitions/interfaces.js'
 
 /**
- * Creates a new `AracnaBlob` from a `Blob`.
+ * Deserializes a `Blob` object into an `AracnaBlob` instance.
  * Optionally resolves the data of the blob.
  */
 export async function deserializeBlob(blob: Blob, options?: DeserializeBlobOptions): Promise<AracnaBlob> {
@@ -20,7 +20,7 @@ export async function deserializeBlob(blob: Blob, options?: DeserializeBlobOptio
 }
 
 /**
- * Creates a new `Blob` from an `AracnaBlob`.
+ * Serializes an `AracnaBlob` instance into a `Blob` object.
  */
 export function serializeBlob(blob: AracnaBlob, endings?: EndingType): Blob {
   return new Blob([blob.blob], { endings, type: blob.type })

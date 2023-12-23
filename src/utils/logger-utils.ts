@@ -1,17 +1,20 @@
-import { ANSIColor } from '../definitions/enums.js'
+import { AnsiColor } from '../definitions/enums.js'
 import { LoggerLevel } from '../definitions/types.js'
 
-export function getLoggerANSIColor(level: LoggerLevel): string {
+/**
+ * Returns the ANSI color code for a logger level, the level can be `debug`, `error`, `info`, `verbose` or `warn`.
+ */
+export function getLoggerAnsiColor(level: LoggerLevel): string {
   switch (level) {
     case 'debug':
-      return ANSIColor.MAGENTA
+      return AnsiColor.MAGENTA
     case 'error':
-      return ANSIColor.RED
+      return AnsiColor.RED
     case 'info':
-      return ANSIColor.BLUE
+      return AnsiColor.BLUE
     case 'verbose':
-      return ANSIColor.WHITE
+      return AnsiColor.WHITE
     case 'warn':
-      return ANSIColor.YELLOW
+      return AnsiColor.YELLOW
   }
 }

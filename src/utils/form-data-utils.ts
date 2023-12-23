@@ -2,6 +2,9 @@ import { tc } from '../functions/tc.js'
 import { isBlobDefined, isFileDefined } from './environment-utils.js'
 import { isStringJSON } from './string-utils.js'
 
+/**
+ * Deserializes a `FormData` object into a plain object.
+ */
 export function deserializeFormData<T extends object>(data: FormData): T {
   let object: T = {} as T
 
@@ -17,6 +20,9 @@ export function deserializeFormData<T extends object>(data: FormData): T {
   return object
 }
 
+/**
+ * Serializes an object into a `FormData` object.
+ */
 export function serializeFormData<T extends object>(object: T): FormData {
   let data: FormData, stringified: string | Error
 

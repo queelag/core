@@ -1,9 +1,9 @@
 import { DEFAULT_LOGGER_SEPARATOR, LOGGER_LEVELS, LOGGER_STATUSES } from '../definitions/constants.js'
-import { ANSIColor } from '../definitions/enums.js'
+import { AnsiColor } from '../definitions/enums.js'
 import { LoggerLevel, LoggerStatus } from '../definitions/types.js'
 import { getProcessEnvKey, isFormDataDefined, isNodeEnvProduction, isNodeEnvTest, isWindowNotDefined } from '../utils/environment-utils.js'
 import { deserializeFormData } from '../utils/form-data-utils.js'
-import { getLoggerANSIColor } from '../utils/logger-utils.js'
+import { getLoggerAnsiColor } from '../utils/logger-utils.js'
 
 /**
  * The Logger class provides an isomorphic and consistent way to log messages to the console.
@@ -159,14 +159,14 @@ export class Logger {
 
       if (primitives.length > 0) {
         if (this.colors) {
-          print.push(getLoggerANSIColor(level))
+          print.push(getLoggerAnsiColor(level))
         }
 
         print.push(primitives.join(this.separator))
         primitives = []
 
         if (this.colors) {
-          print.push(ANSIColor.RESET)
+          print.push(AnsiColor.RESET)
         }
       }
 
@@ -180,13 +180,13 @@ export class Logger {
 
     if (primitives.length > 0) {
       if (this.colors) {
-        print.push(getLoggerANSIColor(level))
+        print.push(getLoggerAnsiColor(level))
       }
 
       print.push(primitives.join(this.separator))
 
       if (this.colors) {
-        print.push(ANSIColor.RESET)
+        print.push(AnsiColor.RESET)
       }
     }
 
