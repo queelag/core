@@ -1,12 +1,12 @@
 import { beforeEach, describe, expect, it, Mock, vi } from 'vitest'
-import { sleep, throttle } from '../../src'
+import { sleep, throttle, ThrottleMapKey } from '../../src'
 
 describe('Throttle', () => {
-  let fn: Mock, name: string
+  let fn: Mock, key: ThrottleMapKey
 
   beforeEach(() => {
     fn = vi.fn()
-    name = 'throttle'
+    key = Symbol('throttle')
   })
 
   it('works with fn as key', async () => {
@@ -23,15 +23,15 @@ describe('Throttle', () => {
   })
 
   it('works with name as key', async () => {
-    throttle(name, fn, 10)
+    throttle(fn, 10, key)
     expect(fn).toBeCalledTimes(1)
 
-    throttle(name, fn, 10)
+    throttle(fn, 10, key)
     expect(fn).toBeCalledTimes(1)
 
     await sleep(10)
 
-    throttle(name, fn, 10)
+    throttle(fn, 10, key)
     expect(fn).toBeCalledTimes(2)
   })
 })

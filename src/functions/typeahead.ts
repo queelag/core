@@ -1,28 +1,27 @@
 import { Typeahead } from '../classes/typeahead.js'
 import { TYPEAHEAD_MAP } from '../definitions/constants.js'
 import { TypeaheadOptions } from '../definitions/interfaces.js'
-import { TypeaheadMapValue } from '../definitions/types.js'
+import { TypeaheadMapKey, TypeaheadMapValue } from '../definitions/types.js'
 import { FunctionLogger } from '../loggers/function-logger.js'
 
-export function typeahead<T>(name: string, key: string, options?: TypeaheadOptions<T>): Typeahead<T> {
+/**
+ * The `typeahead` function is used to search for items in a list, based on user input.
+ * When a match is found, the `match` event is emitted.
+ */
+export function typeahead<T>(key: TypeaheadMapKey, chunks: string | string[], options?: TypeaheadOptions<T>): Typeahead<T> {
   let instance: TypeaheadMapValue | undefined
 
-  instance = TYPEAHEAD_MAP.get(name)
-  instance = instance ?? new Typeahead(name, options?.items, options?.predicate, options?.debounceTime)
+  instance = TYPEAHEAD_MAP.get(key)
+  instance = instance ?? new Typeahead(key, options?.items, options?.predicate, options?.debounceTime)
 
-  instance.pushKey(key)
+  instance.pushChunks(...chunks)
   instance.setDebounceTime(options?.debounceTime)
   instance.setItems(options?.items)
   instance.setListeners(options?.listeners ?? instance.getListeners())
   instance.setPredicate(options?.predicate)
 
-  TYPEAHEAD_MAP.set(name, instance)
-  FunctionLogger.verbose('typeahead', name, `The instance has been set.`, instance)
+  TYPEAHEAD_MAP.set(key, instance)
+  FunctionLogger.verbose('typeahead', key, `The instance has been set.`, instance)
 
-  if (options?.search !== false) {
-    FunctionLogger.verbose('typeahead', name, `Calling the search function.`)
-    instance.search()
-  }
-
-  return instance
+  return instance.search()
 }

@@ -1,5 +1,8 @@
 import { Configuration } from '../classes/configuration.js'
 
+/**
+ * The `tcp` function stands for `try catch promise`. It takes a function and returns a promise that resolves to the result of the function or the error that was thrown.
+ */
 export async function tcp<T, U extends Error = Error>(fn: () => Promise<T>, log: boolean = Configuration.functions.tcp.log): Promise<T | U> {
   try {
     return await fn()

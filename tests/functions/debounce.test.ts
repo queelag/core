@@ -1,12 +1,12 @@
 import { beforeEach, describe, expect, it, Mock, vi } from 'vitest'
-import { debounce, sleep } from '../../src'
+import { debounce, DebounceMapKey, sleep } from '../../src'
 
 describe('Debounce', () => {
-  let fn: Mock, name: string
+  let fn: Mock, key: DebounceMapKey
 
   beforeEach(() => {
     fn = vi.fn()
-    name = 'debounce'
+    key = Symbol('debounce')
   })
 
   it('works with fn as key', async () => {
@@ -25,15 +25,15 @@ describe('Debounce', () => {
   })
 
   it('works with name as key', async () => {
-    debounce(name, fn, 10)
+    debounce(fn, 10, key)
     expect(fn).not.toBeCalled()
 
     await sleep(10)
     expect(fn).toBeCalledTimes(1)
 
-    debounce(name, fn, 10)
+    debounce(fn, 10, key)
     await sleep(5)
-    debounce(name, fn, 10)
+    debounce(fn, 10, key)
     await sleep(10)
 
     expect(fn).toBeCalledTimes(2)

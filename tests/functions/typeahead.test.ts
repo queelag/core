@@ -1,12 +1,12 @@
 import { Mock, afterEach, beforeAll, describe, expect, it, vi } from 'vitest'
-import { sleep, typeahead } from '../../src'
+import { TypeaheadMapKey, sleep, typeahead } from '../../src'
 import { DEFAULT_TYPEAHEAD_DEBOUNCE_TIME, TYPEAHEAD_MAP } from '../../src/definitions/constants'
 
 describe('typeahead', () => {
-  let name: string, items: string[]
+  let key: TypeaheadMapKey, items: string[]
 
   beforeAll(() => {
-    name = 'combobox'
+    key = Symbol('typeahead')
     items = ['apple', 'banana', 'cherry']
   })
 
@@ -15,18 +15,20 @@ describe('typeahead', () => {
   })
 
   it('captures the key and adds it to the query', async () => {
-    expect(typeahead(name, 'a').getQuery()).toBe('a')
-    expect(typeahead(name, 'b').getQuery()).toBe('ab')
+    expect(typeahead(key, 'a').getQuery()).toBe('a')
+    expect(typeahead(key, 'b').getQuery()).toBe('ab')
 
     await sleep(DEFAULT_TYPEAHEAD_DEBOUNCE_TIME)
 
-    expect(typeahead(name, 'c').getQuery()).toBe('c')
+    expect(typeahead(key, 'c').getQuery()).toBe('c')
   })
 
   it('emits the match event when a match is found', async () => {
     let onMatch: Mock = vi.fn()
 
-    typeahead(name, 'a', { items, listeners: [{ callback: onMatch, name: 'match' }], predicate: (item: string, query: string) => item.startsWith(query) })
+    typeahead(key, 'a', { items, listeners: [{ callback: onMatch, name: 'match' }], predicate: (item: string, query: string) => item.startsWith(query) })
+
+    await sleep(DEFAULT_TYPEAHEAD_DEBOUNCE_TIME)
 
     expect(onMatch).toHaveBeenCalledTimes(1)
     expect(onMatch).toHaveBeenCalledWith('apple')
@@ -35,19 +37,21 @@ describe('typeahead', () => {
 
     onMatch.mockReset()
 
-    typeahead(name, 'b')
-    typeahead(name, 'a')
+    typeahead(key, 'b')
+    typeahead(key, 'a')
 
-    expect(onMatch).toHaveBeenCalledTimes(2)
+    await sleep(DEFAULT_TYPEAHEAD_DEBOUNCE_TIME)
+
+    expect(onMatch).toHaveBeenCalledTimes(1)
     expect(onMatch).toHaveBeenCalledWith('banana')
   })
 
   it('supports a custom debounce time', async () => {
-    expect(typeahead(name, 'a', { debounceTime: 200 }).getQuery()).toBe('a')
-    expect(typeahead(name, 'b').getQuery()).toBe('ab')
+    expect(typeahead(key, 'a', { debounceTime: 200 }).getQuery()).toBe('a')
+    expect(typeahead(key, 'b').getQuery()).toBe('ab')
 
     await sleep(200)
 
-    expect(typeahead(name, 'c').getQuery()).toBe('c')
+    expect(typeahead(key, 'c').getQuery()).toBe('c')
   })
 })

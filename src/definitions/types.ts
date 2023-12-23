@@ -5,7 +5,7 @@ import type { Typeahead } from '../classes/typeahead.js'
 export type ArrayIncludes<T> = (array: T[], item: T) => boolean
 export type ArrayRemoves<T> = (array: T[], item: T) => boolean
 
-export type DebounceMapKey = Function | string
+export type DebounceMapKey = bigint | number | string | symbol | Function
 export type DebounceMapValue = NodeJS.Timeout | number
 
 export type DeserializeURLSearchParamsType = 'array' | 'object' | 'string'
@@ -15,7 +15,7 @@ export type EventEmitterEvents = Record<EventEmitterListenerName, EventEmitterLi
 export type EventEmitterListenerName = string | symbol
 export type EventEmitterListenerCallback = (...args: any[]) => any
 
-export type IntervalMapKey = Function | string
+export type IntervalMapKey = bigint | number | string | symbol | Function
 export type IntervalMapValue = NodeJS.Timeout | number
 
 export type IsEqual<T1, T2> = (a: T1, b: T2) => boolean
@@ -47,13 +47,13 @@ export type Storage = AsyncStorage | SyncStorage
 
 export type Theme = 'dark' | 'light' | 'system'
 
-export type ThrottleMapKey = Function | string
+export type ThrottleMapKey = bigint | number | string | symbol | Function
 
-export type TimeoutMapKey = Function | string
+export type TimeoutMapKey = bigint | number | string | symbol | Function
 export type TimeoutMapValue = NodeJS.Timeout | number
 
 export type TypeaheadOnMatch<T> = (item: T) => any
-export type TypeaheadMapKey = Function | string
+export type TypeaheadMapKey = bigint | number | string | symbol
 export type TypeaheadMapValue = Typeahead<any>
 export type TypeaheadPredicate<T> = (item: T, query: string, index: number, items: T[]) => unknown
 

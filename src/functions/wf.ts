@@ -1,6 +1,9 @@
 import { DEFAULT_WF_MS, DEFAULT_WF_TIMEOUT } from '../definitions/constants.js'
 import { tc } from './tc.js'
 
+/**
+ * The `wf` function stands for `wait for`. It takes a function and waits for it to return a truthy value or an error.
+ */
 export async function wf(fn: () => any, ms: number = DEFAULT_WF_MS, timeout: number = DEFAULT_WF_TIMEOUT): Promise<void | Error> {
   return new Promise((resolve) => {
     let et: number, interval: NodeJS.Timeout | number
@@ -19,6 +22,7 @@ export async function wf(fn: () => any, ms: number = DEFAULT_WF_MS, timeout: num
       }
 
       result = tc(() => fn())
+
       if (result instanceof Error) {
         clearInterval(interval)
         return resolve(result)

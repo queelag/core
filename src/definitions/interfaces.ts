@@ -123,6 +123,10 @@ export interface GraphQlApiResponseBodyErrorLocation {
 
 export interface HistoryDataTarget extends Record<PropertyKey, any> {}
 
+export interface SetIntervalOptions {
+  autorun?: boolean
+}
+
 export interface LocalizationPack {
   data: LocalizationPackData
   language: string
@@ -164,7 +168,6 @@ export interface TypeaheadOptions<T> {
   items?: T[]
   listeners?: EventEmitterListener<TypeaheadEvents<T>>[]
   predicate?: TypeaheadPredicate<T>
-  search?: boolean
 }
 
 export interface WithWriteMode {

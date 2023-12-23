@@ -1,38 +1,28 @@
 import { INTERVAL_MAP } from '../definitions/constants.js'
+import { SetIntervalOptions } from '../definitions/interfaces.js'
 import { IntervalMapKey } from '../definitions/types.js'
 import { tc } from '../functions/tc.js'
 import { UtilLogger } from '../loggers/util-logger.js'
 
-function set(fn: Function, ms: number, autorun?: boolean): void
-function set(name: string, fn: Function, ms: number, autorun?: boolean): void
-function set(...args: any[]): void {
-  let key: IntervalMapKey, fn: Function, ms: number, autorun: boolean
-
-  key = args[0]
-  fn = typeof args[0] === 'function' ? args[0] : args[1]
-  ms = typeof args[0] === 'function' ? args[1] : args[2]
-  autorun = typeof args[0] === 'function' ? args[2] : args[3]
-
+function set(fn: Function, ms: number, key: IntervalMapKey = fn, options?: SetIntervalOptions): void {
   clearInterval(INTERVAL_MAP.get(key) as any)
-  UtilLogger.debug('setInterval', `The interval ${key} has been cleared.`)
+  UtilLogger.debug('setInterval', key, `The interval has been cleared.`)
 
-  if (autorun) {
+  if (options?.autorun) {
     tc(() => fn())
-    UtilLogger.debug('setInterval', `The interval ${key} has been executed.`)
+    UtilLogger.debug('setInterval', key, `The interval has been executed.`)
   }
 
   INTERVAL_MAP.set(key, setInterval(fn, ms))
-  UtilLogger.debug('setInterval', `The interval ${key} has been set to run every ${ms}ms.`)
+  UtilLogger.debug('setInterval', key, `The interval has been set to run every ${ms}ms.`)
 }
 
-function clear(fn: Function): void
-function clear(name: string): void
 function clear(key: IntervalMapKey): void {
   clearInterval(INTERVAL_MAP.get(key))
-  UtilLogger.debug('clearInterval', `The interval ${key} has been cleared.`)
+  UtilLogger.debug('clearInterval', key, `The interval has been cleared.`)
 
   INTERVAL_MAP.delete(key)
-  UtilLogger.debug('clearInterval', `The interval ${key} has been deleted.`)
+  UtilLogger.debug('clearInterval', key, `The interval  has been deleted.`)
 }
 
 export function clearEveryInterval(): void {

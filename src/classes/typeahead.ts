@@ -1,6 +1,6 @@
 import { DEFAULT_TYPEAHEAD_DEBOUNCE_TIME } from '../definitions/constants.js'
 import { TypeaheadEvents } from '../definitions/interfaces.js'
-import { TypeaheadPredicate } from '../definitions/types.js'
+import { TypeaheadMapKey, TypeaheadPredicate } from '../definitions/types.js'
 import { debounce } from '../functions/debounce.js'
 import { noop } from '../functions/noop.js'
 import { ClassLogger } from '../loggers/class-logger.js'
@@ -11,6 +11,10 @@ import { EventEmitter } from './event-emitter.js'
  */
 export class Typeahead<T> extends EventEmitter<TypeaheadEvents<T>> {
   /**
+   * The chunks that make up the query string.
+   */
+  protected chunks: string[]
+  /**
    * The debounce time.
    */
   protected debounceTime: number
@@ -19,25 +23,21 @@ export class Typeahead<T> extends EventEmitter<TypeaheadEvents<T>> {
    */
   protected items: T[]
   /**
-   * The keys that have been pressed.
+   * The key of the instance.
    */
-  protected keys: string[]
-  /**
-   * The name of the instance.
-   */
-  protected readonly name: string
+  protected readonly key: TypeaheadMapKey
   /**
    * The predicate function.
    */
   protected predicate: TypeaheadPredicate<T>
 
-  constructor(name: string, items: T[] = [], predicate: TypeaheadPredicate<T> = noop, debounceTime: number = DEFAULT_TYPEAHEAD_DEBOUNCE_TIME) {
+  constructor(key: TypeaheadMapKey, items: T[] = [], predicate: TypeaheadPredicate<T> = noop, debounceTime: number = DEFAULT_TYPEAHEAD_DEBOUNCE_TIME) {
     super()
 
+    this.chunks = []
     this.debounceTime = debounceTime
     this.items = items
-    this.keys = []
-    this.name = name
+    this.key = key
     this.predicate = predicate
   }
 
@@ -49,25 +49,18 @@ export class Typeahead<T> extends EventEmitter<TypeaheadEvents<T>> {
 
     if (match) {
       this.emit('match', match)
-      ClassLogger.verbose('Typeahead', this.name, `The match event has been emitted.`, [match])
+      ClassLogger.verbose('Typeahead', this.key, `The match event has been emitted.`, [match])
     }
 
-    this.setKeys([])
+    this.setChunks([])
   }
 
   /**
    * Searches the items for a match and emits the match event if a match is found.
    */
   search(): this {
-    let match: T | undefined = this.items.find((item: T, index: number, items: T[]) => this.predicate(item, this.getQuery(), index, items))
-
-    if (match) {
-      this.emit('match', match)
-      ClassLogger.verbose('Typeahead', this.name, `The match event has been emitted.`, [match])
-    }
-
-    ClassLogger.verbose('typeahead', this.name, `Setting the debounce.`, [this.debounceTime])
-    debounce(this.name, this.debouncefn, this.debounceTime)
+    ClassLogger.verbose('typeahead', this.key, `Setting the debounce.`, [this.debounceTime])
+    debounce(this.debouncefn, this.debounceTime, this.key)
 
     return this
   }
@@ -87,10 +80,10 @@ export class Typeahead<T> extends EventEmitter<TypeaheadEvents<T>> {
   }
 
   /**
-   * Returns the name of the instance.
+   * Returns the key of the instance.
    */
-  getName(): string {
-    return this.name
+  getKey(): TypeaheadMapKey {
+    return this.key
   }
 
   /**
@@ -104,14 +97,14 @@ export class Typeahead<T> extends EventEmitter<TypeaheadEvents<T>> {
    * Returns the query string.
    */
   getQuery(): string {
-    return this.keys.join('')
+    return this.chunks.join('')
   }
 
   /**
-   * Pushes a key to the keys array.
+   * Pushes chunks to the chunks array.
    */
-  pushKey(key: string): this {
-    this.keys.push(key)
+  pushChunks(...chunks: string[]): this {
+    this.chunks.push(...chunks)
     return this
   }
 
@@ -132,10 +125,10 @@ export class Typeahead<T> extends EventEmitter<TypeaheadEvents<T>> {
   }
 
   /**
-   * Sets the keys.
+   * Sets the chunks.
    */
-  setKeys(keys: string[] | undefined): this {
-    this.keys = keys ?? this.keys
+  setChunks(chunks: string[] | undefined): this {
+    this.chunks = chunks ?? this.chunks
     return this
   }
 

@@ -2,15 +2,13 @@ import { DEBOUNCE_MAP } from '../definitions/constants.js'
 import { DebounceMapKey } from '../definitions/types.js'
 import { FunctionLogger } from '../loggers/function-logger.js'
 
-export function debounce(fn: Function, ms: number): void
-export function debounce(name: string, fn: Function, ms: number): void
-export function debounce(...args: any[]): void {
-  let key: DebounceMapKey, fn: Function, ms: number
-
-  key = args[0]
-  fn = typeof args[0] === 'function' ? args[0] : args[1]
-  ms = typeof args[0] === 'function' ? args[1] : args[2]
-
+/**
+ * The `debounce` function is used to prevent a function from being called too many times in a short period.
+ * The function will only be called after it stops being called for the specified amount of time.
+ *
+ * Optionally you can specify the key to use, otherwise the function itself will be used as the key.
+ */
+export function debounce(fn: Function, ms: number, key: DebounceMapKey = fn): void {
   clearTimeout(DEBOUNCE_MAP.get(key))
   FunctionLogger.verbose('debounce', key, `The timeout has been cleared.`)
 

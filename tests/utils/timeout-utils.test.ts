@@ -1,12 +1,12 @@
 import { afterAll, beforeEach, describe, expect, it, Mock, vi } from 'vitest'
-import { clearEveryTimeout, clearTimeout, isTimeoutSet, isTimeoutUnset, setTimeout, sleep } from '../../src'
+import { clearEveryTimeout, clearTimeout, isTimeoutSet, isTimeoutUnset, setTimeout, sleep, TimeoutMapKey } from '../../src'
 
 describe('Timeout Utils', () => {
-  let fn: Mock, name: string
+  let fn: Mock, key: TimeoutMapKey
 
   beforeEach(() => {
     fn = vi.fn()
-    name = 'timeout'
+    key = Symbol('timeout')
   })
 
   afterAll(() => {
@@ -36,22 +36,22 @@ describe('Timeout Utils', () => {
   })
 
   it('works with name as key', async () => {
-    setTimeout(name, fn, 10)
-    expect(isTimeoutSet(name)).toBeTruthy()
-    expect(isTimeoutUnset(name)).toBeFalsy()
+    setTimeout(fn, 10, key)
+    expect(isTimeoutSet(key)).toBeTruthy()
+    expect(isTimeoutUnset(key)).toBeFalsy()
 
     await sleep(10)
     expect(fn).toBeCalledTimes(1)
 
     fn.mockReset()
 
-    setTimeout(name, fn, 10)
-    expect(isTimeoutSet(name)).toBeTruthy()
-    expect(isTimeoutUnset(name)).toBeFalsy()
+    setTimeout(fn, 10, key)
+    expect(isTimeoutSet(key)).toBeTruthy()
+    expect(isTimeoutUnset(key)).toBeFalsy()
 
-    clearTimeout(name)
-    expect(isTimeoutSet(name)).toBeFalsy()
-    expect(isTimeoutUnset(name)).toBeTruthy()
+    clearTimeout(key)
+    expect(isTimeoutSet(key)).toBeFalsy()
+    expect(isTimeoutUnset(key)).toBeTruthy()
 
     await sleep(10)
     expect(fn).not.toBeCalled()

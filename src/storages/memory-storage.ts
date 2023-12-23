@@ -2,6 +2,9 @@ import { SyncStorage } from '../classes/sync-storage.js'
 import { MEMORY_STORAGE_MAP } from '../definitions/constants.js'
 import { StorageName } from '../definitions/enums.js'
 
+/**
+ * The `MemoryStorage` is a `SyncStorage` that uses a `Map` as its storage, which means that it will only be available in the current session.
+ */
 export const MemoryStorage: SyncStorage = new SyncStorage(
   StorageName.MEMORY,
   () => MEMORY_STORAGE_MAP.clear(),

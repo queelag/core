@@ -1,6 +1,9 @@
 import { DEFAULT_WFP_MS, DEFAULT_WFP_TIMEOUT } from '../definitions/constants.js'
 import { tcp } from './tcp.js'
 
+/**
+ * The `wfp` function stands for `wait for promise`. It takes a function that returns a promise and waits for it to resolve to a truthy value or an error.
+ */
 export async function wfp(fn: () => Promise<any>, ms: number = DEFAULT_WFP_MS, timeout: number = DEFAULT_WFP_TIMEOUT): Promise<void | Error> {
   return new Promise((resolve) => {
     let et: number, interval: NodeJS.Timeout | number
