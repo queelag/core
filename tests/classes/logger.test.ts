@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { Logger, importNodeFetch, noop, useNodeFetch } from '../../src'
-import { ANSIColor } from '../../src/definitions/enums'
+import { AnsiColor } from '../../src/definitions/enums'
 
 describe('Logger', () => {
   let logger: Logger
@@ -151,13 +151,13 @@ describe('Logger', () => {
 
     logger = new Logger('TEST', 'verbose', 'on')
 
-    expect(logger.format('verbose', 'number', 0)).toStrictEqual([ANSIColor.WHITE, 'number -> 0', ANSIColor.RESET])
-    expect(logger.format('verbose', 'object', {})).toStrictEqual([ANSIColor.WHITE, 'object', ANSIColor.RESET, {}])
+    expect(logger.format('verbose', 'number', 0)).toStrictEqual([AnsiColor.WHITE, 'number -> 0', AnsiColor.RESET])
+    expect(logger.format('verbose', 'object', {})).toStrictEqual([AnsiColor.WHITE, 'object', AnsiColor.RESET, {}])
 
-    expect(logger.format('debug', 'number', 0)).toStrictEqual([ANSIColor.MAGENTA, 'number -> 0', ANSIColor.RESET])
-    expect(logger.format('info', 'number', 0)).toStrictEqual([ANSIColor.BLUE, 'number -> 0', ANSIColor.RESET])
-    expect(logger.format('warn', 'number', 0)).toStrictEqual([ANSIColor.YELLOW, 'number -> 0', ANSIColor.RESET])
-    expect(logger.format('error', 'number', 0)).toStrictEqual([ANSIColor.RED, 'number -> 0', ANSIColor.RESET])
+    expect(logger.format('debug', 'number', 0)).toStrictEqual([AnsiColor.MAGENTA, 'number -> 0', AnsiColor.RESET])
+    expect(logger.format('info', 'number', 0)).toStrictEqual([AnsiColor.BLUE, 'number -> 0', AnsiColor.RESET])
+    expect(logger.format('warn', 'number', 0)).toStrictEqual([AnsiColor.YELLOW, 'number -> 0', AnsiColor.RESET])
+    expect(logger.format('error', 'number', 0)).toStrictEqual([AnsiColor.RED, 'number -> 0', AnsiColor.RESET])
   })
 
   it('gets level and status from the environment', () => {

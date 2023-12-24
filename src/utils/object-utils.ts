@@ -1,10 +1,30 @@
-import { REGEXP_LEFT_SQUARE_BRACKET_WITHOUT_LEADING_DOT, REGEXP_SQUARE_BRACKETS } from '../definitions/constants.js'
-import { FlattenObjectOptions } from '../definitions/interfaces.js'
-import { KeyOf } from '../definitions/types.js'
+import {
+  DEFAULT_DELETE_OBJECT_PROPERTIES_PREDICATE,
+  DEFAULT_OMIT_OBJECT_PROPERTIES_PREDICATE,
+  DEFAULT_PICK_OBJECT_PROPERTIES_PREDICATE,
+  REGEXP_LEFT_SQUARE_BRACKET_WITHOUT_LEADING_DOT,
+  REGEXP_SQUARE_BRACKETS
+} from '../definitions/constants.js'
+import {
+  CloneObjectOptions,
+  DeleteObjectPropertiesOptions,
+  FlattenObjectOptions,
+  OmitObjectPropertiesOptions,
+  PickObjectPropertiesOptions
+} from '../definitions/interfaces.js'
+import { DeleteObjectPropertiesPredicate, KeyOf, OmitObjectPropertiesPredicate, PickObjectPropertiesPredicate } from '../definitions/types.js'
 import { isArray } from './array-utils.js'
 
-export function cloneDeepObject<T extends object>(object: T): T {
+/**
+ * Creates a copy of an object.
+ * Optionally the copy can be deep.
+ */
+export function cloneObject<T extends object>(object: T, options?: CloneObjectOptions): T {
   let clone: T = {} as T
+
+  if (options?.deep !== true) {
+    return { ...object }
+  }
 
   if (!isObjectClonable(object)) {
     return object
@@ -18,7 +38,7 @@ export function cloneDeepObject<T extends object>(object: T): T {
     let value: any = object[key]
 
     if (isObjectClonable(value)) {
-      clone[key] = cloneDeepObject<any>(value)
+      clone[key] = cloneObject<any>(value, options)
       continue
     }
 
@@ -28,16 +48,18 @@ export function cloneDeepObject<T extends object>(object: T): T {
   return clone
 }
 
-export function cloneShallowObject<T extends object>(object: T): T {
-  return { ...object }
-}
-
+/**
+ * Copies a property from one object to another. The key supports bracket and dot notation.
+ */
 export function copyObjectProperty<T1 extends object, T2 extends object, T extends T1 & T2>(source: T, key: KeyOf.Deep<T>, target: T): void | Error
 export function copyObjectProperty<T1 extends object, T2 extends object, T extends T1 & T2>(source: T, key: string, target: T): void | Error
 export function copyObjectProperty<T1 extends object, T2 extends object, T extends T1 & T2>(source: T, key: KeyOf.Deep<T>, target: T): void | Error {
   return setObjectProperty(target, key, getObjectProperty(source, key))
 }
 
+/**
+ * Deletes a property from an object. The key supports bracket and dot notation.
+ */
 export function deleteObjectProperty<T extends object>(object: T, key: KeyOf.Deep<T>): void
 export function deleteObjectProperty<T extends object>(object: T, key: string): void
 export function deleteObjectProperty<T extends object>(object: T, key: KeyOf.Deep<T>): void {
@@ -67,8 +89,59 @@ export function deleteObjectProperty<T extends object>(object: T, key: KeyOf.Dee
   }
 }
 
-export function flattenObject<T extends object>(object: T, options?: FlattenObjectOptions, parents: string[] = []): Record<PropertyKey, any> {
-  let flat: Record<PropertyKey, any> = {}
+/**
+ * Deletes the properties of an object that either match the predicate or are in the list of keys. The keys support bracket and dot notation.
+ * Optionally deletes deep properties as well.
+ */
+export function deleteObjectProperties<T extends object>(
+  object: T,
+  predicate: DeleteObjectPropertiesPredicate,
+  options: DeleteObjectPropertiesOptions & { deep: true }
+): void
+export function deleteObjectProperties<T extends object>(
+  object: T,
+  predicate: DeleteObjectPropertiesPredicate<T>,
+  options?: DeleteObjectPropertiesOptions
+): void
+export function deleteObjectProperties<T extends object>(object: T, keys: KeyOf.Deep<T>[]): void
+export function deleteObjectProperties<T extends object>(object: T, keys: KeyOf.Shallow<T>[]): void
+export function deleteObjectProperties<T extends object>(object: T, keys: string[]): void
+export function deleteObjectProperties<T extends object>(object: T, ...args: any[]): void {
+  let keys: string[] | undefined, predicate: DeleteObjectPropertiesPredicate, options: DeleteObjectPropertiesOptions | undefined
+
+  keys = typeof args[0] === 'object' ? args[0] : undefined
+  predicate = typeof args[0] === 'function' ? args[0] : DEFAULT_DELETE_OBJECT_PROPERTIES_PREDICATE
+  options = args[1]
+
+  if (keys) {
+    for (let key of keys) {
+      deleteObjectProperty(object, key)
+    }
+
+    return
+  }
+
+  for (let key in object) {
+    let value: any = object[key]
+
+    if (predicate(object, key, value, keys)) {
+      delete object[key]
+      continue
+    }
+
+    if (options?.deep && isPlainObject(value)) {
+      deleteObjectProperties(value, predicate)
+      continue
+    }
+  }
+}
+
+/**
+ * Flattens an object into a single-depth object with dot notation keys.
+ * Optionally flattens arrays as well.
+ */
+export function flattenObject<T extends object>(object: T, options?: FlattenObjectOptions, parents: string[] = []): Record<string, any> {
+  let flat: Record<string, any> = {}
 
   for (let key in object) {
     let value: any = object[key]
@@ -84,6 +157,9 @@ export function flattenObject<T extends object>(object: T, options?: FlattenObje
   return flat
 }
 
+/**
+ * Returns a property from an object. The key supports bracket and dot notation.
+ */
 export function getObjectProperty<T extends object, U extends any>(object: T, key: KeyOf.Deep<T>): U | undefined
 export function getObjectProperty<T extends object, U extends any>(object: T, key: KeyOf.Deep<T>, fallback: U): U
 export function getObjectProperty<T extends object, U extends any>(object: T, key: string): U | undefined
@@ -152,8 +228,11 @@ function getObjectPropertyDotKeyTarget<T extends object, U extends object>(objec
   return target
 }
 
+/**
+ * Merges two or more objects into a single object.
+ */
 export function mergeObjects<T extends object>(target: T, ...sources: Record<PropertyKey, any>[]): T {
-  let clone: T = cloneDeepObject(target)
+  let clone: T = cloneObject(target, { deep: true })
 
   for (let source of sources) {
     for (let key in source) {
@@ -167,7 +246,7 @@ export function mergeObjects<T extends object>(target: T, ...sources: Record<Pro
       }
 
       if (isObjectClonable(sp)) {
-        clone[key as keyof T] = mergeObjects(tp, cloneDeepObject(sp))
+        clone[key as keyof T] = mergeObjects(tp, cloneObject(sp, { deep: true }))
         continue
       }
 
@@ -178,28 +257,90 @@ export function mergeObjects<T extends object>(target: T, ...sources: Record<Pro
   return clone
 }
 
-export function omitObjectProperties<T extends object, K extends keyof T>(object: T, keys: K[]): Omit<T, K> {
-  let clone: T = cloneShallowObject(object)
+/**
+ * Returns a new object without the properties that match the predicate or are in the list of keys. The keys support bracket and dot notation.
+ * Optionally omits deep properties as well.
+ */
+export function omitObjectProperties<T extends object>(
+  object: T,
+  predicate: OmitObjectPropertiesPredicate,
+  options: OmitObjectPropertiesOptions & { deep: true }
+): T
+export function omitObjectProperties<T extends object>(object: T, predicate: OmitObjectPropertiesPredicate<T>, options?: OmitObjectPropertiesOptions): T
+export function omitObjectProperties<T extends object>(object: T, keys: KeyOf.Deep<T>[]): T
+export function omitObjectProperties<T extends object>(object: T, keys: KeyOf.Shallow<T>[]): T
+export function omitObjectProperties<T extends object>(object: T, keys: string[]): T
+export function omitObjectProperties<T extends object>(object: T, ...args: any[]): T {
+  let keys: string[] | undefined, predicate: OmitObjectPropertiesPredicate, options: OmitObjectPropertiesOptions | undefined, clone: T
 
-  for (let key of keys) {
-    delete clone[key]
+  keys = typeof args[0] === 'object' ? args[0] : undefined
+  predicate = typeof args[0] === 'function' ? args[0] : DEFAULT_OMIT_OBJECT_PROPERTIES_PREDICATE
+  options = args[1]
+
+  clone = cloneObject(object, options)
+
+  if (typeof keys === 'object') {
+    deleteObjectProperties(clone, keys)
+  }
+
+  if (typeof keys === 'undefined') {
+    deleteObjectProperties(clone, predicate, options as any)
   }
 
   return clone
 }
 
-export function pickObjectProperties<T extends object, K extends keyof T>(object: T, keys: K[]): Pick<T, K> {
-  let pick: Pick<T, K> = {} as any
+/**
+ * Returns a new object with only the properties that match the predicate or are in the list of keys. The keys support bracket and dot notation.
+ * Optionally picks deep properties as well.
+ */
+export function pickObjectProperties<T extends object>(
+  object: T,
+  predicate: PickObjectPropertiesPredicate,
+  options: PickObjectPropertiesOptions & { deep: true }
+): T
+export function pickObjectProperties<T extends object>(object: T, predicate: PickObjectPropertiesPredicate, mode?: PickObjectPropertiesOptions): T
+export function pickObjectProperties<T extends object>(object: T, keys: KeyOf.Deep<T>[]): T
+export function pickObjectProperties<T extends object>(object: T, keys: KeyOf.Shallow<T>[]): T
+export function pickObjectProperties<T extends object>(object: T, keys: string[]): T
+export function pickObjectProperties<T extends object>(object: T, ...args: any[]): T {
+  let keys: string[] | undefined,
+    predicate: PickObjectPropertiesPredicate,
+    options: PickObjectPropertiesOptions | undefined,
+    clone: T = {} as T
 
-  for (let key of keys) {
-    if (key in object) {
-      pick[key] = object[key]
+  keys = typeof args[0] === 'object' ? args[0] : undefined
+  predicate = typeof args[0] === 'function' ? args[0] : DEFAULT_PICK_OBJECT_PROPERTIES_PREDICATE
+  options = args[1]
+
+  if (keys) {
+    for (let key of keys) {
+      setObjectProperty(clone, key, getObjectProperty(object, key))
+    }
+
+    return clone
+  }
+
+  for (let key in object) {
+    let value: any = object[key]
+
+    if (predicate(clone, key, value, keys)) {
+      clone[key] = value
+      continue
+    }
+
+    if (options?.deep && isPlainObject(value)) {
+      deleteObjectProperties(value, predicate)
+      continue
     }
   }
 
-  return pick
+  return clone
 }
 
+/**
+ * Sets a property on an object. The key supports bracket and dot notation.
+ */
 export function setObjectProperty<T extends object, U>(object: T, key: KeyOf.Deep<T>, value: U): void | Error
 export function setObjectProperty<T extends object, U>(object: T, key: string, value: U): void | Error
 export function setObjectProperty<T extends object, U>(object: T, key: KeyOf.Deep<T>, value: U): void | Error {
@@ -229,39 +370,9 @@ export function setObjectProperty<T extends object, U>(object: T, key: KeyOf.Dee
   }
 }
 
-export function deleteDeepObjectUndefinedProperties<T extends object>(object: T): T {
-  let clone: T = cloneShallowObject(object)
-
-  for (let key in clone) {
-    let value: any = clone[key]
-
-    if (isPlainObject(value)) {
-      clone[key] = deleteDeepObjectUndefinedProperties<any>(value)
-      continue
-    }
-
-    if (typeof value === 'undefined') {
-      delete clone[key]
-    }
-  }
-
-  return clone
-}
-
-export function deleteShallowObjectUndefinedProperties<T extends object>(object: T): T {
-  let clone: T = cloneShallowObject(object)
-
-  for (let key in clone) {
-    let value: any = clone[key]
-
-    if (typeof value === 'undefined') {
-      delete clone[key]
-    }
-  }
-
-  return clone
-}
-
+/**
+ * Checks if an object has a property. The key supports bracket and dot notation.
+ */
 export function hasObjectProperty<T extends object>(object: T, key: KeyOf.Deep<T>): boolean
 export function hasObjectProperty<T extends object>(object: T, key: string): boolean
 export function hasObjectProperty<T extends object>(object: T, key: KeyOf.Deep<T>): boolean {
@@ -273,7 +384,10 @@ export function hasObjectProperty<T extends object>(object: T, key: KeyOf.Deep<T
   return getObjectProperty(object, key, symbol) !== symbol
 }
 
-export function isObject<T extends object>(value: any): value is T {
+/**
+ * Checks if an unknown value is an object. A value is considered an object if it is typeof "object", not null and not an array.
+ */
+export function isObject<T extends object>(value: unknown): value is T {
   if (value === null) {
     return false
   }
@@ -285,10 +399,16 @@ export function isObject<T extends object>(value: any): value is T {
   return typeof value === 'object'
 }
 
+/**
+ * Checks if an object is clonable. An object is considered clonable if it is an array or a plain object.
+ */
 export function isObjectClonable<T extends object>(object: T): boolean {
   return isArray(object) || isPlainObject(object)
 }
 
+/**
+ * Checks if an object is flattenable. An object is considered flattenable if it is an array or a plain object.
+ */
 export function isObjectFlattenable<T extends object>(object: T, options?: FlattenObjectOptions): boolean {
   if (options?.array && isArray(object)) {
     return true
@@ -297,15 +417,24 @@ export function isObjectFlattenable<T extends object>(object: T, options?: Flatt
   return isPlainObject(object)
 }
 
+/**
+ * Checks if an object has keys.
+ */
 export function isObjectKeysPopulated<T extends object>(object: T): boolean {
   return Object.keys(object).length > 0
 }
 
+/**
+ * Checks if an object has values.
+ */
 export function isObjectValuesPopulated<T extends object>(object: T): boolean {
   return Object.values(object).length > 0
 }
 
-export function isPlainObject<T extends object>(value: any): value is T {
+/**
+ * Checks if an unknown value is a plain object. A value is considered a plain object if it matches the default object prototype, it is typeof "object" and not null.
+ */
+export function isPlainObject<T extends object>(value: unknown): value is T {
   if (value === null) {
     return false
   }

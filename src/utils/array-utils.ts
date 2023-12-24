@@ -1,28 +1,28 @@
-import { DEFAULT_ARRAY_INCLUDES, DEFAULT_ARRAY_REMOVES } from '../definitions/constants.js'
-import { ArrayIncludes, ArrayRemoves } from '../definitions/types.js'
+import { DEFAULT_HAS_ARRAY_ITEM_PREDICATE, DEFAULT_REMOVE_ARRAY_ITEMS_PREDICATE } from '../definitions/constants.js'
+import { HasArrayItemPredicate, RemoveArrayItemsPredicate } from '../definitions/types.js'
 
 /**
- * Creates a shallow copy of an array.
+ * Creates a copy of an array.
  */
-export function cloneShallowArray<T>(array: T[]): T[] {
+export function cloneArray<T>(array: T[]): T[] {
   return [...array]
 }
 
 /**
  * Returns the symmetric difference between two or more arrays.
- * Optionally you can pass a custom `includes` function to check if an item is included in the result array.
+ * Optionally you can pass a custom function to check if an item is included in the result array.
  */
-export function getArraysDifference<T>(arrays: T[][], includes: ArrayIncludes<T> = DEFAULT_ARRAY_INCLUDES): T[] {
+export function getArraysDifference<T>(arrays: T[][], predicate: HasArrayItemPredicate<T> = DEFAULT_HAS_ARRAY_ITEM_PREDICATE): T[] {
   let result: T[] = []
 
   for (let array of arrays) {
     for (let item of array) {
       let pushed: boolean, included: boolean
 
-      pushed = includes(result, item)
+      pushed = predicate(result, item)
       if (pushed) continue
 
-      included = arrays.some((array_: T[]) => array_ !== array && includes(array_, item))
+      included = arrays.some((array_: T[]) => array_ !== array && predicate(array_, item))
       if (included) continue
 
       result.push(item)
@@ -34,19 +34,19 @@ export function getArraysDifference<T>(arrays: T[][], includes: ArrayIncludes<T>
 
 /**
  * Returns the intersection between two or more arrays.
- * Optionally you can pass a custom `includes` function to check if an item is included in the result array.
+ * Optionally you can pass a custom function to check if an item is included in the result array.
  */
-export function getArraysIntersection<T>(arrays: T[][], includes: ArrayIncludes<T> = DEFAULT_ARRAY_INCLUDES): T[] {
+export function getArraysIntersection<T>(arrays: T[][], predicate: HasArrayItemPredicate<T> = DEFAULT_HAS_ARRAY_ITEM_PREDICATE): T[] {
   let result: T[] = []
 
   for (let array of arrays) {
     for (let item of array) {
       let pushed: boolean, intersects: boolean
 
-      pushed = includes(result, item)
+      pushed = predicate(result, item)
       if (pushed) continue
 
-      intersects = arrays.every((array: T[]) => includes(array, item))
+      intersects = arrays.every((array: T[]) => predicate(array, item))
       if (!intersects) continue
 
       result.push(item)
@@ -68,19 +68,19 @@ export function getArrayLastItem<T>(array: T[], fallback?: T): T | undefined {
 
 /**
  * Removes all duplicates from an array.
- * Optionally you can pass a custom `includes` function to check if an item is included in the result array.
+ * Optionally you can pass a custom function to check if an item is included in the result array.
  */
-export function removeArrayDuplicates<T>(array: T[], includes: ArrayIncludes<T> = DEFAULT_ARRAY_INCLUDES): T[] {
+export function removeArrayDuplicates<T>(array: T[], predicate: HasArrayItemPredicate<T> = DEFAULT_HAS_ARRAY_ITEM_PREDICATE): T[] {
   let result: T[] = []
 
-  if (includes === DEFAULT_ARRAY_INCLUDES) {
+  if (predicate === DEFAULT_HAS_ARRAY_ITEM_PREDICATE) {
     return [...new Set(array)]
   }
 
   for (let item of array) {
     let duplicate: boolean
 
-    duplicate = includes(result, item)
+    duplicate = predicate(result, item)
     if (duplicate) continue
 
     result.push(item)
@@ -90,25 +90,22 @@ export function removeArrayDuplicates<T>(array: T[], includes: ArrayIncludes<T> 
 }
 
 /**
- * Removes the given items from an array, or removes items that match the given `removes` function.
+ * Removes items from an array that match the predicate or are in the items array.
  */
-export function removeArrayItems<T>(array: T[], removes?: ArrayRemoves<T>): T[]
-export function removeArrayItems<T>(array: T[], items: T[], removes?: ArrayRemoves<T>): T[]
-export function removeArrayItems<T>(...args: any[]): T[] {
-  let array: T[], items: T[] | undefined, removes: ArrayRemoves<T>, result: T[]
+export function removeArrayItems<T>(array: T[], predicate: RemoveArrayItemsPredicate<T>): T[]
+export function removeArrayItems<T>(array: T[], items: T[]): T[]
+export function removeArrayItems<T>(array: T[], ...args: any[]): T[] {
+  let items: T[] | undefined,
+    predicate: RemoveArrayItemsPredicate<T>,
+    result: T[] = []
 
-  array = args[0]
-  items = typeof args[1] === 'function' ? undefined : args[1]
-
-  removes = typeof args[1] === 'function' ? args[1] : args[2]
-  removes = removes ?? DEFAULT_ARRAY_REMOVES
-
-  result = []
+  items = typeof args[0] === 'object' ? args[0] : undefined
+  predicate = typeof args[0] === 'function' ? args[0] : DEFAULT_REMOVE_ARRAY_ITEMS_PREDICATE
 
   for (let item of array) {
     let removed: boolean
 
-    removed = removes(items ?? result, item)
+    removed = predicate(result, item, items)
     if (removed) continue
 
     result.push(item)

@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it } from 'vitest'
-import { Cookie, cloneDeepObject, copyObjectProperty, getObjectProperty, noop, rne, setObjectProperty } from '../../src'
+import { Cookie, cloneObject, copyObjectProperty, getObjectProperty, noop, rne, setObjectProperty } from '../../src'
 import { Configuration } from '../../src/classes/configuration'
 import { CookieItem } from '../../src/definitions/interfaces'
 import { STUB_COOKIE_GET, STUB_COOKIE_SET } from '../../src/definitions/stubs'
@@ -99,7 +99,7 @@ describe('Cookie', () => {
   it('handles errors from internal methods', () => {
     let backup: Cookie
 
-    backup = cloneDeepObject(cookie)
+    backup = cloneObject(cookie, 'deep')
 
     Configuration.functions.tcp.log = false
 

@@ -86,10 +86,10 @@ describe('String Utils', () => {
   })
 
   it('generates random string with a prefix, suffix and custom separator', () => {
-    expect(generateRandomString({ prefix: 'prefix' })).toMatch(/prefix_[a-zA-Z0-9]{32}/)
-    expect(generateRandomString({ suffix: 'suffix' })).toMatch(/[a-zA-Z0-9]{32}_suffix/)
-    expect(generateRandomString({ prefix: 'prefix', suffix: 'suffix' })).toMatch(/prefix_[a-zA-Z0-9]{32}_suffix/)
-    expect(generateRandomString({ prefix: 'prefix', separator: '-', suffix: 'suffix' })).toMatch(/prefix-[a-zA-Z0-9]{32}-suffix/)
+    expect(generateRandomString({ prefix: 'prefix' })).toMatch(/prefix-[a-zA-Z0-9]{32}/)
+    expect(generateRandomString({ suffix: 'suffix' })).toMatch(/[a-zA-Z0-9]{32}-suffix/)
+    expect(generateRandomString({ prefix: 'prefix', suffix: 'suffix' })).toMatch(/prefix-[a-zA-Z0-9]{32}-suffix/)
+    expect(generateRandomString({ prefix: 'prefix', separator: '~', suffix: 'suffix' })).toMatch(/prefix~[a-zA-Z0-9]{32}~suffix/)
   })
 
   it('generates random string with a custom alphabet', () => {

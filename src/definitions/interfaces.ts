@@ -18,6 +18,10 @@ export interface AracnaFileJSON extends AracnaBlobJSON {
   webkitRelativePath: string
 }
 
+export interface CloneObjectOptions {
+  deep: boolean
+}
+
 export interface CookieItem extends Record<PropertyKey, Primitive> {}
 
 export interface CookieObject extends Record<string, string> {}
@@ -49,6 +53,10 @@ export interface DecodeBase32Options extends DecodeBase16Options {}
 export interface DecodeBase32HexOptions extends DecodeBase32Options {}
 export interface DecodeBase64Options extends DecodeBase16Options {}
 export interface DecodeBase64URLOptions extends DecodeBase64Options {}
+
+export interface DeleteObjectPropertiesOptions {
+  deep: boolean
+}
 
 export interface DeserializeBlobOptions {
   resolveArrayBuffer?: boolean
@@ -146,6 +154,14 @@ export interface NodeFetch {
   Headers: typeof Headers
   Request: any
   Response: any
+}
+
+export interface OmitObjectPropertiesOptions {
+  deep: boolean
+}
+
+export interface PickObjectPropertiesOptions {
+  deep: boolean
 }
 
 export interface RestApiConfig<T = unknown> extends FetchRequestInit<T> {

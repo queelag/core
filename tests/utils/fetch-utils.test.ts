@@ -1,9 +1,9 @@
 import { beforeAll, beforeEach, describe, expect, it } from 'vitest'
 import {
   FetchRequestInit,
+  countFetchRequestInitHeaders,
   deleteFetchRequestInitHeader,
   getFetchRequestInitHeader,
-  getFetchRequestInitHeadersLength,
   hasFetchRequestInitHeader,
   importNodeFetch,
   mergeFetchRequestInits,
@@ -35,7 +35,7 @@ describe('Fetch Utils', () => {
     for (let init of inits) {
       deleteFetchRequestInitHeader(init, 'name')
       expect(getFetchRequestInitHeader(init, 'name')).toBeNull()
-      expect(getFetchRequestInitHeadersLength(init)).toBe(0)
+      expect(countFetchRequestInitHeaders(init)).toBe(0)
 
       setFetchRequestInitHeader(init, 'name', 'john')
       expect(getFetchRequestInitHeader(init, 'name')).toBe('john')
@@ -43,11 +43,11 @@ describe('Fetch Utils', () => {
 
       setFetchRequestInitHeader(init, 'name', 'robert')
       expect(getFetchRequestInitHeader(init, 'name')).toBe('robert')
-      expect(getFetchRequestInitHeadersLength(init)).toBe(1)
+      expect(countFetchRequestInitHeaders(init)).toBe(1)
 
       deleteFetchRequestInitHeader(init, 'name')
       expect(hasFetchRequestInitHeader(init, 'name')).toBeFalsy()
-      expect(getFetchRequestInitHeadersLength(init)).toBe(0)
+      expect(countFetchRequestInitHeaders(init)).toBe(0)
     }
   })
 
@@ -58,7 +58,7 @@ describe('Fetch Utils', () => {
       setFetchRequestInitHeaderWhenUnset(init, 'name', 'john')
       setFetchRequestInitHeaderWhenUnset(init, 'name', 'robert')
       expect(getFetchRequestInitHeader(init, 'name')).toBe('john')
-      expect(getFetchRequestInitHeadersLength(init)).toBe(1)
+      expect(countFetchRequestInitHeaders(init)).toBe(1)
     }
   })
 
@@ -76,7 +76,7 @@ describe('Fetch Utils', () => {
     merged = mergeFetchRequestInits(init, ...inits)
     expect(getFetchRequestInitHeader(merged, 'name')).toBe('robert')
     expect(getFetchRequestInitHeader(merged, 'surname')).toBe('smith')
-    expect(getFetchRequestInitHeadersLength(merged)).toBe(2)
+    expect(countFetchRequestInitHeaders(merged)).toBe(2)
 
     init.headers = new Headers()
     merged = mergeFetchRequestInits(init)

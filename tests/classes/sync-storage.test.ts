@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it } from 'vitest'
-import { SyncStorage, cloneShallowObject, copyObjectProperty, rne, rv, setObjectProperty } from '../../src'
+import { SyncStorage, cloneObject, copyObjectProperty, rne, rv, setObjectProperty } from '../../src'
 import { Configuration } from '../../src/classes/configuration'
 import { StorageItem } from '../../src/definitions/interfaces'
 
@@ -72,7 +72,7 @@ describe('Storage', () => {
   it('handles errors from internal methods', () => {
     let backup: SyncStorage
 
-    backup = cloneShallowObject(storage)
+    backup = cloneObject(storage)
 
     Configuration.functions.tcp.log = false
 

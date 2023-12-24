@@ -1,15 +1,16 @@
 import { random } from 'nanoid'
 import { ConfigurationFunctions } from './interfaces.js'
 import {
-  ArrayIncludes,
-  ArrayRemoves,
   DebounceMapKey,
   DebounceMapValue,
+  DeleteObjectPropertiesPredicate,
   GenerateRandomStringRandom,
+  HasArrayItemPredicate,
   IntervalMapKey,
   IntervalMapValue,
   LoggerLevel,
   LoggerStatus,
+  RemoveArrayItemsPredicate,
   StatusTransformer,
   ThrottleMapKey,
   TimeoutMapKey,
@@ -34,8 +35,8 @@ export const DEFAULT_APPEARENCE_STORAGE_KEY: string = 'appearence'
  * Array Utils
  */
 /** */
-export const DEFAULT_ARRAY_INCLUDES: ArrayIncludes<any> = (array: any[], item: any) => array.includes(item)
-export const DEFAULT_ARRAY_REMOVES: ArrayRemoves<any> = (array: any[], item: any) => array.includes(item)
+export const DEFAULT_HAS_ARRAY_ITEM_PREDICATE: HasArrayItemPredicate<any> = (array: any[], item: any) => array.includes(item)
+export const DEFAULT_REMOVE_ARRAY_ITEMS_PREDICATE: RemoveArrayItemsPredicate<any> = (array: any[], item: any, items?: any[]) => items?.includes(item) ?? false
 
 /**
  * Configuration
@@ -108,6 +109,12 @@ export const MEMORY_STORAGE_MAP: Map<PropertyKey, any> = new Map()
  * Object Utils
  */
 /** */
+export const DEFAULT_DELETE_OBJECT_PROPERTIES_PREDICATE: DeleteObjectPropertiesPredicate<any, any> = (_, key: any, __, keys?: any[]) =>
+  keys?.includes(key) ?? false
+export const DEFAULT_OMIT_OBJECT_PROPERTIES_PREDICATE: DeleteObjectPropertiesPredicate<any, any> = (_, key: any, __, keys?: any[]) =>
+  keys?.includes(key) ?? false
+export const DEFAULT_PICK_OBJECT_PROPERTIES_PREDICATE: DeleteObjectPropertiesPredicate<any, any> = (_, key: any, __, keys?: any[]) =>
+  keys?.includes(key) ?? true
 export const REGEXP_LEFT_SQUARE_BRACKET_WITHOUT_LEADING_DOT: RegExp = /([^.])\[/g
 export const REGEXP_SQUARE_BRACKETS: RegExp = /[\[\]]/g
 

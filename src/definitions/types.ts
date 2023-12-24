@@ -2,11 +2,15 @@ import type { AsyncStorage } from '../classes/async-storage.js'
 import type { SyncStorage } from '../classes/sync-storage.js'
 import type { Typeahead } from '../classes/typeahead.js'
 
-export type ArrayIncludes<T> = (array: T[], item: T) => boolean
-export type ArrayRemoves<T> = (array: T[], item: T) => boolean
-
 export type DebounceMapKey = bigint | number | string | symbol | Function
 export type DebounceMapValue = NodeJS.Timeout | number
+
+export type DeleteObjectPropertiesPredicate<T extends object = object, K extends keyof T | string = keyof T | string> = (
+  object: T,
+  key: K,
+  value: T extends Record<K, infer V> ? V : unknown,
+  keys?: PropertyKey[]
+) => boolean
 
 export type DeserializeURLSearchParamsType = 'array' | 'object' | 'string'
 export type SerializeURLSearchParamsType = 'string' | 'url-search-params'
@@ -14,6 +18,8 @@ export type SerializeURLSearchParamsType = 'string' | 'url-search-params'
 export type EventEmitterEvents = Record<EventEmitterListenerName, EventEmitterListenerCallback>
 export type EventEmitterListenerName = string | symbol
 export type EventEmitterListenerCallback = (...args: any[]) => any
+
+export type HasArrayItemPredicate<T> = (array: T[], item: T) => boolean
 
 export type IntervalMapKey = bigint | number | string | symbol | Function
 export type IntervalMapValue = NodeJS.Timeout | number
@@ -25,19 +31,34 @@ export type FetchRequestInfo = Request | string
 export type GenerateRandomStringRandom = (bytes: number) => Uint8Array
 
 export namespace KeyOf {
-  // export type Deep<T, D extends number = 16> = keyof T | Path<T, D>
   export type Deep<T> = keyof T
-  // export type DeepArray<T, D extends number = 16> = ArrayPath<T, D>
   export type DeepArray<T> = keyof T extends number ? keyof T : never
   export type Shallow<T> = keyof T
+  export type ShallowArray<T> = keyof T extends number ? keyof T : never
 }
 
 export type LoggerLevel = 'verbose' | 'debug' | 'info' | 'warn' | 'error'
 export type LoggerStatus = 'off' | 'on'
 
+export type OmitObjectPropertiesPredicate<T extends object = object, K extends keyof T | string = keyof T | string> = (
+  object: T,
+  key: K,
+  value: T extends Record<K, infer V> ? V : unknown,
+  keys?: PropertyKey[]
+) => boolean
+
+export type PickObjectPropertiesPredicate<T extends object = object, K extends keyof T | string = keyof T | string> = (
+  object: T,
+  key: K,
+  value: T extends Record<K, infer V> ? V : unknown,
+  keys?: PropertyKey[]
+) => boolean
+
 export type Primitive = bigint | boolean | null | number | string | symbol | undefined
 
 export type ProcessEnvValue = string | undefined
+
+export type RemoveArrayItemsPredicate<T> = (array: T[], item: T, items?: T[]) => boolean
 
 export type RequestMethod = 'CONNECT' | 'DELETE' | 'GET' | 'HEAD' | 'OPTIONS' | 'PATCH' | 'POST' | 'PUT' | 'TRACE'
 

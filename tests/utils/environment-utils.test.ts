@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest'
+import { afterEach, beforeAll, describe, expect, it } from 'vitest'
 import {
   getNodeEnv,
   getProcessEnvKey,
@@ -32,17 +32,23 @@ import {
 describe('Environment Utils', () => {
   let env: NodeJS.ProcessEnv
 
+  beforeAll(() => {
+    env = { ...process.env }
+  })
+
+  afterEach(() => {
+    process.env = { ...env }
+  })
+
   it('gets a variable from process.env', () => {
     expect(getProcessEnvKey('NODE_ENV')).toBe('test')
-    expect(getProcessEnvKey('UNKNOWN')).toBe('')
+    expect(getProcessEnvKey('UNKNOWN')).toBeUndefined()
 
     env = process.env
     // @ts-ignore
     delete process.env
 
-    expect(getProcessEnvKey('')).toBe('')
-
-    process.env = env
+    expect(getProcessEnvKey('')).toBeUndefined()
   })
 
   it('check if a variable is inside process.env', () => {
@@ -120,10 +126,8 @@ describe('Environment Utils', () => {
     // @ts-ignore
     delete process.env
 
-    expect(getNodeEnv()).toBe('')
+    expect(getNodeEnv()).toBeUndefined()
     process.env = {}
-    expect(getNodeEnv()).toBe('')
-
-    process.env = env
+    expect(getNodeEnv()).toBeUndefined()
   })
 })

@@ -5,7 +5,7 @@ import { KeyOf, Primitive } from '../definitions/types.js'
 import { mtc } from '../functions/mtc.js'
 import { ClassLogger } from '../loggers/class-logger.js'
 import { deserializeCookie, serializeCookie } from '../utils/cookie-utils.js'
-import { setObjectProperty } from '../utils/object-utils.js'
+import { isObject, setObjectProperty } from '../utils/object-utils.js'
 
 /**
  * The Cookie class is an abstraction to implement any cookie API in an uniform way.
@@ -219,13 +219,12 @@ export class Cookie {
 
   protected serialize(key: string, value: string, options?: CookieSerializeOptions): string | Error
   protected serialize<T extends CookieItem>(key: string, ik: keyof T, value: Primitive, options?: CookieSerializeOptions): string | Error
-  protected serialize<T extends CookieItem>(...args: any[]): string | Error {
-    let key: string, ik: keyof T | undefined, value: Primitive, options: CookieSerializeOptions | undefined
+  protected serialize<T extends CookieItem>(key: string, ...args: any[]): string | Error {
+    let ik: keyof T | undefined, value: Primitive, options: CookieSerializeOptions | undefined
 
-    key = args[0]
-    ik = typeof args[2] !== 'object' ? args[1] : undefined
-    value = typeof args[2] !== 'object' ? args[2] : args[1]
-    options = typeof args[2] !== 'object' ? args[3] : args[2]
+    ik = isObject(args[1]) ? undefined : args[0]
+    value = isObject(args[1]) ? args[0] : args[1]
+    options = isObject(args[1]) ? args[1] : args[2]
 
     return serializeCookie(typeof ik === 'undefined' ? key : this.toDocumentCookieName(key, ik), String(value), options)
   }

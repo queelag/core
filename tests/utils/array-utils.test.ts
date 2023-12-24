@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it } from 'vitest'
-import { cloneShallowArray, getArrayLastItem, getArraysDifference, getArraysIntersection, removeArrayDuplicates, removeArrayItems } from '../../src'
+import { cloneArray, getArrayLastItem, getArraysDifference, getArraysIntersection, removeArrayDuplicates, removeArrayItems } from '../../src'
 
 describe('Array Utils', () => {
   let a1: number[], a2: number[], m1: number[][], m2: number[][]
@@ -14,7 +14,7 @@ describe('Array Utils', () => {
   it('clones an array shallowly', () => {
     let clone: number[]
 
-    clone = cloneShallowArray(a1)
+    clone = cloneArray(a1)
     clone[0] = 1
     expect(a1[0]).toBe(0)
   })

@@ -197,7 +197,7 @@ export class Logger {
    * Gets the level from the environment variables.
    */
   protected static getLevelFromEnvironment(name: string): LoggerLevel | undefined {
-    let value: string
+    let value: string | undefined
 
     value = getProcessEnvKey(`LOGGER_${name.toUpperCase()}_LEVEL`)
     if (!LOGGER_LEVELS.includes(value as LoggerLevel)) return
@@ -209,7 +209,7 @@ export class Logger {
    * Gets the status from the environment variables.
    */
   protected static getStatusFromEnvironment(name: string): LoggerStatus | undefined {
-    let value: string
+    let value: string | undefined
 
     value = getProcessEnvKey(`LOGGER_${name.toUpperCase()}_STATUS`)
     if (!LOGGER_STATUSES.includes(value as LoggerStatus)) return

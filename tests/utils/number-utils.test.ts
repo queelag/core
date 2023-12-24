@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import {
   getAbsoluteNumber,
+  getFixedNumber,
   getHighestNumber,
   getLimitedNumber,
   getLowestNumber,
@@ -10,8 +11,7 @@ import {
   isNumberMultipleOf,
   isNumberOdd,
   parseBigInt,
-  parseNumber,
-  toFixedNumber
+  parseNumber
 } from '../../src'
 import { Configuration } from '../../src/classes/configuration'
 
@@ -85,10 +85,10 @@ describe('Number Utils', () => {
   })
 
   it('gets a number with a fixed amount of decimals', () => {
-    expect(toFixedNumber(0.12, 0)).toBe(0)
-    expect(toFixedNumber(0.12, 1)).toBe(0.1)
-    expect(toFixedNumber(0.12, 2)).toBe(0.12)
-    expect(toFixedNumber(0.12, 3)).toBe(0.12)
+    expect(getFixedNumber(0.12, 0)).toBe(0)
+    expect(getFixedNumber(0.12, 1)).toBe(0.1)
+    expect(getFixedNumber(0.12, 2)).toBe(0.12)
+    expect(getFixedNumber(0.12, 3)).toBe(0.12)
   })
 
   it('checks if a number is even', () => {

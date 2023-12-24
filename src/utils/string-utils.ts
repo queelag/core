@@ -11,8 +11,19 @@ import {
 import { GenerateRandomStringOptions } from '../definitions/interfaces.js'
 import { tc } from '../functions/tc.js'
 
+/**
+ * Returns a random string.
+ *
+ * - The alphabet is the set of characters that are used to generate the random string.
+ * - The blacklist is a set of strings that are not allowed to be generated.
+ * - The random function is a function that returns a random array of bytes.
+ * - The prefix is the string that is prepended to the random string.
+ * - The separator is the string that separates the prefix, the random string and the suffix.
+ * - The size is the length of the random string.
+ * - The suffix is the string that is appended to the random string.
+ */
 export function generateRandomString(options?: GenerateRandomStringOptions): string {
-  let alphabet: string, blacklist: string[], random: (bytes: number) => Uint8Array, separator: string, size: number, id: string
+  let alphabet: string, blacklist: string[], random: (bytes: number) => Uint8Array, separator: string, size: number, string: string
 
   alphabet = options?.alphabet ?? DEFAULT_GENERATE_RANDOM_STRING_ALPHABET
   blacklist = options?.blacklist ?? []
@@ -21,13 +32,16 @@ export function generateRandomString(options?: GenerateRandomStringOptions): str
   size = options?.size ?? DEFAULT_GENERATE_RANDOM_STRING_SIZE
 
   while (true) {
-    id = [options?.prefix, customRandom(alphabet, size, random)(), options?.suffix].filter(Boolean).join(separator)
-    if (!blacklist.includes(id)) break
+    string = [options?.prefix, customRandom(alphabet, size, random)(), options?.suffix].filter(Boolean).join(separator)
+    if (!blacklist.includes(string)) break
   }
 
-  return id
+  return string
 }
 
+/**
+ * Returns a string in camel case.
+ */
 export function getCamelCaseString(string: string): string {
   let camel: string, ucnlcl: boolean
 
@@ -58,14 +72,24 @@ export function getCamelCaseString(string: string): string {
   return camel
 }
 
+/**
+ * Returns a string with the first letter capitalized.
+ * Optionally the rest of the letters can be set to lowercase.
+ */
 export function getCapitalizedString(string: string, lowercase: boolean = false): string {
   return string.charAt(0).toUpperCase() + (lowercase ? string.slice(1).toLowerCase() : string.slice(1))
 }
 
+/**
+ * Returns a string in kebab case.
+ */
 export function getKebabCaseString(string: string): string {
   return getSymbolCaseString(string, '-')
 }
 
+/**
+ * Returns a string in pascal case.
+ */
 export function getPascalCaseString(string: string): string {
   let start: string, ucnl: boolean
 
@@ -91,10 +115,16 @@ export function getPascalCaseString(string: string): string {
   return getCapitalizedString(start)
 }
 
+/**
+ * Returns a string in snake case.
+ */
 export function getSnakeCaseString(string: string): string {
   return getSymbolCaseString(string, '_')
 }
 
+/**
+ * Returns a string with a symbol between each word.
+ */
 export function getSymbolCaseString(string: string, symbol: string): string {
   let result: string = ''
 
@@ -115,10 +145,16 @@ export function getSymbolCaseString(string: string, symbol: string): string {
   return result
 }
 
+/**
+ * Checks if a string is a float.
+ */
 export function isStringFloat(string: string): boolean {
   return !isNaN(parseFloat(string))
 }
 
+/**
+ * Checks if a string is an integer.
+ */
 export function isStringInt(string: string): boolean {
   if (string.includes('.')) {
     return false
@@ -127,14 +163,23 @@ export function isStringInt(string: string): boolean {
   return !isNaN(parseInt(string))
 }
 
+/**
+ * Checks if a string is a JSON.
+ */
 export function isStringJSON(string: string): boolean {
   return !(tc(() => JSON.parse(string), false) instanceof Error)
 }
 
+/**
+ * Checks if a string is not a JSON.
+ */
 export function isStringNotJSON(string: string): boolean {
   return !isStringJSON(string)
 }
 
+/**
+ * Checks if a string is a URL.
+ */
 export function isStringURL(string: string): boolean {
   let url: URL | TypeError
 
@@ -144,6 +189,9 @@ export function isStringURL(string: string): boolean {
   return true
 }
 
+/**
+ * Checks if a string is not a URL.
+ */
 export function isStringNotURL(string: string): boolean {
   return !isStringURL(string)
 }

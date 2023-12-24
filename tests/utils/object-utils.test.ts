@@ -1,11 +1,9 @@
 import { beforeEach, describe, expect, it } from 'vitest'
 import {
-  cloneDeepObject,
-  cloneShallowObject,
+  cloneObject,
   copyObjectProperty,
-  deleteDeepObjectUndefinedProperties,
+  deleteObjectProperties,
   deleteObjectProperty,
-  deleteShallowObjectUndefinedProperties,
   flattenObject,
   getObjectProperty,
   hasObjectProperty,
@@ -22,16 +20,17 @@ import {
 
 interface Object {
   do1: {
-    a1: number[]
-    n1: number
-    s1: string
-    u1: undefined
+    da1: number[]
+    dnm1: number
+    ds1: string
+    du1: undefined
   }
+  sa1: number[]
   sbi1: bigint
   sbo1: boolean
   sf1: Function
-  snul1: null
-  snum1: number
+  snl1: null
+  snm1: number
   ss1: string
   su1: undefined
   sy1: symbol
@@ -42,106 +41,136 @@ describe('Object Utils', () => {
 
   beforeEach(() => {
     o1 = {
-      do1: { a1: [0], n1: 0, s1: '', u1: undefined },
+      do1: { da1: [0], dnm1: 0, ds1: '', du1: undefined },
+      sa1: [0],
       sbi1: 0n,
       sbo1: false,
       sf1: noop,
-      snul1: null,
-      snum1: 0,
+      snl1: null,
+      snm1: 0,
       ss1: '',
       su1: undefined,
       sy1: Symbol(0)
     }
-    o2 = cloneDeepObject(o1)
+    o2 = cloneObject(o1, { deep: true })
   })
 
   it('clones an object shallowly', () => {
-    clone = cloneShallowObject(o1)
+    clone = cloneObject(o1)
     expect(clone).toStrictEqual(o1)
 
-    clone.snum1 = 1
-    expect(o1.snum1).toBe(0)
+    clone.snm1 = 1
+    expect(o1.snm1).toBe(0)
 
-    clone.do1.n1 = 1
-    expect(o1.do1.n1).toBe(1)
+    clone.do1.dnm1 = 1
+    expect(o1.do1.dnm1).toBe(1)
   })
 
   it('clones an object deeply', () => {
-    clone = cloneDeepObject(o1)
+    clone = cloneObject(o1, { deep: true })
     expect(clone).toStrictEqual(o1)
 
-    clone.snum1 = 1
-    expect(o1.snum1).toBe(0)
+    clone.snm1 = 1
+    expect(o1.snm1).toBe(0)
 
-    clone.do1.a1[0] = 1
-    expect(o1.do1.a1[0]).toBe(0)
+    clone.do1.da1[0] = 1
+    expect(o1.do1.da1[0]).toBe(0)
 
-    clone.do1.n1 = 1
-    expect(o1.do1.n1).toBe(0)
+    clone.do1.dnm1 = 1
+    expect(o1.do1.dnm1).toBe(0)
   })
 
   it('copies an object property to another object', () => {
-    o1.snum1 = 1
-    copyObjectProperty(o1, 'snum1', o2)
-    expect(o2.snum1).toBe(1)
+    o1.snm1 = 1
+    copyObjectProperty(o1, 'snm1', o2)
+    expect(o2.snm1).toBe(1)
   })
 
   it('deletes an object property', () => {
-    deleteObjectProperty(o1, 'snum1')
-    expect(o1.snum1).toBeUndefined()
+    deleteObjectProperty(o1, 'snm1')
+    expect(o1.snm1).toBeUndefined()
 
-    deleteObjectProperty(o1, 'do1.n1')
-    expect(o1.do1.n1).toBeUndefined()
+    deleteObjectProperty(o1, 'do1.dnm1')
+    expect(o1.do1.dnm1).toBeUndefined()
 
-    deleteObjectProperty(o1, 'do1.a1.0')
-    expect(o1.do1.a1[0]).toBeUndefined()
+    deleteObjectProperty(o1, 'do1.da1.0')
+    expect(o1.do1.da1[0]).toBeUndefined()
 
-    deleteObjectProperty(o2.do1.a1, 0)
-    expect(o2.do1.a1[0]).toBeUndefined()
+    deleteObjectProperty(o2.do1.da1, 0)
+    expect(o2.do1.da1[0]).toBeUndefined()
 
     expect(deleteObjectProperty(o1, 'unknown.unknown')).toBeUndefined()
   })
 
+  it('deletes object properties deeply', () => {
+    deleteObjectProperties(o1, ['sa1', 'do1.da1'])
+    expect(o1).toStrictEqual({
+      ...omitObjectProperties(o1, ['sa1']),
+      do1: { ...omitObjectProperties(o1.do1, ['da1']) }
+    })
+
+    deleteObjectProperties(o1, (_, __, value: unknown) => typeof value === 'number', { deep: true })
+    expect(o1).toStrictEqual({
+      ...omitObjectProperties(o1, ['snm1']),
+      do1: { ...omitObjectProperties(o1.do1, ['dnm1']) }
+    })
+  })
+
+  it('deletes object properties shallowly', () => {
+    deleteObjectProperties(o1, ['sa1', 'do1.da1'])
+    expect(o1).toStrictEqual({
+      ...omitObjectProperties(o1, ['sa1']),
+      do1: { ...o1.do1 }
+    })
+
+    deleteObjectProperties(o1, (_, __, value: unknown) => typeof value === 'number')
+    expect(o1).toStrictEqual({
+      ...omitObjectProperties(o1, ['snm1']),
+      do1: { ...o1.do1 }
+    })
+  })
+
   it('flattens an object', () => {
     expect(flattenObject(o1)).toStrictEqual({
-      'do1.a1': [0],
-      'do1.n1': 0,
-      'do1.s1': '',
-      'do1.u1': undefined,
+      'do1.da1': [0],
+      'do1.dnm1': 0,
+      'do1.ds1': '',
+      'do1.du1': undefined,
       ...omitObjectProperties(o1, ['do1'])
     })
     expect(flattenObject(o1, { array: true })).toStrictEqual({
-      'do1.a1.0': 0,
-      'do1.n1': 0,
-      'do1.s1': '',
-      'do1.u1': undefined,
-      ...omitObjectProperties(o1, ['do1'])
+      'do1.da1.0': 0,
+      'do1.dnm1': 0,
+      'do1.ds1': '',
+      'do1.du1': undefined,
+      'sa1.0': 0,
+      ...omitObjectProperties(o1, ['sa1', 'do1'])
     })
   })
 
   it('gets an object property', () => {
-    expect(getObjectProperty(o1, 'snum1')).toBe(0)
-    expect(getObjectProperty(o1, 'do1.n1')).toBe(0)
-    expect(getObjectProperty(o1, 'do1.a1.0')).toBe(0)
-    expect(getObjectProperty(o1, 'do1.a1.[0]')).toBe(0)
-    expect(getObjectProperty(o1, 'do1.a1[0]')).toBe(0)
+    expect(getObjectProperty(o1, 'snm1')).toBe(0)
+    expect(getObjectProperty(o1, 'do1.dnm1')).toBe(0)
+    expect(getObjectProperty(o1, 'do1.da1.0')).toBe(0)
+    expect(getObjectProperty(o1, 'do1.da1.[0]')).toBe(0)
+    expect(getObjectProperty(o1, 'do1.da1[0]')).toBe(0)
     expect(getObjectProperty(o1, 'unknown')).toBeUndefined()
     expect(getObjectProperty(o1, 'unknown', null)).toBeNull()
     expect(getObjectProperty(o1, 'unknown.unknown')).toBeUndefined()
-    expect(getObjectProperty(o1, 'snul1.unknown')).toBeUndefined()
-    expect(getObjectProperty(o1.do1.a1, 0)).toBe(0)
+    expect(getObjectProperty(o1, 'snl1.unknown')).toBeUndefined()
+    expect(getObjectProperty(o1.do1.da1, 0)).toBe(0)
   })
 
   it('merges multiple objects', () => {
     let co1: Object, co2: Object
 
-    o2.do1.a1 = [1, 2]
-    o2.do1.n1 = 1
+    o2.do1.da1 = [1, 2]
+    o2.do1.dnm1 = 1
     o2.sbi1 = 1n
     o2.sbo1 = true
 
-    co1 = cloneDeepObject(o1)
-    co2 = cloneDeepObject(o2)
+    co1 = cloneObject(o1, { deep: true })
+    co2 = cloneObject(o2, { deep: true })
 
     expect(mergeObjects(o1, o2)).toStrictEqual({
       ...o1,
@@ -157,7 +186,7 @@ describe('Object Utils', () => {
       do1: {
         ...o2.do1,
         ...o1.do1,
-        a1: [0, 2]
+        da1: [0, 2]
       }
     })
 
@@ -167,21 +196,23 @@ describe('Object Utils', () => {
 
   it('omits an object properties', () => {
     expect(omitObjectProperties(o1, ['do1'])).toStrictEqual({
+      sa1: o1.sa1,
       sbi1: o1.sbi1,
       sbo1: o1.sbo1,
       sf1: o1.sf1,
-      snul1: null,
-      snum1: o1.snum1,
+      snl1: null,
+      snm1: o1.snm1,
       ss1: '',
       sy1: o1.sy1,
       su1: undefined
     })
-    expect(omitObjectProperties(o1, ['snum1'])).toStrictEqual({
+    expect(omitObjectProperties(o1, ['snm1'])).toStrictEqual({
       do1: o1.do1,
+      sa1: o1.sa1,
       sbi1: o1.sbi1,
       sbo1: o1.sbo1,
       sf1: o1.sf1,
-      snul1: null,
+      snl1: null,
       ss1: '',
       sy1: o1.sy1,
       su1: undefined
@@ -190,44 +221,33 @@ describe('Object Utils', () => {
 
   it('picks an object properties', () => {
     expect(pickObjectProperties(o1, ['do1'])).toStrictEqual({ do1: o1.do1 })
-    expect(pickObjectProperties(o1, ['snum1'])).toStrictEqual({ snum1: 0 })
+    expect(pickObjectProperties(o1, ['snm1'])).toStrictEqual({ snm1: 0 })
   })
 
   it('sets an object property', () => {
-    setObjectProperty(o1, 'snum1', 1)
-    expect(o1.snum1).toBe(1)
+    setObjectProperty(o1, 'snm1', 1)
+    expect(o1.snm1).toBe(1)
 
-    setObjectProperty(o1, 'do1.n1', 1)
-    expect(o1.do1.n1).toBe(1)
+    setObjectProperty(o1, 'do1.dnm1', 1)
+    expect(o1.do1.dnm1).toBe(1)
 
-    setObjectProperty(o1, 'do1.a1.0', 1)
-    expect(o1.do1.a1[0]).toBe(1)
+    setObjectProperty(o1, 'do1.da1.0', 1)
+    expect(o1.do1.da1[0]).toBe(1)
 
-    setObjectProperty(o1.do1.a1, 0, 0)
-    expect(o1.do1.a1[0]).toBe(0)
+    setObjectProperty(o1.do1.da1, 0, 0)
+    expect(o1.do1.da1[0]).toBe(0)
 
-    setObjectProperty(o1, 'do2.a1.[0]', 0)
+    setObjectProperty(o1, 'do2.da1.[0]', 0)
     // @ts-ignore
-    expect(o1.do2.a1[0]).toBe(0)
+    expect(o1.do2.da1[0]).toBe(0)
 
-    expect(setObjectProperty(o1, 'snum1.0', 0)).toBeInstanceOf(Error)
-  })
-
-  it('deletes object undefined properties deeply', () => {
-    expect(deleteDeepObjectUndefinedProperties(o1)).toStrictEqual({
-      ...omitObjectProperties(o1, ['su1']),
-      do1: { ...omitObjectProperties(o1.do1, ['u1']) }
-    })
-  })
-
-  it('deletes object undefined properties shallowly', () => {
-    expect(deleteShallowObjectUndefinedProperties(o1)).toStrictEqual(omitObjectProperties(o1, ['su1']))
+    expect(setObjectProperty(o1, 'snm1.0', 0)).toBeInstanceOf(Error)
   })
 
   it('checks if object has property', () => {
-    expect(hasObjectProperty(o1, 'snum1')).toBeTruthy()
-    expect(hasObjectProperty(o1, 'do1.n1')).toBeTruthy()
-    expect(hasObjectProperty(o1, 'do1.a1.0')).toBeTruthy()
+    expect(hasObjectProperty(o1, 'snm1')).toBeTruthy()
+    expect(hasObjectProperty(o1, 'do1.dnm1')).toBeTruthy()
+    expect(hasObjectProperty(o1, 'do1.da1.0')).toBeTruthy()
     expect(hasObjectProperty(o1, 'unknown')).toBeFalsy()
   })
 
