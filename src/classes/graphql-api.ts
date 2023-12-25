@@ -10,6 +10,8 @@ import { RestAPI } from './rest-api.js'
  * - The config of the API is automatically merged with the config of the requests.
  * - The status of the requests is automatically tracked and can be accessed through the status property.
  * - The requests are sent with the Fetch class, so all features of the Fetch class are available.
+ *
+ * [Aracna Reference](https://aracna.dariosechi.it/core/classes/graphql-api)
  */
 export class GraphQlAPI<T extends GraphQlApiConfig = GraphQlApiConfig, U = undefined> extends RestAPI<T, U> {
   constructor(baseURL?: string, config?: T) {

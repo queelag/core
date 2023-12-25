@@ -4,6 +4,8 @@ import { isPromiseLike } from '../utils/promise-utils.js'
 
 /**
  * The DeferredPromise class is built on top of the native Promise class. It provides a way to resolve or reject a promise from the outside.
+ *
+ * [Aracna Reference](https://aracna.dariosechi.it/core/classes/deferred-promise)
  */
 export class DeferredPromise<T> {
   /**

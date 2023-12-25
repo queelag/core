@@ -32,23 +32,23 @@ describe('Number Utils', () => {
 
   it('limits a number', () => {
     expect(getLimitedNumber(5)).toBe(5)
-    expect(getLimitedNumber(5, 0, 10)).toBe(5)
-    expect(getLimitedNumber(5, 4, 10)).toBe(5)
-    expect(getLimitedNumber(5, 5, 10)).toBe(5)
-    expect(getLimitedNumber(5, 6, 10)).toBe(6)
-    expect(getLimitedNumber(5, 0, 6)).toBe(5)
-    expect(getLimitedNumber(5, 0, 5)).toBe(5)
-    expect(getLimitedNumber(5, 0, 4)).toBe(4)
+    expect(getLimitedNumber(5, { min: 0, max: 10 })).toBe(5)
+    expect(getLimitedNumber(5, { min: 4, max: 10 })).toBe(5)
+    expect(getLimitedNumber(5, { min: 5, max: 10 })).toBe(5)
+    expect(getLimitedNumber(5, { min: 6, max: 10 })).toBe(6)
+    expect(getLimitedNumber(5, { min: 0, max: 6 })).toBe(5)
+    expect(getLimitedNumber(5, { min: 0, max: 5 })).toBe(5)
+    expect(getLimitedNumber(5, { min: 0, max: 4 })).toBe(4)
   })
 
   it('calculates the percentage', () => {
     expect(getNumberPercentage(50)).toBe(50)
-    expect(getNumberPercentage(50, 20)).toBe(62.5)
-    expect(getNumberPercentage(50, 50)).toBe(100)
-    expect(getNumberPercentage(50, 0, 80)).toBe(62.5)
-    expect(getNumberPercentage(50, 0, 50)).toBe(100)
-    expect(getNumberPercentage(50.4, 0, 100, true)).toBe(50)
-    expect(getNumberPercentage(50.5, 0, 100, true)).toBe(51)
+    expect(getNumberPercentage(50, { min: 20 })).toBe(62.5)
+    expect(getNumberPercentage(50, { min: 50 })).toBe(100)
+    expect(getNumberPercentage(50, { max: 80 })).toBe(62.5)
+    expect(getNumberPercentage(50, { max: 50 })).toBe(100)
+    expect(getNumberPercentage(50.4, { round: true })).toBe(50)
+    expect(getNumberPercentage(50.5, { round: true })).toBe(51)
   })
 
   it('gets highest number', () => {

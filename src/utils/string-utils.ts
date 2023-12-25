@@ -21,6 +21,8 @@ import { tc } from '../functions/tc.js'
  * - The separator is the string that separates the prefix, the random string and the suffix.
  * - The size is the length of the random string.
  * - The suffix is the string that is appended to the random string.
+ *
+ * [Aracna Reference](https://aracna.dariosechi.it/core/utils/string)
  */
 export function generateRandomString(options?: GenerateRandomStringOptions): string {
   let alphabet: string, blacklist: string[], random: (bytes: number) => Uint8Array, separator: string, size: number, string: string
@@ -41,6 +43,8 @@ export function generateRandomString(options?: GenerateRandomStringOptions): str
 
 /**
  * Returns a string in camel case.
+ *
+ * [Aracna Reference](https://aracna.dariosechi.it/core/utils/string)
  */
 export function getCamelCaseString(string: string): string {
   let camel: string, ucnlcl: boolean
@@ -75,6 +79,8 @@ export function getCamelCaseString(string: string): string {
 /**
  * Returns a string with the first letter capitalized.
  * Optionally the rest of the letters can be set to lowercase.
+ *
+ * [Aracna Reference](https://aracna.dariosechi.it/core/utils/string)
  */
 export function getCapitalizedString(string: string, lowercase: boolean = false): string {
   return string.charAt(0).toUpperCase() + (lowercase ? string.slice(1).toLowerCase() : string.slice(1))
@@ -82,6 +88,8 @@ export function getCapitalizedString(string: string, lowercase: boolean = false)
 
 /**
  * Returns a string in kebab case.
+ *
+ * [Aracna Reference](https://aracna.dariosechi.it/core/utils/string)
  */
 export function getKebabCaseString(string: string): string {
   return getSymbolCaseString(string, '-')
@@ -89,6 +97,8 @@ export function getKebabCaseString(string: string): string {
 
 /**
  * Returns a string in pascal case.
+ *
+ * [Aracna Reference](https://aracna.dariosechi.it/core/utils/string)
  */
 export function getPascalCaseString(string: string): string {
   let start: string, ucnl: boolean
@@ -117,6 +127,8 @@ export function getPascalCaseString(string: string): string {
 
 /**
  * Returns a string in snake case.
+ *
+ * [Aracna Reference](https://aracna.dariosechi.it/core/utils/string)
  */
 export function getSnakeCaseString(string: string): string {
   return getSymbolCaseString(string, '_')
@@ -124,6 +136,8 @@ export function getSnakeCaseString(string: string): string {
 
 /**
  * Returns a string with a symbol between each word.
+ *
+ * [Aracna Reference](https://aracna.dariosechi.it/core/utils/string)
  */
 export function getSymbolCaseString(string: string, symbol: string): string {
   let result: string = ''
@@ -147,6 +161,8 @@ export function getSymbolCaseString(string: string, symbol: string): string {
 
 /**
  * Checks if a string is a float.
+ *
+ * [Aracna Reference](https://aracna.dariosechi.it/core/utils/string)
  */
 export function isStringFloat(string: string): boolean {
   return !isNaN(parseFloat(string))
@@ -154,6 +170,8 @@ export function isStringFloat(string: string): boolean {
 
 /**
  * Checks if a string is an integer.
+ *
+ * [Aracna Reference](https://aracna.dariosechi.it/core/utils/string)
  */
 export function isStringInt(string: string): boolean {
   if (string.includes('.')) {
@@ -165,6 +183,8 @@ export function isStringInt(string: string): boolean {
 
 /**
  * Checks if a string is a JSON.
+ *
+ * [Aracna Reference](https://aracna.dariosechi.it/core/utils/string)
  */
 export function isStringJSON(string: string): boolean {
   return !(tc(() => JSON.parse(string), false) instanceof Error)
@@ -172,6 +192,8 @@ export function isStringJSON(string: string): boolean {
 
 /**
  * Checks if a string is not a JSON.
+ *
+ * [Aracna Reference](https://aracna.dariosechi.it/core/utils/string)
  */
 export function isStringNotJSON(string: string): boolean {
   return !isStringJSON(string)
@@ -179,6 +201,8 @@ export function isStringNotJSON(string: string): boolean {
 
 /**
  * Checks if a string is a URL.
+ *
+ * [Aracna Reference](https://aracna.dariosechi.it/core/utils/string)
  */
 export function isStringURL(string: string): boolean {
   let url: URL | TypeError
@@ -191,6 +215,8 @@ export function isStringURL(string: string): boolean {
 
 /**
  * Checks if a string is not a URL.
+ *
+ * [Aracna Reference](https://aracna.dariosechi.it/core/utils/string)
  */
 export function isStringNotURL(string: string): boolean {
   return !isStringURL(string)

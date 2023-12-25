@@ -3,6 +3,8 @@ import { DecodeBase32HexOptions, DecodeBase32Options, EncodeBase32HexOptions, En
 
 /**
  * Decodes a base32 string into a Uint8Array.
+ *
+ * [Araña Reference](https://arana.dariosechi.it/core/utils/base32)
  */
 export function decodeBase32(string: string, options?: DecodeBase32Options): Uint8Array {
   return base32.parse(string, options)
@@ -10,6 +12,8 @@ export function decodeBase32(string: string, options?: DecodeBase32Options): Uin
 
 /**
  * Decodes a base32hex string into a Uint8Array.
+ *
+ * [Araña Reference](https://arana.dariosechi.it/core/utils/base32)
  */
 export function decodeBase32Hex(string: string, options?: DecodeBase32HexOptions): Uint8Array {
   return base32hex.parse(string, options)
@@ -17,6 +21,8 @@ export function decodeBase32Hex(string: string, options?: DecodeBase32HexOptions
 
 /**
  * Encodes an array of integers into a base32 string.
+ *
+ * [Araña Reference](https://arana.dariosechi.it/core/utils/base32)
  */
 export function encodeBase32(array: ArrayLike<number>, options?: EncodeBase32Options): string {
   return base32.stringify(array, options)
@@ -24,6 +30,8 @@ export function encodeBase32(array: ArrayLike<number>, options?: EncodeBase32Opt
 
 /**
  * Encodes an array of integers into a base32hex string.
+ *
+ * [Araña Reference](https://arana.dariosechi.it/core/utils/base32)
  */
 export function encodeBase32Hex(array: ArrayLike<number>, options?: EncodeBase32HexOptions): string {
   return base32hex.stringify(array, options)

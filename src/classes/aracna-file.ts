@@ -8,6 +8,8 @@ import { AracnaBlob } from './aracna-blob.js'
  *
  * - The data contained in the File can be resolved asynchronously and accessed at a later time from the instance itself.
  * - The instance supports JSON serialization and deserialization out of the box unlike the File class.
+ *
+ * [Aracna Reference](https://aracna.dariosechi.it/core/classes/aracna-file)
  */
 export class AracnaFile extends AracnaBlob {
   /**

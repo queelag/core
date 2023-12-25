@@ -3,6 +3,8 @@ import { tc } from '../functions/tc.js'
 
 /**
  * Returns the value of a key in `process.env`.
+ *
+ * [Aracna Reference](https://aracna.dariosechi.it/core/utils/environment)
  */
 export function getProcessEnvKey(key: string): string | undefined {
   let value: ProcessEnvValue | Error
@@ -15,6 +17,8 @@ export function getProcessEnvKey(key: string): string | undefined {
 
 /**
  * Checks if a key exists in `process.env`.
+ *
+ * [Aracna Reference](https://aracna.dariosechi.it/core/utils/environment)
  */
 export function hasProcessEnvKey(key: string): boolean {
   let value: ProcessEnvValue | Error
@@ -27,6 +31,8 @@ export function hasProcessEnvKey(key: string): boolean {
 
 /**
  * Returns the value of `process.env.NODE_ENV`.
+ *
+ * [Aracna Reference](https://aracna.dariosechi.it/core/utils/environment)
  */
 export function getNodeEnv(): string | undefined {
   let NODE_ENV: string | undefined | Error
@@ -39,6 +45,8 @@ export function getNodeEnv(): string | undefined {
 
 /**
  * Checks if `Blob` is defined.
+ *
+ * [Aracna Reference](https://aracna.dariosechi.it/core/utils/environment)
  */
 export function isBlobDefined(): boolean {
   return typeof Blob !== 'undefined'
@@ -46,6 +54,8 @@ export function isBlobDefined(): boolean {
 
 /**
  * Checks if `Blob` is not defined.
+ *
+ * [Aracna Reference](https://aracna.dariosechi.it/core/utils/environment)
  */
 export function isBlobNotDefined(): boolean {
   return typeof Blob === 'undefined'
@@ -53,6 +63,8 @@ export function isBlobNotDefined(): boolean {
 
 /**
  * Checks if `document` is defined.
+ *
+ * [Aracna Reference](https://aracna.dariosechi.it/core/utils/environment)
  */
 export function isDocumentDefined(): boolean {
   return typeof document !== 'undefined'
@@ -60,6 +72,8 @@ export function isDocumentDefined(): boolean {
 
 /**
  * Checks if `document` is not defined.
+ *
+ * [Aracna Reference](https://aracna.dariosechi.it/core/utils/environment)
  */
 export function isDocumentNotDefined(): boolean {
   return typeof document === 'undefined'
@@ -67,6 +81,8 @@ export function isDocumentNotDefined(): boolean {
 
 /**
  * Checks if `fetch` is defined.
+ *
+ * [Aracna Reference](https://aracna.dariosechi.it/core/utils/environment)
  */
 export function isFetchDefined(): boolean {
   return typeof fetch !== 'undefined'
@@ -74,6 +90,8 @@ export function isFetchDefined(): boolean {
 
 /**
  * Checks if `fetch` is not defined.
+ *
+ * [Aracna Reference](https://aracna.dariosechi.it/core/utils/environment)
  */
 export function isFetchNotDefined(): boolean {
   return typeof fetch === 'undefined'
@@ -81,6 +99,8 @@ export function isFetchNotDefined(): boolean {
 
 /**
  * Checks if `File` is defined.
+ *
+ * [Aracna Reference](https://aracna.dariosechi.it/core/utils/environment)
  */
 export function isFileDefined(): boolean {
   return typeof File !== 'undefined'
@@ -88,6 +108,8 @@ export function isFileDefined(): boolean {
 
 /**
  * Checks if `File` is not defined.
+ *
+ * [Aracna Reference](https://aracna.dariosechi.it/core/utils/environment)
  */
 export function isFileNotDefined(): boolean {
   return typeof File === 'undefined'
@@ -95,6 +117,8 @@ export function isFileNotDefined(): boolean {
 
 /**
  * Checks if `FormData` is defined.
+ *
+ * [Aracna Reference](https://aracna.dariosechi.it/core/utils/environment)
  */
 export function isFormDataDefined(): boolean {
   return typeof FormData !== 'undefined'
@@ -102,6 +126,8 @@ export function isFormDataDefined(): boolean {
 
 /**
  * Checks if `FormData` is not defined.
+ *
+ * [Aracna Reference](https://aracna.dariosechi.it/core/utils/environment)
  */
 export function isFormDataNotDefined(): boolean {
   return typeof FormData === 'undefined'
@@ -109,6 +135,8 @@ export function isFormDataNotDefined(): boolean {
 
 /**
  * Checks if the `process.env.JEST_WORKER_ID` variable is defined.
+ *
+ * [Aracna Reference](https://aracna.dariosechi.it/core/utils/environment)
  */
 export function isJestDefined(): boolean {
   return typeof tc(() => process.env.JEST_WORKER_ID, false) === 'string'
@@ -116,6 +144,8 @@ export function isJestDefined(): boolean {
 
 /**
  * Checks if the `process.env.JEST_WORKER_ID` variable is not defined.
+ *
+ * [Aracna Reference](https://aracna.dariosechi.it/core/utils/environment)
  */
 export function isJestNotDefined(): boolean {
   return typeof tc(() => process.env.JEST_WORKER_ID, false) !== 'string'
@@ -123,6 +153,8 @@ export function isJestNotDefined(): boolean {
 
 /**
  * Checks if the `process.env.NODE_ENV` variable is set to `development`.
+ *
+ * [Aracna Reference](https://aracna.dariosechi.it/core/utils/environment)
  */
 export function isNodeEnvDevelopment(): boolean {
   return getNodeEnv() === 'development'
@@ -130,6 +162,8 @@ export function isNodeEnvDevelopment(): boolean {
 
 /**
  * Checks if the `process.env.NODE_ENV` variable is not set to `development`.
+ *
+ * [Aracna Reference](https://aracna.dariosechi.it/core/utils/environment)
  */
 export function isNodeEnvNotDevelopment(): boolean {
   return getNodeEnv() !== 'development'
@@ -137,6 +171,8 @@ export function isNodeEnvNotDevelopment(): boolean {
 
 /**
  * Checks if the `process.env.NODE_ENV` variable is set to `production`.
+ *
+ * [Aracna Reference](https://aracna.dariosechi.it/core/utils/environment)
  */
 export function isNodeEnvProduction(): boolean {
   return getNodeEnv() === 'production'
@@ -144,6 +180,8 @@ export function isNodeEnvProduction(): boolean {
 
 /**
  * Checks if the `process.env.NODE_ENV` variable is not set to `production`.
+ *
+ * [Aracna Reference](https://aracna.dariosechi.it/core/utils/environment)
  */
 export function isNodeEnvNotProduction(): boolean {
   return getNodeEnv() !== 'production'
@@ -151,6 +189,8 @@ export function isNodeEnvNotProduction(): boolean {
 
 /**
  * Checks if the `process.env.NODE_ENV` variable is set to `test`.
+ *
+ * [Aracna Reference](https://aracna.dariosechi.it/core/utils/environment)
  */
 export function isNodeEnvTest(): boolean {
   return getNodeEnv() === 'test'
@@ -158,6 +198,8 @@ export function isNodeEnvTest(): boolean {
 
 /**
  * Checks if the `process.env.NODE_ENV` variable is not set to `test`.
+ *
+ * [Aracna Reference](https://aracna.dariosechi.it/core/utils/environment)
  */
 export function isNodeEnvNotTest(): boolean {
   return getNodeEnv() !== 'test'
@@ -165,6 +207,8 @@ export function isNodeEnvNotTest(): boolean {
 
 /**
  * Checks if `process` is defined.
+ *
+ * [Aracna Reference](https://aracna.dariosechi.it/core/utils/environment)
  */
 export function isProcessDefined(): boolean {
   return typeof process !== 'undefined'
@@ -172,6 +216,8 @@ export function isProcessDefined(): boolean {
 
 /**
  * Checks if `process` is not defined.
+ *
+ * [Aracna Reference](https://aracna.dariosechi.it/core/utils/environment)
  */
 export function isProcessNotDefined(): boolean {
   return typeof process === 'undefined'
@@ -179,6 +225,8 @@ export function isProcessNotDefined(): boolean {
 
 /**
  * Checks if `TextDecoder` is defined.
+ *
+ * [Aracna Reference](https://aracna.dariosechi.it/core/utils/environment)
  */
 export function isTextDecoderDefined(): boolean {
   return typeof TextDecoder === 'function'
@@ -186,6 +234,8 @@ export function isTextDecoderDefined(): boolean {
 
 /**
  * Checks if `TextDecoder` is not defined.
+ *
+ * [Aracna Reference](https://aracna.dariosechi.it/core/utils/environment)
  */
 export function isTextDecoderNotDefined(): boolean {
   return typeof TextDecoder !== 'function'
@@ -193,6 +243,8 @@ export function isTextDecoderNotDefined(): boolean {
 
 /**
  * Checks if `TextEncoder` is defined.
+ *
+ * [Aracna Reference](https://aracna.dariosechi.it/core/utils/environment)
  */
 export function isTextEncoderDefined(): boolean {
   return typeof TextEncoder === 'function'
@@ -200,6 +252,8 @@ export function isTextEncoderDefined(): boolean {
 
 /**
  * Checks if `TextEncoder` is not defined.
+ *
+ * [Aracna Reference](https://aracna.dariosechi.it/core/utils/environment)
  */
 export function isTextEncoderNotDefined(): boolean {
   return typeof TextEncoder !== 'function'
@@ -207,6 +261,8 @@ export function isTextEncoderNotDefined(): boolean {
 
 /**
  * Checks if `window` is defined.
+ *
+ * [Aracna Reference](https://aracna.dariosechi.it/core/utils/environment)
  */
 export function isWindowDefined(): boolean {
   return typeof window !== 'undefined'
@@ -214,6 +270,8 @@ export function isWindowDefined(): boolean {
 
 /**
  * Checks if `window` is not defined.
+ *
+ * [Aracna Reference](https://aracna.dariosechi.it/core/utils/environment)
  */
 export function isWindowNotDefined(): boolean {
   return typeof window === 'undefined'

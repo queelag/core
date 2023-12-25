@@ -4,6 +4,8 @@ import { ClassLogger } from '../loggers/class-logger.js'
 
 /**
  * The Status class manages the status of anything that can have a 4-state status: idle, pending, success, error.
+ *
+ * [Aracna Reference](https://aracna.dariosechi.it/core/classes/status)
  */
 export class Status {
   /**

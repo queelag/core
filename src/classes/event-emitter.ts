@@ -8,6 +8,8 @@ import { removeArrayItems } from '../utils/array-utils.js'
 /**
  * The EventEmitter class is used to emit events and register listeners.
  * The API is based on the Node.js EventEmitter API.
+ *
+ * [Aracna Reference](https://aracna.dariosechi.it/core/classes/event-emitter)
  */
 export class EventEmitter<T extends EventEmitterEvents = EventEmitterEvents> {
   protected listeners: EventEmitterListener<T, keyof T>[]

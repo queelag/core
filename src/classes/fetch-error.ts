@@ -1,6 +1,14 @@
 import { FetchResponse } from './fetch-response.js'
 
+/**
+ * The FetchError class is used for errors that are returned by the Fetch class.
+ *
+ * [Aracna Reference](https://aracna.dariosechi.it/core/classes/fetch-error)
+ */
 export class FetchError<T = unknown> extends Error {
+  /**
+   * The response that caused the error.
+   */
   response: FetchResponse<T>
 
   constructor(error: Error, response: FetchResponse<T>) {
@@ -11,6 +19,9 @@ export class FetchError<T = unknown> extends Error {
     this.response = response
   }
 
+  /**
+   * Creates a new FetchError instance.
+   */
   static from<T>(): FetchError<T>
   static from<T>(error: Error): FetchError<T>
   static from<T>(error: Error, response: FetchResponse<T>): FetchError<T>

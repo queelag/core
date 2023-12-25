@@ -1,8 +1,16 @@
 import type { FetchResponse } from '../classes/fetch-response.js'
-import type { EventEmitterEvents, Primitive, Theme, TypeaheadPredicate, WriteMode } from './types.js'
+import type { EventEmitterEvents, Primitive, Storage, Theme, TypeaheadPredicate, WriteMode } from './types.js'
 
 export interface AppearenceEvents extends EventEmitterEvents {
   'change-theme': (theme: Theme) => any
+}
+
+export interface AppearenceInit {
+  storage?: {
+    instance?: Storage
+    key?: string
+  }
+  theme?: Theme
 }
 
 export interface AracnaBlobJSON {
@@ -104,6 +112,17 @@ export interface GenerateRandomStringOptions {
   suffix?: string
 }
 
+export interface GetLimitedNumberOptions {
+  max?: number
+  min?: number
+}
+
+export interface GetNumberPercentageOptions {
+  max?: number
+  min?: number
+  round?: boolean
+}
+
 export interface GraphQlApiConfig<T = unknown> extends RestApiConfig<T> {}
 
 export interface GraphQlApiRequestBody<T = object> {
@@ -130,6 +149,16 @@ export interface GraphQlApiResponseBodyErrorLocation {
 }
 
 export interface HistoryDataTarget extends Record<PropertyKey, any> {}
+
+export interface LocalizationInit {
+  language?: string
+  packs?: LocalizationPack[]
+  storage?: {
+    instance?: Storage
+    key?: string
+  }
+  variables?: LocalizationVariables
+}
 
 export interface SetIntervalOptions {
   autorun?: boolean

@@ -12,6 +12,8 @@ import { getLoggerAnsiColor } from '../utils/logger-utils.js'
  * - The status determines if the logger is enabled or disabled, the default status is `on` on non-test environments and `off` on test environments.
  * - The colors are on by default on non-browser environments and match the browser console colors.
  * - The separator is a string used to join the arguments passed to the logger methods, the default separator is a ` -> ` symbol.
+ *
+ * [Aracna Reference](https://aracna.dariosechi.it/core/classes/logger)
  */
 export class Logger {
   /**

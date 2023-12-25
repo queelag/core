@@ -1,5 +1,5 @@
-import { DEFAULT_APPEARENCE_STORAGE_KEY } from '../definitions/constants.js'
-import { AppearenceEvents } from '../definitions/interfaces.js'
+import { DEFAULT_APPEARENCE_STORAGE_KEY, DEFAULT_APPEARENCE_THEME } from '../definitions/constants.js'
+import { AppearenceEvents, AppearenceInit } from '../definitions/interfaces.js'
 import { Storage, Theme } from '../definitions/types.js'
 import { ClassLogger } from '../loggers/class-logger.js'
 import { MemoryStorage } from '../storages/memory-storage.js'
@@ -12,6 +12,8 @@ import { EventEmitter } from './event-emitter.js'
  *
  * - The theme will persist to a storage of your choice, by default it will be stored in memory.
  * - The default theme is system, which means that the theme will be dark or light depending on the system theme.
+ *
+ * [Aracna Reference](https://aracna.dariosechi.it/core/classes/appearence)
  */
 export class Appearence extends EventEmitter<AppearenceEvents> {
   /**
@@ -27,12 +29,12 @@ export class Appearence extends EventEmitter<AppearenceEvents> {
    */
   theme: Theme
 
-  constructor(theme: Theme = 'system', storage: Storage = MemoryStorage, storageKey: string = DEFAULT_APPEARENCE_STORAGE_KEY) {
+  constructor(init?: AppearenceInit) {
     super()
 
-    this.storage = storage
-    this.storageKey = storageKey
-    this.theme = theme
+    this.storage = init?.storage?.instance ?? MemoryStorage
+    this.storageKey = init?.storage?.key ?? DEFAULT_APPEARENCE_STORAGE_KEY
+    this.theme = init?.theme ?? DEFAULT_APPEARENCE_THEME
 
     this.registerThemeEventListener()
   }

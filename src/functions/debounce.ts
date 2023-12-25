@@ -7,6 +7,8 @@ import { FunctionLogger } from '../loggers/function-logger.js'
  * The function will only be called after it stops being called for the specified amount of time.
  *
  * Optionally the key can be specified, otherwise the function itself will be used as the key.
+ *
+ * [Aracna Reference](https://aracna.dariosechi.it/core/functions/debounce)
  */
 export function debounce(fn: Function, ms: number, key: DebounceMapKey = fn): void {
   clearTimeout(DEBOUNCE_MAP.get(key))

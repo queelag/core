@@ -8,6 +8,8 @@ import { EventEmitter } from './event-emitter.js'
 
 /**
  * The Typeahead class is a state and options holder for the typeahead function.
+ *
+ * [Aracna Reference](https://aracna.dariosechi.it/core/classes/typeahead)
  */
 export class Typeahead<T> extends EventEmitter<TypeaheadEvents<T>> {
   /**

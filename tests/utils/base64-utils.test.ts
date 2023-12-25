@@ -27,8 +27,6 @@ describe('Base64 Utils', () => {
     array = new Uint8Array(randomBytes(8))
     encoded = encodeBase64URL(array)
 
-    console.log(encoded)
-
     expect(decodeBase64URL(encoded)).toStrictEqual(array)
   })
 

@@ -18,6 +18,8 @@ import { isArray } from './array-utils.js'
 /**
  * Creates a copy of an object.
  * Optionally the copy can be deep.
+ *
+ * [Aracna Reference](https://aracna.dariosechi.it/core/utils/object)
  */
 export function cloneObject<T extends object>(object: T, options?: CloneObjectOptions): T {
   let clone: T = {} as T
@@ -50,6 +52,8 @@ export function cloneObject<T extends object>(object: T, options?: CloneObjectOp
 
 /**
  * Copies a property from one object to another. The key supports bracket and dot notation.
+ *
+ * [Aracna Reference](https://aracna.dariosechi.it/core/utils/object)
  */
 export function copyObjectProperty<T1 extends object, T2 extends object, T extends T1 & T2>(source: T, key: KeyOf.Deep<T>, target: T): void | Error
 export function copyObjectProperty<T1 extends object, T2 extends object, T extends T1 & T2>(source: T, key: string, target: T): void | Error
@@ -59,6 +63,8 @@ export function copyObjectProperty<T1 extends object, T2 extends object, T exten
 
 /**
  * Deletes a property from an object. The key supports bracket and dot notation.
+ *
+ * [Aracna Reference](https://aracna.dariosechi.it/core/utils/object)
  */
 export function deleteObjectProperty<T extends object>(object: T, key: KeyOf.Deep<T>): void
 export function deleteObjectProperty<T extends object>(object: T, key: string): void
@@ -92,6 +98,8 @@ export function deleteObjectProperty<T extends object>(object: T, key: KeyOf.Dee
 /**
  * Deletes the properties of an object that either match the predicate or are in the list of keys. The keys support bracket and dot notation.
  * Optionally deletes deep properties as well.
+ *
+ * [Aracna Reference](https://aracna.dariosechi.it/core/utils/object)
  */
 export function deleteObjectProperties<T extends object>(
   object: T,
@@ -139,6 +147,8 @@ export function deleteObjectProperties<T extends object>(object: T, ...args: any
 /**
  * Flattens an object into a single-depth object with dot notation keys.
  * Optionally flattens arrays as well.
+ *
+ * [Aracna Reference](https://aracna.dariosechi.it/core/utils/object)
  */
 export function flattenObject<T extends object>(object: T, options?: FlattenObjectOptions, parents: string[] = []): Record<string, any> {
   let flat: Record<string, any> = {}
@@ -159,6 +169,8 @@ export function flattenObject<T extends object>(object: T, options?: FlattenObje
 
 /**
  * Returns a property from an object. The key supports bracket and dot notation.
+ *
+ * [Aracna Reference](https://aracna.dariosechi.it/core/utils/object)
  */
 export function getObjectProperty<T extends object, U extends any>(object: T, key: KeyOf.Deep<T>): U | undefined
 export function getObjectProperty<T extends object, U extends any>(object: T, key: KeyOf.Deep<T>, fallback: U): U
@@ -230,6 +242,8 @@ function getObjectPropertyDotKeyTarget<T extends object, U extends object>(objec
 
 /**
  * Merges two or more objects into a single object.
+ *
+ * [Aracna Reference](https://aracna.dariosechi.it/core/utils/object)
  */
 export function mergeObjects<T extends object>(target: T, ...sources: Record<PropertyKey, any>[]): T {
   let clone: T = cloneObject(target, { deep: true })
@@ -260,6 +274,8 @@ export function mergeObjects<T extends object>(target: T, ...sources: Record<Pro
 /**
  * Returns a new object without the properties that match the predicate or are in the list of keys. The keys support bracket and dot notation.
  * Optionally omits deep properties as well.
+ *
+ * [Aracna Reference](https://aracna.dariosechi.it/core/utils/object)
  */
 export function omitObjectProperties<T extends object>(
   object: T,
@@ -293,6 +309,8 @@ export function omitObjectProperties<T extends object>(object: T, ...args: any[]
 /**
  * Returns a new object with only the properties that match the predicate or are in the list of keys. The keys support bracket and dot notation.
  * Optionally picks deep properties as well.
+ *
+ * [Aracna Reference](https://aracna.dariosechi.it/core/utils/object)
  */
 export function pickObjectProperties<T extends object>(
   object: T,
@@ -340,6 +358,8 @@ export function pickObjectProperties<T extends object>(object: T, ...args: any[]
 
 /**
  * Sets a property on an object. The key supports bracket and dot notation.
+ *
+ * [Aracna Reference](https://aracna.dariosechi.it/core/utils/object)
  */
 export function setObjectProperty<T extends object, U>(object: T, key: KeyOf.Deep<T>, value: U): void | Error
 export function setObjectProperty<T extends object, U>(object: T, key: string, value: U): void | Error
@@ -372,6 +392,8 @@ export function setObjectProperty<T extends object, U>(object: T, key: KeyOf.Dee
 
 /**
  * Checks if an object has a property. The key supports bracket and dot notation.
+ *
+ * [Aracna Reference](https://aracna.dariosechi.it/core/utils/object)
  */
 export function hasObjectProperty<T extends object>(object: T, key: KeyOf.Deep<T>): boolean
 export function hasObjectProperty<T extends object>(object: T, key: string): boolean
@@ -386,6 +408,8 @@ export function hasObjectProperty<T extends object>(object: T, key: KeyOf.Deep<T
 
 /**
  * Checks if an unknown value is an object. A value is considered an object if it is typeof "object", not null and not an array.
+ *
+ * [Aracna Reference](https://aracna.dariosechi.it/core/utils/object)
  */
 export function isObject<T extends object>(value: unknown): value is T {
   if (value === null) {
@@ -401,6 +425,8 @@ export function isObject<T extends object>(value: unknown): value is T {
 
 /**
  * Checks if an object is clonable. An object is considered clonable if it is an array or a plain object.
+ *
+ * [Aracna Reference](https://aracna.dariosechi.it/core/utils/object)
  */
 export function isObjectClonable<T extends object>(object: T): boolean {
   return isArray(object) || isPlainObject(object)
@@ -408,6 +434,8 @@ export function isObjectClonable<T extends object>(object: T): boolean {
 
 /**
  * Checks if an object is flattenable. An object is considered flattenable if it is an array or a plain object.
+ *
+ * [Aracna Reference](https://aracna.dariosechi.it/core/utils/object)
  */
 export function isObjectFlattenable<T extends object>(object: T, options?: FlattenObjectOptions): boolean {
   if (options?.array && isArray(object)) {
@@ -419,6 +447,8 @@ export function isObjectFlattenable<T extends object>(object: T, options?: Flatt
 
 /**
  * Checks if an object has keys.
+ *
+ * [Aracna Reference](https://aracna.dariosechi.it/core/utils/object)
  */
 export function isObjectKeysPopulated<T extends object>(object: T): boolean {
   return Object.keys(object).length > 0
@@ -426,6 +456,8 @@ export function isObjectKeysPopulated<T extends object>(object: T): boolean {
 
 /**
  * Checks if an object has values.
+ *
+ * [Aracna Reference](https://aracna.dariosechi.it/core/utils/object)
  */
 export function isObjectValuesPopulated<T extends object>(object: T): boolean {
   return Object.values(object).length > 0
@@ -433,6 +465,8 @@ export function isObjectValuesPopulated<T extends object>(object: T): boolean {
 
 /**
  * Checks if an unknown value is a plain object. A value is considered a plain object if it matches the default object prototype, it is typeof "object" and not null.
+ *
+ * [Aracna Reference](https://aracna.dariosechi.it/core/utils/object)
  */
 export function isPlainObject<T extends object>(value: unknown): value is T {
   if (value === null) {

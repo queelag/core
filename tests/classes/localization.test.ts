@@ -8,7 +8,7 @@ describe('Localization', () => {
   let localization: Localization
 
   beforeEach(() => {
-    localization = new Localization('en', [])
+    localization = new Localization({ language: 'en' })
   })
 
   it('adds packs', () => {

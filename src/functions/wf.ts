@@ -3,6 +3,8 @@ import { tc } from './tc.js'
 
 /**
  * The `wf` function stands for `wait for`. It takes a function and waits for it to return a truthy value or an error.
+ *
+ * [Aracna Reference](https://aracna.dariosechi.it/core/functions/wf)
  */
 export async function wf(fn: () => any, ms: number = DEFAULT_WF_MS, timeout: number = DEFAULT_WF_TIMEOUT): Promise<void | Error> {
   return new Promise((resolve) => {

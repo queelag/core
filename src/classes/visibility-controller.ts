@@ -4,6 +4,8 @@ import { ClassLogger } from '../loggers/class-logger.js'
 
 /**
  * The VisibilityController class is used to control the visibility of anything that can be hidden or shown.
+ *
+ * [Aracna Reference](https://aracna.dariosechi.it/core/classes/visibility-controller)
  */
 export class VisibilityController {
   protected readonly data: Map<string, string> = new Map()

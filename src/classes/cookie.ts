@@ -9,6 +9,8 @@ import { isObject, setObjectProperty } from '../utils/object-utils.js'
 
 /**
  * The Cookie class is an abstraction to implement any cookie API in an uniform way.
+ *
+ * [Aracna Reference](https://aracna.dariosechi.it/core/classes/cookie)
  */
 export class Cookie {
   /**

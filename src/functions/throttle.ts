@@ -8,6 +8,8 @@ import { tc } from './tc.js'
  * The function will only be called if the time since the last call is greater than or equal to the specified amount of time.
  *
  * Optionally the key can be specified, otherwise the function itself will be used as the key.
+ *
+ * [Aracna Reference](https://aracna.dariosechi.it/core/functions/throttle)
  */
 export function throttle(fn: Function, ms: number, key: ThrottleMapKey = fn): void {
   let previous: number

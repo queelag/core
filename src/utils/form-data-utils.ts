@@ -4,6 +4,8 @@ import { isStringJSON } from './string-utils.js'
 
 /**
  * Deserializes a `FormData` object into a plain object.
+ *
+ * [Aracna Reference](https://aracna.dariosechi.it/core/utils/form-data)
  */
 export function deserializeFormData<T extends object>(data: FormData): T {
   let object: T = {} as T
@@ -22,6 +24,8 @@ export function deserializeFormData<T extends object>(data: FormData): T {
 
 /**
  * Serializes an object into a `FormData` object.
+ *
+ * [Aracna Reference](https://aracna.dariosechi.it/core/utils/form-data)
  */
 export function serializeFormData<T extends object>(object: T): FormData {
   let data: FormData, stringified: string | Error

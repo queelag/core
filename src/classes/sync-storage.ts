@@ -4,6 +4,8 @@ import { Storage } from './storage.js'
 
 /**
  * The SyncStorage class is an abstraction to implement any synchronous storage API in an uniform way.
+ *
+ * [Aracna Reference](https://aracna.dariosechi.it/core/classes/sync-storage)
  */
 export class SyncStorage extends Storage {
   constructor(

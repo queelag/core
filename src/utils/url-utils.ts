@@ -1,67 +1,125 @@
-import {
-  REGEXP_URL_AMPERSANDS_AFTER_QUESTION_MARKS,
-  REGEXP_URL_ENDING_WITH_QUESTION_MARK,
-  REGEXP_URL_MULTIPLE_AMPERSANDS,
-  REGEXP_URL_MULTIPLE_QUESTION_MARKS,
-  REGEXP_URL_MULTIPLE_SLASHES,
-  REGEXP_URL_QUESTION_MARKS_AFTER_AMPERSANDS
-} from '../definitions/constants.js'
 import { DeserializeURLSearchParamsType } from '../definitions/types.js'
+import { tc } from '../functions/tc.js'
 import { isArray } from './array-utils.js'
 
-export function concatURL(...chunks: Partial<string>[]): string {
-  return chunks
-    .filter(Boolean)
-    .map((v: string) => v.trim())
-    .join('/')
-    .replace(REGEXP_URL_MULTIPLE_SLASHES, (substring: string) => (substring.includes(':') ? substring : '/'))
-    .trim()
+/**
+ * Appends the search params to a URL.
+ *
+ * [Aracna Reference](https://aracna.dariosechi.it/core/utils/url)
+ */
+export function appendSearchParamsToURL<T extends Record<string, string>>(
+  url: string,
+  params: string | string[][] | T | URLSearchParams,
+  base?: string | URL
+): string
+export function appendSearchParamsToURL<T extends Record<string, string>>(url: URL, params: string | string[][] | T | URLSearchParams, base?: string | URL): URL
+export function appendSearchParamsToURL<T extends Record<string, string>>(
+  url: string | URL,
+  params: string | string[][] | T | URLSearchParams,
+  base?: string | URL
+): string | URL {
+  let u: URL
+
+  if (isNotURL(url, base)) {
+    return url
+  }
+
+  u = new URL(url, base)
+  u.search = serializeURLSearchParams({
+    ...deserializeURLSearchParams(u.searchParams),
+    ...deserializeURLSearchParams(params)
+  }).toString()
+
+  return typeof url === 'string' ? u.toString() : u
 }
 
-export function appendSearchParamsToURL(url: string, parameters: string): string {
-  return [url.trim(), parameters.trim()]
-    .join(url.includes('=') ? '&' : '?')
-    .replace(REGEXP_URL_ENDING_WITH_QUESTION_MARK, '')
-    .replace(REGEXP_URL_MULTIPLE_AMPERSANDS, '&')
-    .replace(REGEXP_URL_MULTIPLE_QUESTION_MARKS, '?')
-    .replace(REGEXP_URL_AMPERSANDS_AFTER_QUESTION_MARKS, '?')
-    .replace(REGEXP_URL_QUESTION_MARKS_AFTER_AMPERSANDS, '&')
+/**
+ * Concatenates an URL with pathnames.
+ *
+ * [Aracna Reference](https://aracna.dariosechi.it/core/utils/url)
+ */
+export function concatURL(url: string, ...pathnames: Partial<string>[]): string
+export function concatURL(url: URL, ...pathnames: Partial<string>[]): URL
+export function concatURL(url: string | URL, ...pathnames: Partial<string>[]): string | URL {
+  let u: URL
+
+  if (isNotURL(url)) {
+    return url
+  }
+
+  u = new URL(url)
+
+  for (let pathname of pathnames) {
+    u = new URL(pathname, u)
+  }
+
+  return typeof url === 'string' ? u.toString() : u
 }
 
-export function removeSearchParamsFromURL(url: string): string {
-  return url.slice(0, url.includes('?') ? url.indexOf('?') : undefined)
-}
-
-export function deserializeURLSearchParams<T extends Record<string, string>>(params: URLSearchParams): T
-export function deserializeURLSearchParams(params: URLSearchParams, type: 'string'): string
-export function deserializeURLSearchParams(params: URLSearchParams, type: 'array'): string[][]
-export function deserializeURLSearchParams<T extends Record<string, string>>(params: URLSearchParams, type: 'object'): T
+/**
+ * Deserializes an array, string, plain object or `URLSearchParams` to an array, string or plain object.
+ *
+ * [Aracna Reference](https://aracna.dariosechi.it/core/utils/url)
+ */
+export function deserializeURLSearchParams<T extends Record<string, string>>(params: string | string[][] | T | URLSearchParams): T
+export function deserializeURLSearchParams<T extends Record<string, string>>(params: string | string[][] | T | URLSearchParams, type: 'string'): string
+export function deserializeURLSearchParams<T extends Record<string, string>>(params: string | string[][] | T | URLSearchParams, type: 'array'): string[][]
+export function deserializeURLSearchParams<T extends Record<string, string>>(params: string | string[][] | T | URLSearchParams, type: 'object'): T
 export function deserializeURLSearchParams<T extends Record<string, string>>(
-  params: URLSearchParams,
+  params: string | string[][] | T | URLSearchParams,
   type: DeserializeURLSearchParamsType = 'object'
 ): string | string[][] | T {
   switch (type) {
     case 'array':
-      return [...params.entries()]
+      return [...new URLSearchParams(params).entries()]
     case 'object':
       let record: T = {} as T
 
-      for (let [k, v] of params.entries()) {
+      for (let [k, v] of new URLSearchParams(params).entries()) {
         record[k as keyof T] = v as T[keyof T]
       }
 
       return record
     case 'string':
-      return params.toString()
+      return new URLSearchParams(params).toString()
   }
 }
 
-export function serializeURLSearchParams<T extends object>(params: string | string[][] | T): URLSearchParams {
+/**
+ * Removes the search params from an URL.
+ *
+ * [Aracna Reference](https://aracna.dariosechi.it/core/utils/url)
+ */
+export function removeSearchParamsFromURL(url: string): string
+export function removeSearchParamsFromURL(url: URL): URL
+export function removeSearchParamsFromURL(url: string | URL): string | URL {
+  let u: URL
+
+  if (isNotURL(url)) {
+    return url
+  }
+
+  u = new URL(url)
+  u.search = ''
+
+  return typeof url === 'string' ? u.toString() : u
+}
+
+/**
+ * Serializes an array, string or plain object to `URLSearchParams`.
+ *
+ * [Aracna Reference](https://aracna.dariosechi.it/core/utils/url)
+ */
+export function serializeURLSearchParams<T extends object>(params: string | string[][] | T | URLSearchParams): URLSearchParams {
   switch (typeof params) {
     case 'string':
       return new URLSearchParams(params)
     case 'object':
       let record: Record<string, string> = {}
+
+      if (params instanceof URLSearchParams) {
+        return params
+      }
 
       if (isArray(params)) {
         return new URLSearchParams(params)
@@ -94,4 +152,31 @@ export function serializeURLSearchParams<T extends object>(params: string | stri
     default:
       return new URLSearchParams()
   }
+}
+
+/**
+ * Checks if an unknown value is a URL.
+ *
+ * [Aracna Reference](https://aracna.dariosechi.it/core/utils/url)
+ */
+export function isURL(value: unknown, base?: string | URL): boolean {
+  let url: URL | TypeError
+
+  if (value instanceof URL) {
+    return true
+  }
+
+  url = tc(() => new URL(String(value), base), false)
+  if (!(url instanceof URL)) return false
+
+  return true
+}
+
+/**
+ * Checks if an unknown value is not a URL.
+ *
+ * [Aracna Reference](https://aracna.dariosechi.it/core/utils/url)
+ */
+export function isNotURL(value: unknown, base?: string | URL): boolean {
+  return !isURL(value, base)
 }

@@ -2,6 +2,8 @@ import { Configuration } from '../classes/configuration.js'
 
 /**
  * The `tc` function stands for `try catch`. It takes a function and returns the result of the function or the error that was thrown.
+ *
+ * [Aracna Reference](https://aracna.dariosechi.it/core/functions/tc)
  */
 export function tc<T, U extends Error = Error>(fn: () => T, log: boolean = Configuration.functions.tc.log): T | U {
   try {

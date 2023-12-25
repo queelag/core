@@ -4,6 +4,8 @@ import { StorageName } from '../definitions/enums.js'
 
 /**
  * The `MemoryStorage` is a `SyncStorage` that uses a `Map` as its storage, which means that it will only be available in the current session.
+ *
+ * [Aracna Reference](https://aracna.dariosechi.it/core/storages/memory-storage)
  */
 export const MemoryStorage: SyncStorage = new SyncStorage(
   StorageName.MEMORY,

@@ -9,6 +9,8 @@ import { UtilLogger } from '../loggers/util-logger.js'
  *
  * Optionally the key can be specified, otherwise the function itself will be used as the key.
  * Optionally runs the function immediately with the `autorun` option.
+ *
+ * [Aracna Reference](https://aracna.dariosechi.it/core/utils/interval)
  */
 function set(fn: Function, ms: number, key: IntervalMapKey = fn, options?: SetIntervalOptions): void {
   clearInterval(INTERVAL_MAP.get(key) as any)
@@ -25,6 +27,8 @@ function set(fn: Function, ms: number, key: IntervalMapKey = fn, options?: SetIn
 
 /**
  * Clears an interval.
+ *
+ * [Aracna Reference](https://aracna.dariosechi.it/core/utils/interval)
  */
 function clear(key: IntervalMapKey): void {
   clearInterval(INTERVAL_MAP.get(key))
@@ -36,6 +40,8 @@ function clear(key: IntervalMapKey): void {
 
 /**
  * Clears all intervals.
+ *
+ * [Aracna Reference](https://aracna.dariosechi.it/core/utils/interval)
  */
 export function clearEveryInterval(): void {
   INTERVAL_MAP.forEach(clearInterval)
@@ -47,6 +53,8 @@ export function clearEveryInterval(): void {
 
 /**
  * Checks if an interval is set.
+ *
+ * [Aracna Reference](https://aracna.dariosechi.it/core/utils/interval)
  */
 export function isIntervalSet(key: IntervalMapKey): boolean {
   return INTERVAL_MAP.has(key)
@@ -54,6 +62,8 @@ export function isIntervalSet(key: IntervalMapKey): boolean {
 
 /**
  * Checks if an interval is not set.
+ *
+ * [Aracna Reference](https://aracna.dariosechi.it/core/utils/interval)
  */
 export function isIntervalUnset(key: IntervalMapKey): boolean {
   return !INTERVAL_MAP.has(key)

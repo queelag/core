@@ -7,6 +7,8 @@ import { FunctionLogger } from '../loggers/function-logger.js'
 /**
  * The `typeahead` function is used to search for items in a list, based on user input.
  * When a match is found, the `match` event is emitted.
+ *
+ * [Aracna Reference](https://aracna.dariosechi.it/core/functions/typeahead)
  */
 export function typeahead<T>(key: TypeaheadMapKey, chunks: string | string[], options?: TypeaheadOptions<T>): Typeahead<T> {
   let instance: TypeaheadMapValue | undefined

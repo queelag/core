@@ -3,7 +3,7 @@ import {
   REGEXP_VARIABLE_INSIDE_CURLY_BRACKETS,
   SORT_REGEXP_VARIABLE_INSIDE_CURLY_BRACKETS_MATCHES_COMPARE_FN
 } from '../definitions/constants.js'
-import { LocalizationPack, LocalizationVariables } from '../definitions/interfaces.js'
+import { LocalizationInit, LocalizationPack, LocalizationVariables } from '../definitions/interfaces.js'
 import { Storage } from '../definitions/types.js'
 import { ClassLogger } from '../loggers/class-logger.js'
 import { MemoryStorage } from '../storages/memory-storage.js'
@@ -17,6 +17,8 @@ import { getObjectProperty, hasObjectProperty, mergeObjects } from '../utils/obj
  * - The path of the localized string supports dot notation, for example: 'path.to.the.value'.
  * - The variables support dot notation as well and can be used inside the localized string, for example: 'Hello {name}!'.
  * - The instance also supports default variables, which can be overridden by the variables passed to the get method.
+ *
+ * [Aracna Reference](https://aracna.dariosechi.it/core/classes/localization)
  */
 export class Localization {
   /**
@@ -40,18 +42,12 @@ export class Localization {
    */
   variables: LocalizationVariables
 
-  constructor(
-    language: string,
-    packs: LocalizationPack[] = [],
-    variables: LocalizationVariables = {},
-    storage: Storage = MemoryStorage,
-    storageKey: string = DEFAULT_LOCALIZATION_STORAGE_KEY
-  ) {
-    this.language = language
-    this.packs = packs
-    this.storage = storage
-    this.storageKey = storageKey
-    this.variables = variables
+  constructor(init?: LocalizationInit) {
+    this.language = init?.language ?? ''
+    this.packs = init?.packs ?? []
+    this.storage = init?.storage?.instance ?? MemoryStorage
+    this.storageKey = init?.storage?.key ?? DEFAULT_LOCALIZATION_STORAGE_KEY
+    this.variables = init?.variables ?? {}
   }
 
   /**

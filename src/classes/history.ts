@@ -15,7 +15,7 @@ export class History<T extends HistoryDataTarget = HistoryDataTarget, K extends 
     this.key = key
     this.size = size
     this.target = target
-    this.versions = [cloneObject(this.target[this.key], 'deep')]
+    this.versions = [cloneObject(this.target[this.key], { deep: true })]
   }
 
   redo(): void {
@@ -40,13 +40,13 @@ export class History<T extends HistoryDataTarget = HistoryDataTarget, K extends 
       ClassLogger.debug('History', 'push', `The first version has been removed.`)
     }
 
-    this.versions = [...this.versions, cloneObject(this.target[this.key], 'deep')]
+    this.versions = [...this.versions, cloneObject(this.target[this.key], { deep: true })]
     this.index = this.versions.length - 1
   }
 
   protected setIndex(offset: number): void {
     this.index = this.index + offset
-    this.target[this.key] = cloneObject(this.versions[this.index], 'deep')
+    this.target[this.key] = cloneObject(this.versions[this.index], { deep: true })
   }
 
   get isPushable(): boolean {

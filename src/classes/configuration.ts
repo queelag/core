@@ -3,6 +3,8 @@ import { ConfigurationFunctions } from '../definitions/interfaces.js'
 
 /**
  * The Configuration class is used to configure the library.
+ *
+ * [Aracna Reference](https://aracna.dariosechi.it/core/classes/configuration)
  */
 export class Configuration {
   /**

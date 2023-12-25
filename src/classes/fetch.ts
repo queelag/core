@@ -12,6 +12,8 @@ import { FetchResponse } from './fetch-response.js'
  * - The body and headers of the request are automatically generated based on the body.
  * - The body of the response is dynamically parsed based on the Content-Type header, unless the parse option is set to false.
  * - Enabling logs will give you a detailed overview of the requests and responses.
+ *
+ * [Aracna Reference](https://aracna.dariosechi.it/core/classes/fetch)
  */
 export class Fetch {
   /**

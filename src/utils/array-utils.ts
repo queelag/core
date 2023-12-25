@@ -3,6 +3,8 @@ import { HasArrayItemPredicate, RemoveArrayItemsPredicate } from '../definitions
 
 /**
  * Creates a copy of an array.
+ *
+ * [Aracna Reference](https://aracna.dariosechi.it/core/utils/array)
  */
 export function cloneArray<T>(array: T[]): T[] {
   return [...array]
@@ -11,6 +13,8 @@ export function cloneArray<T>(array: T[]): T[] {
 /**
  * Returns the symmetric difference between two or more arrays.
  * Optionally you can pass a custom function to check if an item is included in the result array.
+ *
+ * [Aracna Reference](https://aracna.dariosechi.it/core/utils/array)
  */
 export function getArraysDifference<T>(arrays: T[][], predicate: HasArrayItemPredicate<T> = DEFAULT_HAS_ARRAY_ITEM_PREDICATE): T[] {
   let result: T[] = []
@@ -35,6 +39,8 @@ export function getArraysDifference<T>(arrays: T[][], predicate: HasArrayItemPre
 /**
  * Returns the intersection between two or more arrays.
  * Optionally you can pass a custom function to check if an item is included in the result array.
+ *
+ * [Aracna Reference](https://aracna.dariosechi.it/core/utils/array)
  */
 export function getArraysIntersection<T>(arrays: T[][], predicate: HasArrayItemPredicate<T> = DEFAULT_HAS_ARRAY_ITEM_PREDICATE): T[] {
   let result: T[] = []
@@ -59,6 +65,8 @@ export function getArraysIntersection<T>(arrays: T[][], predicate: HasArrayItemP
 /**
  * Returns the last item of an array.
  * Optionally you can pass a fallback value that will be returned if the array is empty.
+ *
+ * [Aracna Reference](https://aracna.dariosechi.it/core/utils/array)
  */
 export function getArrayLastItem<T>(array: T[]): T | undefined
 export function getArrayLastItem<T>(array: T[], fallback: T): T
@@ -69,6 +77,8 @@ export function getArrayLastItem<T>(array: T[], fallback?: T): T | undefined {
 /**
  * Removes all duplicates from an array.
  * Optionally you can pass a custom function to check if an item is included in the result array.
+ *
+ * [Aracna Reference](https://aracna.dariosechi.it/core/utils/array)
  */
 export function removeArrayDuplicates<T>(array: T[], predicate: HasArrayItemPredicate<T> = DEFAULT_HAS_ARRAY_ITEM_PREDICATE): T[] {
   let result: T[] = []
@@ -91,6 +101,8 @@ export function removeArrayDuplicates<T>(array: T[], predicate: HasArrayItemPred
 
 /**
  * Removes items from an array that match the predicate or are in the items array.
+ *
+ * [Aracna Reference](https://aracna.dariosechi.it/core/utils/array)
  */
 export function removeArrayItems<T>(array: T[], predicate: RemoveArrayItemsPredicate<T>): T[]
 export function removeArrayItems<T>(array: T[], items: T[]): T[]
@@ -116,6 +128,8 @@ export function removeArrayItems<T>(array: T[], ...args: any[]): T[] {
 
 /**
  * Checks if the given value is an array.
+ *
+ * [Aracna Reference](https://aracna.dariosechi.it/core/utils/array)
  */
 export function isArray<T>(value: any): value is T[] {
   return Array.isArray(value)

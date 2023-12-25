@@ -16,6 +16,8 @@ import { Status } from './status.js'
  * - The config of the API is automatically merged with the config of the requests.
  * - The status of the requests is automatically tracked and can be accessed through the status property.
  * - The requests are sent with the Fetch class, so all features of the Fetch class are available.
+ *
+ * [Aracna Reference](https://aracna.dariosechi.it/core/classes/rest-api)
  */
 export class RestAPI<T extends RestApiConfig = RestApiConfig, U = undefined> {
   /**

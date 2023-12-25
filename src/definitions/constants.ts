@@ -12,6 +12,7 @@ import {
   LoggerStatus,
   RemoveArrayItemsPredicate,
   StatusTransformer,
+  Theme,
   ThrottleMapKey,
   TimeoutMapKey,
   TimeoutMapValue,
@@ -29,7 +30,8 @@ export const EMPTY_OBJECT: () => Record<PropertyKey, any> = () => ({})
  * Appearence
  */
 /** */
-export const DEFAULT_APPEARENCE_STORAGE_KEY: string = 'appearence'
+export const DEFAULT_APPEARENCE_STORAGE_KEY: string = 'aracna_core_appearence'
+export const DEFAULT_APPEARENCE_THEME: Theme = 'system'
 
 /**
  * Array Utils
@@ -106,6 +108,13 @@ export const LOGGER_STATUSES: LoggerStatus[] = ['off', 'on']
 export const MEMORY_STORAGE_MAP: Map<PropertyKey, any> = new Map()
 
 /**
+ * Number Utils
+ */
+/** */
+export const DEFAULT_GET_NUMBER_PERCENTAGE_MAX: number = 100
+export const DEFAULT_GET_NUMBER_PERCENTAGE_MIN: number = 0
+
+/**
  * Object Utils
  */
 /** */
@@ -165,17 +174,6 @@ export const TIMEOUT_MAP: Map<TimeoutMapKey, TimeoutMapValue> = new Map()
 /** */
 export const DEFAULT_TYPEAHEAD_DEBOUNCE_TIME: number = 100
 export const TYPEAHEAD_MAP: Map<TypeaheadMapKey, TypeaheadMapValue> = new Map()
-
-/**
- * URL Utils
- */
-/** */
-export const REGEXP_URL_AMPERSANDS_AFTER_QUESTION_MARKS: RegExp = /\?{1,4}&{1,4}/g
-export const REGEXP_URL_ENDING_WITH_QUESTION_MARK: RegExp = /\?$/g
-export const REGEXP_URL_MULTIPLE_AMPERSANDS: RegExp = /&{2,4}/g
-export const REGEXP_URL_MULTIPLE_QUESTION_MARKS: RegExp = /\?{2,4}/g
-export const REGEXP_URL_MULTIPLE_SLASHES: RegExp = /:?\/{2,4}/g
-export const REGEXP_URL_QUESTION_MARKS_AFTER_AMPERSANDS: RegExp = /&{1,4}\?{1,4}/g
 
 /**
  * wf & wfp

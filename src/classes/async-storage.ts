@@ -5,6 +5,8 @@ import { Storage } from './storage.js'
 
 /**
  * The AsyncStorage class is an abstraction to implement any asynchronous storage API in an uniform way.
+ *
+ * [Aracna Reference](https://aracna.dariosechi.it/core/classes/async-storage)
  */
 export class AsyncStorage extends Storage {
   constructor(

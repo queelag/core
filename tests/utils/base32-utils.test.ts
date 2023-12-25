@@ -27,8 +27,6 @@ describe('Base32 Utils', () => {
     array = new Uint8Array(randomBytes(8))
     encoded = encodeBase32Hex(array)
 
-    console.log(encoded)
-
     expect(decodeBase32Hex(encoded)).toStrictEqual(array)
   })
 

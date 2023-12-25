@@ -3,6 +3,8 @@ import { isTextDecoderDefined, isTextEncoderDefined } from './environment-utils.
 
 /**
  * Decodes a buffer into a string.
+ *
+ * [Aracna Reference](https://aracna.dariosechi.it/core/utils/text)
  */
 export function decodeText(input: AllowSharedBufferSource, options?: TextDecodeOptions): string {
   return getTextDecoder().decode(input, options)
@@ -10,6 +12,8 @@ export function decodeText(input: AllowSharedBufferSource, options?: TextDecodeO
 
 /**
  * Encodes a string into a Uint8Array.
+ *
+ * [Aracna Reference](https://aracna.dariosechi.it/core/utils/text)
  */
 export function encodeText(input: string): Uint8Array {
   return getTextEncoder().encode(input)
@@ -17,6 +21,8 @@ export function encodeText(input: string): Uint8Array {
 
 /**
  * Returns a new TextDecoder or a stub if the environment does not support it.
+ *
+ * [Aracna Reference](https://aracna.dariosechi.it/core/utils/text)
  */
 export function getTextDecoder(): TextDecoder {
   return isTextDecoderDefined() ? new TextDecoder() : STUB_TEXT_DECODER
@@ -24,6 +30,8 @@ export function getTextDecoder(): TextDecoder {
 
 /**
  * Returns a new TextEncoder or a stub if the environment does not support it.
+ *
+ * [Aracna Reference](https://aracna.dariosechi.it/core/utils/text)
  */
 export function getTextEncoder(): TextEncoder {
   return isTextEncoderDefined() ? new TextEncoder() : STUB_TEXT_ENCODER

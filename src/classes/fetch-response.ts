@@ -1,17 +1,34 @@
 import { tcp } from '../functions/tcp.js'
 import { ClassLogger } from '../loggers/class-logger.js'
 
+/**
+ * The FetchResponse class is used for responses that are returned by the Fetch class.
+ *
+ * [Aracna Reference](https://aracna.dariosechi.it/core/classes/fetch-response)
+ */
 export class FetchResponse<T = unknown> implements Response {
+  /** [MDN Reference](https://developer.mozilla.org/docs/Web/API/Request/body) */
   readonly body: ReadableStream<Uint8Array> | null
+  /** [MDN Reference](https://developer.mozilla.org/docs/Web/API/Request/bodyUsed) */
   readonly bodyUsed: boolean
+  /**
+   * The data that has been parsed.
+   */
   data: T
+  /** [MDN Reference](https://developer.mozilla.org/docs/Web/API/Response/headers) */
   readonly headers: Headers
+  /** [MDN Reference](https://developer.mozilla.org/docs/Web/API/Response/ok) */
   readonly ok: boolean
+  /** [MDN Reference](https://developer.mozilla.org/docs/Web/API/Response/redirected) */
   readonly redirected: boolean
   protected readonly response: Response
+  /** [MDN Reference](https://developer.mozilla.org/docs/Web/API/Response/status) */
   readonly status: number
+  /** [MDN Reference](https://developer.mozilla.org/docs/Web/API/Response/statusText) */
   readonly statusText: string
+  /** [MDN Reference](https://developer.mozilla.org/docs/Web/API/Response/type) */
   readonly type: ResponseType
+  /** [MDN Reference](https://developer.mozilla.org/docs/Web/API/Response/url) */
   readonly url: string
 
   constructor(response: Response, data?: T) {
@@ -28,6 +45,9 @@ export class FetchResponse<T = unknown> implements Response {
     this.url = response.url
   }
 
+  /**
+   * Parses the body in the most appropriate way inferring the type from the content-type header.
+   */
   async parse(): Promise<void> {
     switch (true) {
       case this.ContentType.startsWith('application/') && this.ContentType.includes('octet-stream'):
@@ -93,35 +113,46 @@ export class FetchResponse<T = unknown> implements Response {
     }
   }
 
+  /** [MDN Reference](https://developer.mozilla.org/docs/Web/API/Request/arrayBuffer) */
   arrayBuffer(): Promise<ArrayBuffer> {
     return this.response.arrayBuffer()
   }
 
+  /** [MDN Reference](https://developer.mozilla.org/docs/Web/API/Request/blob) */
   blob(): Promise<Blob> {
     return this.response.blob()
   }
 
+  /** [MDN Reference](https://developer.mozilla.org/docs/Web/API/Response/clone) */
   clone(): Response {
     return this.response.clone()
   }
 
-  // istanbul ignore next
+  /** [MDN Reference](https://developer.mozilla.org/docs/Web/API/Request/formData) */
   formData(): Promise<FormData> {
     return this.response.formData()
   }
 
+  /** [MDN Reference](https://developer.mozilla.org/docs/Web/API/Request/json) */
   json(): Promise<any> {
     return this.response.json()
   }
 
+  /** [MDN Reference](https://developer.mozilla.org/docs/Web/API/Request/text) */
   text(): Promise<string> {
     return this.response.text()
   }
 
+  /**
+   * Sets the data.
+   */
   protected setData(data: any): void {
     this.data = data
   }
 
+  /**
+   * Creates a new FetchResponse instance.
+   */
   static from<T>(data: T): FetchResponse<T>
   static from<T>(response: Response): FetchResponse<T>
   static from<T>(...args: any[]): FetchResponse<T> {
@@ -132,6 +163,9 @@ export class FetchResponse<T = unknown> implements Response {
     return new FetchResponse(new Response(), args[0])
   }
 
+  /**
+   * Returns the content-type header.
+   */
   protected get ContentType(): string {
     return this.headers.get('content-type') ?? ''
   }

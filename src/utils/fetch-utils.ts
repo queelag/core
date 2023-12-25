@@ -21,6 +21,8 @@ import { deserializeURLSearchParams } from './url-utils.js'
 
 /**
  * Counts the number of headers in a `FetchRequestInit` or `RequestInit` object.
+ *
+ * [Aracna Reference](https://aracna.dariosechi.it/core/utils/fetch)
  */
 export function countFetchRequestInitHeaders<T>(init: FetchRequestInit<T> | RequestInit): number {
   return getFetchRequestInitHeadersEntries(init).length
@@ -28,6 +30,8 @@ export function countFetchRequestInitHeaders<T>(init: FetchRequestInit<T> | Requ
 
 /**
  * Deletes a header from a `FetchRequestInit` or `RequestInit` object.
+ *
+ * [Aracna Reference](https://aracna.dariosechi.it/core/utils/fetch)
  */
 export function deleteFetchRequestInitHeader<T>(init: FetchRequestInit<T> | RequestInit, name: string): void {
   if (typeof init.headers === 'undefined') {
@@ -48,6 +52,8 @@ export function deleteFetchRequestInitHeader<T>(init: FetchRequestInit<T> | Requ
 
 /**
  * Returns a header from a `FetchRequestInit` or `RequestInit` object.
+ *
+ * [Aracna Reference](https://aracna.dariosechi.it/core/utils/fetch)
  */
 export function getFetchRequestInitHeader<T>(init: FetchRequestInit<T> | RequestInit, name: string): string | null {
   let value: string | undefined
@@ -77,6 +83,8 @@ export function getFetchRequestInitHeader<T>(init: FetchRequestInit<T> | Request
 
 /**
  * Returns the headers entries from a `FetchRequestInit` or `RequestInit` object.
+ *
+ * [Aracna Reference](https://aracna.dariosechi.it/core/utils/fetch)
  */
 export function getFetchRequestInitHeadersEntries<T>(init: FetchRequestInit<T> | RequestInit): string[][] {
   if (typeof init.headers === 'undefined') {
@@ -96,6 +104,8 @@ export function getFetchRequestInitHeadersEntries<T>(init: FetchRequestInit<T> |
 
 /**
  * Imports `node-fetch` only if the Fetch API is not defined.
+ *
+ * [Aracna Reference](https://aracna.dariosechi.it/core/utils/fetch)
  */
 export async function importNodeFetch(): Promise<NodeFetch | Error> {
   if (isBlobDefined() && isFetchDefined() && isFileDefined() && isFormDataDefined()) {
@@ -111,6 +121,8 @@ export async function importNodeFetch(): Promise<NodeFetch | Error> {
 
 /**
  * Merges two or more `FetchRequestInit` or `RequestInit` objects.
+ *
+ * [Aracna Reference](https://aracna.dariosechi.it/core/utils/fetch)
  */
 export function mergeFetchRequestInits<T>(target: FetchRequestInit<T>, ...sources: FetchRequestInit<T>[]): FetchRequestInit<T> {
   let merged: FetchRequestInit<T>
@@ -137,6 +149,8 @@ export function mergeFetchRequestInits<T>(target: FetchRequestInit<T>, ...source
 
 /**
  * Sets a header in a `FetchRequestInit` or `RequestInit` object.
+ *
+ * [Aracna Reference](https://aracna.dariosechi.it/core/utils/fetch)
  */
 export function setFetchRequestInitHeader<T>(init: FetchRequestInit<T> | RequestInit, name: string, value: string): void {
   if (typeof init.headers === 'undefined') {
@@ -162,6 +176,8 @@ export function setFetchRequestInitHeader<T>(init: FetchRequestInit<T> | Request
 
 /**
  * Sets a header a `FetchRequestInit` or `RequestInit` object if it is not set.
+ *
+ * [Aracna Reference](https://aracna.dariosechi.it/core/utils/fetch)
  */
 export function setFetchRequestInitHeaderWhenUnset<T>(init: FetchRequestInit<T> | RequestInit, name: string, value: string): void {
   if (hasFetchRequestInitHeader(init, name)) {
@@ -173,6 +189,8 @@ export function setFetchRequestInitHeaderWhenUnset<T>(init: FetchRequestInit<T> 
 
 /**
  * Polyfills the Fetch API with `node-fetch` if the Fetch API is not defined.
+ *
+ * [Aracna Reference](https://aracna.dariosechi.it/core/utils/fetch)
  */
 export async function useNodeFetch(NodeFetch: NodeFetch | Error): Promise<void> {
   if (NodeFetch instanceof Error) {
@@ -210,6 +228,8 @@ export async function useNodeFetch(NodeFetch: NodeFetch | Error): Promise<void> 
 
 /**
  * Returns a version of a `FetchRequestInit` object that is easier to read in logs.
+ *
+ * [Aracna Reference](https://aracna.dariosechi.it/core/utils/fetch)
  */
 export function toLoggableFetchRequestInit<T>(init: FetchRequestInit<T>): FetchRequestInit {
   let clone: FetchRequestInit
@@ -234,6 +254,8 @@ export function toLoggableFetchRequestInit<T>(init: FetchRequestInit<T>): FetchR
 
 /**
  * Returns a version of a `RequestInit` object that is easier to read in logs.
+ *
+ * [Aracna Reference](https://aracna.dariosechi.it/core/utils/fetch)
  */
 export function toLoggableNativeFetchRequestInit(init: RequestInit): RequestInit {
   let clone: RequestInit
@@ -268,11 +290,13 @@ export function toLoggableNativeFetchRequestInit(init: RequestInit): RequestInit
 /**
  * Converts a `FetchRequestInit` object to a `RequestInit` object.
  * Sets the `content-type` header based on the type of the body.
+ *
+ * [Aracna Reference](https://aracna.dariosechi.it/core/utils/fetch)
  */
 export function toNativeFetchRequestInit<T>(init: FetchRequestInit<T>): RequestInit {
   let clone: RequestInit
 
-  clone = omitObjectProperties(init, ['body'])
+  clone = omitObjectProperties(init, ['body']) as RequestInit
   if (init.body === undefined) return clone
 
   if (init.body instanceof ArrayBuffer || init.body instanceof Blob || init.body instanceof Uint8Array) {
@@ -319,6 +343,8 @@ export function toNativeFetchRequestInit<T>(init: FetchRequestInit<T>): RequestI
 
 /**
  * Checks if a `FetchRequestInit` or `RequestInit` object has a header.
+ *
+ * [Aracna Reference](https://aracna.dariosechi.it/core/utils/fetch)
  */
 export function hasFetchRequestInitHeader<T>(init: FetchRequestInit<T> | RequestInit, name: string): boolean {
   return getFetchRequestInitHeader(init, name) !== null

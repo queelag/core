@@ -30,7 +30,7 @@ import {
  * @deprecated
  */
 export class Environment {
-  static get(key: string): string {
+  static get(key: string): string | undefined {
     return getProcessEnvKey(key)
   }
 
@@ -126,7 +126,7 @@ export class Environment {
     return isWindowNotDefined()
   }
 
-  static get NODE_ENV(): string {
+  static get NODE_ENV(): string | undefined {
     return getNodeEnv()
   }
 }

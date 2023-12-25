@@ -3,6 +3,8 @@ import { LoggerLevel } from '../definitions/types.js'
 
 /**
  * Returns the ANSI color code for a logger level, the level can be `debug`, `error`, `info`, `verbose` or `warn`.
+ *
+ * [Aracna Reference](https://aracna.dariosechi.it/core/utils/logger)
  */
 export function getLoggerAnsiColor(level: LoggerLevel): string {
   switch (level) {
