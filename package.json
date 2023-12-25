@@ -24,7 +24,7 @@
     "vitest": "^1.1.0"
   },
   "engines": {
-    "node": ">=20",
+    "node": ">=16",
     "pnpm": ">=8"
   },
   "exports": {
