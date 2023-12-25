@@ -106,7 +106,9 @@ export class Localization {
     localized = getObjectProperty(pack.data, path, '')
     if (!localized) return path
 
-    matches = localized.match(REGEXP_VARIABLE_INSIDE_CURLY_BRACKETS)
+    REGEXP_VARIABLE_INSIDE_CURLY_BRACKETS.lastIndex = 0
+
+    matches = REGEXP_VARIABLE_INSIDE_CURLY_BRACKETS.exec(localized)
     if (!matches) return localized
 
     source = mergeObjects(pack.data, this.variables, variables)

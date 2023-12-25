@@ -2,6 +2,8 @@ import type { AsyncStorage } from '../classes/async-storage.js'
 import type { SyncStorage } from '../classes/sync-storage.js'
 import type { Typeahead } from '../classes/typeahead.js'
 
+export type AppendSearchParamsToURLParams<T extends URLSearchParamsRecord = URLSearchParamsRecord> = DeserializeURLSearchParamsInit<T>
+
 export type DebounceMapKey = bigint | number | string | symbol | Function
 export type DebounceMapValue = NodeJS.Timeout | number
 
@@ -12,7 +14,10 @@ export type DeleteObjectPropertiesPredicate<T extends object = object, K extends
   keys?: PropertyKey[]
 ) => boolean
 
+export type DeserializeURLSearchParamsInit<T extends URLSearchParamsRecord = URLSearchParamsRecord> = string | string[][] | T | URLSearchParams
 export type DeserializeURLSearchParamsType = 'array' | 'object' | 'string'
+
+export type SerializeURLSearchParamsInit<T extends object = object> = string | string[][] | T | URLSearchParams
 export type SerializeURLSearchParamsType = 'string' | 'url-search-params'
 
 export type EventEmitterEvents = Record<EventEmitterListenerName, EventEmitterListenerCallback>
@@ -27,6 +32,9 @@ export type IntervalMapValue = NodeJS.Timeout | number
 export type IsEqual<T1, T2> = (a: T1, b: T2) => boolean
 
 export type FetchRequestInfo = Request | string
+export type FetchRequestInitParse = boolean | FetchResponseParseType
+
+export type FetchResponseParseType = 'array-buffer' | 'blob' | 'form-data' | 'json' | 'text' | 'url-search-params'
 
 export type GenerateRandomStringRandom = (bytes: number) => Uint8Array
 
@@ -84,5 +92,7 @@ export type VisibilityControllerToggleDelay =
       hide?: number
       show?: number
     }
+
+export type URLSearchParamsRecord = Record<string, string>
 
 export type WriteMode = 'create' | 'update'

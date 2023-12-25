@@ -33,7 +33,7 @@ export class Fetch {
     ClassLogger.debug('Fetch', 'handle', `The request has been sent.`, input)
 
     if (init.parse !== false) {
-      await tcp(() => (response as FetchResponse<T & U>).parse())
+      await tcp(() => (response as FetchResponse<T & U>).parse(typeof init.parse === 'string' ? init.parse : undefined))
     }
 
     if (response.ok === true) {

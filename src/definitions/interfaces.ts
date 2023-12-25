@@ -1,5 +1,5 @@
 import type { FetchResponse } from '../classes/fetch-response.js'
-import type { EventEmitterEvents, Primitive, Storage, Theme, TypeaheadPredicate, WriteMode } from './types.js'
+import type { EventEmitterEvents, FetchRequestInitParse, Primitive, Storage, Theme, TypeaheadPredicate, WriteMode } from './types.js'
 
 export interface AppearenceEvents extends EventEmitterEvents {
   'change-theme': (theme: Theme) => any
@@ -95,7 +95,7 @@ export interface EventEmitterListenerOptions {
 
 export interface FetchRequestInit<T = unknown> extends Omit<RequestInit, 'body'> {
   body?: T
-  parse?: boolean
+  parse?: FetchRequestInitParse
 }
 
 export interface FlattenObjectOptions {

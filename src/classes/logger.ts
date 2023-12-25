@@ -151,6 +151,13 @@ export class Logger {
     print = []
     primitives = []
 
+    this.formatArgs(level, print, primitives, ...args)
+    this.formatPrimitives(level, print, primitives)
+
+    return print
+  }
+
+  private formatArgs(level: LoggerLevel, print: any[], primitives: any[], ...args: any[]): void {
     for (let arg of args) {
       if (typeof arg !== 'object') {
         if (String(arg).length <= 0) continue
@@ -165,7 +172,7 @@ export class Logger {
         }
 
         print.push(primitives.join(this.separator))
-        primitives = []
+        primitives.splice(0, primitives.length)
 
         if (this.colors) {
           print.push(AnsiColor.RESET)
@@ -179,7 +186,9 @@ export class Logger {
 
       print.push(arg)
     }
+  }
 
+  private formatPrimitives(level: LoggerLevel, print: any[], primitives: any[]): void {
     if (primitives.length > 0) {
       if (this.colors) {
         print.push(getLoggerAnsiColor(level))
@@ -191,8 +200,6 @@ export class Logger {
         print.push(AnsiColor.RESET)
       }
     }
-
-    return print
   }
 
   /**

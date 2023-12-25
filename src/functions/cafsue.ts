@@ -6,7 +6,7 @@ import { tcp } from './tcp.js'
  * [Aracna Reference](https://aracna.dariosechi.it/core/functions/cafsue)
  */
 export async function cafsue(...fns: ((...args: any[]) => Promise<any>)[]): Promise<void> {
-  let output: unknown | Error
+  let output: unknown
 
   for (let fn of fns) {
     output = await tcp(() => fn())

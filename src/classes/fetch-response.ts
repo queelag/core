@@ -1,4 +1,5 @@
 import { tcp } from '../functions/tcp.js'
+import { FetchResponseParseType } from '../index.js'
 import { ClassLogger } from '../loggers/class-logger.js'
 
 /**
@@ -47,70 +48,98 @@ export class FetchResponse<T = unknown> implements Response {
 
   /**
    * Parses the body in the most appropriate way inferring the type from the content-type header.
+   * Optionally the type can be specified, it can be array-buffer, blob, form-data, json, text or url-search-params.
    */
-  async parse(): Promise<void> {
+  async parse(type?: FetchResponseParseType): Promise<void> {
+    switch (type) {
+      case 'array-buffer':
+        return this.parseArrayBuffer()
+      case 'blob':
+        return this.parseBlob()
+      case 'form-data':
+        return this.parseFormData()
+      case 'json':
+        return this.parseJSON()
+      case 'text':
+        return this.parseText()
+      case 'url-search-params':
+        return this.parseURLSearchParams()
+    }
+
     switch (true) {
       case this.ContentType.startsWith('application/') && this.ContentType.includes('octet-stream'):
-        let blob: Blob | Error
-
-        blob = await tcp(() => this.blob())
-        if (blob instanceof Error) return this.setData(new Blob())
-
-        this.setData(blob)
-        ClassLogger.debug('FetchResponse', 'parse', `The data has been parsed as Blob.`, blob)
-
-        break
+        return this.parseBlob()
       case this.ContentType.startsWith('application/') && this.ContentType.includes('json'):
-        let json: object | Error
-
-        json = await tcp(() => this.json())
-        if (json instanceof Error) return this.setData({})
-
-        this.setData(json)
-        ClassLogger.debug('FetchResponse', 'parse', `The data has been parsed as JSON.`, json)
-
-        break
+        return this.parseJSON()
       case this.ContentType.startsWith('application/') && this.ContentType.includes('x-www-form-urlencoded'):
-        let params: string | Error
-
-        params = await tcp(() => this.text())
-        if (params instanceof Error) return this.setData(new URLSearchParams())
-
-        this.setData(new URLSearchParams(params))
-        ClassLogger.debug('FetchResponse', 'parse', `The data has been parsed as URLSearchParams.`, new URLSearchParams(params))
-
-        break
+        return this.parseURLSearchParams()
       case this.ContentType.startsWith('multipart/') && this.ContentType.includes('form-data'):
-        let form: FormData | Error
-
-        form = await tcp(() => this.formData())
-        if (form instanceof Error) return this.setData(new FormData())
-
-        this.setData(form)
-        ClassLogger.debug('FetchResponse', 'parse', `The data has been parsed as FormData.`, [...form.entries()])
-
-        break
+        return this.parseFormData()
       case this.ContentType.startsWith('text/'):
-        let text: string | Error
-
-        text = await tcp(() => this.text())
-        if (text instanceof Error) return this.setData('')
-
-        this.setData(text)
-        ClassLogger.debug('FetchResponse', 'parse', `The data has been parsed as text.`, [text])
-
-        break
+        return this.parseText()
       default:
-        let buffer: ArrayBuffer | Error
-
-        buffer = await tcp(() => this.arrayBuffer())
-        if (buffer instanceof Error) return this.setData(new ArrayBuffer(0))
-
-        this.setData(buffer)
-        ClassLogger.debug('FetchResponse', 'parse', `The data has been parsed as ArrayBuffer.`, buffer)
-
-        break
+        return this.parseArrayBuffer()
     }
+  }
+
+  async parseArrayBuffer(): Promise<void> {
+    let buffer: ArrayBuffer | Error
+
+    buffer = await tcp(() => this.arrayBuffer())
+    if (buffer instanceof Error) return this.setData(new ArrayBuffer(0))
+
+    this.setData(buffer)
+    ClassLogger.debug('FetchResponse', 'parseArrayBuffer', `The data has been parsed as ArrayBuffer.`, buffer)
+  }
+
+  async parseBlob(): Promise<void> {
+    let blob: Blob | Error
+
+    blob = await tcp(() => this.blob())
+    if (blob instanceof Error) return this.setData(new Blob())
+
+    this.setData(blob)
+    ClassLogger.debug('FetchResponse', 'parseBlob', `The data has been parsed as Blob.`, blob)
+  }
+
+  async parseFormData(): Promise<void> {
+    let form: FormData | Error
+
+    form = await tcp(() => this.formData())
+    if (form instanceof Error) return this.setData(new FormData())
+
+    this.setData(form)
+    ClassLogger.debug('FetchResponse', 'parseFormData', `The data has been parsed as FormData.`, [...form.entries()])
+  }
+
+  async parseJSON(): Promise<void> {
+    let json: object | Error
+
+    json = await tcp(() => this.json())
+    if (json instanceof Error) return this.setData({})
+
+    this.setData(json)
+    ClassLogger.debug('FetchResponse', 'parseJSON', `The data has been parsed as JSON.`, json)
+  }
+
+  async parseText(): Promise<void> {
+    let text: string | Error
+
+    text = await tcp(() => this.text())
+    if (text instanceof Error) return this.setData('')
+
+    this.setData(text)
+    ClassLogger.debug('FetchResponse', 'parseText', `The data has been parsed as text.`, [text])
+  }
+
+  async parseURLSearchParams(): Promise<void> {
+    let params: string | Error
+
+    params = await tcp(() => this.text())
+    if (params instanceof Error) return this.setData(new URLSearchParams())
+
+    this.setData(new URLSearchParams(params))
+    ClassLogger.debug('FetchResponse', 'parseURLSearchParams', `The data has been parsed as URLSearchParams.`, new URLSearchParams(params))
   }
 
   /** [MDN Reference](https://developer.mozilla.org/docs/Web/API/Request/arrayBuffer) */

@@ -3,4 +3,6 @@
  *
  * [Aracna Reference](https://aracna.dariosechi.it/core/functions/noop)
  */
-export function noop(...args: any[]): any {}
+export function noop(...args: any[]): any {
+  return
+}

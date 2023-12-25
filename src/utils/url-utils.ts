@@ -1,4 +1,10 @@
-import { DeserializeURLSearchParamsType } from '../definitions/types.js'
+import {
+  AppendSearchParamsToURLParams,
+  DeserializeURLSearchParamsInit,
+  DeserializeURLSearchParamsType,
+  SerializeURLSearchParamsInit,
+  URLSearchParamsRecord
+} from '../definitions/types.js'
 import { tc } from '../functions/tc.js'
 import { isArray } from './array-utils.js'
 
@@ -7,15 +13,11 @@ import { isArray } from './array-utils.js'
  *
  * [Aracna Reference](https://aracna.dariosechi.it/core/utils/url)
  */
-export function appendSearchParamsToURL<T extends Record<string, string>>(
-  url: string,
-  params: string | string[][] | T | URLSearchParams,
-  base?: string | URL
-): string
-export function appendSearchParamsToURL<T extends Record<string, string>>(url: URL, params: string | string[][] | T | URLSearchParams, base?: string | URL): URL
-export function appendSearchParamsToURL<T extends Record<string, string>>(
+export function appendSearchParamsToURL<T extends URLSearchParamsRecord>(url: string, params: AppendSearchParamsToURLParams<T>, base?: string | URL): string
+export function appendSearchParamsToURL<T extends URLSearchParamsRecord>(url: URL, params: AppendSearchParamsToURLParams<T>, base?: string | URL): URL
+export function appendSearchParamsToURL<T extends URLSearchParamsRecord>(
   url: string | URL,
-  params: string | string[][] | T | URLSearchParams,
+  params: AppendSearchParamsToURLParams<T>,
   base?: string | URL
 ): string | URL {
   let u: URL
@@ -61,18 +63,18 @@ export function concatURL(url: string | URL, ...pathnames: Partial<string>[]): s
  *
  * [Aracna Reference](https://aracna.dariosechi.it/core/utils/url)
  */
-export function deserializeURLSearchParams<T extends Record<string, string>>(params: string | string[][] | T | URLSearchParams): T
-export function deserializeURLSearchParams<T extends Record<string, string>>(params: string | string[][] | T | URLSearchParams, type: 'string'): string
-export function deserializeURLSearchParams<T extends Record<string, string>>(params: string | string[][] | T | URLSearchParams, type: 'array'): string[][]
-export function deserializeURLSearchParams<T extends Record<string, string>>(params: string | string[][] | T | URLSearchParams, type: 'object'): T
-export function deserializeURLSearchParams<T extends Record<string, string>>(
-  params: string | string[][] | T | URLSearchParams,
+export function deserializeURLSearchParams<T extends URLSearchParamsRecord>(params: DeserializeURLSearchParamsInit): T
+export function deserializeURLSearchParams<T extends URLSearchParamsRecord>(params: DeserializeURLSearchParamsInit, type: 'string'): string
+export function deserializeURLSearchParams<T extends URLSearchParamsRecord>(params: DeserializeURLSearchParamsInit, type: 'array'): string[][]
+export function deserializeURLSearchParams<T extends URLSearchParamsRecord>(params: DeserializeURLSearchParamsInit, type: 'object'): T
+export function deserializeURLSearchParams<T extends URLSearchParamsRecord>(
+  params: DeserializeURLSearchParamsInit,
   type: DeserializeURLSearchParamsType = 'object'
 ): string | string[][] | T {
   switch (type) {
     case 'array':
       return [...new URLSearchParams(params).entries()]
-    case 'object':
+    case 'object': {
       let record: T = {} as T
 
       for (let [k, v] of new URLSearchParams(params).entries()) {
@@ -80,6 +82,7 @@ export function deserializeURLSearchParams<T extends Record<string, string>>(
       }
 
       return record
+    }
     case 'string':
       return new URLSearchParams(params).toString()
   }
@@ -110,12 +113,12 @@ export function removeSearchParamsFromURL(url: string | URL): string | URL {
  *
  * [Aracna Reference](https://aracna.dariosechi.it/core/utils/url)
  */
-export function serializeURLSearchParams<T extends object>(params: string | string[][] | T | URLSearchParams): URLSearchParams {
+export function serializeURLSearchParams<T extends object>(params: SerializeURLSearchParamsInit<T>): URLSearchParams {
   switch (typeof params) {
     case 'string':
       return new URLSearchParams(params)
-    case 'object':
-      let record: Record<string, string> = {}
+    case 'object': {
+      let record: URLSearchParamsRecord = {}
 
       if (params instanceof URLSearchParams) {
         return params
@@ -149,6 +152,7 @@ export function serializeURLSearchParams<T extends object>(params: string | stri
       }
 
       return new URLSearchParams(record)
+    }
     default:
       return new URLSearchParams()
   }

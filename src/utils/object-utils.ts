@@ -76,7 +76,7 @@ export function deleteObjectProperty<T extends object>(object: T, key: KeyOf.Dee
       break
     case 'string':
       if (key.includes('.')) {
-        let target: any | Error, keys: string[], lkey: string
+        let target: any, keys: string[], lkey: string
 
         keys = key.replace(REGEXP_LEFT_SQUARE_BRACKET_WITHOUT_LEADING_DOT, '$1.[').split('.')
         lkey = keys[keys.length - 1].replace(REGEXP_SQUARE_BRACKETS, '')
@@ -139,7 +139,6 @@ export function deleteObjectProperties<T extends object>(object: T, ...args: any
 
     if (options?.deep && isPlainObject(value)) {
       deleteObjectProperties(value, predicate)
-      continue
     }
   }
 }
@@ -172,18 +171,18 @@ export function flattenObject<T extends object>(object: T, options?: FlattenObje
  *
  * [Aracna Reference](https://aracna.dariosechi.it/core/utils/object)
  */
-export function getObjectProperty<T extends object, U extends any>(object: T, key: KeyOf.Deep<T>): U | undefined
-export function getObjectProperty<T extends object, U extends any>(object: T, key: KeyOf.Deep<T>, fallback: U): U
-export function getObjectProperty<T extends object, U extends any>(object: T, key: string): U | undefined
-export function getObjectProperty<T extends object, U extends any>(object: T, key: string, fallback: U): U
-export function getObjectProperty<T extends object, U extends any>(object: T, key: KeyOf.Deep<T>, fallback?: U): U | undefined {
+export function getObjectProperty<T extends object, U>(object: T, key: KeyOf.Deep<T>): U | undefined
+export function getObjectProperty<T extends object, U>(object: T, key: KeyOf.Deep<T>, fallback: U): U
+export function getObjectProperty<T extends object, U>(object: T, key: string): U | undefined
+export function getObjectProperty<T extends object, U>(object: T, key: string, fallback: U): U
+export function getObjectProperty<T extends object, U>(object: T, key: KeyOf.Deep<T>, fallback?: U): U | undefined {
   switch (typeof key) {
     case 'number':
     case 'symbol':
       return object[key] as U
     case 'string':
       if (key.includes('.')) {
-        let keys: string[], lkey: string, target: any | Error
+        let keys: string[], lkey: string, target: any
 
         keys = key.replace(REGEXP_LEFT_SQUARE_BRACKET_WITHOUT_LEADING_DOT, '$1.[').split('.')
         lkey = keys[keys.length - 1].replace(REGEXP_SQUARE_BRACKETS, '')
@@ -349,7 +348,6 @@ export function pickObjectProperties<T extends object>(object: T, ...args: any[]
 
     if (options?.deep && isPlainObject(value)) {
       deleteObjectProperties(value, predicate)
-      continue
     }
   }
 
@@ -371,7 +369,7 @@ export function setObjectProperty<T extends object, U>(object: T, key: KeyOf.Dee
       break
     case 'string':
       if (key.includes('.')) {
-        let keys: string[], target: any | Error, lkey: string
+        let keys: string[], target: any, lkey: string
 
         keys = key.replace(REGEXP_LEFT_SQUARE_BRACKET_WITHOUT_LEADING_DOT, '$1.[').split('.')
         lkey = keys[keys.length - 1].replace(REGEXP_SQUARE_BRACKETS, '')

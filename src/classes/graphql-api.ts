@@ -14,10 +14,6 @@ import { RestAPI } from './rest-api.js'
  * [Aracna Reference](https://aracna.dariosechi.it/core/classes/graphql-api)
  */
 export class GraphQlAPI<T extends GraphQlApiConfig = GraphQlApiConfig, U = undefined> extends RestAPI<T, U> {
-  constructor(baseURL?: string, config?: T) {
-    super(baseURL, config)
-  }
-
   /**
    * Sends a POST request to the GraphQL API.
    */

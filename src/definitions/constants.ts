@@ -90,7 +90,7 @@ export const INTERVAL_MAP: Map<IntervalMapKey, IntervalMapValue> = new Map()
  */
 /** */
 export const DEFAULT_LOCALIZATION_STORAGE_KEY: string = 'aracna_core_localization'
-export const REGEXP_VARIABLE_INSIDE_CURLY_BRACKETS: RegExp = /{[^{}]{1,256}}/gm
+export const REGEXP_VARIABLE_INSIDE_CURLY_BRACKETS: RegExp = /{[^}]{1,256}}/gm
 export const SORT_REGEXP_VARIABLE_INSIDE_CURLY_BRACKETS_MATCHES_COMPARE_FN: (a: string, b: string) => number = (a: string, b: string) => b.length - a.length
 
 /**
@@ -125,7 +125,7 @@ export const DEFAULT_OMIT_OBJECT_PROPERTIES_PREDICATE: DeleteObjectPropertiesPre
 export const DEFAULT_PICK_OBJECT_PROPERTIES_PREDICATE: DeleteObjectPropertiesPredicate<any, any> = (_, key: any, __, keys?: any[]) =>
   keys?.includes(key) ?? true
 export const REGEXP_LEFT_SQUARE_BRACKET_WITHOUT_LEADING_DOT: RegExp = /([^.])\[/g
-export const REGEXP_SQUARE_BRACKETS: RegExp = /[\[\]]/g
+export const REGEXP_SQUARE_BRACKETS: RegExp = /[[\]]/g
 
 /**
  * Status
