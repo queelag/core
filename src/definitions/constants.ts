@@ -128,6 +128,19 @@ export const REGEXP_LEFT_SQUARE_BRACKET_WITHOUT_LEADING_DOT: RegExp = /([^.])\[/
 export const REGEXP_SQUARE_BRACKETS: RegExp = /[[\]]/g
 
 /**
+ * Path Utils
+ */
+/** */
+export const CHAR_BACKWARD_SLASH = 92
+export const CHAR_COLON = 58
+export const CHAR_DOT = 46
+export const CHAR_FORWARD_SLASH = 47
+export const CHAR_LOWERCASE_A = 97
+export const CHAR_LOWERCASE_Z = 122
+export const CHAR_UPPERCASE_A = 65
+export const CHAR_UPPERCASE_Z = 90
+
+/**
  * Status
  */
 /** */

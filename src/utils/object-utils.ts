@@ -244,8 +244,8 @@ function getObjectPropertyDotKeyTarget<T extends object, U extends object>(objec
  *
  * [Aracna Reference](https://aracna.dariosechi.it/core/utils/object)
  */
-export function mergeObjects<T extends object>(target: T, ...sources: Record<PropertyKey, any>[]): T {
-  let clone: T = cloneObject(target, { deep: true })
+export function mergeObjects<T extends object, U extends object = T>(target: T, ...sources: Record<PropertyKey, any>[]): U {
+  let clone: any = cloneObject(target, { deep: true })
 
   for (let source of sources) {
     for (let key in source) {
@@ -276,23 +276,27 @@ export function mergeObjects<T extends object>(target: T, ...sources: Record<Pro
  *
  * [Aracna Reference](https://aracna.dariosechi.it/core/utils/object)
  */
-export function omitObjectProperties<T extends object>(
+export function omitObjectProperties<T extends object, U extends object = T>(
   object: T,
   predicate: OmitObjectPropertiesPredicate,
   options: OmitObjectPropertiesOptions & { deep: true }
-): T
-export function omitObjectProperties<T extends object>(object: T, predicate: OmitObjectPropertiesPredicate<T>, options?: OmitObjectPropertiesOptions): T
-export function omitObjectProperties<T extends object>(object: T, keys: KeyOf.Deep<T>[]): T
-export function omitObjectProperties<T extends object>(object: T, keys: KeyOf.Shallow<T>[]): T
-export function omitObjectProperties<T extends object>(object: T, keys: string[]): T
-export function omitObjectProperties<T extends object>(object: T, ...args: any[]): T {
-  let keys: string[] | undefined, predicate: OmitObjectPropertiesPredicate, options: OmitObjectPropertiesOptions | undefined, clone: T
+): U
+export function omitObjectProperties<T extends object, U extends object = T>(
+  object: T,
+  predicate: OmitObjectPropertiesPredicate<T>,
+  options?: OmitObjectPropertiesOptions
+): U
+export function omitObjectProperties<T extends object, K extends KeyOf.Deep<T> = KeyOf.Deep<T>>(object: T, keys: K[]): Omit<T, K>
+export function omitObjectProperties<T extends object, K extends KeyOf.Shallow<T> = KeyOf.Shallow<T>>(object: T, keys: K[]): Omit<T, K>
+export function omitObjectProperties<T extends object, U extends object = T>(object: T, keys: string[]): U
+export function omitObjectProperties<T extends object, U extends object = T>(object: T, ...args: any[]): U {
+  let keys: string[] | undefined, predicate: OmitObjectPropertiesPredicate, options: OmitObjectPropertiesOptions | undefined, clone: T & U
 
   keys = typeof args[0] === 'object' ? args[0] : undefined
   predicate = typeof args[0] === 'function' ? args[0] : DEFAULT_OMIT_OBJECT_PROPERTIES_PREDICATE
   options = args[1]
 
-  clone = cloneObject(object, options)
+  clone = cloneObject(object, options) as T & U
 
   if (typeof keys === 'object') {
     deleteObjectProperties(clone, keys)
@@ -311,24 +315,27 @@ export function omitObjectProperties<T extends object>(object: T, ...args: any[]
  *
  * [Aracna Reference](https://aracna.dariosechi.it/core/utils/object)
  */
-export function pickObjectProperties<T extends object>(
+export function pickObjectProperties<T extends object, U extends object = T>(
   object: T,
   predicate: PickObjectPropertiesPredicate,
   options: PickObjectPropertiesOptions & { deep: true }
-): T
-export function pickObjectProperties<T extends object>(object: T, predicate: PickObjectPropertiesPredicate, mode?: PickObjectPropertiesOptions): T
-export function pickObjectProperties<T extends object>(object: T, keys: KeyOf.Deep<T>[]): T
-export function pickObjectProperties<T extends object>(object: T, keys: KeyOf.Shallow<T>[]): T
-export function pickObjectProperties<T extends object>(object: T, keys: string[]): T
-export function pickObjectProperties<T extends object>(object: T, ...args: any[]): T {
-  let keys: string[] | undefined,
-    predicate: PickObjectPropertiesPredicate,
-    options: PickObjectPropertiesOptions | undefined,
-    clone: T = {} as T
+): U
+export function pickObjectProperties<T extends object, U extends object = T>(
+  object: T,
+  predicate: PickObjectPropertiesPredicate,
+  mode?: PickObjectPropertiesOptions
+): U
+export function pickObjectProperties<T extends object, K extends KeyOf.Deep<T> = KeyOf.Deep<T>>(object: T, keys: K[]): Pick<T, K>
+export function pickObjectProperties<T extends object, K extends KeyOf.Shallow<T> = KeyOf.Shallow<T>>(object: T, keys: K[]): Pick<T, K>
+export function pickObjectProperties<T extends object, U extends object = T>(object: T, keys: string[]): U
+export function pickObjectProperties<T extends object, U extends object = T>(object: T, ...args: any[]): U {
+  let keys: string[] | undefined, predicate: PickObjectPropertiesPredicate, options: PickObjectPropertiesOptions | undefined, clone: T & U
 
   keys = typeof args[0] === 'object' ? args[0] : undefined
   predicate = typeof args[0] === 'function' ? args[0] : DEFAULT_PICK_OBJECT_PROPERTIES_PREDICATE
   options = args[1]
+
+  clone = {} as T & U
 
   if (keys) {
     for (let key of keys) {

@@ -150,6 +150,10 @@ export interface GraphQlApiResponseBodyErrorLocation {
 
 export interface HistoryDataTarget extends Record<PropertyKey, any> {}
 
+export interface JoinPathsOptions {
+  windows?: boolean
+}
+
 export interface LocalizationInit {
   language?: string
   packs?: LocalizationPack[]

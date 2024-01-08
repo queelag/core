@@ -1,34 +1,19 @@
-import { tcp } from '../functions/tcp.js'
+import { cafs } from '../functions/cafs.js'
+import { cafsueof } from '../functions/cafsueof.js'
 import { isObject } from './object-utils.js'
 
 /**
- * Executes a list of async functions in sequence.
- *
- * [Aracna Reference](https://aracna.dariosechi.it/core/utils/promise)
+ * @deprecated
  */
 export async function chainPromises(...fns: ((...args: any[]) => Promise<any>)[]): Promise<void> {
-  for (let fn of fns) {
-    await tcp(() => fn())
-  }
+  return cafs(...fns)
 }
 
 /**
- * Executes a list of async functions in sequence, the execution stops if a function returns an error or a falsy value.
- *
- * [Aracna Reference](https://aracna.dariosechi.it/core/utils/promise)
+ * @deprecated
  */
 export async function chainTruthyPromises(...fns: ((...args: any[]) => Promise<any>)[]): Promise<boolean> {
-  let output: boolean | Error
-
-  for (let fn of fns) {
-    output = await tcp(() => fn())
-    if (output instanceof Error) return false
-
-    output = Boolean(output)
-    if (!output) return false
-  }
-
-  return true
+  return cafsueof(...fns)
 }
 
 /**

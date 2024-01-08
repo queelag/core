@@ -7,6 +7,7 @@ import {
 } from '../definitions/types.js'
 import { tc } from '../functions/tc.js'
 import { isArray } from './array-utils.js'
+import { joinPaths } from './path-utils.js'
 
 /**
  * Appends the search params to a URL.
@@ -46,7 +47,7 @@ export function concatURL(url: string | URL, ...pathnames: Partial<string>[]): s
   let u: URL
 
   if (isNotURL(url)) {
-    return url
+    return joinPaths(url.toString(), ...pathnames)
   }
 
   u = new URL(url)

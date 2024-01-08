@@ -3,7 +3,7 @@ import { RestApiConfig } from '../definitions/interfaces.js'
 import { RequestMethod, WriteMode } from '../definitions/types.js'
 import { rc } from '../functions/rc.js'
 import { importNodeFetch, mergeFetchRequestInits, useNodeFetch } from '../utils/fetch-utils.js'
-import { appendSearchParamsToURL, concatURL, serializeURLSearchParams } from '../utils/url-utils.js'
+import { concatURL, serializeURLSearchParams } from '../utils/url-utils.js'
 import { FetchError } from './fetch-error.js'
 import { FetchResponse } from './fetch-response.js'
 import { Fetch } from './fetch.js'
@@ -43,7 +43,7 @@ export class RestAPI<T extends RestApiConfig = RestApiConfig, U = undefined> {
    * Sends a request to the REST API.
    */
   protected async send<V, W, X = U>(method: RequestMethod, path: string, body?: W, config: T = EMPTY_OBJECT()): Promise<FetchResponse<V> | FetchError<X>> {
-    let tbody: W | undefined, query: string, handled: boolean, response: FetchResponse<V & X> | FetchError<X>
+    let tbody: W | undefined, query: string, url: URL, handled: boolean, response: FetchResponse<V & X> | FetchError<X>
 
     this.setCallStatus(method, path, config, Status.PENDING)
 
@@ -55,7 +55,10 @@ export class RestAPI<T extends RestApiConfig = RestApiConfig, U = undefined> {
     handled = await this.handlePending(method, path, tbody, config)
     if (!handled) return rc(() => this.setCallStatus(method, path, config, Status.ERROR), FetchError.from())
 
-    response = await Fetch.send(appendSearchParamsToURL(concatURL(this.baseURL, path), query), {
+    url = new URL(concatURL(this.baseURL, path))
+    url.search = query
+
+    response = await Fetch.send(url.toString(), {
       body: tbody,
       method,
       ...mergeFetchRequestInits(this.config, config)

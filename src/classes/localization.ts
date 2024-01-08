@@ -7,6 +7,7 @@ import { LocalizationInit, LocalizationPack, LocalizationVariables } from '../de
 import { Storage } from '../definitions/types.js'
 import { ClassLogger } from '../loggers/class-logger.js'
 import { MemoryStorage } from '../storages/memory-storage.js'
+import { isArray } from '../utils/array-utils.js'
 import { isNotError } from '../utils/error-utils.js'
 import { getObjectProperty, hasObjectProperty, mergeObjects } from '../utils/object-utils.js'
 
@@ -67,7 +68,13 @@ export class Localization {
   /**
    * Adds the packs to the instance, if a pack for the language already exists, the data will be merged.
    */
-  push(...packs: LocalizationPack[]): void {
+  push(packs: LocalizationPack[]): void
+  push(...packs: LocalizationPack[]): void
+  push(...args: any[]): void {
+    let packs: LocalizationPack[]
+
+    packs = isArray(args[0]) ? args[0] : args
+
     for (let pack of packs) {
       let potential: LocalizationPack
 
