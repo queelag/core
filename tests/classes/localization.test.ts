@@ -74,6 +74,13 @@ describe('Localization', () => {
     expect(localization.get('hello')).toBe('hello john')
   })
 
+  it.only('works with multiple variables', () => {
+    EN.data.hello = 'hello {name} {surname}'
+    localization.push(EN)
+
+    expect(localization.get('hello', { name: 'john', surname: 'doe' })).toBe('hello john doe')
+  })
+
   it('checks if path exists inside at least one of the packs', () => {
     localization.push(EN)
     expect(localization.has('hello')).toBeTruthy()

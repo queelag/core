@@ -99,7 +99,14 @@ export class Localization {
   get<T extends object>(path: string, variables?: LocalizationVariables): string
   get<T extends object>(language: string, path: string, variables?: LocalizationVariables): string
   get<T extends object>(...args: any[]): string {
-    let language: string, path: string, variables: T, pack: LocalizationPack, localized: string, matches: RegExpMatchArray | null, source: Record<string, any>
+    let language: string,
+      path: string,
+      variables: T,
+      pack: LocalizationPack,
+      localized: string,
+      regexp: RegExp,
+      matches: RegExpMatchArray | null,
+      source: Record<string, any>
 
     language = typeof args[1] === 'string' ? args[0] : this.language
     path = typeof args[1] === 'string' ? args[1] : args[0]
@@ -113,21 +120,27 @@ export class Localization {
     localized = getObjectProperty(pack.data, path, '')
     if (!localized) return path
 
-    REGEXP_VARIABLE_INSIDE_CURLY_BRACKETS.lastIndex = 0
+    regexp = REGEXP_VARIABLE_INSIDE_CURLY_BRACKETS()
 
-    matches = REGEXP_VARIABLE_INSIDE_CURLY_BRACKETS.exec(localized)
-    if (!matches) return localized
+    matches = regexp.exec(localized)
+    if (matches === null) return localized
 
     source = mergeObjects(pack.data, this.variables, variables)
-    matches = matches.sort(SORT_REGEXP_VARIABLE_INSIDE_CURLY_BRACKETS_MATCHES_COMPARE_FN)
 
-    for (let match of matches) {
-      let key: string, value: string
+    while (matches !== null) {
+      matches = matches.sort(SORT_REGEXP_VARIABLE_INSIDE_CURLY_BRACKETS_MATCHES_COMPARE_FN)
 
-      key = match.slice(1, -1)
-      value = getObjectProperty(source, key, match)
+      for (let match of matches) {
+        let key: string, value: string
 
-      localized = localized.replace(match, value)
+        key = match.slice(1, -1)
+        value = getObjectProperty(source, key, match)
+
+        localized = localized.replace(match, value)
+      }
+
+      regexp.lastIndex--
+      matches = regexp.exec(localized)
     }
 
     return localized
