@@ -3,7 +3,7 @@ import { SyncStorage, cloneObject, copyObjectProperty, rne, rv, setObjectPropert
 import { Configuration } from '../../src/classes/configuration'
 import { StorageItem } from '../../src/definitions/interfaces'
 
-describe('Storage', () => {
+describe('SyncStorage', () => {
   let map: Map<string, any>, storage: SyncStorage
 
   beforeEach(() => {
@@ -91,9 +91,9 @@ describe('Storage', () => {
     setObjectProperty(storage, '_remove', rne)
     expect(storage.remove('person')).toBeInstanceOf(Error)
     setObjectProperty(storage, '_set', rne)
-    expect(storage.remove('person', [])).toBeInstanceOf(Error)
+    expect(storage.remove('person', [])).toBeUndefined()
     setObjectProperty(storage, '_get', rne)
-    expect(storage.remove('person', [])).toBeInstanceOf(Error)
+    expect(storage.remove('person', [])).toBeUndefined()
     copyObjectProperty(backup, '_get', storage)
     copyObjectProperty(backup, '_remove', storage)
     copyObjectProperty(backup, '_set', storage)
@@ -106,7 +106,7 @@ describe('Storage', () => {
     copyObjectProperty(backup, '_set', storage)
 
     setObjectProperty(storage, '_get', rne)
-    expect(storage.copy('person', {})).toBeInstanceOf(Error)
+    expect(storage.copy('person', {})).toBeUndefined()
 
     setObjectProperty(storage, '_has', rne)
     expect(storage.has('person')).toBeFalsy()

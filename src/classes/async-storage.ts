@@ -39,14 +39,14 @@ export class AsyncStorage extends Storage {
    * Optionally you can specify the keys of the item that you want to remove, if you don't specify any key the whole item will be removed.
    */
   async remove<T extends StorageItem>(key: string, keys?: KeyOf.Deep<T>[]): Promise<void | Error> {
-    let item: T | Error
+    let item: T | undefined
 
     if (typeof keys === 'undefined') {
       return this.remove_(key, await this._remove(key))
     }
 
     item = this.remove__(key, keys, await this._get(key))
-    if (item instanceof Error) return item
+    if (typeof item === 'undefined') return item
 
     return this.remove___(key, item, await this._set(key, item))
   }

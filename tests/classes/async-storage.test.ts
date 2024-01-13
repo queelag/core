@@ -3,7 +3,7 @@ import { AsyncStorage, cloneObject, copyObjectProperty, rne, rv, setObjectProper
 import { Configuration } from '../../src/classes/configuration'
 import { StorageItem } from '../../src/definitions/interfaces'
 
-describe('Storage', () => {
+describe('AsyncStorage', () => {
   let map: Map<string, any>, storage: AsyncStorage
 
   beforeEach(() => {
@@ -91,9 +91,9 @@ describe('Storage', () => {
     setObjectProperty(storage, '_remove', rne)
     expect(await storage.remove('person')).toBeInstanceOf(Error)
     setObjectProperty(storage, '_set', rne)
-    expect(await storage.remove('person', [])).toBeInstanceOf(Error)
+    expect(await storage.remove('person', [])).toBeUndefined()
     setObjectProperty(storage, '_get', rne)
-    expect(await storage.remove('person', [])).toBeInstanceOf(Error)
+    expect(await storage.remove('person', [])).toBeUndefined()
     copyObjectProperty(backup, '_get', storage)
     copyObjectProperty(backup, '_remove', storage)
     copyObjectProperty(backup, '_set', storage)
@@ -106,7 +106,7 @@ describe('Storage', () => {
     copyObjectProperty(backup, '_set', storage)
 
     setObjectProperty(storage, '_get', rne)
-    expect(await storage.copy('person', {})).toBeInstanceOf(Error)
+    expect(await storage.copy('person', {})).toBeUndefined()
 
     setObjectProperty(storage, '_has', rne)
     expect(await storage.has('person')).toBeFalsy()

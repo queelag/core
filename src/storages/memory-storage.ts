@@ -10,7 +10,13 @@ import { StorageName } from '../definitions/enums.js'
 export const MemoryStorage: SyncStorage = new SyncStorage(
   StorageName.MEMORY,
   () => MEMORY_STORAGE_MAP.clear(),
-  (key: string) => MEMORY_STORAGE_MAP.get(key) ?? {},
+  (key: string) => {
+    if (MEMORY_STORAGE_MAP.has(key)) {
+      return MEMORY_STORAGE_MAP.get(key)
+    }
+
+    return new Error(`The item "${key}" does not exist in the MemoryStorage.`)
+  },
   (key: string) => MEMORY_STORAGE_MAP.has(key),
   (key: string) => MEMORY_STORAGE_MAP.delete(key),
   (key: string, value: any) => MEMORY_STORAGE_MAP.set(key, value)
