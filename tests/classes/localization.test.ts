@@ -74,7 +74,7 @@ describe('Localization', () => {
     expect(localization.get('hello')).toBe('hello john')
   })
 
-  it.only('works with multiple variables', () => {
+  it('works with multiple variables', () => {
     EN.data.hello = 'hello {name} {surname}'
     localization.push(EN)
 
