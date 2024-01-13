@@ -8,7 +8,6 @@ import { Storage } from '../definitions/types.js'
 import { ClassLogger } from '../loggers/class-logger.js'
 import { MemoryStorage } from '../storages/memory-storage.js'
 import { isArray } from '../utils/array-utils.js'
-import { isNotError } from '../utils/error-utils.js'
 import { getObjectProperty, hasObjectProperty, mergeObjects } from '../utils/object-utils.js'
 
 /**
@@ -54,15 +53,15 @@ export class Localization {
   /**
    * Retrieves the language from the storage and sets it.
    */
-  async initialize(): Promise<boolean> {
-    return isNotError(await this.storage.copy(this.storageKey, this, ['language']))
+  async initialize(): Promise<void | Error> {
+    return this.storage.copy(this.storageKey, this, ['language'])
   }
 
   /**
    * Stores the language in the storage.
    */
-  async store(): Promise<boolean> {
-    return isNotError(await this.storage.set(this.storageKey, this, ['language']))
+  async store(): Promise<void | Error> {
+    return this.storage.set(this.storageKey, this, ['language'])
   }
 
   /**

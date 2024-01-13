@@ -1,7 +1,7 @@
 import { StorageItem, StorageTarget } from '../definitions/interfaces.js'
 import { KeyOf } from '../definitions/types.js'
 import { ClassLogger } from '../loggers/class-logger.js'
-import { copyObjectProperty, deleteObjectProperty, hasObjectProperty } from '../utils/object-utils.js'
+import { copyObjectProperty, deleteObjectProperty, hasObjectProperty, pickObjectProperties } from '../utils/object-utils.js'
 
 type Clear = () => ClearReturn
 type ClearReturn = void | Error | Promise<void | Error>
@@ -103,7 +103,9 @@ export class Storage {
   }
 
   protected set__<T extends StorageItem>(item: T, keys: KeyOf.Deep<T>[], current: T | Error): T | Error {
-    if (current instanceof Error) return item
+    if (current instanceof Error) {
+      return pickObjectProperties(item, keys)
+    }
 
     for (let k of keys) {
       copyObjectProperty(item, k, current)

@@ -72,7 +72,11 @@ export class AsyncStorage extends Storage {
    * Copies an item from the storage to a target object.
    * Optionally you can specify the keys of the item that you want to copy, if you don't specify any key the whole item will be copied.
    */
-  async copy<T1 extends StorageItem, T2 extends StorageTarget, T extends T1 & T2>(key: string, target: T2, keys?: KeyOf.Deep<T>[]): Promise<void | Error> {
+  async copy<T1 extends StorageItem, T2 extends StorageTarget = StorageTarget, T extends T1 & T2 = T1 & T2>(
+    key: string,
+    target: T2,
+    keys?: KeyOf.Deep<T>[]
+  ): Promise<void | Error> {
     return this.copy_(key, target, keys, await this._get(key))
   }
 
