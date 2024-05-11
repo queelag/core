@@ -1,5 +1,5 @@
 import { TIMEOUT_MAP } from '../definitions/constants.js'
-import { TimeoutMapKey, TimeoutMapValue } from '../definitions/types.js'
+import { TimeoutMapKey } from '../definitions/types.js'
 import { UtilLogger } from '../loggers/util-logger.js'
 
 /**
@@ -18,12 +18,7 @@ function set(fn: Function, ms: number, key: TimeoutMapKey = fn): void {
  * [Aracna Reference](https://aracna.dariosechi.it/core/utils/timeout)
  */
 function clear(key: TimeoutMapKey): void {
-  let timeout: TimeoutMapValue | undefined
-
-  timeout = TIMEOUT_MAP.get(key)
-  if (!timeout) return UtilLogger.warn('clearTimeout', key, `The timeout  is not set.`)
-
-  clearTimeout(timeout)
+  clearTimeout(TIMEOUT_MAP.get(key))
   UtilLogger.debug('clearTimeout', key, `The timeout has been cleared.`)
 
   TIMEOUT_MAP.delete(key)
