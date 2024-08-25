@@ -1,6 +1,7 @@
 import { tcp } from '../functions/tcp.js'
 import { FetchResponseParseType } from '../index.js'
 import { ClassLogger } from '../loggers/class-logger.js'
+import { parseBigIntJSON } from '../utils/json-utils.js'
 
 /**
  * The FetchResponse class is used for responses that are returned by the Fetch class.
@@ -113,10 +114,12 @@ export class FetchResponse<T = unknown> implements Response {
   }
 
   async parseJSON(): Promise<void> {
-    let json: object | Error
+    let text: string | Error, json: object
 
-    json = await tcp(() => this.json())
-    if (json instanceof Error) return this.setData({})
+    text = await tcp(() => this.text())
+    if (text instanceof Error) return this.setData({})
+
+    json = parseBigIntJSON(text)
 
     this.setData(json)
     ClassLogger.debug('FetchResponse', 'parseJSON', `The data has been parsed as JSON.`, json)
