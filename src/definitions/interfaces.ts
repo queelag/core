@@ -175,7 +175,7 @@ export interface LocalizationInit {
 }
 
 export interface QueueEvents extends EventEmitterEvents {
-  'process-fulfill': (process: QueueProcess) => any
+  'process-fulfill': (process: QueueProcess<any>) => any
   'process-reject': (process: QueueProcess) => any
   'process-run': (process: QueueProcess) => any
   'process-timeout': (process: QueueProcess) => any
@@ -188,10 +188,12 @@ export interface QueueOptions {
   timeout?: number
 }
 
-export interface QueueProcess {
+export interface QueueProcess<T = unknown> {
   fn: QueueFunction
   id: string
+  reason?: any
   status: QueueProcessStatus
+  value?: T
 }
 
 export interface SetIntervalOptions {

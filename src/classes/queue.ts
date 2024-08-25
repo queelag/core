@@ -92,14 +92,18 @@ export class Queue extends EventEmitter<QueueEvents> {
 
     process
       .fn()
-      .catch(() => {
+      .catch((reason: any) => {
+        process.reason = reason
         process.status = 'rejected'
-        ClassLogger.verbose('Queue', process.id, `The process has been rejected.`, process)
+
+        ClassLogger.error('Queue', process.id, `The process has been rejected.`, process)
 
         this.emit('process-reject', process)
       })
-      .then(() => {
+      .then((value: unknown) => {
         process.status = 'fulfilled'
+        process.value = value
+
         ClassLogger.verbose('Queue', process.id, `The process has been fulfilled.`, process)
 
         this.emit('process-fulfill', process)
