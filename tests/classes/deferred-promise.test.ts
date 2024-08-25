@@ -1,6 +1,5 @@
 import { beforeEach, describe, expect, it, Mock, vi } from 'vitest'
 import { DeferredPromise } from '../../src'
-import { PromiseState } from '../../src/definitions/enums'
 
 describe('DeferredPromise', () => {
   let promise: DeferredPromise<number>, onfinally: Mock, onfulfilled: Mock, onrejected: Mock
@@ -16,7 +15,7 @@ describe('DeferredPromise', () => {
   })
 
   it('resolves', async () => {
-    expect(promise.state).toBe(PromiseState.PENDING)
+    expect(promise.state).toBe('pending')
     expect(promise.isFulfilled).toBeFalsy()
     expect(promise.isPending).toBeTruthy()
     expect(promise.isRejected).toBeFalsy()
