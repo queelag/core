@@ -1,5 +1,15 @@
 import type { FetchResponse } from '../classes/fetch-response.js'
-import type { EventEmitterEvents, FetchRequestInitParse, Primitive, Storage, Theme, TypeaheadPredicate, WriteMode } from './types.js'
+import type {
+  EventEmitterEvents,
+  FetchRequestInitParse,
+  Primitive,
+  QueueFunction,
+  QueueProcessStatus,
+  Storage,
+  Theme,
+  TypeaheadPredicate,
+  WriteMode
+} from './types.js'
 
 export interface AppearenceEvents extends EventEmitterEvents {
   'change-theme': (theme: Theme) => any
@@ -162,6 +172,25 @@ export interface LocalizationInit {
     key?: string
   }
   variables?: LocalizationVariables
+}
+
+export interface QueueEvents extends EventEmitterEvents {
+  'process-fulfill': (process: QueueProcess) => any
+  'process-reject': (process: QueueProcess) => any
+  'process-run': (process: QueueProcess) => any
+  'process-timeout': (process: QueueProcess) => any
+}
+
+export interface QueueOptions {
+  autostart?: boolean
+  concurrency?: number
+  timeout?: number
+}
+
+export interface QueueProcess {
+  fn: QueueFunction
+  id: string
+  status: QueueProcessStatus
 }
 
 export interface SetIntervalOptions {

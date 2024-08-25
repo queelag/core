@@ -14,6 +14,7 @@ export * from './classes/graphql-api.js'
 export * from './classes/history.js'
 export * from './classes/localization.js'
 export * from './classes/logger.js'
+export * from './classes/queue.js'
 export * from './classes/rest-api.js'
 export * from './classes/status.js'
 export * from './classes/sync-storage.js'
@@ -30,6 +31,8 @@ export {
   ALPHABET_UPPERCASE,
   DEFAULT_APPEARENCE_STORAGE_KEY,
   DEFAULT_LOCALIZATION_STORAGE_KEY,
+  DEFAULT_QUEUE_CONCURRENCY,
+  DEFAULT_QUEUE_TIMEOUT,
   DEFAULT_TYPEAHEAD_DEBOUNCE_TIME,
   DEFAULT_WFP_MS,
   DEFAULT_WFP_TIMEOUT,
@@ -39,7 +42,7 @@ export {
   LOGGER_LEVELS,
   LOGGER_STATUSES
 } from './definitions/constants.js'
-export { AnsiColor, LoggerName as CoreLoggerName, StorageName as CoreStorageName, PromiseState } from './definitions/enums.js'
+export { AnsiColor, LoggerName as CoreLoggerName, StorageName as CoreStorageName } from './definitions/enums.js'
 export type {
   AppearenceEvents,
   AppearenceInit,
@@ -84,6 +87,9 @@ export type {
   NodeFetch,
   OmitObjectPropertiesOptions,
   PickObjectPropertiesOptions,
+  QueueEvents,
+  QueueOptions,
+  QueueProcess,
   RestApiConfig,
   StorageItem,
   StorageTarget,

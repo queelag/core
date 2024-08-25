@@ -141,6 +141,13 @@ export const CHAR_UPPERCASE_A = 65
 export const CHAR_UPPERCASE_Z = 90
 
 /**
+ * Queue
+ */
+/** */
+export const DEFAULT_QUEUE_CONCURRENCY: number = Infinity
+export const DEFAULT_QUEUE_TIMEOUT: number = 10000
+
+/**
  * Status
  */
 /** */

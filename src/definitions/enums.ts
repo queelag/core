@@ -16,12 +16,6 @@ export enum LoggerName {
   UTIL = 'CORE_UTIL'
 }
 
-export enum PromiseState {
-  FULFILLED = 'FULFILLED',
-  PENDING = 'PENDING',
-  REJECTED = 'REJECTED'
-}
-
 export enum StorageName {
   MEMORY = 'CORE_MEMORY'
 }

@@ -66,6 +66,12 @@ export type Primitive = bigint | boolean | null | number | string | symbol | und
 
 export type ProcessEnvValue = string | undefined
 
+export type PromiseState = 'fulfilled' | 'pending' | 'rejected'
+
+export type QueueFunction = () => Promise<unknown>
+export type QueueProcessStatus = 'pending' | 'running' | 'fulfilled' | 'rejected' | 'timed-out'
+export type QueueStatus = 'running' | 'stopped'
+
 export type RemoveArrayItemsPredicate<T> = (array: T[], item: T, items?: T[]) => boolean
 
 export type RequestMethod = 'CONNECT' | 'DELETE' | 'GET' | 'HEAD' | 'OPTIONS' | 'PATCH' | 'POST' | 'PUT' | 'TRACE'

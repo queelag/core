@@ -1,4 +1,4 @@
-import { PromiseState } from '../definitions/enums.js'
+import type { PromiseState } from '../definitions/types.js'
 import { tcp } from '../functions/tcp.js'
 import { isPromiseLike } from '../utils/promise-utils.js'
 
@@ -29,26 +29,26 @@ export class DeferredPromise<T> {
   private _resolve!: (value: T | PromiseLike<T>) => void
 
   constructor() {
-    this.state = PromiseState.PENDING
+    this.state = 'pending'
     this.instance = new Promise((resolve: (v: T | PromiseLike<T>) => void, reject: (reason?: any) => void) => {
       this._reject = reject
       this._resolve = resolve
     })
   }
 
-  reject(reason?: any): void {
+  reject = (reason?: any): void => {
     this._reject(reason)
 
     this.reason = reason
-    this.state = PromiseState.REJECTED
+    this.state = 'rejected'
   }
 
   /**
    * Resolves the promise with a value or the result of another promise.
    */
-  resolve(value: T | PromiseLike<T>): void {
+  resolve = (value: T | PromiseLike<T>): void => {
     this._resolve(value)
-    this.state = PromiseState.FULFILLED
+    this.state = 'fulfilled'
 
     if (isPromiseLike(value)) {
       value.then((v: T) => {
@@ -100,21 +100,21 @@ export class DeferredPromise<T> {
    * Checks if the promise is fulfilled.
    */
   get isFulfilled(): boolean {
-    return this.state === PromiseState.FULFILLED
+    return this.state === 'fulfilled'
   }
 
   /**
    * Checks if the promise is pending.
    */
   get isPending(): boolean {
-    return this.state === PromiseState.PENDING
+    return this.state === 'pending'
   }
 
   /**
    * Checks if the promise is rejected.
    */
   get isRejected(): boolean {
-    return this.state === PromiseState.REJECTED
+    return this.state === 'rejected'
   }
 
   /**

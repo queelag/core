@@ -2,6 +2,7 @@ import { EMPTY_OBJECT } from '../definitions/constants.js'
 import { RestApiConfig } from '../definitions/interfaces.js'
 import { RequestMethod, WriteMode } from '../definitions/types.js'
 import { rc } from '../functions/rc.js'
+import { ClassLogger } from '../loggers/class-logger.js'
 import { importNodeFetch, mergeFetchRequestInits, useNodeFetch } from '../utils/fetch-utils.js'
 import { concatURL, serializeURLSearchParams } from '../utils/url-utils.js'
 import { FetchError } from './fetch-error.js'
@@ -23,11 +24,11 @@ export class RestAPI<T extends RestApiConfig = RestApiConfig, U = undefined> {
   /**
    * The base URL of the REST API.
    */
-  readonly baseURL: string
+  protected baseURL: string
   /**
    * The default config of the REST API.
    */
-  readonly config: T
+  protected config: T
   /**
    * The status of the requests.
    */
@@ -198,6 +199,28 @@ export class RestAPI<T extends RestApiConfig = RestApiConfig, U = undefined> {
     if (this.isConfigStatusSettable(config, status)) {
       this.status.set([method, path], status)
     }
+  }
+
+  getBaseURL(): string {
+    return this.baseURL
+  }
+
+  getConfig(): T {
+    return this.config
+  }
+
+  setBaseURL(baseURL: string): this {
+    this.baseURL = baseURL
+    ClassLogger.verbose('RestAPI', 'setBaseURL', `The base URL has been set.`, [this.baseURL])
+
+    return this
+  }
+
+  setConfig(config: T): this {
+    this.config = config
+    ClassLogger.verbose('RestAPI', 'setConfig', `The config has been set.`, this.config)
+
+    return this
   }
 
   /**
