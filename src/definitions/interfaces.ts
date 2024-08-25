@@ -184,6 +184,7 @@ export interface QueueEvents extends EventEmitterEvents {
 export interface QueueOptions {
   autostart?: boolean
   concurrency?: number
+  delay?: number
   timeout?: number
 }
 

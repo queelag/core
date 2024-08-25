@@ -145,6 +145,7 @@ export const CHAR_UPPERCASE_Z = 90
  */
 /** */
 export const DEFAULT_QUEUE_CONCURRENCY: number = Infinity
+export const DEFAULT_QUEUE_DELAY: number = 0
 export const DEFAULT_QUEUE_TIMEOUT: number = 10000
 
 /**

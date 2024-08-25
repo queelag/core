@@ -305,4 +305,42 @@ describe('Queue', () => {
     await event.instance
     expect(event.value?.status).toBe('timed-out')
   })
+
+  it('delays the processes', async () => {
+    let queue: Queue, p1: DeferredPromise<number>, p2: DeferredPromise<number>, processes: QueueProcess[], t1: number
+
+    queue = new Queue({ autostart: true, concurrency: 1, delay: 100 })
+
+    p1 = new DeferredPromise()
+    p2 = new DeferredPromise()
+
+    queue.push(
+      async () => p1.resolve(1),
+      async () => p2.resolve(2)
+    )
+
+    processes = queue.getProcesses()
+
+    expect(processes).toHaveLength(2)
+    expect(processes[0].status).toBe('running')
+    expect(processes[1].status).toBe('pending')
+
+    await p1.instance
+    await wf(() => processes[0].status === 'fulfilled', 4)
+
+    expect(processes[0].status).toBe('fulfilled')
+
+    t1 = Date.now()
+
+    await p2.instance
+    await wf(() => queue.getProcesses().length === 1, 4)
+
+    processes = queue.getProcesses()
+    expect(processes).toHaveLength(1)
+
+    await wf(() => processes[0].status === 'fulfilled', 4)
+    expect(processes[0].status).toBe('fulfilled')
+
+    expect(Date.now() - t1).toBeGreaterThanOrEqual(100)
+  })
 })

@@ -1,6 +1,7 @@
-import { DEFAULT_QUEUE_CONCURRENCY, DEFAULT_QUEUE_TIMEOUT } from '../definitions/constants.js'
+import { DEFAULT_QUEUE_CONCURRENCY, DEFAULT_QUEUE_DELAY, DEFAULT_QUEUE_TIMEOUT } from '../definitions/constants.js'
 import type { QueueEvents, QueueOptions, QueueProcess } from '../definitions/interfaces.js'
 import type { QueueFunction, QueueStatus } from '../definitions/types.js'
+import { sleep } from '../functions/sleep.js'
 import { ClassLogger } from '../loggers/class-logger.js'
 import { removeArrayItems } from '../utils/array-utils.js'
 import { generateRandomString } from '../utils/string-utils.js'
@@ -9,6 +10,7 @@ import { EventEmitter } from './event-emitter.js'
 
 export class Queue extends EventEmitter<QueueEvents> {
   protected concurrency: number
+  protected delay: number
   protected processes: QueueProcess[]
   protected status: QueueStatus
   protected timeout: number
@@ -17,6 +19,7 @@ export class Queue extends EventEmitter<QueueEvents> {
     super()
 
     this.concurrency = options?.concurrency ?? DEFAULT_QUEUE_CONCURRENCY
+    this.delay = options?.delay ?? DEFAULT_QUEUE_DELAY
     this.processes = []
     this.status = options?.autostart ? 'running' : 'stopped'
     this.timeout = options?.timeout ?? DEFAULT_QUEUE_TIMEOUT
@@ -66,43 +69,60 @@ export class Queue extends EventEmitter<QueueEvents> {
         break
       }
 
-      process.status = 'running'
-      ClassLogger.verbose('Queue', 'start', `Running process.`, process)
+      if (this.delay > 0 && !this.processes.every((process: QueueProcess) => process.status === 'pending')) {
+        this.processes = removeArrayItems(this.processes, (_, process: QueueProcess) =>
+          ['fulfilled', 'rejected', 'running', 'timed-out'].includes(process.status)
+        )
 
-      this.emit('process-run', process)
+        ClassLogger.verbose('Queue', 'start', `Waiting for the delay...`, [this.delay])
+        sleep(this.delay).then(() => this.runp(process))
 
-      process
-        .fn()
-        .catch(() => {
-          process.status = 'rejected'
-          ClassLogger.verbose('Queue', process.id, `The process has been rejected.`, process)
+        continue
+      }
 
-          this.emit('process-reject', process)
-        })
-        .then((value) => {
-          process.status = 'fulfilled'
-          ClassLogger.verbose('Queue', process.id, `The process has been run.`, process)
-
-          this.emit('process-fulfill', process)
-        })
-        .finally(() => {
-          this.processes = removeArrayItems(this.processes, [process])
-          ClassLogger.verbose('Queue', process.id, `The process has been removed.`, this.processes)
-
-          ClassLogger.verbose('Queue', process.id, `Running the processes...`, this.processes)
-          this.run()
-        })
-
-      setTimeout(() => {
-        process.status = 'timed-out'
-        ClassLogger.verbose('Queue', process.id, `The process has timed out.`, process)
-
-        this.processes = removeArrayItems(this.processes, [process])
-        ClassLogger.verbose('Queue', process.id, `The process has been removed.`, this.processes)
-
-        this.emit('process-timeout', process)
-      }, this.timeout)
+      this.runp(process)
     }
+  }
+
+  protected runp(process: QueueProcess): void {
+    process.status = 'running'
+    ClassLogger.verbose('Queue', 'start', `Running process.`, process)
+
+    this.emit('process-run', process)
+
+    process
+      .fn()
+      .catch(() => {
+        process.status = 'rejected'
+        ClassLogger.verbose('Queue', process.id, `The process has been rejected.`, process)
+
+        this.emit('process-reject', process)
+      })
+      .then(() => {
+        process.status = 'fulfilled'
+        ClassLogger.verbose('Queue', process.id, `The process has been fulfilled.`, process)
+
+        this.emit('process-fulfill', process)
+      })
+      .finally(() => {
+        if (this.delay <= 0) {
+          this.processes = removeArrayItems(this.processes, [process])
+        }
+
+        ClassLogger.verbose('Queue', process.id, `Running the processes...`, this.processes)
+        this.run()
+      })
+
+    setTimeout(() => {
+      process.status = 'timed-out'
+      ClassLogger.verbose('Queue', process.id, `The process has timed out.`, process)
+
+      if (this.delay <= 0) {
+        this.processes = removeArrayItems(this.processes, [process])
+      }
+
+      this.emit('process-timeout', process)
+    }, this.timeout)
   }
 
   push(fns: QueueFunction[]): this
@@ -167,13 +187,39 @@ export class Queue extends EventEmitter<QueueEvents> {
     return this.concurrency
   }
 
+  getDelay(): number {
+    return this.delay
+  }
+
   getProcesses(): QueueProcess[] {
     return this.processes
+  }
+
+  getStatus(): QueueStatus {
+    return this.status
+  }
+
+  getTimeout(): number {
+    return this.timeout
   }
 
   setConcurrency(concurrency: number): this {
     this.concurrency = concurrency
     ClassLogger.verbose('Queue', 'setConcurrency', `The concurrency has been set.`, [this.concurrency])
+
+    return this
+  }
+
+  setDelay(delay: number): this {
+    this.delay = delay
+    ClassLogger.verbose('Queue', 'setDelay', `The delay has been set.`, [this.delay])
+
+    return this
+  }
+
+  setTimeout(timeout: number): this {
+    this.timeout = timeout
+    ClassLogger.verbose('Queue', 'setTimeout', `The timeout has been set.`, [this.timeout])
 
     return this
   }

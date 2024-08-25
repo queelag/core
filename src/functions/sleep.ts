@@ -4,5 +4,9 @@
  * [Aracna Reference](https://aracna.dariosechi.it/core/functions/sleep)
  */
 export async function sleep(ms: number): Promise<void> {
+  if (ms <= 0) {
+    return
+  }
+
   return new Promise((r) => setTimeout(() => r(), ms))
 }
