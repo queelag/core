@@ -1,3 +1,4 @@
+import { REGEXP_BIGINT } from '../definitions/constants.js'
 import { tc } from '../functions/tc.js'
 
 export function parseBigIntJSON<T extends object>(text: string): T {
@@ -7,6 +8,25 @@ export function parseBigIntJSON<T extends object>(text: string): T {
         let bigint: bigint | Error
 
         if (Number.isSafeInteger(value)) {
+          return value
+        }
+
+        bigint = tc(() => BigInt(value), false)
+        if (bigint instanceof Error) return value
+
+        return bigint
+      }
+      case 'string': {
+        let number: number | Error, bigint: bigint | Error
+
+        if (!REGEXP_BIGINT.test(value)) {
+          return value
+        }
+
+        number = tc(() => Number(value), false)
+        if (number instanceof Error) return value
+
+        if (Number.isSafeInteger(number)) {
           return value
         }
 

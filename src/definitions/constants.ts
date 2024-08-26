@@ -111,6 +111,7 @@ export const MEMORY_STORAGE_MAP: Map<PropertyKey, any> = new Map()
  * Number Utils
  */
 /** */
+export const REGEXP_BIGINT: RegExp = /^[0-9]+$/
 export const DEFAULT_GET_NUMBER_PERCENTAGE_MAX: number = 100
 export const DEFAULT_GET_NUMBER_PERCENTAGE_MIN: number = 0
 
