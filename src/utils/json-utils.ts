@@ -20,3 +20,13 @@ export function parseBigIntJSON<T extends object>(text: string): T {
     }
   })
 }
+
+export function stringifyBigIntJSON<T extends object>(value: T): string {
+  return JSON.stringify(value, (_, value: any) => {
+    if (typeof value === 'bigint') {
+      return value.toString()
+    }
+
+    return value
+  })
+}
