@@ -1,4 +1,4 @@
-import { FetchRequestInit, NodeFetch } from '../definitions/interfaces.js'
+import { FetchRequestInit, NodeFetch, ToLoggableFetchRequestInitOptions, ToLoggableNativeFetchRequestInitOptions } from '../definitions/interfaces.js'
 import { tcp } from '../functions/tcp.js'
 import { UtilLogger } from '../loggers/util-logger.js'
 import { isArray } from './array-utils.js'
@@ -15,6 +15,7 @@ import {
   isWindowDefined
 } from './environment-utils.js'
 import { deserializeFormData } from './form-data-utils.js'
+import { decodeJSON, encodeJSON } from './json-utils.js'
 import { mergeObjects, omitObjectProperties } from './object-utils.js'
 import { isStringJSON } from './string-utils.js'
 import { deserializeURLSearchParams } from './url-utils.js'
@@ -231,19 +232,19 @@ export async function useNodeFetch(NodeFetch: NodeFetch | Error): Promise<void> 
  *
  * [Aracna Reference](https://aracna.dariosechi.it/core/utils/fetch)
  */
-export function toLoggableFetchRequestInit<T>(init: FetchRequestInit<T>): FetchRequestInit {
+export function toLoggableFetchRequestInit<T>(init: FetchRequestInit<T>, options?: ToLoggableFetchRequestInitOptions): FetchRequestInit {
   let clone: FetchRequestInit
 
   clone = omitObjectProperties(init, ['body'])
   if (init.body === undefined) return clone
 
   if (init.body instanceof FormData) {
-    clone.body = deserializeFormData(init.body)
+    clone.body = deserializeFormData(init.body, options?.deserializeFormData)
     return clone
   }
 
   if (init.body instanceof URLSearchParams) {
-    clone.body = deserializeURLSearchParams(init.body)
+    clone.body = deserializeURLSearchParams(init.body, options?.deserializeURLSearchParamsType as any)
     return clone
   }
 
@@ -257,7 +258,7 @@ export function toLoggableFetchRequestInit<T>(init: FetchRequestInit<T>): FetchR
  *
  * [Aracna Reference](https://aracna.dariosechi.it/core/utils/fetch)
  */
-export function toLoggableNativeFetchRequestInit(init: RequestInit): RequestInit {
+export function toLoggableNativeFetchRequestInit(init: RequestInit, options?: ToLoggableNativeFetchRequestInitOptions): RequestInit {
   let clone: RequestInit
 
   clone = omitObjectProperties(init, ['body'])
@@ -268,17 +269,17 @@ export function toLoggableNativeFetchRequestInit(init: RequestInit): RequestInit
   }
 
   if (init.body instanceof FormData) {
-    clone.body = deserializeFormData(init.body) as BodyInit
+    clone.body = deserializeFormData(init.body, options?.deserializeFormData) as BodyInit
     return clone
   }
 
   if (init.body instanceof URLSearchParams) {
-    clone.body = deserializeURLSearchParams(init.body) as any
+    clone.body = deserializeURLSearchParams(init.body, options?.deserializeURLSearchParamsType as any) as any
     return clone
   }
 
   if (typeof init.body === 'string' && isStringJSON(init.body)) {
-    clone.body = JSON.parse(init.body)
+    clone.body = decodeJSON<any>(init.body, options?.decodeJSON)
     return clone
   }
 
@@ -331,11 +332,17 @@ export function toNativeFetchRequestInit<T>(init: FetchRequestInit<T>): RequestI
       setFetchRequestInitHeaderWhenUnset(clone, 'content-type', 'text/plain')
 
       break
-    case 'object':
-      clone.body = JSON.stringify(init.body)
+    case 'object': {
+      let body: string | Error
+
+      body = encodeJSON(init.body, typeof init.encode === 'object' ? init.encode.json : undefined)
+      if (body instanceof Error) break
+
+      clone.body = body
       setFetchRequestInitHeaderWhenUnset(clone, 'content-type', 'application/json')
 
       break
+    }
   }
 
   return clone

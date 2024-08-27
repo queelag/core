@@ -1,7 +1,7 @@
+import { DecodeJsonOptions, FetchDecodeOptions } from '../definitions/interfaces.js'
 import { tcp } from '../functions/tcp.js'
-import { FetchResponseParseType } from '../index.js'
 import { ClassLogger } from '../loggers/class-logger.js'
-import { parseBigIntJSON } from '../utils/json-utils.js'
+import { decodeJSON } from '../utils/json-utils.js'
 
 /**
  * The FetchResponse class is used for responses that are returned by the Fetch class.
@@ -48,42 +48,42 @@ export class FetchResponse<T = unknown> implements Response {
   }
 
   /**
-   * Parses the body in the most appropriate way inferring the type from the content-type header.
+   * Decodes the body in the most appropriate way inferring the type from the content-type header.
    * Optionally the type can be specified, it can be array-buffer, blob, form-data, json, text or url-search-params.
    */
-  async parse(type?: FetchResponseParseType): Promise<void> {
-    switch (type) {
+  async decode(options?: FetchDecodeOptions): Promise<void> {
+    switch (options?.type) {
       case 'array-buffer':
-        return this.parseArrayBuffer()
+        return this.decodeArrayBuffer()
       case 'blob':
-        return this.parseBlob()
+        return this.decodeBlob()
       case 'form-data':
-        return this.parseFormData()
+        return this.decodeFormData()
       case 'json':
-        return this.parseJSON()
+        return this.decodeJSON(options.json)
       case 'text':
-        return this.parseText()
+        return this.decodeText()
       case 'url-search-params':
-        return this.parseURLSearchParams()
+        return this.decodeURLSearchParams()
     }
 
     switch (true) {
       case this.ContentType.startsWith('application/') && this.ContentType.includes('octet-stream'):
-        return this.parseBlob()
+        return this.decodeBlob()
       case this.ContentType.startsWith('application/') && this.ContentType.includes('json'):
-        return this.parseJSON()
+        return this.decodeJSON(options?.json)
       case this.ContentType.startsWith('application/') && this.ContentType.includes('x-www-form-urlencoded'):
-        return this.parseURLSearchParams()
+        return this.decodeURLSearchParams()
       case this.ContentType.startsWith('multipart/') && this.ContentType.includes('form-data'):
-        return this.parseFormData()
+        return this.decodeFormData()
       case this.ContentType.startsWith('text/'):
-        return this.parseText()
+        return this.decodeText()
       default:
-        return this.parseArrayBuffer()
+        return this.decodeArrayBuffer()
     }
   }
 
-  async parseArrayBuffer(): Promise<void> {
+  async decodeArrayBuffer(): Promise<void> {
     let buffer: ArrayBuffer | Error
 
     buffer = await tcp(() => this.arrayBuffer())
@@ -93,7 +93,7 @@ export class FetchResponse<T = unknown> implements Response {
     ClassLogger.debug('FetchResponse', 'parseArrayBuffer', `The data has been parsed as ArrayBuffer.`, buffer)
   }
 
-  async parseBlob(): Promise<void> {
+  async decodeBlob(): Promise<void> {
     let blob: Blob | Error
 
     blob = await tcp(() => this.blob())
@@ -103,7 +103,7 @@ export class FetchResponse<T = unknown> implements Response {
     ClassLogger.debug('FetchResponse', 'parseBlob', `The data has been parsed as Blob.`, blob)
   }
 
-  async parseFormData(): Promise<void> {
+  async decodeFormData(): Promise<void> {
     let form: FormData | Error
 
     form = await tcp(() => this.formData())
@@ -113,19 +113,20 @@ export class FetchResponse<T = unknown> implements Response {
     ClassLogger.debug('FetchResponse', 'parseFormData', `The data has been parsed as FormData.`, [...form.entries()])
   }
 
-  async parseJSON(): Promise<void> {
-    let text: string | Error, json: object
+  async decodeJSON(options?: DecodeJsonOptions): Promise<void> {
+    let text: string | Error, json: object | Error
 
     text = await tcp(() => this.text())
     if (text instanceof Error) return this.setData({})
 
-    json = parseBigIntJSON(text)
+    json = decodeJSON(text, options)
+    if (json instanceof Error) return this.setData({})
 
     this.setData(json)
     ClassLogger.debug('FetchResponse', 'parseJSON', `The data has been parsed as JSON.`, json)
   }
 
-  async parseText(): Promise<void> {
+  async decodeText(): Promise<void> {
     let text: string | Error
 
     text = await tcp(() => this.text())
@@ -135,7 +136,7 @@ export class FetchResponse<T = unknown> implements Response {
     ClassLogger.debug('FetchResponse', 'parseText', `The data has been parsed as text.`, [text])
   }
 
-  async parseURLSearchParams(): Promise<void> {
+  async decodeURLSearchParams(): Promise<void> {
     let params: string | Error
 
     params = await tcp(() => this.text())

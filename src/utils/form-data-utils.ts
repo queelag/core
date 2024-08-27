@@ -1,5 +1,6 @@
-import { tc } from '../functions/tc.js'
+import { DeserializeFormDataOptions, SerializeFormDataOptions } from '../definitions/interfaces.js'
 import { isBlobDefined, isFileDefined } from './environment-utils.js'
+import { decodeJSON, encodeJSON } from './json-utils.js'
 import { isStringJSON } from './string-utils.js'
 
 /**
@@ -7,12 +8,18 @@ import { isStringJSON } from './string-utils.js'
  *
  * [Aracna Reference](https://aracna.dariosechi.it/core/utils/form-data)
  */
-export function deserializeFormData<T extends object>(data: FormData): T {
+export function deserializeFormData<T extends object>(data: FormData, options?: DeserializeFormDataOptions): T {
   let object: T = {} as T
 
   for (let [k, v] of data.entries()) {
     if (typeof v === 'string' && isStringJSON(v)) {
-      object[k as keyof T] = JSON.parse(v)
+      let decoded: any | Error
+
+      decoded = decodeJSON(v, options?.json)
+      if (decoded instanceof Error) continue
+
+      object[k as keyof T] = decoded
+
       continue
     }
 
@@ -27,8 +34,8 @@ export function deserializeFormData<T extends object>(data: FormData): T {
  *
  * [Aracna Reference](https://aracna.dariosechi.it/core/utils/form-data)
  */
-export function serializeFormData<T extends object>(object: T): FormData {
-  let data: FormData, stringified: string | Error
+export function serializeFormData<T extends object>(object: T, options?: SerializeFormDataOptions): FormData {
+  let data: FormData
 
   data = new FormData()
 
@@ -43,7 +50,9 @@ export function serializeFormData<T extends object>(object: T): FormData {
       case 'symbol':
       case 'undefined':
         continue
-      case 'object':
+      case 'object': {
+        let string: string | Error
+
         if (v === null) {
           continue
         }
@@ -55,12 +64,13 @@ export function serializeFormData<T extends object>(object: T): FormData {
             continue
         }
 
-        stringified = tc(() => JSON.stringify(v))
-        if (stringified instanceof Error) continue
+        string = encodeJSON(v, options?.json)
+        if (string instanceof Error) continue
 
-        data.append(k, stringified)
+        data.append(k, string)
 
         continue
+      }
       case 'string':
         data.append(k, v)
         continue

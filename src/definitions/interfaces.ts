@@ -1,7 +1,11 @@
 import type { FetchResponse } from '../classes/fetch-response.js'
 import type {
+  DeserializeURLSearchParamsType,
   EventEmitterEvents,
-  FetchRequestInitParse,
+  FetchDecodeType,
+  FetchRequestInitDecode,
+  FetchRequestInitEncode,
+  JsonEncoding,
   Primitive,
   QueueFunction,
   QueueProcessStatus,
@@ -72,6 +76,13 @@ export interface DecodeBase32HexOptions extends DecodeBase32Options {}
 export interface DecodeBase64Options extends DecodeBase16Options {}
 export interface DecodeBase64URLOptions extends DecodeBase64Options {}
 
+export interface DecodeJsonOptions {
+  castBigIntStringToBigInt?: boolean
+  castFloatStringToNumber?: boolean
+  castIntStringToNumber?: boolean
+  castUnsafeIntToBigInt?: boolean
+}
+
 export interface DeleteObjectPropertiesOptions {
   deep: boolean
 }
@@ -83,6 +94,10 @@ export interface DeserializeBlobOptions {
 
 export interface DeserializeFileOptions extends DeserializeBlobOptions {}
 
+export interface DeserializeFormDataOptions {
+  json?: DecodeJsonOptions
+}
+
 export interface EncodeBase16Options {
   pad?: boolean
 }
@@ -91,6 +106,11 @@ export interface EncodeBase32Options extends EncodeBase16Options {}
 export interface EncodeBase32HexOptions extends EncodeBase32Options {}
 export interface EncodeBase64Options extends EncodeBase16Options {}
 export interface EncodeBase64URLOptions extends EncodeBase64Options {}
+
+export interface EncodeJsonOptions<T extends JsonEncoding = 'utf-8'> {
+  castBigIntToString?: boolean
+  encoding?: T
+}
 
 export interface EventEmitterListener<T extends EventEmitterEvents = EventEmitterEvents, K extends keyof T = keyof T> {
   callback: T[K]
@@ -105,7 +125,18 @@ export interface EventEmitterListenerOptions {
 
 export interface FetchRequestInit<T = unknown> extends Omit<RequestInit, 'body'> {
   body?: T
-  parse?: FetchRequestInitParse
+  decode?: FetchRequestInitDecode
+  encode?: FetchRequestInitEncode
+  logNativeOptions?: ToLoggableNativeFetchRequestInitOptions
+}
+
+export interface FetchDecodeOptions {
+  json?: DecodeJsonOptions
+  type?: FetchDecodeType
+}
+
+export interface FetchEncodeOptions {
+  json?: EncodeJsonOptions
 }
 
 export interface FlattenObjectOptions {
@@ -237,8 +268,21 @@ export interface RestApiConfig<T = unknown> extends FetchRequestInit<T> {
   }
 }
 
+export interface SerializeFormDataOptions {
+  json?: EncodeJsonOptions
+}
+
 export interface StorageItem extends Record<PropertyKey, any> {}
 export interface StorageTarget extends Record<PropertyKey, any> {}
+
+export interface ToLoggableFetchRequestInitOptions {
+  deserializeFormData?: DeserializeFormDataOptions
+  deserializeURLSearchParamsType?: DeserializeURLSearchParamsType
+}
+
+export interface ToLoggableNativeFetchRequestInitOptions extends ToLoggableFetchRequestInitOptions {
+  decodeJSON?: DecodeJsonOptions
+}
 
 export interface TypeaheadEvents<T> extends EventEmitterEvents {
   match: (item: T) => any

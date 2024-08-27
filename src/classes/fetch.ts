@@ -25,15 +25,15 @@ export class Fetch {
     await useNodeFetch(await importNodeFetch())
 
     ninit = toNativeFetchRequestInit(init)
-    ClassLogger.debug('Fetch', 'handle', `The request init has been parsed.`, toLoggableNativeFetchRequestInit(ninit))
+    ClassLogger.debug('Fetch', 'handle', `The request init has been parsed.`, toLoggableNativeFetchRequestInit(ninit, init.logNativeOptions))
 
     response = await tcp(async () => new FetchResponse(await fetch(input, ninit)))
     if (response instanceof Error) return FetchError.from(response)
 
     ClassLogger.debug('Fetch', 'handle', `The request has been sent.`, input)
 
-    if (init.parse !== false) {
-      await tcp(() => (response as FetchResponse<T & U>).parse(typeof init.parse === 'string' ? init.parse : undefined))
+    if (init.decode !== false) {
+      await tcp(() => (response as FetchResponse<T & U>).decode(typeof init.decode === 'object' ? init.decode : undefined))
     }
 
     if (response.ok === true) {

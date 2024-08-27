@@ -1,6 +1,7 @@
 import type { AsyncStorage } from '../classes/async-storage.js'
 import type { SyncStorage } from '../classes/sync-storage.js'
 import type { Typeahead } from '../classes/typeahead.js'
+import type { FetchDecodeOptions, FetchEncodeOptions } from './interfaces.js'
 
 export type AppendSearchParamsToURLParams<T extends URLSearchParamsRecord = URLSearchParamsRecord> = DeserializeURLSearchParamsInit<T>
 
@@ -32,9 +33,10 @@ export type IntervalMapValue = NodeJS.Timeout | number
 export type IsEqual<T1, T2> = (a: T1, b: T2) => boolean
 
 export type FetchRequestInfo = Request | string
-export type FetchRequestInitParse = boolean | FetchResponseParseType
+export type FetchRequestInitDecode = boolean | FetchDecodeOptions
+export type FetchRequestInitEncode = boolean | FetchEncodeOptions
 
-export type FetchResponseParseType = 'array-buffer' | 'blob' | 'form-data' | 'json' | 'text' | 'url-search-params'
+export type FetchDecodeType = 'array-buffer' | 'blob' | 'form-data' | 'json' | 'text' | 'url-search-params'
 
 export type GenerateRandomStringRandom = (bytes: number) => Uint8Array
 
@@ -47,6 +49,8 @@ export namespace KeyOf {
 
 export type LoggerLevel = 'verbose' | 'debug' | 'info' | 'warn' | 'error'
 export type LoggerStatus = 'off' | 'on'
+
+export type JsonEncoding = 'utf-8'
 
 export type OmitObjectPropertiesPredicate<T extends object = object, K extends keyof T | string = keyof T | string> = (
   object: T,

@@ -40,27 +40,27 @@ describe('FetchResponse', () => {
     Configuration.functions.tcp.log = false
 
     response.headers.set('content-type', 'application/octet-stream')
-    await response.parse()
+    await response.decode()
     expect(response.data).toStrictEqual(new Blob())
 
     response.headers.set('content-type', 'application/json')
-    await response.parse()
+    await response.decode()
     expect(response.data).toStrictEqual({})
 
     response.headers.set('content-type', 'application/x-www-form-urlencoded')
-    await response.parse()
+    await response.decode()
     expect(response.data).toBeInstanceOf(URLSearchParams)
 
     response.headers.set('content-type', 'multipart/form-data')
-    await response.parse()
+    await response.decode()
     expect(response.data).toStrictEqual(new FormData())
 
     response.headers.set('content-type', 'text/plain')
-    await response.parse()
+    await response.decode()
     expect(response.data).toBe('')
 
     response.headers.delete('content-type')
-    await response.parse()
+    await response.decode()
     expect(response.data).toStrictEqual(new ArrayBuffer(0))
 
     Configuration.functions.tcp.log = false
