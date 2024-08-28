@@ -90,7 +90,7 @@ export const INTERVAL_MAP: Map<IntervalMapKey, IntervalMapValue> = new Map()
  */
 /** */
 export const DEFAULT_LOCALIZATION_STORAGE_KEY: string = 'aracna_core_localization'
-export const REGEXP_VARIABLE_INSIDE_CURLY_BRACKETS: () => RegExp = () => /{[^}]{1,256}}/gm
+export const REGEXP_VARIABLE_INSIDE_CURLY_BRACKETS: RegExp = /{[^}]{1,256}}/gm
 export const SORT_REGEXP_VARIABLE_INSIDE_CURLY_BRACKETS_MATCHES_COMPARE_FN: (a: string, b: string) => number = (a: string, b: string) => b.length - a.length
 
 /**

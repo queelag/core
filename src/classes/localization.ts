@@ -20,7 +20,7 @@ import { getObjectProperty, hasObjectProperty, mergeObjects } from '../utils/obj
  *
  * [Aracna Reference](https://aracna.dariosechi.it/core/classes/localization)
  */
-export class Localization {
+export class Localization<T extends LocalizationVariables = LocalizationVariables> {
   /**
    * The language that will be used to localize.
    */
@@ -40,14 +40,14 @@ export class Localization {
   /**
    * The default variables that will be used to localize.
    */
-  variables: LocalizationVariables
+  variables: T
 
-  constructor(init?: LocalizationInit) {
+  constructor(init?: LocalizationInit<T>) {
     this.language = init?.language ?? ''
     this.packs = init?.packs ?? []
     this.storage = init?.storage?.instance ?? MemoryStorage
     this.storageKey = init?.storage?.key ?? DEFAULT_LOCALIZATION_STORAGE_KEY
-    this.variables = init?.variables ?? {}
+    this.variables = init?.variables ?? ({} as T)
   }
 
   /**
@@ -95,17 +95,10 @@ export class Localization {
    * Retrieves the localized string from the pack.
    * Optionally you can pass variables that will be used to replace the variables inside the localized string.
    */
-  get<T extends object>(path: string, variables?: LocalizationVariables): string
-  get<T extends object>(language: string, path: string, variables?: LocalizationVariables): string
-  get<T extends object>(...args: any[]): string {
-    let language: string,
-      path: string,
-      variables: T,
-      pack: LocalizationPack,
-      localized: string,
-      regexp: RegExp,
-      matches: RegExpMatchArray | null,
-      source: Record<string, any>
+  get<T extends LocalizationVariables>(path: string, variables?: T): string
+  get<T extends LocalizationVariables>(language: string, path: string, variables?: T): string
+  get<T extends LocalizationVariables>(...args: any[]): string {
+    let language: string, path: string, variables: T, pack: LocalizationPack, localized: string, matches: RegExpMatchArray | null, source: Record<string, any>
 
     language = typeof args[1] === 'string' ? args[0] : this.language
     path = typeof args[1] === 'string' ? args[1] : args[0]
@@ -119,27 +112,19 @@ export class Localization {
     localized = getObjectProperty(pack.data, path, '')
     if (!localized) return path
 
-    regexp = REGEXP_VARIABLE_INSIDE_CURLY_BRACKETS()
-
-    matches = regexp.exec(localized)
+    matches = localized.match(REGEXP_VARIABLE_INSIDE_CURLY_BRACKETS)
     if (matches === null) return localized
 
+    matches = matches.sort(SORT_REGEXP_VARIABLE_INSIDE_CURLY_BRACKETS_MATCHES_COMPARE_FN)
     source = mergeObjects(pack.data, this.variables, variables)
 
-    while (matches !== null) {
-      matches = matches.sort(SORT_REGEXP_VARIABLE_INSIDE_CURLY_BRACKETS_MATCHES_COMPARE_FN)
+    for (let match of matches) {
+      let key: string, value: string
 
-      for (let match of matches) {
-        let key: string, value: string
+      key = match.slice(1, -1)
+      value = getObjectProperty(source, key, match)
 
-        key = match.slice(1, -1)
-        value = getObjectProperty(source, key, match)
-
-        localized = localized.replace(match, value)
-      }
-
-      regexp.lastIndex--
-      matches = regexp.exec(localized)
+      localized = localized.replace(match, value)
     }
 
     return localized
@@ -156,7 +141,7 @@ export class Localization {
   /**
    * Sets the default variables.
    */
-  setVariables(variables: LocalizationVariables): void {
+  setVariables(variables: T): void {
     this.variables = variables
     ClassLogger.debug('Localization', 'setVariables', `The variables have been set.`, variables)
   }

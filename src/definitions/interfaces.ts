@@ -195,14 +195,14 @@ export interface JoinPathsOptions {
   windows?: boolean
 }
 
-export interface LocalizationInit {
+export interface LocalizationInit<T extends LocalizationVariables = LocalizationVariables> {
   language?: string
   packs?: LocalizationPack[]
   storage?: {
     instance?: Storage
     key?: string
   }
-  variables?: LocalizationVariables
+  variables?: T
 }
 
 export interface QueueEvents extends EventEmitterEvents {
