@@ -1,4 +1,4 @@
-import { CookieParseOptions, CookieSerializeOptions, parse, serialize } from 'cookie'
+import { ParseOptions, SerializeOptions, parse, serialize } from 'cookie'
 import { CookieObject } from '../definitions/interfaces.js'
 import { tc } from '../functions/tc.js'
 
@@ -7,7 +7,7 @@ import { tc } from '../functions/tc.js'
  *
  * [Aracna Reference](https://aracna.dariosechi.it/core/utils/cookie)
  */
-export function deserializeCookie(cookie: string, options?: CookieParseOptions): CookieObject {
+export function deserializeCookie(cookie: string, options?: ParseOptions): CookieObject {
   let object: CookieObject | Error
 
   object = tc(() => parse(cookie, options))
@@ -21,6 +21,6 @@ export function deserializeCookie(cookie: string, options?: CookieParseOptions):
  *
  * [Aracna Reference](https://aracna.dariosechi.it/core/utils/cookie)
  */
-export function serializeCookie(key: string, value: string, options?: CookieSerializeOptions): string | Error {
+export function serializeCookie(key: string, value: string, options?: SerializeOptions): string | Error {
   return tc(() => serialize(key, value, options))
 }

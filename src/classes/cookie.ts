@@ -1,4 +1,4 @@
-import { CookieParseOptions, CookieSerializeOptions } from 'cookie'
+import { ParseOptions, SerializeOptions } from 'cookie'
 import { DEFAULT_COOKIE_SEPARATOR } from '../definitions/constants.js'
 import { CookieItem, CookieObject } from '../definitions/interfaces.js'
 import { KeyOf, Primitive } from '../definitions/types.js'
@@ -36,7 +36,7 @@ export class Cookie {
   /**
    * Clears all cookies.
    */
-  clear(options: CookieSerializeOptions = {}): void | Error {
+  clear(options: SerializeOptions = {}): void | Error {
     let object: CookieObject | Error
 
     object = this.deserialize()
@@ -85,7 +85,7 @@ export class Cookie {
    * Removes an item from the cookies.
    * Optionally you can specify the keys of the item that you want to remove, if you don't specify any key the whole item will be removed.
    */
-  remove<T extends CookieItem>(key: string, options: CookieSerializeOptions = {}, keys?: KeyOf.Shallow<T>[]): void | Error {
+  remove<T extends CookieItem>(key: string, options: SerializeOptions = {}, keys?: KeyOf.Shallow<T>[]): void | Error {
     if (typeof keys === 'undefined') {
       let object: CookieObject | Error
 
@@ -122,7 +122,7 @@ export class Cookie {
    * Sets an item in the cookies.
    * Optionally you can specify the keys of the item that you want to set, if you don't specify any key the whole item will be set.
    */
-  set<T extends CookieItem>(key: string, item: T, options: CookieSerializeOptions = {}, keys?: KeyOf.Shallow<T>[]): void | Error {
+  set<T extends CookieItem>(key: string, item: T, options: SerializeOptions = {}, keys?: KeyOf.Shallow<T>[]): void | Error {
     if (typeof keys === 'undefined') {
       keys = Object.keys(item)
       ClassLogger.debug(this.name, 'set', `The keys have been derived from the item.`, keys)
@@ -210,7 +210,7 @@ export class Cookie {
     return true
   }
 
-  protected deserialize(options?: CookieParseOptions): CookieObject | Error {
+  protected deserialize(options?: ParseOptions): CookieObject | Error {
     let cookie: string | Error
 
     cookie = this._get()
@@ -219,10 +219,10 @@ export class Cookie {
     return deserializeCookie(cookie, options)
   }
 
-  protected serialize(key: string, value: string, options?: CookieSerializeOptions): string | Error
-  protected serialize<T extends CookieItem>(key: string, ik: keyof T, value: Primitive, options?: CookieSerializeOptions): string | Error
+  protected serialize(key: string, value: string, options?: SerializeOptions): string | Error
+  protected serialize<T extends CookieItem>(key: string, ik: keyof T, value: Primitive, options?: SerializeOptions): string | Error
   protected serialize<T extends CookieItem>(key: string, ...args: any[]): string | Error {
-    let ik: keyof T | undefined, value: Primitive, options: CookieSerializeOptions | undefined
+    let ik: keyof T | undefined, value: Primitive, options: SerializeOptions | undefined
 
     ik = isObject(args[1]) ? undefined : args[0]
     value = isObject(args[1]) ? args[0] : args[1]

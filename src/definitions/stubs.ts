@@ -5,7 +5,7 @@ export const STUB_COOKIE_GET: (map: Map<string, string>) => () => string = (map:
   [...map.entries()].map(([k, v]) => [k, v].join('=')).join(';')
 
 export const STUB_COOKIE_SET: (map: Map<string, string>, deserialize?: Function) => (cookie: string) => void =
-  (map: Map<string, string>, deserialize: Function = deserializeCookie) =>
+  (map: Map<string, string | undefined>, deserialize: Function = deserializeCookie) =>
   (cookie: string) => {
     let object: CookieObject | Error
 

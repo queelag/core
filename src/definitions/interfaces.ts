@@ -46,7 +46,7 @@ export interface CloneObjectOptions {
 
 export interface CookieItem extends Record<PropertyKey, Primitive> {}
 
-export interface CookieObject extends Record<string, string> {}
+export interface CookieObject extends Record<string, string | undefined> {}
 
 export interface CookieSource {
   get: () => string
