@@ -25,8 +25,8 @@ export class DeferredPromise<T> {
    */
   value?: T
 
-  private _reject!: (reason?: any) => void
-  private _resolve!: (value: T | PromiseLike<T>) => void
+  protected _reject!: (reason?: any) => void
+  protected _resolve!: (value: T | PromiseLike<T>) => void
 
   constructor() {
     this.state = 'pending'

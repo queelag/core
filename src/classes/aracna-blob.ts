@@ -14,7 +14,7 @@ import { decodeText, encodeText } from '../utils/text-utils.js'
  * [Aracna Reference](https://aracna.dariosechi.it/core/classes/aracna-blob)
  */
 export class AracnaBlob {
-  private _arrayBuffer?: ArrayBuffer
+  protected _arrayBuffer?: ArrayBuffer
   /**
    * The Blob instance.
    */
@@ -23,7 +23,7 @@ export class AracnaBlob {
    * The unique identifier of the instance.
    */
   readonly id: string
-  private _text?: string
+  protected _text?: string
 
   constructor(blob: Blob)
   constructor(json: AracnaBlobJSON)
