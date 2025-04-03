@@ -151,6 +151,11 @@ export class FetchResponse<T = unknown> implements Response {
     return this.response.arrayBuffer()
   }
 
+  /** [MDN Reference](https://developer.mozilla.org/docs/Web/API/Request/bytes) */
+  bytes(): Promise<Uint8Array> {
+    return this.response.bytes()
+  }
+
   /** [MDN Reference](https://developer.mozilla.org/docs/Web/API/Request/blob) */
   blob(): Promise<Blob> {
     return this.response.blob()

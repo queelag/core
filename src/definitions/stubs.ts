@@ -35,6 +35,10 @@ export class StubBlob {
     return new ArrayBuffer(0)
   }
 
+  async bytes(): Promise<Uint8Array> {
+    return new Uint8Array()
+  }
+
   slice(start?: number, end?: number, contentType?: string): this {
     return this
   }
