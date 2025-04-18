@@ -16,11 +16,11 @@ export class Cookie {
   /**
    * The cookie instance name.
    */
-  readonly name: string
+  protected readonly name: string
   /**
    * The cookie separator used to separate the cookie name from the cookie item key.
    */
-  readonly separator: string = DEFAULT_COOKIE_SEPARATOR
+  protected separator: string = DEFAULT_COOKIE_SEPARATOR
 
   private readonly _get: () => string | Error
   private readonly _set: (cookies: string) => void | Error
@@ -237,5 +237,26 @@ export class Cookie {
 
   protected toDocumentCookieName<T extends CookieItem>(key: string, ik: KeyOf.Shallow<T>): string {
     return key + this.separator + String(ik)
+  }
+
+  /**
+   * Returns the name of the instance.
+   */
+  getName(): string {
+    return this.name
+  }
+
+  /**
+   * Returns the separator used to separate the cookie name from the cookie item key.
+   */
+  getSeparator(): string {
+    return this.separator
+  }
+
+  /**
+   * Sets the separator used to separate the cookie name from the cookie item key.
+   */
+  setSeparator(separator: string): void {
+    this.separator = separator
   }
 }

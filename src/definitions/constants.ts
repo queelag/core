@@ -59,7 +59,7 @@ export const DEFAULT_FUNCTIONS_CONFIGURATION: () => ConfigurationFunctions = () 
  * Cookie
  */
 /** */
-export const DEFAULT_COOKIE_SEPARATOR: string = '_'
+export const DEFAULT_COOKIE_SEPARATOR: string = '-'
 
 /**
  * Debounce
