@@ -33,7 +33,7 @@ export class AracnaBlob {
     blob = args[0]
     json = args[0]
 
-    if (typeof blob.arrayBuffer === 'function') {
+    if (isBlobNotDefined() || blob instanceof Blob) {
       this.blob = blob
       this.id = generateRandomString()
 
