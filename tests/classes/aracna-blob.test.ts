@@ -4,58 +4,58 @@ import { AracnaBlobJSON } from '../../src/definitions/interfaces'
 import { encodeText } from '../../src/utils/text-utils'
 
 describe('AracnaBlob', () => {
-  let blob: Blob, qblob: AracnaBlob
+  let blob: Blob, ablob: AracnaBlob
 
   beforeAll(async () => {
     blob = new Blob(['hello'], { type: 'text/plain' })
-    qblob = new AracnaBlob(blob)
+    ablob = new AracnaBlob(blob)
   })
 
   it('constructs from blob', () => {
-    expect(qblob.arrayBuffer).toStrictEqual(new ArrayBuffer(0))
-    expect(qblob.blob).toBe(blob)
-    expect(qblob.id).toHaveLength(32)
-    expect(qblob.size).toBe(5)
-    expect(qblob.text).toBe('')
-    expect(qblob.type).toBe('text/plain')
-    expect(qblob.uInt8Array).toStrictEqual(new Uint8Array())
+    expect(ablob.arrayBuffer).toStrictEqual(new ArrayBuffer(0))
+    expect(ablob.blob).toBe(blob)
+    expect(ablob.id).toHaveLength(32)
+    expect(ablob.size).toBe(5)
+    expect(ablob.text).toBe('')
+    expect(ablob.type).toBe('text/plain')
+    expect(ablob.uInt8Array).toStrictEqual(new Uint8Array())
   })
 
   it('constructs from json', async () => {
-    let json: AracnaBlobJSON, qblob2: AracnaBlob
+    let json: AracnaBlobJSON, ablob2: AracnaBlob
 
-    await qblob.resolveArrayBuffer()
-    await qblob.resolveText()
+    await ablob.resolveArrayBuffer()
+    await ablob.resolveText()
 
-    json = JSON.parse(JSON.stringify(qblob))
+    json = JSON.parse(JSON.stringify(ablob))
 
-    expect(json.id).toBe(qblob.id)
-    expect(json.size).toBe(qblob.size)
-    expect(json.type).toBe(qblob.type)
-    expect(json.uInt8Array).toStrictEqual({ ...qblob.uInt8Array })
+    expect(json.id).toBe(ablob.id)
+    expect(json.size).toBe(ablob.size)
+    expect(json.type).toBe(ablob.type)
+    expect(json.uInt8Array).toStrictEqual({ ...ablob.uInt8Array })
 
-    qblob2 = new AracnaBlob(json)
+    ablob2 = new AracnaBlob(json)
 
-    expect(qblob2.arrayBuffer).toStrictEqual(qblob.arrayBuffer)
-    expect(qblob2.blob).toStrictEqual(blob)
-    expect(qblob2.id).toBe(qblob.id)
-    expect(qblob2.size).toBe(qblob.size)
-    expect(qblob2.text).toBe(qblob.text)
-    expect(qblob2.type).toBe(qblob.type)
-    expect(qblob2.uInt8Array).toStrictEqual(qblob.uInt8Array)
+    expect(ablob2.arrayBuffer).toStrictEqual(ablob.arrayBuffer)
+    expect(ablob2.blob).toStrictEqual(blob)
+    expect(ablob2.id).toBe(ablob.id)
+    expect(ablob2.size).toBe(ablob.size)
+    expect(ablob2.text).toBe(ablob.text)
+    expect(ablob2.type).toBe(ablob.type)
+    expect(ablob2.uInt8Array).toStrictEqual(ablob.uInt8Array)
   })
 
   it('resolves array buffer', async () => {
-    await qblob.resolveArrayBuffer()
+    await ablob.resolveArrayBuffer()
 
-    expect(qblob.arrayBuffer).toStrictEqual(encodeText('hello').buffer)
-    expect(qblob.uInt8Array).toStrictEqual(encodeText('hello'))
+    expect(ablob.arrayBuffer).toStrictEqual(encodeText('hello').buffer)
+    expect(ablob.uInt8Array).toStrictEqual(encodeText('hello'))
   })
 
   it('resolves text', async () => {
-    await qblob.resolveArrayBuffer()
+    await ablob.resolveArrayBuffer()
 
-    expect(qblob.text).toBe('hello')
-    expect(qblob.uInt8Array).toStrictEqual(encodeText('hello'))
+    expect(ablob.text).toBe('hello')
+    expect(ablob.uInt8Array).toStrictEqual(encodeText('hello'))
   })
 })

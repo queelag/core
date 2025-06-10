@@ -3,50 +3,50 @@ import { AracnaFile } from '../../src'
 import { AracnaFileJSON } from '../../src/definitions/interfaces'
 
 describe('AracnaFile', () => {
-  let file: File, qfile: AracnaFile
+  let file: File, afile: AracnaFile
 
   beforeAll(async () => {
     file = new File(['hello'], 'file', { lastModified: Date.now(), type: 'text/plain' })
-    qfile = new AracnaFile(file)
+    afile = new AracnaFile(file)
   })
 
   it('constructs from file', () => {
-    expect(qfile.arrayBuffer).toStrictEqual(new ArrayBuffer(0))
-    expect(qfile.file).toBe(file)
-    expect(qfile.id).toHaveLength(32)
-    expect(qfile.size).toBe(5)
-    expect(qfile.text).toBe('')
-    expect(qfile.type).toBe('text/plain')
-    expect(qfile.uInt8Array).toStrictEqual(new Uint8Array())
+    expect(afile.arrayBuffer).toStrictEqual(new ArrayBuffer(0))
+    expect(afile.file).toBe(file)
+    expect(afile.id).toHaveLength(32)
+    expect(afile.size).toBe(5)
+    expect(afile.text).toBe('')
+    expect(afile.type).toBe('text/plain')
+    expect(afile.uInt8Array).toStrictEqual(new Uint8Array())
   })
 
   it('constructs from json', async () => {
-    let json: AracnaFileJSON, qfile2: AracnaFile
+    let json: AracnaFileJSON, afile2: AracnaFile
 
-    await qfile.resolveArrayBuffer()
-    await qfile.resolveText()
+    await afile.resolveArrayBuffer()
+    await afile.resolveText()
 
-    json = JSON.parse(JSON.stringify(qfile))
+    json = JSON.parse(JSON.stringify(afile))
 
-    expect(json.id).toBe(qfile.id)
-    expect(json.lastModified).toBe(qfile.lastModified)
-    expect(json.name).toBe(qfile.name)
-    expect(json.size).toBe(qfile.size)
-    expect(json.type).toBe(qfile.type)
-    expect(json.uInt8Array).toStrictEqual({ ...qfile.uInt8Array })
+    expect(json.id).toBe(afile.id)
+    expect(json.lastModified).toBe(afile.lastModified)
+    expect(json.name).toBe(afile.name)
+    expect(json.size).toBe(afile.size)
+    expect(json.type).toBe(afile.type)
+    expect(json.uInt8Array).toStrictEqual({ ...afile.uInt8Array })
     expect(json.webkitRelativePath).toBeUndefined()
 
-    qfile2 = new AracnaFile(json)
+    afile2 = new AracnaFile(json)
 
-    expect(qfile2.arrayBuffer).toStrictEqual(qfile.arrayBuffer)
-    // expect(qfile2.file).toStrictEqual(file)
-    expect(qfile2.id).toBe(qfile.id)
-    // expect(qfile2.lastModified).toBe(qfile.lastModified)
-    expect(qfile2.name).toBe(qfile.name)
-    expect(qfile2.size).toBe(qfile.size)
-    expect(qfile2.text).toBe(qfile.text)
-    expect(qfile2.type).toBe(qfile.type)
-    expect(qfile2.uInt8Array).toStrictEqual(qfile.uInt8Array)
+    expect(afile2.arrayBuffer).toStrictEqual(afile.arrayBuffer)
+    // expect(afile2.file).toStrictEqual(file)
+    expect(afile2.id).toBe(afile.id)
+    // expect(afile2.lastModified).toBe(afile.lastModified)
+    expect(afile2.name).toBe(afile.name)
+    expect(afile2.size).toBe(afile.size)
+    expect(afile2.text).toBe(afile.text)
+    expect(afile2.type).toBe(afile.type)
+    expect(afile2.uInt8Array).toStrictEqual(afile.uInt8Array)
     expect(json.webkitRelativePath).toBeUndefined()
   })
 })
