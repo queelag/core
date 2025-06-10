@@ -7,7 +7,6 @@ export default defineConfig({
       include: ['src/**/*.ts'],
       reporter: ['lcov']
     },
-    include: ['tests/**/*.test.ts'],
-    setupFiles: ['vitest/stubs/polyfill-stub.ts']
+    include: ['tests/**/*.test.ts']
   }
 })

@@ -1,19 +1,5 @@
-import { FetchRequestInit, NodeFetch, ToLoggableFetchRequestInitOptions, ToLoggableNativeFetchRequestInitOptions } from '../definitions/interfaces.js'
-import { tcp } from '../functions/tcp.js'
-import { UtilLogger } from '../loggers/util-logger.js'
+import { FetchRequestInit, ToLoggableFetchRequestInitOptions, ToLoggableNativeFetchRequestInitOptions } from '../definitions/interfaces.js'
 import { isArray } from './array-utils.js'
-import {
-  isBlobDefined,
-  isBlobNotDefined,
-  isFetchDefined,
-  isFetchNotDefined,
-  isFileDefined,
-  isFileNotDefined,
-  isFormDataDefined,
-  isFormDataNotDefined,
-  isNodeEnvNotTest,
-  isWindowDefined
-} from './environment-utils.js'
 import { deserializeFormData } from './form-data-utils.js'
 import { decodeJSON, encodeJSON } from './json-utils.js'
 import { mergeObjects, omitObjectProperties } from './object-utils.js'
@@ -104,23 +90,6 @@ export function getFetchRequestInitHeadersEntries<T>(init: FetchRequestInit<T> |
 }
 
 /**
- * Imports `node-fetch` only if the Fetch API is not defined.
- *
- * [Aracna Reference](https://aracna.dariosechi.it/core/utils/fetch)
- */
-export async function importNodeFetch(): Promise<NodeFetch | Error> {
-  if (isBlobDefined() && isFetchDefined() && isFileDefined() && isFormDataDefined()) {
-    return new Error(`The Fetch API is already defined.`)
-  }
-
-  if (isNodeEnvNotTest() && isWindowDefined()) {
-    return new Error('The Fetch API is already defined in the browser.')
-  }
-
-  return tcp(() => new Function(`return import('node-fetch')`)())
-}
-
-/**
  * Merges two or more `FetchRequestInit` or `RequestInit` objects.
  *
  * [Aracna Reference](https://aracna.dariosechi.it/core/utils/fetch)
@@ -186,45 +155,6 @@ export function setFetchRequestInitHeaderWhenUnset<T>(init: FetchRequestInit<T> 
   }
 
   setFetchRequestInitHeader(init, name, value)
-}
-
-/**
- * Polyfills the Fetch API with `node-fetch` if the Fetch API is not defined.
- *
- * [Aracna Reference](https://aracna.dariosechi.it/core/utils/fetch)
- */
-export async function useNodeFetch(NodeFetch: NodeFetch | Error): Promise<void> {
-  if (NodeFetch instanceof Error) {
-    return
-  }
-
-  if (isNodeEnvNotTest() && isWindowDefined()) {
-    return
-  }
-
-  if (isBlobNotDefined()) {
-    global.Blob = NodeFetch.Blob
-    UtilLogger.debug('useNodeFetch', `The Blob object has been polyfilled with node-fetch.`)
-  }
-
-  if (isFetchNotDefined()) {
-    global.fetch = NodeFetch.default
-    global.Headers = NodeFetch.Headers
-    global.Request = NodeFetch.Request
-    global.Response = NodeFetch.Response
-
-    UtilLogger.debug('useNodeFetch', `The Fetch API has been polyfilled with node-fetch.`)
-  }
-
-  if (isFileNotDefined()) {
-    global.File = NodeFetch.File
-    UtilLogger.debug('useNodeFetch', `The File object has been polyfilled with node-fetch.`)
-  }
-
-  if (isFormDataNotDefined()) {
-    global.FormData = NodeFetch.FormData
-    UtilLogger.debug('useNodeFetch', `The FormData object has been polyfilled with node-fetch.`)
-  }
 }
 
 /**

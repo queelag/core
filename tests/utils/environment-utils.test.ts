@@ -3,7 +3,6 @@ import {
   getNodeEnv,
   getProcessEnvKey,
   hasProcessEnvKey,
-  importNodeFetch,
   isBlobDefined,
   isBlobNotDefined,
   isDocumentDefined,
@@ -25,8 +24,7 @@ import {
   isProcessDefined,
   isProcessNotDefined,
   isWindowDefined,
-  isWindowNotDefined,
-  useNodeFetch
+  isWindowNotDefined
 } from '../../src'
 
 describe('Environment Utils', () => {
@@ -57,8 +55,6 @@ describe('Environment Utils', () => {
   })
 
   it('checks if blob is defined', async () => {
-    await useNodeFetch(await importNodeFetch())
-
     expect(isBlobDefined()).toBeTruthy()
     expect(isBlobNotDefined()).toBeFalsy()
   })
@@ -74,22 +70,16 @@ describe('Environment Utils', () => {
   })
 
   it('checks if fetch is defined', async () => {
-    await useNodeFetch(await importNodeFetch())
-
     expect(isFetchDefined()).toBeTruthy()
     expect(isFetchNotDefined()).toBeFalsy()
   })
 
   it('checks if file is defined', async () => {
-    await useNodeFetch(await importNodeFetch())
-
     expect(isFileDefined()).toBeTruthy()
     expect(isFileNotDefined()).toBeFalsy()
   })
 
   it('checks if form data is defined', async () => {
-    await useNodeFetch(await importNodeFetch())
-
     expect(isFormDataDefined()).toBeTruthy()
     expect(isFormDataNotDefined()).toBeFalsy()
   })

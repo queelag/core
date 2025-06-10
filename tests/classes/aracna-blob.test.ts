@@ -1,5 +1,5 @@
 import { beforeAll, describe, expect, it } from 'vitest'
-import { AracnaBlob, importNodeFetch, useNodeFetch } from '../../src'
+import { AracnaBlob } from '../../src'
 import { AracnaBlobJSON } from '../../src/definitions/interfaces'
 import { encodeText } from '../../src/utils/text-utils'
 
@@ -7,8 +7,6 @@ describe('AracnaBlob', () => {
   let blob: Blob, qblob: AracnaBlob
 
   beforeAll(async () => {
-    await useNodeFetch(await importNodeFetch())
-
     blob = new Blob(['hello'], { type: 'text/plain' })
     qblob = new AracnaBlob(blob)
   })

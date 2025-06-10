@@ -3,28 +3,27 @@
   "dependencies": {
     "cookie": "^1.0.2",
     "nanoid": "^5.1.5",
-    "node-fetch": "^3.3.2",
     "rfc4648": "^1.5.4"
   },
   "devDependencies": {
-    "@microsoft/api-extractor": "^7.52.2",
-    "@types/node": "^22.14.0",
-    "@vitest/coverage-v8": "^3.1.1",
-    "@vitest/ui": "^3.1.1",
-    "esbuild": "^0.25.2",
-    "fastify": "^5.2.2",
-    "glob": "^11.0.1",
-    "graphql": "^16.10.0",
+    "@microsoft/api-extractor": "^7.52.8",
+    "@types/node": "^24.0.0",
+    "@vitest/coverage-v8": "^3.2.3",
+    "@vitest/ui": "^3.2.3",
+    "esbuild": "^0.25.5",
+    "fastify": "^5.3.3",
+    "glob": "^11.0.2",
+    "graphql": "^16.11.0",
     "mercurius": "^16.1.0",
     "prettier": "^3.5.3",
     "tslib": "^2.8.1",
-    "typedoc": "^0.28.1",
-    "typescript": "^5.8.2",
-    "vitest": "^3.1.1"
+    "typedoc": "^0.28.5",
+    "typescript": "^5.8.3",
+    "vitest": "^3.2.3"
   },
   "engines": {
-    "node": ">=16",
-    "pnpm": ">=8"
+    "node": ">=18",
+    "pnpm": ">=10"
   },
   "exports": {
     "types": "./index.d.ts",
@@ -35,7 +34,7 @@
   "main": "index.cjs",
   "module": "index.js",
   "name": "@aracna/core",
-  "packageManager": "pnpm@9.0.6",
+  "packageManager": "pnpm@10.12.1",
   "publishConfig": {
     "directory": "dist"
   },

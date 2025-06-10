@@ -1,13 +1,11 @@
 import { beforeAll, describe, expect, it } from 'vitest'
-import { AracnaFile, importNodeFetch, useNodeFetch } from '../../src'
+import { AracnaFile } from '../../src'
 import { AracnaFileJSON } from '../../src/definitions/interfaces'
 
 describe('AracnaFile', () => {
   let file: File, qfile: AracnaFile
 
   beforeAll(async () => {
-    await useNodeFetch(await importNodeFetch())
-
     file = new File(['hello'], 'file', { lastModified: Date.now(), type: 'text/plain' })
     qfile = new AracnaFile(file)
   })
