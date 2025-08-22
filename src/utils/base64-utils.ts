@@ -6,8 +6,8 @@ import { DecodeBase64Options, DecodeBase64URLOptions, EncodeBase64Options, Encod
  *
  * [Aracna Reference](https://aracna.dariosechi.it/core/utils/base64)
  */
-export function decodeBase64(string: string, options?: DecodeBase64Options): Uint8Array {
-  return base64.parse(string, options)
+export function decodeBase64(string: string, options?: DecodeBase64Options): Uint8Array<ArrayBuffer> {
+  return base64.parse(string, options) as Uint8Array<ArrayBuffer>
 }
 
 /**
@@ -15,8 +15,8 @@ export function decodeBase64(string: string, options?: DecodeBase64Options): Uin
  *
  * [Aracna Reference](https://aracna.dariosechi.it/core/utils/base64)
  */
-export function decodeBase64URL(string: string, options?: DecodeBase64URLOptions): Uint8Array {
-  return base64url.parse(string, options)
+export function decodeBase64URL(string: string, options?: DecodeBase64URLOptions): Uint8Array<ArrayBuffer> {
+  return base64url.parse(string, options) as Uint8Array<ArrayBuffer>
 }
 
 /**

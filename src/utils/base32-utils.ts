@@ -6,8 +6,8 @@ import { DecodeBase32HexOptions, DecodeBase32Options, EncodeBase32HexOptions, En
  *
  * [Araña Reference](https://arana.dariosechi.it/core/utils/base32)
  */
-export function decodeBase32(string: string, options?: DecodeBase32Options): Uint8Array {
-  return base32.parse(string, options)
+export function decodeBase32(string: string, options?: DecodeBase32Options): Uint8Array<ArrayBuffer> {
+  return base32.parse(string, options) as Uint8Array<ArrayBuffer>
 }
 
 /**
@@ -15,8 +15,8 @@ export function decodeBase32(string: string, options?: DecodeBase32Options): Uin
  *
  * [Araña Reference](https://arana.dariosechi.it/core/utils/base32)
  */
-export function decodeBase32Hex(string: string, options?: DecodeBase32HexOptions): Uint8Array {
-  return base32hex.parse(string, options)
+export function decodeBase32Hex(string: string, options?: DecodeBase32HexOptions): Uint8Array<ArrayBuffer> {
+  return base32hex.parse(string, options) as Uint8Array<ArrayBuffer>
 }
 
 /**

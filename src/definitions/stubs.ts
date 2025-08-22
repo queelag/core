@@ -35,7 +35,7 @@ export class StubBlob {
     return new ArrayBuffer(0)
   }
 
-  async bytes(): Promise<Uint8Array> {
+  async bytes(): Promise<Uint8Array<ArrayBuffer>> {
     return new Uint8Array()
   }
 
@@ -43,7 +43,7 @@ export class StubBlob {
     return this
   }
 
-  stream(): ReadableStream<Uint8Array> {
+  stream(): ReadableStream<Uint8Array<ArrayBuffer>> {
     return new ReadableStream()
   }
 
