@@ -10,7 +10,7 @@ import { decodeJSON } from '../utils/json-utils.js'
  */
 export class FetchResponse<T = unknown> implements Response {
   /** [MDN Reference](https://developer.mozilla.org/docs/Web/API/Request/body) */
-  readonly body: ReadableStream<Uint8Array> | null
+  readonly body: ReadableStream<Uint8Array<ArrayBuffer>> | null
   /** [MDN Reference](https://developer.mozilla.org/docs/Web/API/Request/bodyUsed) */
   readonly bodyUsed: boolean
   /**
@@ -152,7 +152,7 @@ export class FetchResponse<T = unknown> implements Response {
   }
 
   /** [MDN Reference](https://developer.mozilla.org/docs/Web/API/Request/bytes) */
-  bytes(): Promise<Uint8Array> {
+  bytes(): Promise<Uint8Array<ArrayBuffer>> {
     return this.response.bytes()
   }
 

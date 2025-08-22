@@ -1,4 +1,5 @@
 import { FetchRequestInit, ToLoggableFetchRequestInitOptions, ToLoggableNativeFetchRequestInitOptions } from '../definitions/interfaces.js'
+import { isArrayBufferView } from './array-buffer-utils.js'
 import { isArray } from './array-utils.js'
 import { deserializeFormData } from './form-data-utils.js'
 import { decodeJSON, encodeJSON } from './json-utils.js'
@@ -230,25 +231,25 @@ export function toNativeFetchRequestInit<T>(init: FetchRequestInit<T>): RequestI
   clone = omitObjectProperties(init, ['body']) as RequestInit
   if (init.body === undefined) return clone
 
-  if (init.body instanceof ArrayBuffer || init.body instanceof Blob || init.body instanceof Uint8Array) {
-    clone.body = init.body
-    setFetchRequestInitHeaderWhenUnset(clone, 'content-type', 'application/octet-stream')
+  switch (true) {
+    case init.body instanceof ArrayBuffer:
+    case init.body instanceof Blob:
+    case init.body instanceof ReadableStream:
+    case isArrayBufferView<ArrayBuffer>(init.body, ArrayBuffer):
+      clone.body = init.body
+      setFetchRequestInitHeaderWhenUnset(clone, 'content-type', 'application/octet-stream')
 
-    return clone
-  }
+      return clone
+    case init.body instanceof FormData:
+      clone.body = init.body
+      // setFetchRequestInitHeaderWhenUnset(clone, 'content-type', 'multipart/form-data')
 
-  if (init.body instanceof FormData) {
-    clone.body = init.body
-    // setFetchRequestInitHeaderWhenUnset(clone, 'content-type', 'multipart/form-data')
+      return clone
+    case init.body instanceof URLSearchParams:
+      clone.body = init.body
+      setFetchRequestInitHeaderWhenUnset(clone, 'content-type', 'application/x-www-form-urlencoded')
 
-    return clone
-  }
-
-  if (init.body instanceof URLSearchParams) {
-    clone.body = init.body
-    setFetchRequestInitHeaderWhenUnset(clone, 'content-type', 'application/x-www-form-urlencoded')
-
-    return clone
+      return clone
   }
 
   switch (typeof init.body) {
