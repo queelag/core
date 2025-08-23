@@ -2,7 +2,7 @@ import { FetchRequestInit } from '../definitions/interfaces.js'
 import { FetchRequestInfo } from '../definitions/types.js'
 import { tcp } from '../functions/tcp.js'
 import { ClassLogger } from '../loggers/class-logger.js'
-import { importNodeFetch, toLoggableNativeFetchRequestInit, toNativeFetchRequestInit, useNodeFetch } from '../utils/fetch-utils.js'
+import { toLoggableNativeFetchRequestInit, toNativeFetchRequestInit } from '../utils/fetch-utils.js'
 import { FetchError } from './fetch-error.js'
 import { FetchResponse } from './fetch-response.js'
 
@@ -21,8 +21,6 @@ export class Fetch {
    */
   static async send<T, U, V>(input: FetchRequestInfo, init: FetchRequestInit<V> = {}): Promise<FetchResponse<T> | FetchError<U>> {
     let ninit: RequestInit, response: FetchResponse<T & U> | Error
-
-    await useNodeFetch(await importNodeFetch())
 
     ninit = toNativeFetchRequestInit(init)
     ClassLogger.debug('Fetch', 'handle', `The request init has been parsed.`, toLoggableNativeFetchRequestInit(ninit, init.logNativeOptions))

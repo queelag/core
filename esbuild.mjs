@@ -1,4 +1,5 @@
 import { build } from 'esbuild'
+import { rm } from 'fs/promises'
 import { glob } from 'glob'
 
 /** @type {import('esbuild').BuildOptions} */
@@ -6,6 +7,8 @@ const OPTIONS = {
   logLevel: 'info',
   minify: true
 }
+
+await rm('dist', { force: true, recursive: true })
 
 /**
  * ESM

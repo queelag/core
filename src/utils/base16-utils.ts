@@ -6,8 +6,8 @@ import { DecodeBase16Options, EncodeBase16Options } from '../definitions/interfa
  *
  * [Aracna Reference](https://aracna.dariosechi.it/core/utils/base16)
  */
-export function decodeBase16(string: string, options?: DecodeBase16Options): Uint8Array {
-  return base16.parse(string, options)
+export function decodeBase16(string: string, options?: DecodeBase16Options): Uint8Array<ArrayBuffer> {
+  return base16.parse(string, options) as Uint8Array<ArrayBuffer>
 }
 
 /**

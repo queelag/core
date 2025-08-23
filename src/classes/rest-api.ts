@@ -3,7 +3,7 @@ import { RestApiConfig } from '../definitions/interfaces.js'
 import { RequestMethod, WriteMode } from '../definitions/types.js'
 import { rc } from '../functions/rc.js'
 import { ClassLogger } from '../loggers/class-logger.js'
-import { importNodeFetch, mergeFetchRequestInits, useNodeFetch } from '../utils/fetch-utils.js'
+import { mergeFetchRequestInits } from '../utils/fetch-utils.js'
 import { concatURL, serializeURLSearchParams } from '../utils/url-utils.js'
 import { FetchError } from './fetch-error.js'
 import { FetchResponse } from './fetch-response.js'
@@ -47,8 +47,6 @@ export class RestAPI<T extends RestApiConfig = RestApiConfig, U = undefined> {
     let tbody: W | undefined, query: string, url: URL, handled: boolean, response: FetchResponse<V & X> | FetchError<X>
 
     this.setCallStatus(method, path, config, Status.PENDING)
-
-    await useNodeFetch(await importNodeFetch())
 
     tbody = await this.transformBody(method, path, body, config)
     query = await this.transformQueryParameters(method, path, body, config)

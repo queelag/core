@@ -31,7 +31,7 @@ export interface AracnaBlobJSON {
   id: string
   size: number
   type: string
-  uInt8Array: Uint8Array
+  uInt8Array: Uint8Array<ArrayBuffer>
 }
 
 export interface AracnaFileJSON extends AracnaBlobJSON {
@@ -149,7 +149,7 @@ export interface GenerateRandomStringOptions {
   alphabet?: string
   blacklist?: string[]
   prefix?: string
-  random?: (bytes: number) => Uint8Array
+  random?: (bytes: number) => Uint8Array<ArrayBuffer>
   separator?: string
   size?: number
   suffix?: string

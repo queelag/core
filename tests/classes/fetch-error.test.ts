@@ -1,12 +1,8 @@
-import { beforeAll, describe, expect, it } from 'vitest'
-import { FetchError, FetchResponse, importNodeFetch, useNodeFetch } from '../../src'
+import { describe, expect, it } from 'vitest'
+import { FetchError, FetchResponse } from '../../src'
 
 describe('FetchError', () => {
   let error: FetchError<any>
-
-  beforeAll(async () => {
-    await useNodeFetch(await importNodeFetch())
-  })
 
   it('constructs', () => {
     let e: Error, response: FetchResponse<any>

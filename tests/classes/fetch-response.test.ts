@@ -1,13 +1,9 @@
-import { beforeAll, describe, expect, it } from 'vitest'
-import { FetchResponse, importNodeFetch, setObjectProperty, tne, useNodeFetch } from '../../src'
+import { describe, expect, it } from 'vitest'
+import { FetchResponse, setObjectProperty, tne } from '../../src'
 import { Configuration } from '../../src/classes/configuration'
 
 describe('FetchResponse', () => {
   let response: FetchResponse<any>
-
-  beforeAll(async () => {
-    await useNodeFetch(await importNodeFetch())
-  })
 
   it('constructs', () => {
     let r: Response

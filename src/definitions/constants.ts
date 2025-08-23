@@ -59,7 +59,7 @@ export const DEFAULT_FUNCTIONS_CONFIGURATION: () => ConfigurationFunctions = () 
  * Cookie
  */
 /** */
-export const DEFAULT_COOKIE_SEPARATOR: string = '_'
+export const DEFAULT_COOKIE_SEPARATOR: string = '-'
 
 /**
  * Debounce
@@ -171,7 +171,7 @@ export const ALPHABET_HEX_LOWERCASE: string = ALPHABET_NUMBERS + 'abcdef'
 export const ALPHABET_HEX_UPPERCASE: string = ALPHABET_NUMBERS + 'ABCDEF'
 
 export const DEFAULT_GENERATE_RANDOM_STRING_ALPHABET: string = ALPHABET_ALPHANUMERIC
-export const DEFAULT_GENERATE_RANDOM_STRING_RANDOM: GenerateRandomStringRandom = random
+export const DEFAULT_GENERATE_RANDOM_STRING_RANDOM: GenerateRandomStringRandom = random as GenerateRandomStringRandom
 export const DEFAULT_GENERATE_RANDOM_STRING_SEPARATOR: string = '-'
 export const DEFAULT_GENERATE_RANDOM_STRING_SIZE: number = 32
 

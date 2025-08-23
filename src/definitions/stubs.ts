@@ -35,11 +35,15 @@ export class StubBlob {
     return new ArrayBuffer(0)
   }
 
+  async bytes(): Promise<Uint8Array<ArrayBuffer>> {
+    return new Uint8Array()
+  }
+
   slice(start?: number, end?: number, contentType?: string): this {
     return this
   }
 
-  stream(): ReadableStream<Uint8Array> {
+  stream(): ReadableStream<Uint8Array<ArrayBuffer>> {
     return new ReadableStream()
   }
 

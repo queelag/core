@@ -38,7 +38,7 @@ export type FetchRequestInitEncode = boolean | FetchEncodeOptions
 
 export type FetchDecodeType = 'array-buffer' | 'blob' | 'form-data' | 'json' | 'text' | 'url-search-params'
 
-export type GenerateRandomStringRandom = (bytes: number) => Uint8Array
+export type GenerateRandomStringRandom = (bytes: number) => Uint8Array<ArrayBuffer>
 
 export namespace KeyOf {
   export type Deep<T> = keyof T

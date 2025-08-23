@@ -33,7 +33,7 @@ export class AracnaBlob {
     blob = args[0]
     json = args[0]
 
-    if (typeof blob.arrayBuffer === 'function') {
+    if (isBlobNotDefined() || blob instanceof Blob) {
       this.blob = blob
       this.id = generateRandomString()
 
@@ -76,7 +76,7 @@ export class AracnaBlob {
   }
 
   /** [MDN Reference](https://developer.mozilla.org/docs/Web/API/Blob/stream) */
-  stream(): ReadableStream<Uint8Array>
+  stream(): ReadableStream<Uint8Array<ArrayBuffer>>
   stream(): NodeJS.ReadableStream
   stream(): any {
     return this.blob.stream()
@@ -124,7 +124,7 @@ export class AracnaBlob {
    * Returns the data contained in the Blob as a Uint8Array.
    * You need to call the "resolveArrayBuffer" or "resolveText" method before accessing this property.
    */
-  get uInt8Array(): Uint8Array {
+  get uInt8Array(): Uint8Array<ArrayBuffer> {
     if (this._arrayBuffer) {
       return new Uint8Array(this._arrayBuffer)
     }

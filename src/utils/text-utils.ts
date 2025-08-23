@@ -15,7 +15,7 @@ export function decodeText(input: AllowSharedBufferSource, options?: TextDecodeO
  *
  * [Aracna Reference](https://aracna.dariosechi.it/core/utils/text)
  */
-export function encodeText(input: string): Uint8Array {
+export function encodeText(input: string): Uint8Array<ArrayBuffer> {
   return getTextEncoder().encode(input)
 }
 

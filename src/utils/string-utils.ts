@@ -25,7 +25,7 @@ import { tc } from '../functions/tc.js'
  * [Aracna Reference](https://aracna.dariosechi.it/core/utils/string)
  */
 export function generateRandomString(options?: GenerateRandomStringOptions): string {
-  let alphabet: string, blacklist: string[], random: (bytes: number) => Uint8Array, separator: string, size: number, string: string
+  let alphabet: string, blacklist: string[], random: (bytes: number) => Uint8Array<ArrayBuffer>, separator: string, size: number, string: string
 
   alphabet = options?.alphabet ?? DEFAULT_GENERATE_RANDOM_STRING_ALPHABET
   blacklist = options?.blacklist ?? []
