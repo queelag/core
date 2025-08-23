@@ -44,7 +44,7 @@ export class Storage {
 
   protected clear_(cleared: void | Error): void | Error {
     if (cleared instanceof Error) return cleared
-    ClassLogger.debug(this.name, 'get', `The storage has been cleared.`)
+    ClassLogger.debug(this.name, 'clear', `The storage has been cleared.`)
   }
 
   clear(): ClearReturn {
@@ -135,7 +135,7 @@ export class Storage {
   ): void | Error {
     if (item instanceof Error) return
 
-    ClassLogger.debug(this.name, 'get', `The item ${key} has been retrieved.`, item)
+    ClassLogger.debug(this.name, 'copy', `The item ${key} has been retrieved.`, item)
 
     if (typeof keys === 'undefined') {
       keys = Object.keys(item)
@@ -147,7 +147,7 @@ export class Storage {
       }
 
       copyObjectProperty(item, k, target)
-      ClassLogger.debug(this.name, 'get', `The ${key} ${String(k)} property has been copied.`, target)
+      ClassLogger.debug(this.name, 'copy', `The ${key} ${String(k)} property has been copied.`, target)
     }
   }
 

@@ -21,6 +21,6 @@ export function deserializeCookie(cookie: string, options?: ParseOptions): Cooki
  *
  * [Aracna Reference](https://aracna.dariosechi.it/core/utils/cookie)
  */
-export function serializeCookie(key: string, value: string, options?: SerializeOptions): string | Error {
-  return tc(() => serialize(key, value, options))
+export function serializeCookie(name: string, value: string, options?: SerializeOptions): string | Error {
+  return tc(() => serialize(name, value, options))
 }

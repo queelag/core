@@ -53,6 +53,8 @@ export interface CookieSource {
   set: (string: string) => void
 }
 
+export interface CookieTarget extends Record<PropertyKey, Primitive> {}
+
 export interface ConfigurationFunctions {
   tc: {
     log: boolean

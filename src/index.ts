@@ -3,7 +3,7 @@ export * from './classes/aracna-blob.js'
 export * from './classes/aracna-file.js'
 export * from './classes/async-storage.js'
 export { Configuration as CoreConfiguration } from './classes/configuration.js'
-export * from './classes/cookie.js'
+export * from './classes/cookie-backup.js'
 export * from './classes/deferred-promise.js'
 export * from './classes/environment.js'
 export * from './classes/event-emitter.js'
@@ -35,10 +35,10 @@ export {
   DEFAULT_QUEUE_DELAY,
   DEFAULT_QUEUE_TIMEOUT,
   DEFAULT_TYPEAHEAD_DEBOUNCE_TIME,
-  DEFAULT_WFP_MS,
-  DEFAULT_WFP_TIMEOUT,
   DEFAULT_WF_MS,
   DEFAULT_WF_TIMEOUT,
+  DEFAULT_WFP_MS,
+  DEFAULT_WFP_TIMEOUT,
   EMPTY_OBJECT,
   LOGGER_LEVELS,
   LOGGER_STATUSES
