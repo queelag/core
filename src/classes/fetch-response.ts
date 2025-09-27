@@ -1,4 +1,4 @@
-import { DecodeJsonOptions, FetchDecodeOptions } from '../definitions/interfaces.js'
+import type { DecodeJsonOptions, FetchDecodeOptions } from '../definitions/interfaces.js'
 import { tcp } from '../functions/tcp.js'
 import { ClassLogger } from '../loggers/class-logger.js'
 import { decodeJSON } from '../utils/json-utils.js'

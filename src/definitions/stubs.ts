@@ -1,26 +1,29 @@
-import { deserializeCookie } from '../utils/cookie-utils.js'
-import { CookieObject } from './interfaces.js'
+import { deserializeCookie, serializeCookieValue } from '../utils/cookie-utils.js'
+import type { CookieObject } from './interfaces.js'
 
 export const STUB_COOKIE_GET: (map: Map<string, string>) => () => string = (map: Map<string, string>) => () =>
   [...map.entries()].map(([k, v]) => [k, v].join('=')).join(';')
 
-export const STUB_COOKIE_SET: (map: Map<string, string>, deserialize?: Function) => (cookie: string) => void =
-  (map: Map<string, string | undefined>, deserialize: Function = deserializeCookie) =>
-  (cookie: string) => {
-    let object: CookieObject | Error
+export const STUB_COOKIE_SET: (map: Map<string, string>) => (cookie: string) => void = (map: Map<string, string>) => (cookie: string) => {
+  let object: CookieObject | Error
 
-    object = deserialize(cookie)
-    if (object instanceof Error) return
+  object = deserializeCookie(cookie)
+  if (object instanceof Error) return
 
-    for (let k in object) {
-      if (cookie.includes('Expires=Thu, 01 Jan 1970 00:00:00 GMT')) {
-        map.delete(k)
-        continue
-      }
+  for (let k in object) {
+    let val: string | Error
 
-      map.set(k, object[k])
+    if (cookie.includes('Expires=Thu, 01 Jan 1970 00:00:00 GMT')) {
+      map.delete(k)
+      continue
     }
+
+    val = serializeCookieValue(object[k])
+    if (val instanceof Error) continue
+
+    map.set(k, val)
   }
+}
 
 export class StubBlob {
   readonly size: number

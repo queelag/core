@@ -1,5 +1,5 @@
-import { FetchRequestInit } from '../definitions/interfaces.js'
-import { FetchRequestInfo } from '../definitions/types.js'
+import type { FetchRequestInit } from '../definitions/interfaces.js'
+import type { FetchRequestInfo } from '../definitions/types.js'
 import { tcp } from '../functions/tcp.js'
 import { ClassLogger } from '../loggers/class-logger.js'
 import { toLoggableNativeFetchRequestInit, toNativeFetchRequestInit } from '../utils/fetch-utils.js'

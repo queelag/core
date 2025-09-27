@@ -1,5 +1,5 @@
-import { StorageItem, StorageTarget } from '../definitions/interfaces.js'
-import { KeyOf } from '../definitions/types.js'
+import type { StorageItem, StorageTarget } from '../definitions/interfaces.js'
+import type { KeyOf } from '../definitions/types.js'
 import { ClassLogger } from '../loggers/class-logger.js'
 import { copyObjectProperty, deleteObjectProperty, hasObjectProperty, pickObjectProperties } from '../utils/object-utils.js'
 
@@ -24,7 +24,7 @@ export class Storage {
   /**
    * The storage instance name.
    */
-  readonly name: string
+  protected readonly name: string
 
   protected readonly _clear: Clear
   protected readonly _get: Get
@@ -54,6 +54,7 @@ export class Storage {
   protected get_<T extends StorageItem>(key: string, item: T | Error): T | Error {
     if (item instanceof Error) return item
     ClassLogger.debug(this.name, 'get', `The item ${key} has been retrieved.`, item)
+
     return item
   }
 
@@ -180,5 +181,12 @@ export class Storage {
     if (has instanceof Error || !has) return false
 
     return this.has_(keys, this._get(key) as T | Error)
+  }
+
+  /**
+   * Returns the name of the instance.
+   */
+  getName(): string {
+    return this.name
   }
 }

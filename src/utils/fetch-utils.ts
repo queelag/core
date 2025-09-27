@@ -1,4 +1,4 @@
-import { FetchRequestInit, ToLoggableFetchRequestInitOptions, ToLoggableNativeFetchRequestInitOptions } from '../definitions/interfaces.js'
+import type { FetchRequestInit, ToLoggableFetchRequestInitOptions, ToLoggableNativeFetchRequestInitOptions } from '../definitions/interfaces.js'
 import { isArrayBufferView } from './array-buffer-utils.js'
 import { isArray } from './array-utils.js'
 import { deserializeFormData } from './form-data-utils.js'

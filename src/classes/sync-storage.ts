@@ -1,4 +1,4 @@
-import { StorageItem, StorageTarget } from '../definitions/interfaces.js'
+import type { StorageItem, StorageTarget } from '../definitions/interfaces.js'
 import { mtc } from '../functions/mtc.js'
 import { Storage } from './storage.js'
 

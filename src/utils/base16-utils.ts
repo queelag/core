@@ -1,5 +1,5 @@
 import { base16 } from 'rfc4648'
-import { DecodeBase16Options, EncodeBase16Options } from '../definitions/interfaces.js'
+import type { DecodeBase16Options, EncodeBase16Options } from '../definitions/interfaces.js'
 
 /**
  * Decodes a base16 string into a Uint8Array.

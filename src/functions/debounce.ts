@@ -1,5 +1,5 @@
 import { DEBOUNCE_MAP } from '../definitions/constants.js'
-import { DebounceMapKey } from '../definitions/types.js'
+import type { DebounceMapKey } from '../definitions/types.js'
 import { FunctionLogger } from '../loggers/function-logger.js'
 
 /**

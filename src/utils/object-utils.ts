@@ -5,14 +5,14 @@ import {
   REGEXP_LEFT_SQUARE_BRACKET_WITHOUT_LEADING_DOT,
   REGEXP_SQUARE_BRACKETS
 } from '../definitions/constants.js'
-import {
+import type {
   CloneObjectOptions,
   DeleteObjectPropertiesOptions,
   FlattenObjectOptions,
   OmitObjectPropertiesOptions,
   PickObjectPropertiesOptions
 } from '../definitions/interfaces.js'
-import { DeleteObjectPropertiesPredicate, KeyOf, OmitObjectPropertiesPredicate, PickObjectPropertiesPredicate } from '../definitions/types.js'
+import type { DeleteObjectPropertiesPredicate, KeyOf, OmitObjectPropertiesPredicate, PickObjectPropertiesPredicate } from '../definitions/types.js'
 import { isArray } from './array-utils.js'
 
 /**

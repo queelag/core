@@ -1,12 +1,13 @@
 import type { FetchResponse } from '../classes/fetch-response.js'
 import type {
+  CookieObjectKey,
+  CookieObjectValue,
   DeserializeURLSearchParamsType,
   EventEmitterEvents,
   FetchDecodeType,
   FetchRequestInitDecode,
   FetchRequestInitEncode,
   JsonEncoding,
-  Primitive,
   QueueFunction,
   QueueProcessStatus,
   Storage,
@@ -44,16 +45,16 @@ export interface CloneObjectOptions {
   deep: boolean
 }
 
-export interface CookieItem extends Record<PropertyKey, Primitive> {}
+export interface CookieItem extends Record<PropertyKey, any> {}
 
-export interface CookieObject extends Record<string, string | undefined> {}
+export interface CookieObject extends Record<CookieObjectKey, CookieObjectValue> {}
 
 export interface CookieSource {
   get: () => string
   set: (string: string) => void
 }
 
-export interface CookieTarget extends Record<PropertyKey, Primitive> {}
+export interface CookieTarget extends Record<PropertyKey, any> {}
 
 export interface ConfigurationFunctions {
   tc: {
@@ -256,6 +257,11 @@ export interface NodeFetch {
 
 export interface OmitObjectPropertiesOptions {
   deep: boolean
+}
+
+export interface ParseNumberOptions {
+  fallback?: number
+  radix?: number
 }
 
 export interface PickObjectPropertiesOptions {

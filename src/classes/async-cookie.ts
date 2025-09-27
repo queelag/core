@@ -1,5 +1,5 @@
-import { CookieItem, CookieTarget } from '../definitions/interfaces.js'
-import { KeyOf } from '../definitions/types.js'
+import type { CookieItem, CookieTarget } from '../definitions/interfaces.js'
+import type { KeyOf } from '../definitions/types.js'
 import { mtcp } from '../functions/mtcp.js'
 import { Cookie } from './cookie.js'
 

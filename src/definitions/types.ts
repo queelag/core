@@ -5,6 +5,9 @@ import type { FetchDecodeOptions, FetchEncodeOptions } from './interfaces.js'
 
 export type AppendSearchParamsToURLParams<T extends URLSearchParamsRecord = URLSearchParamsRecord> = DeserializeURLSearchParamsInit<T>
 
+export type CookieObjectKey = string
+export type CookieObjectValue = bigint | boolean | number | object | string | undefined
+
 export type DebounceMapKey = bigint | number | string | symbol | Function
 export type DebounceMapValue = NodeJS.Timeout | number
 

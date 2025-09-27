@@ -1,12 +1,10 @@
-import { ParseOptions, SerializeOptions } from 'cookie'
 import { DEFAULT_COOKIE_SEPARATOR } from '../definitions/constants.js'
-import { CookieItem, CookieObject, CookieTarget } from '../definitions/interfaces.js'
-import { KeyOf, Primitive } from '../definitions/types.js'
+import type { CookieItem, CookieTarget } from '../definitions/interfaces.js'
+import type { KeyOf } from '../definitions/types.js'
 import { ClassLogger } from '../loggers/class-logger.js'
-import { deserializeCookie, serializeCookie } from '../utils/cookie-utils.js'
-import { copyObjectProperty, deleteObjectProperty, hasObjectProperty, isObject, pickObjectProperties } from '../utils/object-utils.js'
+import { copyObjectProperty, deleteObjectProperty, hasObjectProperty, pickObjectProperties } from '../utils/object-utils.js'
 
-type Clear = (options?: SerializeOptions) => ClearReturn
+type Clear = () => ClearReturn
 type ClearReturn = void | Error | Promise<void | Error>
 
 type CopyReturn = void | Error | Promise<void | Error>
@@ -39,8 +37,9 @@ export class Cookie {
   protected readonly _remove: Remove
   protected readonly _set: Set
 
-  constructor(name: string, clear: Clear, get: Get, has: Has, remove: Remove, set: Set) {
+  constructor(name: string, clear: Clear, get: Get, has: Has, remove: Remove, set: Set, separator: string = DEFAULT_COOKIE_SEPARATOR) {
     this.name = name
+    this.separator = separator
 
     this._clear = clear
     this._get = get
@@ -54,13 +53,14 @@ export class Cookie {
     ClassLogger.debug(this.name, 'clear', `The cookies have been cleared.`)
   }
 
-  clear(options?: SerializeOptions): ClearReturn {
+  clear(): ClearReturn {
     return this.clear_(this._clear() as void | Error)
   }
 
   protected get_<T extends CookieItem>(key: string, item: T | Error): T | Error {
     if (item instanceof Error) return item
     ClassLogger.debug(this.name, 'get', `The item ${key} has been retrieved.`, item)
+
     return item
   }
 
@@ -187,35 +187,6 @@ export class Cookie {
     if (has instanceof Error || !has) return false
 
     return this.has_(keys, this._get(key) as T | Error)
-  }
-
-  protected deserialize(options?: ParseOptions): CookieObject | Error {
-    let cookie: string | Error
-
-    cookie = this._get()
-    if (cookie instanceof Error) return cookie
-
-    return deserializeCookie(cookie, options)
-  }
-
-  protected serialize(key: string, value: string, options?: SerializeOptions): string | Error
-  protected serialize<T extends CookieItem>(key: string, ik: keyof T, value: Primitive, options?: SerializeOptions): string | Error
-  protected serialize<T extends CookieItem>(key: string, ...args: any[]): string | Error {
-    let ik: keyof T | undefined, value: Primitive, options: SerializeOptions | undefined
-
-    ik = isObject(args[1]) ? undefined : args[0]
-    value = isObject(args[1]) ? args[0] : args[1]
-    options = isObject(args[1]) ? args[1] : args[2]
-
-    return serializeCookie(typeof ik === 'undefined' ? key : this.toDocumentCookieName(key, ik), String(value), options)
-  }
-
-  protected toCookieItemKey<T extends CookieItem>(key: string, ik: KeyOf.Shallow<T>): string {
-    return String(ik).replace(key + this.separator, '')
-  }
-
-  protected toDocumentCookieName<T extends CookieItem>(key: string, ik: KeyOf.Shallow<T>): string {
-    return key + this.separator + String(ik)
   }
 
   /**

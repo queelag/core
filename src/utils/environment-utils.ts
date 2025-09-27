@@ -1,4 +1,4 @@
-import { ProcessEnvValue } from '../definitions/types.js'
+import type { ProcessEnvValue } from '../definitions/types.js'
 import { tc } from '../functions/tc.js'
 
 /**

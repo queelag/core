@@ -1,6 +1,6 @@
 import { INTERVAL_MAP } from '../definitions/constants.js'
-import { SetIntervalOptions } from '../definitions/interfaces.js'
-import { IntervalMapKey } from '../definitions/types.js'
+import type { SetIntervalOptions } from '../definitions/interfaces.js'
+import type { IntervalMapKey } from '../definitions/types.js'
 import { tc } from '../functions/tc.js'
 import { UtilLogger } from '../loggers/util-logger.js'
 

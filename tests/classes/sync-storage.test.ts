@@ -1,7 +1,10 @@
 import { beforeEach, describe, expect, it } from 'vitest'
-import { SyncStorage, cloneObject, copyObjectProperty, rne, rv, setObjectProperty } from '../../src'
 import { Configuration } from '../../src/classes/configuration'
+import { SyncStorage } from '../../src/classes/sync-storage'
 import { StorageItem } from '../../src/definitions/interfaces'
+import { rne } from '../../src/functions/rne'
+import { rv } from '../../src/functions/rv'
+import { cloneObject, copyObjectProperty, setObjectProperty } from '../../src/utils/object-utils'
 
 describe('SyncStorage', () => {
   let map: Map<string, any>, storage: SyncStorage

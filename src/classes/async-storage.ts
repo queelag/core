@@ -1,5 +1,5 @@
-import { StorageItem, StorageTarget } from '../definitions/interfaces.js'
-import { KeyOf } from '../definitions/types.js'
+import type { StorageItem, StorageTarget } from '../definitions/interfaces.js'
+import type { KeyOf } from '../definitions/types.js'
 import { mtcp } from '../functions/mtcp.js'
 import { Storage } from './storage.js'
 

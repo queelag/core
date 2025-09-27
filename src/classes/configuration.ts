@@ -1,5 +1,5 @@
 import { DEFAULT_FUNCTIONS_CONFIGURATION } from '../definitions/constants.js'
-import { ConfigurationFunctions } from '../definitions/interfaces.js'
+import type { ConfigurationFunctions } from '../definitions/interfaces.js'
 
 /**
  * The Configuration class is used to configure the library.

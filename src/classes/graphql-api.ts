@@ -1,6 +1,6 @@
-import { GraphQlApiConfig, GraphQlApiRequestBody, GraphQlApiResponse } from '../definitions/interfaces.js'
-import { FetchError } from './fetch-error.js'
-import { FetchResponse } from './fetch-response.js'
+import type { GraphQlApiConfig, GraphQlApiRequestBody, GraphQlApiResponse } from '../definitions/interfaces.js'
+import type { FetchError } from './fetch-error.js'
+import type { FetchResponse } from './fetch-response.js'
 import { RestAPI } from './rest-api.js'
 
 /**

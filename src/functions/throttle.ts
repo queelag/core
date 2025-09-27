@@ -1,5 +1,5 @@
 import { THROTTLE_MAP } from '../definitions/constants.js'
-import { ThrottleMapKey } from '../definitions/types.js'
+import type { ThrottleMapKey } from '../definitions/types.js'
 import { FunctionLogger } from '../loggers/function-logger.js'
 import { tc } from './tc.js'
 

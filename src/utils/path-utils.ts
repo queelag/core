@@ -11,7 +11,7 @@ import {
   CHAR_UPPERCASE_A,
   CHAR_UPPERCASE_Z
 } from '../definitions/constants.js'
-import { JoinPathsOptions } from '../definitions/interfaces.js'
+import type { JoinPathsOptions } from '../definitions/interfaces.js'
 
 function assertArg(path: string) {
   assertPath(path)

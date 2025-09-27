@@ -1,5 +1,5 @@
 import { DEFAULT_HISTORY_SIZE } from '../definitions/constants.js'
-import { HistoryDataTarget } from '../definitions/interfaces.js'
+import type { HistoryDataTarget } from '../definitions/interfaces.js'
 import { ClassLogger } from '../loggers/class-logger.js'
 import { cloneObject } from '../utils/object-utils.js'
 

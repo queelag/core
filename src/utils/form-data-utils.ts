@@ -1,4 +1,4 @@
-import { DeserializeFormDataOptions, SerializeFormDataOptions } from '../definitions/interfaces.js'
+import type { DeserializeFormDataOptions, SerializeFormDataOptions } from '../definitions/interfaces.js'
 import { isBlobDefined, isFileDefined } from './environment-utils.js'
 import { decodeJSON, encodeJSON } from './json-utils.js'
 import { isStringJSON } from './string-utils.js'

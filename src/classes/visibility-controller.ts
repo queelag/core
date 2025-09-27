@@ -1,4 +1,4 @@
-import { VisibilityControllerToggleDelay } from '../definitions/types.js'
+import type { VisibilityControllerToggleDelay } from '../definitions/types.js'
 import { sleep } from '../functions/sleep.js'
 import { ClassLogger } from '../loggers/class-logger.js'
 

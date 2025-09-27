@@ -1,5 +1,5 @@
 import { DEFAULT_STATUS_TRANSFORMER } from '../definitions/constants.js'
-import { StatusTransformer } from '../definitions/types.js'
+import type { StatusTransformer } from '../definitions/types.js'
 import { ClassLogger } from '../loggers/class-logger.js'
 
 /**

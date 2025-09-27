@@ -1,7 +1,7 @@
 import { Typeahead } from '../classes/typeahead.js'
 import { TYPEAHEAD_MAP } from '../definitions/constants.js'
-import { TypeaheadOptions } from '../definitions/interfaces.js'
-import { TypeaheadMapKey, TypeaheadMapValue } from '../definitions/types.js'
+import type { TypeaheadOptions } from '../definitions/interfaces.js'
+import type { TypeaheadMapKey, TypeaheadMapValue } from '../definitions/types.js'
 import { FunctionLogger } from '../loggers/function-logger.js'
 
 /**

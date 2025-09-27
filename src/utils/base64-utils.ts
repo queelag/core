@@ -1,5 +1,5 @@
 import { base64, base64url } from 'rfc4648'
-import { DecodeBase64Options, DecodeBase64URLOptions, EncodeBase64Options, EncodeBase64URLOptions } from '../definitions/interfaces.js'
+import type { DecodeBase64Options, DecodeBase64URLOptions, EncodeBase64Options, EncodeBase64URLOptions } from '../definitions/interfaces.js'
 
 /**
  * Decodes a base64 string into a Uint8Array.

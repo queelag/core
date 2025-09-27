@@ -1,5 +1,5 @@
 import { DEFAULT_HAS_ARRAY_ITEM_PREDICATE, DEFAULT_REMOVE_ARRAY_ITEMS_PREDICATE } from '../definitions/constants.js'
-import { HasArrayItemPredicate, RemoveArrayItemsPredicate } from '../definitions/types.js'
+import type { HasArrayItemPredicate, RemoveArrayItemsPredicate } from '../definitions/types.js'
 
 /**
  * Creates a copy of an array.

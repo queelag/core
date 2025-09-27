@@ -1,5 +1,5 @@
 import { TIMEOUT_MAP } from '../definitions/constants.js'
-import { TimeoutMapKey } from '../definitions/types.js'
+import type { TimeoutMapKey } from '../definitions/types.js'
 import { UtilLogger } from '../loggers/util-logger.js'
 
 /**

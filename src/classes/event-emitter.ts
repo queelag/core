@@ -1,6 +1,6 @@
 import { DEFAULT_EVENT_EMITTER_MAX_LISTENERS } from '../definitions/constants.js'
-import { EventEmitterListener, EventEmitterListenerOptions } from '../definitions/interfaces.js'
-import { EventEmitterEvents } from '../definitions/types.js'
+import type { EventEmitterListener, EventEmitterListenerOptions } from '../definitions/interfaces.js'
+import type { EventEmitterEvents } from '../definitions/types.js'
 import { tc } from '../functions/tc.js'
 import { ClassLogger } from '../loggers/class-logger.js'
 import { removeArrayItems } from '../utils/array-utils.js'

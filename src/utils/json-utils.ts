@@ -1,6 +1,6 @@
-import { REGEXP_FLOAT, REGEXP_INT } from '../definitions/constants.js'
-import { DecodeJsonOptions, EncodeJsonOptions } from '../definitions/interfaces.js'
+import type { DecodeJsonOptions, EncodeJsonOptions } from '../definitions/interfaces.js'
 import { tc } from '../functions/tc.js'
+import { isStringBigInt, isStringFloat, isStringInt } from './string-utils.js'
 
 function decodeJsonReviver(options: DecodeJsonOptions | undefined) {
   return (_: string, value: any): any => {
@@ -20,30 +20,19 @@ function decodeJsonReviver(options: DecodeJsonOptions | undefined) {
       case 'string': {
         let bigint: bigint | Error
 
-        if (options?.castFloatStringToNumber && REGEXP_FLOAT.test(value.trim())) {
-          return Number(value)
+        if (options?.castFloatStringToNumber && isStringFloat(value)) {
+          return parseFloat(value)
         }
 
-        if (options?.castBigIntStringToBigInt || options?.castIntStringToNumber) {
-          let number: Number, isSafeInteger: boolean
+        if (options?.castBigIntStringToBigInt && isStringBigInt(value)) {
+          bigint = tc(() => BigInt(value), false)
+          if (bigint instanceof Error) return value
 
-          if (!REGEXP_INT.test(value.trim())) {
-            return value
-          }
+          return bigint
+        }
 
-          number = Number(value)
-          isSafeInteger = Number.isSafeInteger(number)
-
-          if (options.castIntStringToNumber && isSafeInteger) {
-            return number
-          }
-
-          if (options.castBigIntStringToBigInt && !isSafeInteger) {
-            bigint = tc(() => BigInt(value), false)
-            if (bigint instanceof Error) return value
-
-            return bigint
-          }
+        if (options?.castIntStringToNumber && isStringInt(value)) {
+          return parseInt(value)
         }
 
         return value

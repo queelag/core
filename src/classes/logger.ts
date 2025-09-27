@@ -1,6 +1,6 @@
 import { DEFAULT_LOGGER_SEPARATOR, LOGGER_LEVELS, LOGGER_STATUSES } from '../definitions/constants.js'
 import { AnsiColor } from '../definitions/enums.js'
-import { LoggerLevel, LoggerStatus } from '../definitions/types.js'
+import type { LoggerLevel, LoggerStatus } from '../definitions/types.js'
 import { getProcessEnvKey, isFormDataDefined, isNodeEnvProduction, isNodeEnvTest, isWindowNotDefined } from '../utils/environment-utils.js'
 import { deserializeFormData } from '../utils/form-data-utils.js'
 import { getLoggerAnsiColor } from '../utils/logger-utils.js'

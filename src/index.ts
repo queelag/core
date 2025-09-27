@@ -1,6 +1,7 @@
 export * from './classes/appearence.js'
 export * from './classes/aracna-blob.js'
 export * from './classes/aracna-file.js'
+export * from './classes/async-cookie.js'
 export * from './classes/async-storage.js'
 export { Configuration as CoreConfiguration } from './classes/configuration.js'
 export * from './classes/cookie-backup.js'
@@ -17,9 +18,11 @@ export * from './classes/logger.js'
 export * from './classes/queue.js'
 export * from './classes/rest-api.js'
 export * from './classes/status.js'
+export * from './classes/sync-cookie.js'
 export * from './classes/sync-storage.js'
 export * from './classes/typeahead.js'
 export * from './classes/visibility-controller.js'
+
 export {
   ALPHABET_ALPHANUMERIC,
   ALPHABET_HEX_LOWERCASE,
@@ -102,6 +105,7 @@ export type {
 } from './definitions/interfaces.js'
 export * from './definitions/stubs.js'
 export type * from './definitions/types.js'
+
 export * from './functions/cafs.js'
 export * from './functions/cafsue.js'
 export * from './functions/cafsueof.js'
@@ -125,10 +129,13 @@ export * from './functions/tne.js'
 export * from './functions/typeahead.js'
 export * from './functions/wf.js'
 export * from './functions/wfp.js'
+
 export { ClassLogger as CoreClassLogger } from './loggers/class-logger.js'
 export { FunctionLogger as CoreFunctionLogger } from './loggers/function-logger.js'
 export { UtilLogger as CoreUtilLogger } from './loggers/util-logger.js'
+
 export * from './storages/memory-storage.js'
+
 export * from './utils/array-utils.js'
 export * from './utils/base16-utils.js'
 export * from './utils/base32-utils.js'

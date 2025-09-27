@@ -1,6 +1,6 @@
 import { DEFAULT_TYPEAHEAD_DEBOUNCE_TIME } from '../definitions/constants.js'
-import { TypeaheadEvents } from '../definitions/interfaces.js'
-import { TypeaheadMapKey, TypeaheadPredicate } from '../definitions/types.js'
+import type { TypeaheadEvents } from '../definitions/interfaces.js'
+import type { TypeaheadMapKey, TypeaheadPredicate } from '../definitions/types.js'
 import { debounce } from '../functions/debounce.js'
 import { noop } from '../functions/noop.js'
 import { ClassLogger } from '../loggers/class-logger.js'

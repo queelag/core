@@ -1,6 +1,6 @@
 import { DEFAULT_APPEARENCE_STORAGE_KEY, DEFAULT_APPEARENCE_THEME } from '../definitions/constants.js'
-import { AppearenceEvents, AppearenceInit } from '../definitions/interfaces.js'
-import { Storage, Theme } from '../definitions/types.js'
+import type { AppearenceEvents, AppearenceInit } from '../definitions/interfaces.js'
+import type { Storage, Theme } from '../definitions/types.js'
 import { ClassLogger } from '../loggers/class-logger.js'
 import { MemoryStorage } from '../storages/memory-storage.js'
 import { isWindowNotDefined } from '../utils/environment-utils.js'

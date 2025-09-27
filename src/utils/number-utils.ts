@@ -1,5 +1,5 @@
 import { DEFAULT_GET_NUMBER_PERCENTAGE_MAX, DEFAULT_GET_NUMBER_PERCENTAGE_MIN } from '../definitions/constants.js'
-import { GetLimitedNumberOptions, GetNumberPercentageOptions } from '../definitions/interfaces.js'
+import type { GetLimitedNumberOptions, GetNumberPercentageOptions, ParseNumberOptions } from '../definitions/interfaces.js'
 import { tc } from '../functions/tc.js'
 import { isStringFloat, isStringInt } from './string-utils.js'
 
@@ -148,14 +148,14 @@ export function parseBigInt(value: unknown, fallback?: bigint): bigint {
  *
  * [Aracna Reference](https://aracna.dariosechi.it/core/utils/number)
  */
-export function parseNumber(value: unknown, fallback: number = 0): number {
+export function parseNumber(value: unknown, options?: ParseNumberOptions): number {
   let string: string = String(value)
 
-  if (string.includes('.')) {
-    return isStringFloat(string) ? parseFloat(string) : fallback
+  if (isStringFloat(string)) {
+    return parseFloat(string)
   }
 
-  return isStringInt(string) ? parseInt(string) : fallback
+  return isStringInt(string) ? parseInt(string, options?.radix) : (options?.fallback ?? 0)
 }
 
 /**

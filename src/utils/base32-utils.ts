@@ -1,5 +1,5 @@
 import { base32, base32hex } from 'rfc4648'
-import { DecodeBase32HexOptions, DecodeBase32Options, EncodeBase32HexOptions, EncodeBase32Options } from '../definitions/interfaces.js'
+import type { DecodeBase32HexOptions, DecodeBase32Options, EncodeBase32HexOptions, EncodeBase32Options } from '../definitions/interfaces.js'
 
 /**
  * Decodes a base32 string into a Uint8Array.

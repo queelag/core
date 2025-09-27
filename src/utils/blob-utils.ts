@@ -1,5 +1,5 @@
 import { AracnaBlob } from '../classes/aracna-blob.js'
-import { DeserializeBlobOptions } from '../definitions/interfaces.js'
+import type { DeserializeBlobOptions } from '../definitions/interfaces.js'
 
 /**
  * Deserializes a `Blob` object into an `AracnaBlob` instance.

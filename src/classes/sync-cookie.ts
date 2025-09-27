@@ -1,4 +1,4 @@
-import { CookieItem, CookieTarget } from '../definitions/interfaces.js'
+import type { CookieItem, CookieTarget } from '../definitions/interfaces.js'
 import { mtc } from '../functions/mtc.js'
 import { Cookie } from './cookie.js'
 

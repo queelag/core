@@ -1,4 +1,4 @@
-import { AracnaBlobJSON } from '../definitions/interfaces.js'
+import type { AracnaBlobJSON } from '../definitions/interfaces.js'
 import { StubBlob } from '../definitions/stubs.js'
 import { tcp } from '../functions/tcp.js'
 import { isBlobNotDefined } from '../utils/environment-utils.js'

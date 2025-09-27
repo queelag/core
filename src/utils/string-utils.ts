@@ -8,7 +8,7 @@ import {
   REGEXP_NOT_LOWERCASE_LETTERS_AND_NUMBERS,
   REGEXP_UPPERCASE_LETTERS
 } from '../definitions/constants.js'
-import { GenerateRandomStringOptions } from '../definitions/interfaces.js'
+import type { GenerateRandomStringOptions } from '../definitions/interfaces.js'
 import { tc } from '../functions/tc.js'
 
 /**
@@ -160,12 +160,66 @@ export function getSymbolCaseString(string: string, symbol: string): string {
 }
 
 /**
+ * Checks if a string is a BigInt.
+ *
+ * [Aracna Reference](https://aracna.dariosechi.it/core/utils/string)
+ */
+export function isStringBigInt(string: string): boolean {
+  let int: number
+
+  if (isStringNotInt(string)) {
+    return false
+  }
+
+  int = parseInt(string)
+  if (int.toString() === string) return false
+
+  return typeof tc(() => BigInt(string), false) === 'bigint'
+}
+
+/**
+ * Checks if a string is not a BigInt.
+ *
+ * [Aracna Reference](https://aracna.dariosechi.it/core/utils/string)
+ */
+export function isStringNotBigInt(string: string): boolean {
+  return !isStringBigInt(string)
+}
+
+/**
+ * Checks if a string is a boolean.
+ *
+ * [Aracna Reference](https://aracna.dariosechi.it/core/utils/string)
+ */
+export function isStringBoolean(string: string): boolean {
+  return [String(false), String(true)].includes(string)
+}
+
+/**
+ * Checks if a string is not a boolean.
+ *
+ * [Aracna Reference](https://aracna.dariosechi.it/core/utils/string)
+ */
+export function isStringNotBoolean(string: string): boolean {
+  return !isStringBoolean(string)
+}
+
+/**
  * Checks if a string is a float.
  *
  * [Aracna Reference](https://aracna.dariosechi.it/core/utils/string)
  */
 export function isStringFloat(string: string): boolean {
-  return !isNaN(parseFloat(string))
+  return !Number.isSafeInteger(string) && !isNaN(parseFloat(string))
+}
+
+/**
+ * Checks if a string is not a float.
+ *
+ * [Aracna Reference](https://aracna.dariosechi.it/core/utils/string)
+ */
+export function isStringNotFloat(string: string): boolean {
+  return !isStringFloat(string)
 }
 
 /**
@@ -174,11 +228,34 @@ export function isStringFloat(string: string): boolean {
  * [Aracna Reference](https://aracna.dariosechi.it/core/utils/string)
  */
 export function isStringInt(string: string): boolean {
-  if (string.includes('.')) {
-    return false
-  }
+  return Number.isSafeInteger(string)
+}
 
-  return !isNaN(parseInt(string))
+/**
+ * Checks if a string is not an integer.
+ *
+ * [Aracna Reference](https://aracna.dariosechi.it/core/utils/string)
+ */
+export function isStringNotInt(string: string): boolean {
+  return !isStringInt(string)
+}
+
+/**
+ * Checks if a string is a number.
+ *
+ * [Aracna Reference](https://aracna.dariosechi.it/core/utils/string)
+ */
+export function isStringNumber(string: string): boolean {
+  return !isNaN(Number(string))
+}
+
+/**
+ * Checks if a string is not a number.
+ *
+ * [Aracna Reference](https://aracna.dariosechi.it/core/utils/string)
+ */
+export function isStringNotNumber(string: string): boolean {
+  return !isStringNumber(string)
 }
 
 /**

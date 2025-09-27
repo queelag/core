@@ -1,4 +1,4 @@
-import {
+import type {
   AppendSearchParamsToURLParams,
   DeserializeURLSearchParamsInit,
   DeserializeURLSearchParamsType,

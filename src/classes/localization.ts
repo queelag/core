@@ -3,8 +3,8 @@ import {
   REGEXP_VARIABLE_INSIDE_CURLY_BRACKETS,
   SORT_REGEXP_VARIABLE_INSIDE_CURLY_BRACKETS_MATCHES_COMPARE_FN
 } from '../definitions/constants.js'
-import { LocalizationInit, LocalizationPack, LocalizationVariables } from '../definitions/interfaces.js'
-import { Storage } from '../definitions/types.js'
+import type { LocalizationInit, LocalizationPack, LocalizationVariables } from '../definitions/interfaces.js'
+import type { Storage } from '../definitions/types.js'
 import { ClassLogger } from '../loggers/class-logger.js'
 import { MemoryStorage } from '../storages/memory-storage.js'
 import { isArray } from '../utils/array-utils.js'

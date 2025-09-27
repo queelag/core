@@ -1,5 +1,5 @@
 import { AracnaFile } from '../classes/aracna-file.js'
-import { DeserializeFileOptions } from '../definitions/interfaces.js'
+import type { DeserializeFileOptions } from '../definitions/interfaces.js'
 
 /**
  * Deserializes a `File` object into an `AracnaFile` instance.
