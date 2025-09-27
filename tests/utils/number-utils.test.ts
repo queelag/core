@@ -80,8 +80,8 @@ describe('Number Utils', () => {
   it('parses int and float', () => {
     expect(parseNumber('0')).toBe(0)
     expect(parseNumber('0.1')).toBe(0.1)
-    expect(parseNumber('hello', 0)).toBe(0)
-    expect(parseNumber('hello.', 0.1)).toBe(0.1)
+    expect(parseNumber('hello', { fallback: 0 })).toBe(0)
+    expect(parseNumber('hello.', { fallback: 0.1 })).toBe(0.1)
   })
 
   it('gets a number with a fixed amount of decimals', () => {

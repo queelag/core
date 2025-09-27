@@ -63,8 +63,10 @@ describe('String Utils', () => {
   })
 
   it('checks if string is a float', () => {
+    expect(isStringFloat('0')).toBeFalsy()
+    expect(isStringFloat('5.')).toBeFalsy()
+    expect(isStringFloat('.5')).toBeTruthy()
     expect(isStringFloat('0.5')).toBeTruthy()
-    expect(isStringFloat('0')).toBeTruthy()
     expect(isStringFloat('')).toBeFalsy()
   })
 
@@ -97,6 +99,7 @@ describe('String Utils', () => {
   })
 
   it('generates random string with a custom random bytes generator', () => {
+    // @ts-expect-error
     expect(generateRandomString({ random: (bytes: number) => randomBytes(bytes) })).toMatch(/[a-zA-Z0-9]{32}/)
   })
 

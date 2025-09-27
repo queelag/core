@@ -65,13 +65,6 @@ describe('JSON Utils', () => {
     if (decoded instanceof Error) throw decoded
 
     expect(decoded).toStrictEqual({ ...ref, float_str: 0.1 })
-
-    ref.float_str = '1.'
-
-    decoded = decodeJSON(encodeJSON(ref, {}, '{}'), { castFloatStringToNumber: true })
-    if (decoded instanceof Error) throw decoded
-
-    expect(decoded).toStrictEqual({ ...ref, float_str: 1 })
   })
 
   it('decodes JSON casting int strings to number', () => {
@@ -84,6 +77,13 @@ describe('JSON Utils', () => {
     if (decoded instanceof Error) throw decoded
 
     expect(decoded).toStrictEqual({ ...ref, int_str: Number(ref.int_str) })
+
+    ref.int_str = '1.'
+
+    decoded = decodeJSON(encodeJSON(ref, {}, '{}'), { castIntStringToNumber: true })
+    if (decoded instanceof Error) throw decoded
+
+    expect(decoded).toStrictEqual({ ...ref, int_str: 1 })
   })
 
   it('decodes JSON casting unsafe int to bigint', () => {

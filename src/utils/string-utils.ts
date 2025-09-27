@@ -165,14 +165,9 @@ export function getSymbolCaseString(string: string, symbol: string): string {
  * [Aracna Reference](https://aracna.dariosechi.it/core/utils/string)
  */
 export function isStringBigInt(string: string): boolean {
-  let int: number
-
-  if (isStringNotInt(string)) {
+  if (isStringInt(string)) {
     return false
   }
-
-  int = parseInt(string)
-  if (int.toString() === string) return false
 
   return typeof tc(() => BigInt(string), false) === 'bigint'
 }
@@ -210,7 +205,7 @@ export function isStringNotBoolean(string: string): boolean {
  * [Aracna Reference](https://aracna.dariosechi.it/core/utils/string)
  */
 export function isStringFloat(string: string): boolean {
-  return !Number.isSafeInteger(string) && !isNaN(parseFloat(string))
+  return isStringNotInt(string) && isStringNotBigInt(string) && !isNaN(parseFloat(string))
 }
 
 /**
@@ -228,7 +223,7 @@ export function isStringNotFloat(string: string): boolean {
  * [Aracna Reference](https://aracna.dariosechi.it/core/utils/string)
  */
 export function isStringInt(string: string): boolean {
-  return Number.isSafeInteger(string)
+  return Number.isSafeInteger(parseFloat(string))
 }
 
 /**

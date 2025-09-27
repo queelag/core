@@ -1,16 +1,7 @@
 import { describe, expect, test } from 'vitest'
-import { STUB_COOKIE_GET, STUB_COOKIE_SET, STUB_STORAGE, STUB_TEXT_DECODER, STUB_TEXT_ENCODER } from '../../src/definitions/stubs'
+import { STUB_STORAGE, STUB_TEXT_DECODER, STUB_TEXT_ENCODER } from '../../src/definitions/stubs'
 
 describe('Stubs', () => {
-  test('cookie', () => {
-    let get: Function, set: Function
-
-    get = STUB_COOKIE_GET(new Map())
-    set = STUB_COOKIE_SET(new Map(), () => new Error())
-
-    expect(set('person')).toBeUndefined()
-  })
-
   test('storage', () => {
     let storage: Storage
 
