@@ -1,35 +1,35 @@
 import { DEFAULT_COOKIE_SEPARATOR } from '../definitions/constants.js'
-import type { CookieItem, CookieTarget } from '../definitions/interfaces.js'
+import type { CookieItem, CookieOptions, CookieTarget } from '../definitions/interfaces.js'
 import type { KeyOf } from '../definitions/types.js'
 import { ClassLogger } from '../loggers/class-logger.js'
-import { copyObjectProperty, deleteObjectProperty, hasObjectProperty, pickObjectProperties } from '../utils/object-utils.js'
+import { copyObjectProperty, hasObjectProperty, pickObjectProperties } from '../utils/object-utils.js'
 
-type Clear = () => ClearReturn
+type Clear = <U>(options?: U) => ClearReturn
 type ClearReturn = void | Error | Promise<void | Error>
 
 type CopyReturn = void | Error | Promise<void | Error>
 
-type Get = <T extends CookieItem>(key: string) => GetReturn<T>
+type Get = <T extends CookieItem, U>(key: string, options?: U) => GetReturn<T>
 type GetReturn<T extends CookieItem> = T | Error | Promise<T | Error>
 
-type Has = (key: string) => HasReturn
+type Has = <U>(key: string, options?: U) => HasReturn
 type HasReturn = boolean | Error | Promise<boolean | Error>
 
-type Remove = (key: string) => RemoveReturn
+type Remove = <U>(key: string, options?: U) => RemoveReturn
 type RemoveReturn = void | Error | Promise<void | Error>
 
-type Set = <T extends CookieItem>(key: string, item: T) => SetReturn
+type Set = <T extends CookieItem, U>(key: string, item: T, options?: U) => SetReturn
 type SetReturn = void | Error | Promise<void | Error>
 
-export class Cookie {
+export class Cookie<Options extends CookieOptions> {
   /**
    * The cookie instance name.
    */
   protected readonly name: string
   /**
-   * The cookie separator used to separate the cookie name from the cookie item key.
+   * The cookie options.
    */
-  protected separator: string = DEFAULT_COOKIE_SEPARATOR
+  protected options?: Options
 
   protected readonly _clear: Clear
   protected readonly _get: Get
@@ -37,9 +37,9 @@ export class Cookie {
   protected readonly _remove: Remove
   protected readonly _set: Set
 
-  constructor(name: string, clear: Clear, get: Get, has: Has, remove: Remove, set: Set, separator: string = DEFAULT_COOKIE_SEPARATOR) {
+  constructor(name: string, clear: Clear, get: Get, has: Has, remove: Remove, set: Set, options?: Options) {
     this.name = name
-    this.separator = separator
+    this.options = options
 
     this._clear = clear
     this._get = get
@@ -53,8 +53,8 @@ export class Cookie {
     ClassLogger.debug(this.name, 'clear', `The cookies have been cleared.`)
   }
 
-  clear(): ClearReturn {
-    return this.clear_(this._clear() as void | Error)
+  clear(options?: unknown): ClearReturn {
+    return this.clear_(this._clear(options) as void | Error)
   }
 
   protected get_<T extends CookieItem>(key: string, item: T | Error): T | Error {
@@ -64,8 +64,8 @@ export class Cookie {
     return item
   }
 
-  get<T extends CookieItem>(key: string): GetReturn<T> {
-    return this.get_(key, this._get(key) as T | Error)
+  get<T extends CookieItem>(key: string, options?: unknown): GetReturn<T> {
+    return this.get_(key, this._get(key, options) as T | Error)
   }
 
   protected remove_(key: string, removed: void | Error): void | Error {
@@ -73,33 +73,8 @@ export class Cookie {
     ClassLogger.debug(this.name, 'remove', `The item ${key} has been removed.`)
   }
 
-  protected remove__<T extends CookieItem>(key: string, keys: KeyOf.Deep<T>[], item: T | Error): T | undefined {
-    if (item instanceof Error) return
-
-    for (let k of keys) {
-      deleteObjectProperty(item, k)
-      ClassLogger.debug(this.name, 'remove', `The key ${String(k)} has been removed from the item ${key}.`, keys)
-    }
-
-    return item
-  }
-
-  protected remove___<T extends CookieItem>(key: string, item: T, set: void | Error): void | Error {
-    if (set instanceof Error) return set
-    ClassLogger.debug(this.name, 'remove', `The item ${key} has been set.`, item)
-  }
-
-  remove<T extends CookieItem>(key: string, keys?: KeyOf.Deep<T>[]): RemoveReturn {
-    let item: T | undefined
-
-    if (typeof keys === 'undefined') {
-      return this.remove_(key, this._remove(key) as void | Error)
-    }
-
-    item = this.remove__(key, keys, this._get(key) as T | Error)
-    if (typeof item === 'undefined') return
-
-    return this.remove___(key, item, this._set(key, item) as void | Error)
+  remove(key: string, options?: unknown): RemoveReturn {
+    return this.remove_(key, this._remove(key, options) as void | Error)
   }
 
   protected set_<T extends CookieItem>(key: string, item: T | Error, set: void | Error): void | Error {
@@ -121,17 +96,17 @@ export class Cookie {
     return current
   }
 
-  set<T extends CookieItem>(key: string, item: T, keys?: KeyOf.Deep<T>[]): SetReturn {
+  set<T extends CookieItem>(key: string, item: T, keys?: KeyOf.Deep<T>[], options?: unknown): SetReturn {
     let current: T | Error
 
     if (typeof keys === 'undefined') {
-      return this.set_(key, item, this._set(key, item) as void | Error)
+      return this.set_(key, item, this._set(key, item, options) as void | Error)
     }
 
     current = this.set__(item, keys, this._get(key) as T | Error)
     if (current instanceof Error) return current
 
-    return this.set_(key, item, this._set(key, current) as void | Error)
+    return this.set_(key, item, this._set(key, current, options) as void | Error)
   }
 
   protected copy_<T1 extends CookieItem, T2 extends CookieTarget, T extends T1 & T2>(
@@ -158,8 +133,8 @@ export class Cookie {
     }
   }
 
-  copy<T1 extends CookieItem, T2 extends CookieTarget, T extends T1 & T2>(key: string, target: T2, keys?: KeyOf.Deep<T>[]): CopyReturn {
-    return this.copy_(key, target, keys, this._get(key))
+  copy<T1 extends CookieItem, T2 extends CookieTarget, T extends T1 & T2>(key: string, target: T2, keys?: KeyOf.Deep<T>[], options?: unknown): CopyReturn {
+    return this.copy_(key, target, keys, this._get(key, options))
   }
 
   protected has_<T extends CookieItem>(keys: KeyOf.Deep<T>[] | undefined, item: T | Error): boolean {
@@ -180,13 +155,13 @@ export class Cookie {
     return true
   }
 
-  has<T extends CookieItem>(key: string, keys?: KeyOf.Deep<T>[]): HasReturn {
+  has<T extends CookieItem>(key: string, keys?: KeyOf.Deep<T>[], options?: unknown): HasReturn {
     let has: boolean | Error
 
-    has = this._has(key) as boolean | Error
+    has = this._has(key, options) as boolean | Error
     if (has instanceof Error || !has) return false
 
-    return this.has_(keys, this._get(key) as T | Error)
+    return this.has_(keys, this._get(key, options) as T | Error)
   }
 
   /**
@@ -200,13 +175,20 @@ export class Cookie {
    * Returns the separator used to separate the cookie name from the cookie item key.
    */
   getSeparator(): string {
-    return this.separator
+    return this.options?.separator ?? DEFAULT_COOKIE_SEPARATOR
   }
 
   /**
-   * Sets the separator used to separate the cookie name from the cookie item key.
+   * Returns the options for the cookie.
    */
-  setSeparator(separator: string): void {
-    this.separator = separator
+  getOptions(): Options | undefined {
+    return this.options
+  }
+
+  /**
+   * Sets the options for the cookie.
+   */
+  setOptions(options: Options): void {
+    this.options = options
   }
 }

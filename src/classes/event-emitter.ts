@@ -1,6 +1,6 @@
 import { DEFAULT_EVENT_EMITTER_MAX_LISTENERS } from '../definitions/constants.js'
 import type { EventEmitterListener, EventEmitterListenerOptions } from '../definitions/interfaces.js'
-import type { EventEmitterEvents } from '../definitions/types.js'
+import type { EventEmitterEvents, KeyOf } from '../definitions/types.js'
 import { tc } from '../functions/tc.js'
 import { ClassLogger } from '../loggers/class-logger.js'
 import { removeArrayItems } from '../utils/array-utils.js'
@@ -53,7 +53,7 @@ export class EventEmitter<T extends EventEmitterEvents = EventEmitterEvents> {
   /**
    * Returns the names of the events that have listeners.
    */
-  getEventNames(): (keyof T)[] {
+  getEventNames(): KeyOf.Shallow<T>[] {
     return this.listeners.map((listener) => listener.name)
   }
 

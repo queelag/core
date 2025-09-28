@@ -1,3 +1,4 @@
+import type { ParseOptions, SerializeOptions } from 'cookie'
 import type { FetchResponse } from '../classes/fetch-response.js'
 import type {
   CookieObjectKey,
@@ -49,6 +50,10 @@ export interface CookieItem extends Record<PropertyKey, any> {}
 
 export interface CookieObject extends Record<CookieObjectKey, CookieObjectValue> {}
 
+export interface CookieOptions {
+  separator?: string
+}
+
 export interface CookieSource {
   get: () => string
   set: (string: string) => void
@@ -94,6 +99,8 @@ export interface DeserializeBlobOptions {
   resolveArrayBuffer?: boolean
   resolveText?: boolean
 }
+
+export interface DeserializeCookieOptions extends ParseOptions {}
 
 export interface DeserializeFileOptions extends DeserializeBlobOptions {}
 
@@ -275,6 +282,8 @@ export interface RestApiConfig<T = unknown> extends FetchRequestInit<T> {
     whitelist?: string[]
   }
 }
+
+export interface SerializeCookieOptions extends SerializeOptions {}
 
 export interface SerializeFormDataOptions {
   json?: EncodeJsonOptions

@@ -4,19 +4,33 @@ import { SyncCookie } from '../../src/classes/sync-cookie'
 import { CookieItem } from '../../src/definitions/interfaces'
 import { rne } from '../../src/functions/rne'
 import { rv } from '../../src/functions/rv'
-import { cloneObject, copyObjectProperty, setObjectProperty } from '../../src/utils/object-utils'
+import { cloneObject, copyObjectProperty, omitObjectProperties, setObjectProperty } from '../../src/utils/object-utils'
 
 describe('SyncCookie', () => {
   let map: Map<string, any>, cookie: SyncCookie
 
   beforeEach(() => {
-    map = new Map()
+    map = new Map<string, CookieItem>()
     cookie = new SyncCookie(
       'TestCookie',
       () => map.clear(),
       (key: string) => map.get(key),
       (key: string) => map.has(key),
-      (key: string) => rv(() => map.delete(key)),
+      (key: string, keys?: any[]) => {
+        if (keys?.length) {
+          let item: CookieItem | null
+
+          item = map.get(key)
+          if (!item) return
+
+          item = omitObjectProperties(item, keys)
+          map.set(key, item)
+
+          return
+        }
+
+        return rv(() => map.delete(key))
+      },
       (key: string, value: CookieItem) => rv(() => map.set(key, value))
     )
   })
@@ -93,10 +107,6 @@ describe('SyncCookie', () => {
 
     setObjectProperty(cookie, '_remove', rne)
     expect(cookie.remove('person')).toBeInstanceOf(Error)
-    setObjectProperty(cookie, '_set', rne)
-    expect(cookie.remove('person', [])).toBeUndefined()
-    setObjectProperty(cookie, '_get', rne)
-    expect(cookie.remove('person', [])).toBeUndefined()
     copyObjectProperty(backup, '_get', cookie)
     copyObjectProperty(backup, '_remove', cookie)
     copyObjectProperty(backup, '_set', cookie)

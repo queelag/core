@@ -4,7 +4,6 @@ export * from './classes/aracna-file.js'
 export * from './classes/async-cookie.js'
 export * from './classes/async-storage.js'
 export { Configuration as CoreConfiguration } from './classes/configuration.js'
-export * from './classes/cookie-backup.js'
 export * from './classes/deferred-promise.js'
 export * from './classes/environment.js'
 export * from './classes/event-emitter.js'
@@ -33,6 +32,8 @@ export {
   ALPHABET_NUMBERS,
   ALPHABET_UPPERCASE,
   DEFAULT_APPEARENCE_STORAGE_KEY,
+  DEFAULT_APPEARENCE_THEME,
+  DEFAULT_COOKIE_SEPARATOR,
   DEFAULT_LOCALIZATION_STORAGE_KEY,
   DEFAULT_QUEUE_CONCURRENCY,
   DEFAULT_QUEUE_DELAY,
@@ -47,62 +48,7 @@ export {
   LOGGER_STATUSES
 } from './definitions/constants.js'
 export { AnsiColor, LoggerName as CoreLoggerName, StorageName as CoreStorageName } from './definitions/enums.js'
-export type {
-  AppearenceEvents,
-  AppearenceInit,
-  AracnaBlobJSON,
-  AracnaFileJSON,
-  CloneObjectOptions,
-  CookieItem,
-  CookieObject,
-  CookieSource,
-  ConfigurationFunctions as CoreConfigurationFunctions,
-  DecodeBase16Options,
-  DecodeBase32HexOptions,
-  DecodeBase32Options,
-  DecodeBase64Options,
-  DecodeBase64URLOptions,
-  DecodeJsonOptions,
-  DeleteObjectPropertiesOptions,
-  DeserializeBlobOptions,
-  DeserializeFileOptions,
-  EncodeBase16Options,
-  EncodeBase32HexOptions,
-  EncodeBase32Options,
-  EncodeBase64Options,
-  EncodeBase64URLOptions,
-  EncodeJsonOptions,
-  EventEmitterListener,
-  EventEmitterListenerOptions,
-  FetchRequestInit,
-  FlattenObjectOptions,
-  GenerateRandomStringOptions,
-  GetLimitedNumberOptions,
-  GetNumberPercentageOptions,
-  GraphQlApiConfig,
-  GraphQlApiRequestBody,
-  GraphQlApiResponse,
-  GraphQlApiResponseBody,
-  GraphQlApiResponseBodyError,
-  GraphQlApiResponseBodyErrorLocation,
-  HistoryDataTarget,
-  LocalizationInit,
-  LocalizationPack,
-  LocalizationPackData,
-  LocalizationVariables,
-  NodeFetch,
-  OmitObjectPropertiesOptions,
-  PickObjectPropertiesOptions,
-  QueueEvents,
-  QueueOptions,
-  QueueProcess,
-  RestApiConfig,
-  StorageItem,
-  StorageTarget,
-  TypeaheadEvents,
-  TypeaheadOptions,
-  WithWriteMode
-} from './definitions/interfaces.js'
+export type * from './definitions/interfaces.js'
 export * from './definitions/stubs.js'
 export type * from './definitions/types.js'
 
