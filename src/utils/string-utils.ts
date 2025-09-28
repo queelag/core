@@ -165,11 +165,16 @@ export function getSymbolCaseString(string: string, symbol: string): string {
  * [Aracna Reference](https://aracna.dariosechi.it/core/utils/string)
  */
 export function isStringBigInt(string: string): boolean {
+  let bigint: bigint | TypeError
+
   if (isStringInt(string)) {
     return false
   }
 
-  return typeof tc(() => BigInt(string), false) === 'bigint'
+  bigint = tc(() => BigInt(string), false)
+  if (bigint instanceof Error) return false
+
+  return bigint.toString() === string
 }
 
 /**
