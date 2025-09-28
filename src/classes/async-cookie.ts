@@ -46,8 +46,8 @@ export class AsyncCookie<
    * Removes an item from the cookies.
    * Optionally you can specify the keys of the item that you want to remove, if you don't specify any key the whole item will be removed.
    */
-  async remove(key: string, options?: RemoveOptions): Promise<void | Error> {
-    return this.remove_(key, await this._remove(key, options))
+  async remove<T extends CookieItem>(key: string, keys?: KeyOf.Shallow<T>[], options?: RemoveOptions): Promise<void | Error> {
+    return this.remove_(key, await this._remove(key, keys, options))
   }
 
   /**

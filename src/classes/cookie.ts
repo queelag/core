@@ -15,7 +15,7 @@ type GetReturn<T extends CookieItem> = T | Error | Promise<T | Error>
 type Has = <U>(key: string, options?: U) => HasReturn
 type HasReturn = boolean | Error | Promise<boolean | Error>
 
-type Remove = <U>(key: string, options?: U) => RemoveReturn
+type Remove = <T extends CookieItem, U>(key: string, keys?: KeyOf.Shallow<T>[], options?: U) => RemoveReturn
 type RemoveReturn = void | Error | Promise<void | Error>
 
 type Set = <T extends CookieItem, U>(key: string, item: T, options?: U) => SetReturn
@@ -73,8 +73,8 @@ export class Cookie<Options extends CookieOptions> {
     ClassLogger.debug(this.name, 'remove', `The item ${key} has been removed.`)
   }
 
-  remove(key: string, options?: unknown): RemoveReturn {
-    return this.remove_(key, this._remove(key, options) as void | Error)
+  remove<T extends CookieItem>(key: string, keys?: KeyOf.Shallow<T>[], options?: unknown): RemoveReturn {
+    return this.remove_(key, this._remove(key, keys, options) as void | Error)
   }
 
   protected set_<T extends CookieItem>(key: string, item: T | Error, set: void | Error): void | Error {

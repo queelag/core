@@ -46,8 +46,8 @@ export class SyncCookie<
    * Removes an item from the cookies.
    * Optionally you can specify the keys of the item that you want to remove, if you don't specify any key the whole item will be removed.
    */
-  remove<T extends CookieItem>(key: string, options?: RemoveOptions): void | Error {
-    return super.remove(key, options) as void | Error
+  remove<T extends CookieItem>(key: string, keys?: KeyOf.Shallow<T>[], options?: RemoveOptions): void | Error {
+    return super.remove(key, keys, options) as void | Error
   }
 
   /**
