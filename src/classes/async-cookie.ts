@@ -22,7 +22,7 @@ export class AsyncCookie<
     clear: (options?: ClearOptions) => Promise<void>,
     get: <T extends CookieItem>(key: string, options?: GetOptions) => Promise<T>,
     has: (key: string, options?: HasOptions) => Promise<boolean>,
-    remove: (key: string, options?: RemoveOptions) => Promise<void>,
+    remove: <T extends CookieItem>(key: string, keys?: KeyOf.Shallow<T>[], options?: RemoveOptions) => Promise<void>,
     set: <T extends CookieItem>(key: string, item: T, options?: SetOptions) => Promise<void>
   ) {
     super(name, mtcp(clear), mtcp(get), mtcp(has), mtcp(remove), mtcp(set))
