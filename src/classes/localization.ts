@@ -15,7 +15,7 @@ import { getObjectProperty, hasObjectProperty, mergeObjects } from '../utils/obj
  *
  * - The language will persist in the storage, by default it will be stored in memory.
  * - The path of the localized string supports dot notation, for example: 'path.to.the.value'.
- * - The variables support dot notation as well and can be used inside the localized string, for example: 'Hello {name}!'.
+ * - The variables support dot notation as well and can be used inside the localized string, for example: 'Hello \{name\}!'.
  * - The instance also supports default variables, which can be overridden by the variables passed to the get method.
  *
  * [Aracna Reference](https://aracna.dariosechi.it/core/classes/localization)

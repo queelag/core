@@ -11,27 +11,27 @@ describe('Throttle', () => {
 
   it('works with fn as key', async () => {
     throttle(fn, 10)
-    expect(fn).toBeCalledTimes(1)
+    expect(fn).toHaveBeenCalledTimes(1)
 
     throttle(fn, 10)
-    expect(fn).toBeCalledTimes(1)
+    expect(fn).toHaveBeenCalledTimes(1)
 
     await sleep(10)
 
     throttle(fn, 10)
-    expect(fn).toBeCalledTimes(2)
+    expect(fn).toHaveBeenCalledTimes(2)
   })
 
   it('works with name as key', async () => {
     throttle(fn, 10, key)
-    expect(fn).toBeCalledTimes(1)
+    expect(fn).toHaveBeenCalledTimes(1)
 
     throttle(fn, 10, key)
-    expect(fn).toBeCalledTimes(1)
+    expect(fn).toHaveBeenCalledTimes(1)
 
     await sleep(10)
 
     throttle(fn, 10, key)
-    expect(fn).toBeCalledTimes(2)
+    expect(fn).toHaveBeenCalledTimes(2)
   })
 })

@@ -1,11 +1,11 @@
-import { beforeAll, describe, expect, it } from 'vitest'
+import { beforeAll, beforeEach, describe, expect, it } from 'vitest'
 import { AracnaFile } from '../../src'
 import { AracnaFileJSON } from '../../src/definitions/interfaces'
 
 describe('AracnaFile', () => {
   let file: File, afile: AracnaFile
 
-  beforeAll(async () => {
+  beforeEach(async () => {
     file = new File(['hello'], 'file', { lastModified: Date.now(), type: 'text/plain' })
     afile = new AracnaFile(file)
   })
@@ -48,5 +48,19 @@ describe('AracnaFile', () => {
     expect(afile2.type).toBe(afile.type)
     expect(afile2.uInt8Array).toStrictEqual(afile.uInt8Array)
     expect(json.webkitRelativePath).toBeUndefined()
+  })
+
+  it('supports empty instance', () => {
+    let f: typeof File
+
+    expect(AracnaFile.EMPTY).toBeInstanceOf(AracnaFile)
+
+    f = global.File
+    // @ts-expect-error
+    delete global.File
+
+    expect(AracnaFile.EMPTY).toBeInstanceOf(AracnaFile)
+
+    global.File = f
   })
 })

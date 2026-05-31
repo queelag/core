@@ -2,6 +2,7 @@ import { type ParseOptions, type SerializeOptions, parse, serialize } from 'cook
 import type { CookieObject } from '../definitions/interfaces.js'
 import type { CookieObjectValue } from '../definitions/types.js'
 import { tc } from '../functions/tc.js'
+import { isArray } from './array-utils.js'
 import { isPlainObject } from './object-utils.js'
 import { isStringBigInt, isStringBoolean, isStringJSON, isStringNumber } from './string-utils.js'
 
@@ -9,7 +10,7 @@ import { isStringBigInt, isStringBoolean, isStringJSON, isStringNumber } from '.
  * Parse a cookie header.
  *
  * Parse the given cookie header string into an object
- * The object has the various cookies as keys(names) => values
+ * The object has the various cookies as keys(names) =\> values
  *
  * [Aracna Reference](https://aracna.dariosechi.it/core/utils/cookie)
  */
@@ -83,7 +84,7 @@ export function serializeCookieValue(value: unknown): string | Error {
     case 'symbol':
       return new Error(`The value cannot be a ${typeof value}.`)
     case 'object':
-      if (isPlainObject(value)) {
+      if (isArray(value) || isPlainObject(value)) {
         return JSON.stringify(value)
       }
 

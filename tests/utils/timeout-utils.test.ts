@@ -19,7 +19,7 @@ describe('Timeout Utils', () => {
     expect(isTimeoutUnset(fn)).toBeFalsy()
 
     await sleep(10)
-    expect(fn).toBeCalledTimes(1)
+    expect(fn).toHaveBeenCalledTimes(1)
 
     fn.mockReset()
 
@@ -41,7 +41,7 @@ describe('Timeout Utils', () => {
     expect(isTimeoutUnset(key)).toBeFalsy()
 
     await sleep(10)
-    expect(fn).toBeCalledTimes(1)
+    expect(fn).toHaveBeenCalledTimes(1)
 
     fn.mockReset()
 

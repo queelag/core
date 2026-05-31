@@ -1,4 +1,4 @@
-import { beforeAll, describe, expect, it } from 'vitest'
+import { beforeAll, beforeEach, describe, expect, it } from 'vitest'
 import { AracnaBlob } from '../../src'
 import { AracnaBlobJSON } from '../../src/definitions/interfaces'
 import { encodeText } from '../../src/utils/text-utils'
@@ -6,12 +6,26 @@ import { encodeText } from '../../src/utils/text-utils'
 describe('AracnaBlob', () => {
   let blob: Blob, ablob: AracnaBlob
 
-  beforeAll(async () => {
+  beforeEach(async () => {
     blob = new Blob(['hello'], { type: 'text/plain' })
     ablob = new AracnaBlob(blob)
   })
 
   it('constructs from blob', () => {
+    blob = new Blob([])
+    ablob = new AracnaBlob(blob)
+
+    expect(ablob.arrayBuffer).toStrictEqual(new ArrayBuffer(0))
+    expect(ablob.blob).toBe(blob)
+    expect(ablob.id).toHaveLength(32)
+    expect(ablob.size).toBe(0)
+    expect(ablob.text).toBe('')
+    expect(ablob.type).toBe('application/octet-stream')
+    expect(ablob.uInt8Array).toStrictEqual(new Uint8Array())
+
+    blob = new Blob(['hello'], { type: 'text/plain' })
+    ablob = new AracnaBlob(blob)
+
     expect(ablob.arrayBuffer).toStrictEqual(new ArrayBuffer(0))
     expect(ablob.blob).toBe(blob)
     expect(ablob.id).toHaveLength(32)
@@ -53,9 +67,37 @@ describe('AracnaBlob', () => {
   })
 
   it('resolves text', async () => {
-    await ablob.resolveArrayBuffer()
+    await ablob.resolveText()
 
     expect(ablob.text).toBe('hello')
     expect(ablob.uInt8Array).toStrictEqual(encodeText('hello'))
+  })
+
+  it('slices', async () => {
+    let slice: Blob
+
+    slice = ablob.slice(1, 4)
+
+    expect(await slice.arrayBuffer()).toStrictEqual(encodeText('ell').buffer)
+    expect(slice.size).toBe(3)
+    expect(await slice.text()).toBe('ell')
+  })
+
+  it('streams', async () => {
+    expect(ablob.stream()).toBeInstanceOf(ReadableStream)
+  })
+
+  it('supports empty instance', () => {
+    let b: typeof Blob
+
+    expect(AracnaBlob.EMPTY).toBeInstanceOf(AracnaBlob)
+
+    b = global.Blob
+    // @ts-expect-error
+    delete global.Blob
+
+    expect(AracnaBlob.EMPTY).toBeInstanceOf(AracnaBlob)
+
+    global.Blob = b
   })
 })

@@ -1,7 +1,7 @@
 import type { AracnaBlobJSON } from '../definitions/interfaces.js'
 import { StubBlob } from '../definitions/stubs.js'
 import { tcp } from '../functions/tcp.js'
-import { isBlobNotDefined } from '../utils/environment-utils.js'
+import { isBlobNotDefined, isFileNotDefined } from '../utils/environment-utils.js'
 import { generateRandomString } from '../utils/string-utils.js'
 import { decodeText, encodeText } from '../utils/text-utils.js'
 
@@ -33,7 +33,7 @@ export class AracnaBlob {
     blob = args[0]
     json = args[0]
 
-    if (isBlobNotDefined() || blob instanceof Blob) {
+    if (isBlobNotDefined() || isFileNotDefined() || blob instanceof Blob) {
       this.blob = blob
       this.id = generateRandomString()
 

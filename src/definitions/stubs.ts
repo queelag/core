@@ -37,7 +37,7 @@ export class StubFile extends StubBlob {
     super(fileBits, options)
 
     this.lastModified = options?.lastModified ?? 0
-    this.name = fileName ?? ''
+    this.name = fileName
     this.webkitRelativePath = ''
   }
 }

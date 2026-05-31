@@ -167,6 +167,10 @@ export function getSymbolCaseString(string: string, symbol: string): string {
 export function isStringBigInt(string: string): boolean {
   let bigint: bigint | TypeError
 
+  if (string.length <= 0) {
+    return false
+  }
+
   if (isStringInt(string)) {
     return false
   }
@@ -246,6 +250,10 @@ export function isStringNotInt(string: string): boolean {
  * [Aracna Reference](https://aracna.dariosechi.it/core/utils/string)
  */
 export function isStringNumber(string: string): boolean {
+  if (string.length <= 0) {
+    return false
+  }
+
   return !isNaN(Number(string))
 }
 

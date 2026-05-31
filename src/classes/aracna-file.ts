@@ -1,6 +1,6 @@
 import type { AracnaFileJSON } from '../definitions/interfaces.js'
-import { StubFile } from '../definitions/stubs.js'
-import { isFileNotDefined } from '../utils/environment-utils.js'
+import { StubBlob, StubFile } from '../definitions/stubs.js'
+import { isBlobNotDefined, isFileNotDefined } from '../utils/environment-utils.js'
 import { AracnaBlob } from './aracna-blob.js'
 
 /**

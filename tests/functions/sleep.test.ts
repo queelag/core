@@ -6,6 +6,13 @@ describe('sleep', () => {
     let d1: number, d2: number
 
     d1 = Date.now()
+    await sleep(0)
+    d2 = Date.now()
+
+    // approximate
+    expect(d2 - d1).toBeGreaterThanOrEqual(0)
+
+    d1 = Date.now()
     await sleep(100)
     d2 = Date.now()
 

@@ -65,8 +65,6 @@ export class Appearence extends EventEmitter<AppearenceEvents> {
         return this.setTheme('dark')
       case 'system':
         return this.setTheme(this.themeByPrefersColorScheme === 'dark' ? 'light' : 'dark')
-      default:
-        return this
     }
   }
 
@@ -85,9 +83,6 @@ export class Appearence extends EventEmitter<AppearenceEvents> {
         break
       case 'system':
         this.emit('change-theme', this.themeByPrefersColorScheme)
-        break
-      default:
-        this.emit('change-theme', theme)
         break
     }
 
@@ -116,6 +111,7 @@ export class Appearence extends EventEmitter<AppearenceEvents> {
     }
 
     media = window.matchMedia('(prefers-color-scheme: dark)')
+
     if (typeof media.addEventListener !== 'function')
       return ClassLogger.warn('Appearence', 'registerThemeEventListener', `The window.matchMedia.addEventListener function is not defined.`)
 
@@ -146,8 +142,6 @@ export class Appearence extends EventEmitter<AppearenceEvents> {
     switch (this.theme) {
       case 'dark':
         return true
-      case 'light':
-        return false
       case 'system':
         return this.themeByPrefersColorScheme === 'dark'
       default:
@@ -160,8 +154,6 @@ export class Appearence extends EventEmitter<AppearenceEvents> {
    */
   get isThemeLight(): boolean {
     switch (this.theme) {
-      case 'dark':
-        return false
       case 'light':
         return true
       case 'system':

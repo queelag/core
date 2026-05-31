@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'vitest'
-import { STUB_STORAGE, STUB_TEXT_DECODER, STUB_TEXT_ENCODER } from '../../src/definitions/stubs'
+import { STUB_STORAGE, STUB_TEXT_DECODER, STUB_TEXT_ENCODER, StubBlob } from '../../src/definitions/stubs'
 
 describe('Stubs', () => {
   test('storage', () => {
@@ -26,5 +26,21 @@ describe('Stubs', () => {
   test('text encoder', () => {
     expect(STUB_TEXT_ENCODER.encode()).toStrictEqual(new Uint8Array())
     expect(STUB_TEXT_ENCODER.encodeInto('', new Uint8Array())).toStrictEqual({ read: 0, written: 0 })
+  })
+
+  test('blob', async () => {
+    let blob: Blob
+
+    blob = new StubBlob([])
+
+    expect(blob.size).toBe(0)
+    expect(blob.type).toBe('')
+
+    expect(await blob.arrayBuffer()).toBeInstanceOf(ArrayBuffer)
+    expect(await blob.bytes()).toBeInstanceOf(Uint8Array)
+    expect(await blob.text()).toBeTypeOf('string')
+
+    expect(blob.slice()).toBeInstanceOf(StubBlob)
+    expect(blob.stream()).toBeInstanceOf(ReadableStream)
   })
 })

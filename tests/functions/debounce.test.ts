@@ -14,14 +14,14 @@ describe('Debounce', () => {
     expect(fn).not.toBeCalled()
 
     await sleep(10)
-    expect(fn).toBeCalledTimes(1)
+    expect(fn).toHaveBeenCalledTimes(1)
 
     debounce(fn, 10)
     await sleep(5)
     debounce(fn, 10)
     await sleep(10)
 
-    expect(fn).toBeCalledTimes(2)
+    expect(fn).toHaveBeenCalledTimes(2)
   })
 
   it('works with name as key', async () => {
@@ -29,13 +29,13 @@ describe('Debounce', () => {
     expect(fn).not.toBeCalled()
 
     await sleep(10)
-    expect(fn).toBeCalledTimes(1)
+    expect(fn).toHaveBeenCalledTimes(1)
 
     debounce(fn, 10, key)
     await sleep(5)
     debounce(fn, 10, key)
     await sleep(10)
 
-    expect(fn).toBeCalledTimes(2)
+    expect(fn).toHaveBeenCalledTimes(2)
   })
 })
