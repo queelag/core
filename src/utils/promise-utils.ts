@@ -1,20 +1,4 @@
-import { cafs } from '../functions/cafs.js'
-import { cafsueof } from '../functions/cafsueof.js'
 import { isObject } from './object-utils.js'
-
-/**
- * @deprecated
- */
-export async function chainPromises(...fns: ((...args: any[]) => Promise<any>)[]): Promise<void> {
-  return cafs(...fns)
-}
-
-/**
- * @deprecated
- */
-export async function chainTruthyPromises(...fns: ((...args: any[]) => Promise<any>)[]): Promise<boolean> {
-  return cafsueof(...fns)
-}
 
 /**
  * Checks if a unknown value is a Promise.
