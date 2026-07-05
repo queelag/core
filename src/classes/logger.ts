@@ -175,7 +175,7 @@ export class Logger {
         primitives.splice(0, primitives.length)
 
         if (this.colors) {
-          print.push(AnsiColor.RESET)
+          print.push(AnsiColor.Reset)
         }
       }
 
@@ -197,7 +197,7 @@ export class Logger {
       print.push(primitives.join(this.separator))
 
       if (this.colors) {
-        print.push(AnsiColor.RESET)
+        print.push(AnsiColor.Reset)
       }
     }
   }

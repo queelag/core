@@ -64,15 +64,13 @@ export class Queue extends EventEmitter<QueueEvents> {
       return ClassLogger.warn('Queue', 'run', `The queue is stopped.`, [this.status])
     }
 
-    for (let process of this.processes.filter((process: QueueProcess) => process.status === 'pending')) {
-      if (this.processes.filter((process: QueueProcess) => process.status === 'running').length >= this.concurrency) {
+    for (let process of this.processes.filter((p: QueueProcess) => p.status === 'pending')) {
+      if (this.processes.filter((p: QueueProcess) => p.status === 'running').length >= this.concurrency) {
         break
       }
 
-      if (this.delay > 0 && !this.processes.every((process: QueueProcess) => process.status === 'pending')) {
-        this.processes = removeArrayItems(this.processes, (_, process: QueueProcess) =>
-          ['fulfilled', 'rejected', 'running', 'timed-out'].includes(process.status)
-        )
+      if (this.delay > 0 && !this.processes.every((p: QueueProcess) => p.status === 'pending')) {
+        this.processes = removeArrayItems(this.processes, (_, p: QueueProcess) => ['fulfilled', 'rejected', 'running', 'timed-out'].includes(p.status))
 
         ClassLogger.verbose('Queue', 'start', `Waiting for the delay...`, [this.delay])
         sleep(this.delay).then(() => this.runp(process))

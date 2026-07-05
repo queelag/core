@@ -95,9 +95,9 @@ export class Localization<T extends LocalizationVariables = LocalizationVariable
    * Retrieves the localized string from the pack.
    * Optionally you can pass variables that will be used to replace the variables inside the localized string.
    */
-  get<T extends LocalizationVariables>(path: string, variables?: T): string
-  get<T extends LocalizationVariables>(language: string, path: string, variables?: T): string
-  get<T extends LocalizationVariables>(...args: any[]): string {
+  get(path: string, variables?: T): string
+  get(language: string, path: string, variables?: T): string
+  get(...args: any[]): string {
     let language: string, path: string, variables: T, pack: LocalizationPack, localized: string, matches: RegExpMatchArray | null, source: Record<string, any>
 
     language = typeof args[1] === 'string' ? args[0] : this.language

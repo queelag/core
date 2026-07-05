@@ -52,7 +52,7 @@ export function getArraysIntersection<T>(arrays: T[][], predicate: HasArrayItemP
       pushed = predicate(result, item)
       if (pushed) continue
 
-      intersects = arrays.every((array: T[]) => predicate(array, item))
+      intersects = arrays.every((a: T[]) => predicate(a, item))
       if (!intersects) continue
 
       result.push(item)
@@ -71,7 +71,7 @@ export function getArraysIntersection<T>(arrays: T[][], predicate: HasArrayItemP
 export function getArrayLastItem<T>(array: T[]): T | undefined
 export function getArrayLastItem<T>(array: T[], fallback: T): T
 export function getArrayLastItem<T>(array: T[], fallback?: T): T | undefined {
-  return array[array.length - 1] ?? fallback
+  return array.at(-1) ?? fallback
 }
 
 /**

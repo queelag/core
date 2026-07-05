@@ -35,12 +35,12 @@ export function hasProcessEnvKey(key: string): boolean {
  * [Aracna Reference](https://aracna.dariosechi.it/core/utils/environment)
  */
 export function getNodeEnv(): string | undefined {
-  let NODE_ENV: string | undefined | Error
+  let env: string | undefined | Error
 
-  NODE_ENV = tc(() => process.env.NODE_ENV, false)
-  if (NODE_ENV instanceof Error) return
+  env = tc(() => process.env.env, false)
+  if (env instanceof Error) return
 
-  return NODE_ENV
+  return env
 }
 
 /**

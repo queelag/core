@@ -70,15 +70,15 @@ export class FetchResponse<T = unknown> implements Response {
     }
 
     switch (true) {
-      case this.ContentType.startsWith('application/') && this.ContentType.includes('octet-stream'):
+      case this.contentType.startsWith('application/') && this.contentType.includes('octet-stream'):
         return this.decodeBlob()
-      case this.ContentType.startsWith('application/') && this.ContentType.includes('json'):
+      case this.contentType.startsWith('application/') && this.contentType.includes('json'):
         return this.decodeJSON(options?.json)
-      case this.ContentType.startsWith('application/') && this.ContentType.includes('x-www-form-urlencoded'):
+      case this.contentType.startsWith('application/') && this.contentType.includes('x-www-form-urlencoded'):
         return this.decodeURLSearchParams()
-      case this.ContentType.startsWith('multipart/') && this.ContentType.includes('form-data'):
+      case this.contentType.startsWith('multipart/') && this.contentType.includes('form-data'):
         return this.decodeFormData()
-      case this.ContentType.startsWith('text/'):
+      case this.contentType.startsWith('text/'):
         return this.decodeText()
       default:
         return this.decodeArrayBuffer()
@@ -193,6 +193,7 @@ export class FetchResponse<T = unknown> implements Response {
   /**
    * Creates a new FetchResponse instance.
    */
+  // biome-ignore-start lint/suspicious/noShadow: not shadowing since from is static
   static from<T>(data: T): FetchResponse<T>
   static from<T>(response: Response): FetchResponse<T>
   static from<T>(...args: any[]): FetchResponse<T> {
@@ -202,11 +203,12 @@ export class FetchResponse<T = unknown> implements Response {
 
     return new FetchResponse(new Response(), args[0])
   }
+  // biome-ignore-end lint/suspicious/noShadow: not shadowing since from is static
 
   /**
    * Returns the content-type header.
    */
-  protected get ContentType(): string {
+  protected get contentType(): string {
     return this.headers.get('content-type') ?? ''
   }
 }

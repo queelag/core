@@ -20,7 +20,7 @@ export async function wf(fn: () => any, ms: number = DEFAULT_WF_MS, timeout: num
 
       if (et >= timeout) {
         clearInterval(interval)
-        return resolve(new Error('The wait for timed out.'))
+        return resolve(new Error(`The wait for timed out.`))
       }
 
       result = tc(() => fn())

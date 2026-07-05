@@ -22,7 +22,10 @@ import { isArray } from './array-utils.js'
  * [Aracna Reference](https://aracna.dariosechi.it/core/utils/object)
  */
 export function cloneObject<T extends object>(object: T, options?: CloneObjectOptions): T {
-  let clone: T = {} as T
+  let clone: T, keys: KeyOf.Shallow<T>[]
+
+  clone = {} as T
+  keys = Object.keys(object) as KeyOf.Shallow<T>[]
 
   if (options?.deep !== true) {
     return { ...object }
@@ -36,11 +39,11 @@ export function cloneObject<T extends object>(object: T, options?: CloneObjectOp
     clone = [] as T
   }
 
-  for (let key in object) {
+  for (let key of keys) {
     let value: any = object[key]
 
     if (isObjectClonable(value)) {
-      clone[key] = cloneObject<any>(value, options)
+      clone[key] = cloneObject(value, options)
       continue
     }
 
@@ -76,15 +79,17 @@ export function deleteObjectProperty<T extends object>(object: T, key: KeyOf.Dee
       break
     case 'string':
       if (key.includes('.')) {
-        let target: any, keys: string[], lkey: string
+        let target: any, keys: string[], lkey: string | undefined
 
         keys = key.replace(REGEXP_LEFT_SQUARE_BRACKET_WITHOUT_LEADING_DOT, '$1.[').split('.')
-        lkey = keys[keys.length - 1].replace(REGEXP_SQUARE_BRACKETS, '')
+        lkey = keys.at(-1)?.replace(REGEXP_SQUARE_BRACKETS, '')
 
         target = getObjectPropertyDotKeyTarget(object, keys)
         if (target instanceof Error) return
 
-        delete target[lkey]
+        if (typeof lkey === 'string') {
+          delete target[lkey]
+        }
 
         return
       }
@@ -117,7 +122,7 @@ export function deleteObjectProperties<T extends object>(object: T, keys: KeyOf.
 export function deleteObjectProperties<T extends object>(object: T, keys: KeyOf.Shallow<T>[]): void
 export function deleteObjectProperties<T extends object>(object: T, keys: string[]): void
 export function deleteObjectProperties<T extends object>(object: T, ...args: any[]): void {
-  let keys: string[] | undefined, predicate: DeleteObjectPropertiesPredicate, options: DeleteObjectPropertiesOptions | undefined
+  let keys: string[] | undefined, predicate: DeleteObjectPropertiesPredicate, options: DeleteObjectPropertiesOptions | undefined, okeys: string[]
 
   keys = typeof args[0] === 'object' ? args[0] : undefined
   predicate = typeof args[0] === 'function' ? args[0] : DEFAULT_DELETE_OBJECT_PROPERTIES_PREDICATE
@@ -131,11 +136,13 @@ export function deleteObjectProperties<T extends object>(object: T, ...args: any
     return
   }
 
-  for (let key in object) {
-    let value: any = object[key]
+  okeys = Object.keys(object)
+
+  for (let key of okeys) {
+    let value: any = object[key as keyof T]
 
     if (predicate(object, key, value, keys)) {
-      delete object[key]
+      delete object[key as keyof T]
       continue
     }
 
@@ -152,17 +159,20 @@ export function deleteObjectProperties<T extends object>(object: T, ...args: any
  * [Aracna Reference](https://aracna.dariosechi.it/core/utils/object)
  */
 export function flattenObject<T extends object>(object: T, options?: FlattenObjectOptions, parents: string[] = []): Record<string, any> {
-  let flat: Record<string, any> = {}
+  let flat: Record<string, any>, keys: string[]
 
-  for (let key in object) {
-    let value: any = object[key]
+  flat = {}
+  keys = Object.keys(object)
+
+  for (let key of keys) {
+    let value: any = object[key as keyof T]
 
     if (isObjectFlattenable(value, options)) {
-      flat = { ...flat, ...flattenObject(value, options, parents.concat(key)) }
+      flat = { ...flat, ...flattenObject(value, options, parents.concat(String(key))) }
       continue
     }
 
-    flat[parents.concat(key).join('.')] = object[key]
+    flat[parents.concat(String(key)).join('.')] = object[key as keyof T]
   }
 
   return flat
@@ -184,10 +194,14 @@ export function getObjectProperty<T extends object, U>(object: T, key: KeyOf.Dee
       return object[key] as U
     case 'string':
       if (key.includes('.')) {
-        let keys: string[], lkey: string, target: any
+        let keys: string[], lkey: string | undefined, target: any
 
         keys = key.replace(REGEXP_LEFT_SQUARE_BRACKET_WITHOUT_LEADING_DOT, '$1.[').split('.')
-        lkey = keys[keys.length - 1].replace(REGEXP_SQUARE_BRACKETS, '')
+        lkey = keys.at(-1)?.replace(REGEXP_SQUARE_BRACKETS, '')
+
+        if (typeof lkey === 'undefined') {
+          return fallback
+        }
 
         target = getObjectPropertyDotKeyTarget(object, keys)
         if (target instanceof Error) return fallback
@@ -252,7 +266,9 @@ export function mergeObjects<T extends object, U extends object = T>(target: T, 
   let clone: any = cloneObject(target, { deep: true })
 
   for (let source of sources) {
-    for (let key in source) {
+    let keys: string[] = Object.keys(source)
+
+    for (let key of keys) {
       let tp: any, sp: any
 
       tp = getObjectProperty(clone, key, {})
@@ -333,7 +349,7 @@ export function pickObjectProperties<T extends object, K extends KeyOf.Deep<T> =
 export function pickObjectProperties<T extends object, K extends KeyOf.Shallow<T> = KeyOf.Shallow<T>>(object: T, keys: K[]): Pick<T, K>
 export function pickObjectProperties<T extends object, U extends object = T>(object: T, keys: string[]): U
 export function pickObjectProperties<T extends object, U extends object = T>(object: T, ...args: any[]): U {
-  let keys: string[] | undefined, predicate: PickObjectPropertiesPredicate, options: PickObjectPropertiesOptions | undefined, clone: T & U
+  let keys: string[] | undefined, predicate: PickObjectPropertiesPredicate, options: PickObjectPropertiesOptions | undefined, clone: T & U, okeys: string[]
 
   keys = typeof args[0] === 'object' ? args[0] : undefined
   predicate = typeof args[0] === 'function' ? args[0] : DEFAULT_PICK_OBJECT_PROPERTIES_PREDICATE
@@ -349,11 +365,13 @@ export function pickObjectProperties<T extends object, U extends object = T>(obj
     return clone
   }
 
-  for (let key in object) {
-    let value: any = object[key]
+  okeys = Object.keys(object)
+
+  for (let key of okeys) {
+    let value: any = object[key as keyof T]
 
     if (predicate(clone, key, value, keys)) {
-      clone[key] = value
+      clone[key as keyof T] = value
       continue
     }
 
@@ -380,15 +398,17 @@ export function setObjectProperty<T extends object, U>(object: T, key: KeyOf.Dee
       break
     case 'string':
       if (key.includes('.')) {
-        let keys: string[], target: any, lkey: string
+        let keys: string[], target: any, lkey: string | undefined
 
         keys = key.replace(REGEXP_LEFT_SQUARE_BRACKET_WITHOUT_LEADING_DOT, '$1.[').split('.')
-        lkey = keys[keys.length - 1].replace(REGEXP_SQUARE_BRACKETS, '')
+        lkey = keys.at(-1)?.replace(REGEXP_SQUARE_BRACKETS, '')
 
         target = getObjectPropertyDotKeyTarget(object, keys, true)
         if (target instanceof Error) return target
 
-        target[lkey] = value
+        if (typeof lkey === 'string') {
+          target[lkey] = value
+        }
 
         break
       }

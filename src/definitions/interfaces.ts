@@ -254,16 +254,6 @@ export interface LocalizationPackData {
 
 export interface LocalizationVariables extends Record<number | string, any> {}
 
-export interface NodeFetch {
-  Blob: typeof Blob
-  default: any
-  File: typeof File
-  FormData: typeof FormData
-  Headers: typeof Headers
-  Request: any
-  Response: any
-}
-
 export interface OmitObjectPropertiesOptions {
   deep: boolean
 }

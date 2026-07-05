@@ -87,7 +87,7 @@ export function deserializeURLSearchParams<T extends URLSearchParamsRecord>(
     case 'string':
       return new URLSearchParams(params).toString()
     default:
-      throw new Error('unexpected param type')
+      throw new Error(`Unexpected param type.`)
   }
 }
 

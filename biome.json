@@ -78,29 +78,22 @@
         "noEnum": "off",
         "noExcessiveClassesPerFile": "off",
         "noExcessiveLinesPerFile": "off",
-        "noHeadElement": "off",
-        "noHexColors": "off",
-        "noImplicitBoolean": "off",
         "noIncrementDecrement": "off",
         "noInferrableTypes": "off",
-        "noJsxLiterals": "off",
         "noNamespace": "off",
         "noProcessEnv": "off",
         "noTernary": "off",
         "noUnusedTemplateLiteral": "off",
-        "noValueAtRule": "off",
-        "noVueOptionsApi": "off",
-        "useAtIndex": "off",
         "useBlockStatements": "off",
-        "useCollapsedElseIf": "off",
-        "useCollapsedIf": "off",
-        "useComponentExportOnlyModules": "off",
-        "useConsistentCurlyBraces": "off",
-        "useConsistentGraphqlDescriptions": "off",
         "useConst": "off",
         "useDestructuring": "off",
         "useExportsLast": "off",
-        "useNamingConvention": "off",
+        "useNamingConvention": {
+          "level": "on",
+          "options": {
+            "strictCase": false
+          }
+        },
         "useSingleVarDeclarator": "off",
         "useTemplate": "off",
         "useUnifiedTypeSignatures": "off"
@@ -110,12 +103,7 @@
         "noConfusingVoidType": "off",
         "noConsole": "off",
         "noExplicitAny": "off",
-        "noForIn": "off",
-        "noShadow": "off",
-        "noThenProperty": "off",
-        "useAwait": "off",
-        "useErrorMessage": "off",
-        "useGuardForIn": "off"
+        "useAwait": "off"
       }
     }
   },

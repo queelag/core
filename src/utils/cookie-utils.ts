@@ -92,6 +92,6 @@ export function serializeCookieValue(value: unknown): string | Error {
     case 'undefined':
       return ''
     default:
-      return new Error('unknown type')
+      return new Error(`Unknown type.`)
   }
 }

@@ -22,6 +22,7 @@ export class FetchError<T = unknown> extends Error {
   /**
    * Creates a new FetchError instance.
    */
+  // biome-ignore-start lint/suspicious/noShadow: not shadowing since from is static
   static from<T>(): FetchError<T>
   static from<T>(error: Error): FetchError<T>
   static from<T>(error: Error, response: FetchResponse<T>): FetchError<T>
@@ -33,9 +34,10 @@ export class FetchError<T = unknown> extends Error {
       case args[0] instanceof Error:
         return new FetchError(args[0], new FetchResponse(new Response()))
       case args[0] instanceof FetchResponse:
-        return new FetchError(new Error(), args[0])
+        return new FetchError(new Error(args[0].statusText), args[0])
       default:
-        return new FetchError(new Error(), new FetchResponse(new Response()))
+        return new FetchError(new Error(`Generic FetchError.`), new FetchResponse(new Response()))
     }
   }
+  // biome-ignore-end lint/suspicious/noShadow: not shadowing since from is static
 }

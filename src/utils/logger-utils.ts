@@ -9,16 +9,16 @@ import type { LoggerLevel } from '../definitions/types.js'
 export function getLoggerAnsiColor(level: LoggerLevel): string {
   switch (level) {
     case 'debug':
-      return AnsiColor.MAGENTA
+      return AnsiColor.Magenta
     case 'error':
-      return AnsiColor.RED
+      return AnsiColor.Red
     case 'info':
-      return AnsiColor.BLUE
+      return AnsiColor.Blue
     case 'verbose':
-      return AnsiColor.WHITE
+      return AnsiColor.Black
     case 'warn':
-      return AnsiColor.YELLOW
+      return AnsiColor.Yellow
     default:
-      throw new Error('unknown logger level')
+      throw new Error(`Unknown logger level.`)
   }
 }

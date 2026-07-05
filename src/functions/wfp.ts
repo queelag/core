@@ -18,7 +18,7 @@ export async function wfp(fn: () => Promise<any>, ms: number = DEFAULT_WFP_MS, t
     interval = setInterval(() => {
       if (et >= timeout) {
         clearInterval(interval)
-        return resolve(new Error('The wait for timed out.'))
+        return resolve(new Error(`The wait for timed out.`))
       }
 
       tcp(() => fn()).then((result: unknown) => {

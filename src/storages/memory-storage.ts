@@ -8,7 +8,7 @@ import { StorageName } from '../definitions/enums.js'
  * [Aracna Reference](https://aracna.dariosechi.it/core/storages/memory-storage)
  */
 export const MemoryStorage: SyncStorage = new SyncStorage(
-  StorageName.MEMORY,
+  StorageName.Memory,
   () => MEMORY_STORAGE_MAP.clear(),
   (key: string) => {
     if (MEMORY_STORAGE_MAP.has(key)) {

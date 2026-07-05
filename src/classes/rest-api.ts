@@ -149,7 +149,7 @@ export class RestAPI<T extends RestApiConfig = RestApiConfig, U = undefined> {
       case 'update':
         return this.put(path, body, config)
       default:
-        return FetchError.from(new Error('unknown write mode'))
+        return FetchError.from(new Error(`Unknown write mode.`))
     }
   }
 
