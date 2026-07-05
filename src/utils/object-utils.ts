@@ -22,10 +22,7 @@ import { isArray } from './array-utils.js'
  * [Aracna Reference](https://aracna.dariosechi.it/core/utils/object)
  */
 export function cloneObject<T extends object>(object: T, options?: CloneObjectOptions): T {
-  let clone: T, keys: KeyOf.Shallow<T>[]
-
-  clone = {} as T
-  keys = Object.keys(object) as KeyOf.Shallow<T>[]
+  let clone: T = {} as T
 
   if (options?.deep !== true) {
     return { ...object }
@@ -39,8 +36,11 @@ export function cloneObject<T extends object>(object: T, options?: CloneObjectOp
     clone = [] as T
   }
 
-  for (let key of keys) {
-    let value: any = object[key]
+  for (let [k] of Object.entries(object)) {
+    let key: keyof T, value: any
+
+    key = k as keyof T
+    value = object[key]
 
     if (isObjectClonable(value)) {
       clone[key] = cloneObject(value, options)
@@ -122,7 +122,7 @@ export function deleteObjectProperties<T extends object>(object: T, keys: KeyOf.
 export function deleteObjectProperties<T extends object>(object: T, keys: KeyOf.Shallow<T>[]): void
 export function deleteObjectProperties<T extends object>(object: T, keys: string[]): void
 export function deleteObjectProperties<T extends object>(object: T, ...args: any[]): void {
-  let keys: string[] | undefined, predicate: DeleteObjectPropertiesPredicate, options: DeleteObjectPropertiesOptions | undefined, okeys: string[]
+  let keys: string[] | undefined, predicate: DeleteObjectPropertiesPredicate, options: DeleteObjectPropertiesOptions | undefined
 
   keys = typeof args[0] === 'object' ? args[0] : undefined
   predicate = typeof args[0] === 'function' ? args[0] : DEFAULT_DELETE_OBJECT_PROPERTIES_PREDICATE
@@ -136,13 +136,14 @@ export function deleteObjectProperties<T extends object>(object: T, ...args: any
     return
   }
 
-  okeys = Object.keys(object)
+  for (let [k] of Object.entries(object)) {
+    let key: keyof T, value: any
 
-  for (let key of okeys) {
-    let value: any = object[key as keyof T]
+    key = k as keyof T
+    value = object[key]
 
-    if (predicate(object, key, value, keys)) {
-      delete object[key as keyof T]
+    if (predicate(object, k, value, keys)) {
+      delete object[key]
       continue
     }
 
@@ -159,20 +160,20 @@ export function deleteObjectProperties<T extends object>(object: T, ...args: any
  * [Aracna Reference](https://aracna.dariosechi.it/core/utils/object)
  */
 export function flattenObject<T extends object>(object: T, options?: FlattenObjectOptions, parents: string[] = []): Record<string, any> {
-  let flat: Record<string, any>, keys: string[]
+  let flat: Record<string, any> = {}
 
-  flat = {}
-  keys = Object.keys(object)
+  for (let [k] of Object.entries(object)) {
+    let key: keyof T, value: any
 
-  for (let key of keys) {
-    let value: any = object[key as keyof T]
+    key = k as keyof T
+    value = object[key]
 
     if (isObjectFlattenable(value, options)) {
-      flat = { ...flat, ...flattenObject(value, options, parents.concat(String(key))) }
+      flat = { ...flat, ...flattenObject(value, options, parents.concat(k)) }
       continue
     }
 
-    flat[parents.concat(String(key)).join('.')] = object[key as keyof T]
+    flat[parents.concat(String(key)).join('.')] = object[key]
   }
 
   return flat
@@ -266,9 +267,7 @@ export function mergeObjects<T extends object, U extends object = T>(target: T, 
   let clone: any = cloneObject(target, { deep: true })
 
   for (let source of sources) {
-    let keys: string[] = Object.keys(source)
-
-    for (let key of keys) {
+    for (let [key] of Object.entries(source)) {
       let tp: any, sp: any
 
       tp = getObjectProperty(clone, key, {})
@@ -349,7 +348,7 @@ export function pickObjectProperties<T extends object, K extends KeyOf.Deep<T> =
 export function pickObjectProperties<T extends object, K extends KeyOf.Shallow<T> = KeyOf.Shallow<T>>(object: T, keys: K[]): Pick<T, K>
 export function pickObjectProperties<T extends object, U extends object = T>(object: T, keys: string[]): U
 export function pickObjectProperties<T extends object, U extends object = T>(object: T, ...args: any[]): U {
-  let keys: string[] | undefined, predicate: PickObjectPropertiesPredicate, options: PickObjectPropertiesOptions | undefined, clone: T & U, okeys: string[]
+  let keys: string[] | undefined, predicate: PickObjectPropertiesPredicate, options: PickObjectPropertiesOptions | undefined, clone: T & U
 
   keys = typeof args[0] === 'object' ? args[0] : undefined
   predicate = typeof args[0] === 'function' ? args[0] : DEFAULT_PICK_OBJECT_PROPERTIES_PREDICATE
@@ -365,13 +364,14 @@ export function pickObjectProperties<T extends object, U extends object = T>(obj
     return clone
   }
 
-  okeys = Object.keys(object)
+  for (let [k] of Object.entries(object)) {
+    let key: keyof T, value: any
 
-  for (let key of okeys) {
-    let value: any = object[key as keyof T]
+    key = k as keyof T
+    value = object[key]
 
-    if (predicate(clone, key, value, keys)) {
-      clone[key as keyof T] = value
+    if (predicate(clone, k, value, keys)) {
+      clone[key] = value
       continue
     }
 
