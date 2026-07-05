@@ -49,7 +49,7 @@ export function deserializeCookieValue(value: string | undefined): CookieObjectV
     case isStringJSON(value):
       return JSON.parse(value)
     default:
-      return
+      return typeof value === 'string' ? value : undefined
   }
 }
 

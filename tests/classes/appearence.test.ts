@@ -76,15 +76,12 @@ describe('Appearence', () => {
   })
 
   it('works with prefers-color-scheme', async () => {
-    // @ts-expect-error
-    global.window = {}
-
     appearence = new Appearence()
 
     appearence.setTheme('system')
     expect(appearence.isThemeLight).toBeTruthy()
 
-    global.window = {
+    globalThis.window = {
       // @ts-expect-error
       matchMedia: () => ({
         matches: false
@@ -96,26 +93,22 @@ describe('Appearence', () => {
     appearence.setTheme('system')
     expect(appearence.isThemeLight).toBeTruthy()
 
-    global.window = {
-      matchMedia: () => ({
-        // @ts-expect-error
-        addEventListener: (name: string, fn: Function) => fn(),
-        matches: false
-      })
-    }
+    globalThis.matchMedia = () => ({
+      // @ts-expect-error
+      addEventListener: (name: string, fn: Function) => fn(),
+      matches: false
+    })
 
     appearence = new Appearence()
 
     appearence.setTheme('system')
     expect(appearence.isThemeLight).toBeTruthy()
 
-    global.window = {
-      matchMedia: () => ({
-        // @ts-expect-error
-        addEventListener: (name: string, fn: Function) => fn(),
-        matches: true
-      })
-    }
+    globalThis.matchMedia = () => ({
+      // @ts-expect-error
+      addEventListener: (name: string, fn: Function) => fn(),
+      matches: true
+    })
 
     appearence = new Appearence()
 
@@ -126,6 +119,6 @@ describe('Appearence', () => {
     expect(appearence.theme).toBe('light')
 
     // @ts-expect-error
-    delete global.window
+    delete globalThis.matchMedia
   })
 })

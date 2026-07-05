@@ -8,7 +8,7 @@ describe('FetchError', () => {
     let e: Error, response: FetchResponse<any>
 
     error = FetchError.from()
-    expect(error.message).toHaveLength(0)
+    expect(error.message).toBe('Generic FetchError.')
     expect(error.stack?.length).toBeGreaterThan(0)
     expect(error.response).toBeInstanceOf(FetchResponse)
 

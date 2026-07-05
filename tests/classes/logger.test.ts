@@ -149,13 +149,13 @@ describe('Logger', () => {
 
     logger = new Logger('TEST', 'verbose', 'on')
 
-    expect(logger.format('verbose', 'number', 0)).toStrictEqual([AnsiColor.WHITE, 'number -> 0', AnsiColor.RESET])
-    expect(logger.format('verbose', 'object', {})).toStrictEqual([AnsiColor.WHITE, 'object', AnsiColor.RESET, {}])
+    expect(logger.format('verbose', 'number', 0)).toStrictEqual([AnsiColor.White, 'number -> 0', AnsiColor.Reset])
+    expect(logger.format('verbose', 'object', {})).toStrictEqual([AnsiColor.White, 'object', AnsiColor.Reset, {}])
 
-    expect(logger.format('debug', 'number', 0)).toStrictEqual([AnsiColor.MAGENTA, 'number -> 0', AnsiColor.RESET])
-    expect(logger.format('info', 'number', 0)).toStrictEqual([AnsiColor.BLUE, 'number -> 0', AnsiColor.RESET])
-    expect(logger.format('warn', 'number', 0)).toStrictEqual([AnsiColor.YELLOW, 'number -> 0', AnsiColor.RESET])
-    expect(logger.format('error', 'number', 0)).toStrictEqual([AnsiColor.RED, 'number -> 0', AnsiColor.RESET])
+    expect(logger.format('debug', 'number', 0)).toStrictEqual([AnsiColor.Magenta, 'number -> 0', AnsiColor.Reset])
+    expect(logger.format('info', 'number', 0)).toStrictEqual([AnsiColor.Blue, 'number -> 0', AnsiColor.Reset])
+    expect(logger.format('warn', 'number', 0)).toStrictEqual([AnsiColor.Yellow, 'number -> 0', AnsiColor.Reset])
+    expect(logger.format('error', 'number', 0)).toStrictEqual([AnsiColor.Red, 'number -> 0', AnsiColor.Reset])
   })
 
   it('gets level and status from the environment', () => {

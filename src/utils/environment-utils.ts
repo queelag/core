@@ -37,7 +37,7 @@ export function hasProcessEnvKey(key: string): boolean {
 export function getNodeEnv(): string | undefined {
   let env: string | undefined | Error
 
-  env = tc(() => process.env.env, false)
+  env = tc(() => process.env.NODE_ENV, false)
   if (env instanceof Error) return
 
   return env

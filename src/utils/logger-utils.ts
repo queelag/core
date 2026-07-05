@@ -15,7 +15,7 @@ export function getLoggerAnsiColor(level: LoggerLevel): string {
     case 'info':
       return AnsiColor.Blue
     case 'verbose':
-      return AnsiColor.Black
+      return AnsiColor.White
     case 'warn':
       return AnsiColor.Yellow
     default:
