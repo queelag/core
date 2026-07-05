@@ -65,6 +65,8 @@ export class Appearence extends EventEmitter<AppearenceEvents> {
         return this.setTheme('dark')
       case 'system':
         return this.setTheme(this.themeByPrefersColorScheme === 'dark' ? 'light' : 'dark')
+      default:
+        return this
     }
   }
 
@@ -83,6 +85,8 @@ export class Appearence extends EventEmitter<AppearenceEvents> {
         break
       case 'system':
         this.emit('change-theme', this.themeByPrefersColorScheme)
+        break
+      default:
         break
     }
 
@@ -106,16 +110,16 @@ export class Appearence extends EventEmitter<AppearenceEvents> {
       return ClassLogger.warn('Appearence', 'registerThemeEventListener', `The window is not defined.`)
     }
 
-    if (typeof window.matchMedia === 'undefined') {
-      return ClassLogger.warn('Appearence', 'registerThemeEventListener', `The window.matchMedia function is not defined.`)
+    if (typeof matchMedia === 'undefined') {
+      return ClassLogger.warn('Appearence', 'registerThemeEventListener', `The matchMedia function is not defined.`)
     }
 
-    media = window.matchMedia('(prefers-color-scheme: dark)')
+    media = matchMedia('(prefers-color-scheme: dark)')
 
     if (typeof media.addEventListener !== 'function')
-      return ClassLogger.warn('Appearence', 'registerThemeEventListener', `The window.matchMedia.addEventListener function is not defined.`)
+      return ClassLogger.warn('Appearence', 'registerThemeEventListener', `The matchMedia.addEventListener function is not defined.`)
 
-    media.addEventListener('change', (v: MediaQueryListEvent) => this.isThemeSystem && this.setTheme('system'))
+    media.addEventListener('change', () => this.isThemeSystem && this.setTheme('system'))
   }
 
   /**
@@ -127,12 +131,12 @@ export class Appearence extends EventEmitter<AppearenceEvents> {
       return 'light'
     }
 
-    if (typeof window.matchMedia === 'undefined') {
-      ClassLogger.warn('Appearence', 'themeByPrefersColorScheme', `window.matchMedia is not defined.`)
+    if (typeof matchMedia === 'undefined') {
+      ClassLogger.warn('Appearence', 'themeByPrefersColorScheme', `matchMedia is not defined.`)
       return 'light'
     }
 
-    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+    return matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
   }
 
   /**

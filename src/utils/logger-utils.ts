@@ -18,5 +18,7 @@ export function getLoggerAnsiColor(level: LoggerLevel): string {
       return AnsiColor.WHITE
     case 'warn':
       return AnsiColor.YELLOW
+    default:
+      throw new Error('unknown logger level')
   }
 }

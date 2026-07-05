@@ -5,9 +5,9 @@ import { rc } from '../functions/rc.js'
 import { ClassLogger } from '../loggers/class-logger.js'
 import { mergeFetchRequestInits } from '../utils/fetch-utils.js'
 import { concatURL, serializeURLSearchParams } from '../utils/url-utils.js'
+import { Fetch } from './fetch.js'
 import { FetchError } from './fetch-error.js'
 import type { FetchResponse } from './fetch-response.js'
-import { Fetch } from './fetch.js'
 import { Status } from './status.js'
 
 /**
@@ -148,8 +148,12 @@ export class RestAPI<T extends RestApiConfig = RestApiConfig, U = undefined> {
         return this.post(path, body, config)
       case 'update':
         return this.put(path, body, config)
+      default:
+        return FetchError.from(new Error('unknown write mode'))
     }
   }
+
+  // biome-ignore-start lint/correctness/noUnusedFunctionParameters: generics to be overriden by consumer
 
   /**
    * Transforms the body of the request.
@@ -189,6 +193,8 @@ export class RestAPI<T extends RestApiConfig = RestApiConfig, U = undefined> {
   async handleSuccess<V, W>(method: RequestMethod, path: string, body: W | undefined, config: T, response: FetchResponse<V>): Promise<boolean> {
     return true
   }
+
+  // biome-ignore-end lint/correctness/noUnusedFunctionParameters: generics to be overriden by consumer
 
   /**
    * Sets the status of the request.

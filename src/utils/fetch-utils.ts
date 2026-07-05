@@ -250,6 +250,8 @@ export function toNativeFetchRequestInit<T>(init: FetchRequestInit<T>): RequestI
       setFetchRequestInitHeaderWhenUnset(clone, 'content-type', 'application/x-www-form-urlencoded')
 
       return clone
+    default:
+      break
   }
 
   switch (typeof init.body) {
@@ -274,6 +276,8 @@ export function toNativeFetchRequestInit<T>(init: FetchRequestInit<T>): RequestI
 
       break
     }
+    default:
+      break
   }
 
   return clone

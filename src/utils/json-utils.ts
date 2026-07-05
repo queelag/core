@@ -21,7 +21,7 @@ function decodeJsonReviver(options: DecodeJsonOptions | undefined) {
         let bigint: bigint | Error
 
         if (options?.castFloatStringToNumber && isStringFloat(value)) {
-          return parseFloat(value)
+          return Number.parseFloat(value)
         }
 
         if (options?.castBigIntStringToBigInt && isStringBigInt(value)) {
@@ -32,7 +32,8 @@ function decodeJsonReviver(options: DecodeJsonOptions | undefined) {
         }
 
         if (options?.castIntStringToNumber && isStringInt(value)) {
-          return parseInt(value)
+          // biome-ignore lint: radix is unknown
+          return Number.parseInt(value)
         }
 
         return value

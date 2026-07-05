@@ -9,6 +9,7 @@ export async function cafsueof(...fns: ((...args: any[]) => Promise<any>)[]): Pr
   let output: boolean | Error
 
   for (let fn of fns) {
+    // biome-ignore lint/performance/noAwaitInLoops: intended usage
     output = await tcp(() => fn())
     if (output instanceof Error) return false
 

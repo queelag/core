@@ -120,6 +120,7 @@ export class Cookie<Options extends CookieOptions> {
     ClassLogger.debug(this.name, 'copy', `The item ${key} has been retrieved.`, item)
 
     if (typeof keys === 'undefined') {
+      // biome-ignore lint/style/noParameterAssign: assignment is safe
       keys = Object.keys(item)
     }
 

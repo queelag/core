@@ -74,7 +74,9 @@ export interface ConfigurationFunctions {
 
 export interface DecodeBase16Options {
   loose?: boolean
-  out?: new (size: number) => {
+  out?: new (
+    size: number
+  ) => {
     [index: number]: number
   }
 }
@@ -253,8 +255,8 @@ export interface LocalizationPackData {
 export interface LocalizationVariables extends Record<number | string, any> {}
 
 export interface NodeFetch {
-  default: any
   Blob: typeof Blob
+  default: any
   File: typeof File
   FormData: typeof FormData
   Headers: typeof Headers
@@ -313,7 +315,7 @@ export interface TypeaheadOptions<T> {
 }
 
 export interface WithWriteMode {
-  mode?: WriteMode
   isModeCreate?: boolean
   isModeUpdate?: boolean
+  mode?: WriteMode
 }

@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, Mock, vi } from 'vitest'
-import { debounce, DebounceMapKey, sleep } from '../../src'
+import { DebounceMapKey, debounce, sleep } from '../../src'
 
 describe('Debounce', () => {
   let fn: Mock, key: DebounceMapKey

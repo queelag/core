@@ -1,4 +1,4 @@
-import { Mock, beforeEach, describe, expect, it, vitest } from 'vitest'
+import { beforeEach, describe, expect, it, Mock, vitest } from 'vitest'
 import { EventEmitter, EventEmitterEvents, noop } from '../../src'
 import { DEFAULT_EVENT_EMITTER_MAX_LISTENERS } from '../../src/definitions/constants'
 
@@ -32,7 +32,7 @@ describe('EventEmitter', () => {
 
     emitter.off()
     emitter.on('one', noop, { once: true, prepend: true })
-    expect(emitter.getListeners()).toStrictEqual([{ callback: noop, name: 'one', options: { prepend: true, once: true } }])
+    expect(emitter.getListeners()).toStrictEqual([{ callback: noop, name: 'one', options: { once: true, prepend: true } }])
   })
 
   it('counts listeners', () => {

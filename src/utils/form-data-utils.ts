@@ -57,11 +57,9 @@ export function serializeFormData<T extends object>(object: T, options?: Seriali
           continue
         }
 
-        switch (true) {
-          case isBlobDefined() && v instanceof Blob:
-          case isFileDefined() && v instanceof File:
-            data.append(k, v)
-            continue
+        if ((isBlobDefined() && v instanceof Blob) || (isFileDefined() && v instanceof File)) {
+          data.append(k, v)
+          continue
         }
 
         string = encodeJSON(v, options?.json)
@@ -73,6 +71,8 @@ export function serializeFormData<T extends object>(object: T, options?: Seriali
       }
       case 'string':
         data.append(k, v)
+        continue
+      default:
         continue
     }
   }

@@ -17,7 +17,7 @@ export class GraphQlAPI<T extends GraphQlApiConfig = GraphQlApiConfig, U = undef
   /**
    * Sends a POST request to the GraphQL API.
    */
-  async post<V, W, X = U>(query: string, variables?: W, config?: T): Promise<FetchResponse<V> | FetchError<X>> {
+  post<V, W, X = U>(query: string, variables?: W, config?: T): Promise<FetchResponse<V> | FetchError<X>> {
     let body: GraphQlApiRequestBody<W>
 
     body = {
@@ -31,14 +31,14 @@ export class GraphQlAPI<T extends GraphQlApiConfig = GraphQlApiConfig, U = undef
   /**
    * Sends a mutation to the GraphQL API.
    */
-  async mutation<V, W extends object, X = U>(mutation: string, variables?: W, config?: T): Promise<GraphQlApiResponse<V> | FetchError<X>> {
+  mutation<V, W extends object, X = U>(mutation: string, variables?: W, config?: T): Promise<GraphQlApiResponse<V> | FetchError<X>> {
     return this.post(mutation, variables, config)
   }
 
   /**
    * Sends a query to the GraphQL API.
    */
-  async query<V, W extends object, X = U>(query: string, variables?: W, config?: T): Promise<GraphQlApiResponse<V> | FetchError<X>> {
+  query<V, W extends object, X = U>(query: string, variables?: W, config?: T): Promise<GraphQlApiResponse<V> | FetchError<X>> {
     return this.post(query, variables, config)
   }
 }

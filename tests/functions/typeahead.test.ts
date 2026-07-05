@@ -1,5 +1,5 @@
-import { Mock, afterEach, beforeAll, describe, expect, it, vi } from 'vitest'
-import { TypeaheadMapKey, sleep, typeahead } from '../../src'
+import { afterEach, beforeAll, describe, expect, it, Mock, vi } from 'vitest'
+import { sleep, TypeaheadMapKey, typeahead } from '../../src'
 import { DEFAULT_TYPEAHEAD_DEBOUNCE_TIME, TYPEAHEAD_MAP } from '../../src/definitions/constants'
 
 describe('typeahead', () => {

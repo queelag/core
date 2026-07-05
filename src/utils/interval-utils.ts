@@ -12,7 +12,7 @@ import { UtilLogger } from '../loggers/util-logger.js'
  *
  * [Aracna Reference](https://aracna.dariosechi.it/core/utils/interval)
  */
-function set(fn: Function, ms: number, key: IntervalMapKey = fn, options?: SetIntervalOptions): void {
+function set(fn: CallableFunction, ms: number, key: IntervalMapKey = fn, options?: SetIntervalOptions): void {
   clearInterval(INTERVAL_MAP.get(key) as any)
   UtilLogger.debug('setInterval', key, `The interval has been cleared.`)
 

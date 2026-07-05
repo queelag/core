@@ -8,6 +8,14 @@ const server: FastifyInstance = fastify({ logger: false })
  */
 server.register(mercurius, {
   graphiql: true,
+  resolvers: {
+    Mutation: {
+      setText: (root, text: string) => text
+    },
+    Query: {
+      text: () => 'hello'
+    }
+  },
   schema: `
     type Mutation {
       setText(text: String!): SetTextResult!
@@ -18,15 +26,7 @@ server.register(mercurius, {
     type SetTextResult {
       text: String!
     }
-  `,
-  resolvers: {
-    Mutation: {
-      setText: (root, text: string) => text
-    },
-    Query: {
-      text: () => 'hello'
-    }
-  }
+  `
 })
 
 /**

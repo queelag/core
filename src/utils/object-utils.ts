@@ -92,6 +92,8 @@ export function deleteObjectProperty<T extends object>(object: T, key: KeyOf.Dee
       delete object[key as keyof T]
 
       break
+    default:
+      break
   }
 }
 
@@ -197,6 +199,8 @@ export function getObjectProperty<T extends object, U>(object: T, key: KeyOf.Dee
         return object[key as keyof T] as U
       }
 
+      return fallback
+    default:
       return fallback
   }
 }
@@ -392,6 +396,8 @@ export function setObjectProperty<T extends object, U>(object: T, key: KeyOf.Dee
       object[key as keyof T] = value as T[keyof T]
 
       break
+    default:
+      break
   }
 }
 
@@ -406,7 +412,7 @@ export function hasObjectProperty<T extends object>(object: T, key: KeyOf.Deep<T
   let symbol: symbol
 
   // symbols are always unique
-  symbol = Symbol()
+  symbol = Symbol('fallback')
 
   return getObjectProperty(object, key, symbol) !== symbol
 }

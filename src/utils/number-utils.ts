@@ -72,6 +72,7 @@ export function getNumberPercentage(number: number, options?: GetNumberPercentag
   min = options?.min ?? DEFAULT_GET_NUMBER_PERCENTAGE_MIN
   max = options?.max ?? DEFAULT_GET_NUMBER_PERCENTAGE_MAX
 
+  // biome-ignore lint/style/noMagicNumbers: not magic
   percentage = (number / (max - min)) * 100
   percentage = options?.round ? Math.round(percentage) : percentage
 
@@ -152,10 +153,10 @@ export function parseNumber(value: unknown, options?: ParseNumberOptions): numbe
   let string: string = String(value)
 
   if (isStringFloat(string)) {
-    return parseFloat(string)
+    return Number.parseFloat(string)
   }
 
-  return isStringInt(string) ? parseInt(string, options?.radix) : (options?.fallback ?? 0)
+  return isStringInt(string) ? Number.parseInt(string, options?.radix) : (options?.fallback ?? 0)
 }
 
 /**
@@ -164,7 +165,7 @@ export function parseNumber(value: unknown, options?: ParseNumberOptions): numbe
  * [Aracna Reference](https://aracna.dariosechi.it/core/utils/number)
  */
 export function isNumberEven(number: number): boolean {
-  return number % 2 == 0
+  return number % 2 === 0
 }
 
 /**
@@ -182,5 +183,5 @@ export function isNumberMultipleOf(number: number, of: number): boolean {
  * [Aracna Reference](https://aracna.dariosechi.it/core/utils/number)
  */
 export function isNumberOdd(number: number): boolean {
-  return Math.abs(number % 2) == 1
+  return Math.abs(number % 2) === 1
 }

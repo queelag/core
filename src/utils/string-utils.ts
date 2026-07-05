@@ -33,6 +33,7 @@ export function generateRandomString(options?: GenerateRandomStringOptions): str
   separator = options?.separator ?? DEFAULT_GENERATE_RANDOM_STRING_SEPARATOR
   size = options?.size ?? DEFAULT_GENERATE_RANDOM_STRING_SIZE
 
+  // biome-ignore lint/suspicious/noUnnecessaryConditions: needs to run until random string is not in blacklist
   while (true) {
     string = [options?.prefix, customRandom(alphabet, size, random)(), options?.suffix].filter(Boolean).join(separator)
     if (!blacklist.includes(string)) break
@@ -214,7 +215,7 @@ export function isStringNotBoolean(string: string): boolean {
  * [Aracna Reference](https://aracna.dariosechi.it/core/utils/string)
  */
 export function isStringFloat(string: string): boolean {
-  return isStringNotInt(string) && isStringNotBigInt(string) && !isNaN(parseFloat(string))
+  return isStringNotInt(string) && isStringNotBigInt(string) && !Number.isNaN(Number.parseFloat(string))
 }
 
 /**
@@ -232,7 +233,7 @@ export function isStringNotFloat(string: string): boolean {
  * [Aracna Reference](https://aracna.dariosechi.it/core/utils/string)
  */
 export function isStringInt(string: string): boolean {
-  return Number.isSafeInteger(parseFloat(string))
+  return Number.isSafeInteger(Number.parseFloat(string))
 }
 
 /**
@@ -254,7 +255,7 @@ export function isStringNumber(string: string): boolean {
     return false
   }
 
-  return !isNaN(Number(string))
+  return !Number.isNaN(Number(string))
 }
 
 /**

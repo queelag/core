@@ -9,6 +9,7 @@ export async function cafsue(...fns: ((...args: any[]) => Promise<any>)[]): Prom
   let output: unknown
 
   for (let fn of fns) {
+    // biome-ignore lint/performance/noAwaitInLoops: intended usage
     output = await tcp(() => fn())
     if (output instanceof Error) return
   }

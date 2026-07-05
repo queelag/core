@@ -1,8 +1,8 @@
 import { beforeEach, describe, expect, it } from 'vitest'
 import { Localization, LocalizationPack } from '../../src'
 
-const EN: LocalizationPack = { data: { hello: 'hello {name}', bye: 'bye' }, language: 'en' }
-const IT: LocalizationPack = { data: { hello: 'ciao {name}', bye: 'ciao' }, language: 'it' }
+const EN: LocalizationPack = { data: { bye: 'bye', hello: 'hello {name}' }, language: 'en' }
+const IT: LocalizationPack = { data: { bye: 'ciao', hello: 'ciao {name}' }, language: 'it' }
 
 describe('Localization', () => {
   let localization: Localization

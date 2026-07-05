@@ -15,7 +15,7 @@ export function isPromise<T>(value: unknown): value is Promise<T> {
  * [Aracna Reference](https://aracna.dariosechi.it/core/utils/promise)
  */
 export function isPromiseLike<T>(value: unknown): value is PromiseLike<T> {
-  return isObject<{ then: Function }>(value) && typeof value.then === 'function'
+  return isObject<{ then: CallableFunction }>(value) && typeof value.then === 'function'
 }
 
 /**

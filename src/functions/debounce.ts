@@ -10,7 +10,7 @@ import { FunctionLogger } from '../loggers/function-logger.js'
  *
  * [Aracna Reference](https://aracna.dariosechi.it/core/functions/debounce)
  */
-export function debounce(fn: Function, ms: number, key: DebounceMapKey = fn): void {
+export function debounce(fn: CallableFunction, ms: number, key: DebounceMapKey = fn): void {
   clearTimeout(DEBOUNCE_MAP.get(key))
   FunctionLogger.verbose('debounce', key, `The timeout has been cleared.`)
 

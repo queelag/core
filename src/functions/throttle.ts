@@ -11,7 +11,7 @@ import { tc } from './tc.js'
  *
  * [Aracna Reference](https://aracna.dariosechi.it/core/functions/throttle)
  */
-export function throttle(fn: Function, ms: number, key: ThrottleMapKey = fn): void {
+export function throttle(fn: CallableFunction, ms: number, key: ThrottleMapKey = fn): void {
   let previous: number
 
   previous = THROTTLE_MAP.get(key) ?? Date.now() - ms

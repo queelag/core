@@ -15,11 +15,66 @@ import { FetchResponse } from './fetch-response.js'
  *
  * [Aracna Reference](https://aracna.dariosechi.it/core/classes/fetch)
  */
-export class Fetch {
+export const Fetch = {
+  /**
+   * Sends a CONNECT request.
+   */
+  async connect<T, U>(input: FetchRequestInfo, init: FetchRequestInit = {}): Promise<FetchResponse<T> | FetchError<U>> {
+    return Fetch.send(input, { ...init, method: 'CONNECT' })
+  },
+
+  /**
+   * Sends a DELETE request.
+   */
+  async delete<T, U, V>(input: FetchRequestInfo, body?: V, init: FetchRequestInit = {}): Promise<FetchResponse<T> | FetchError<U>> {
+    return Fetch.send(input, { ...init, body, method: 'DELETE' })
+  },
+
+  /**
+   * Sends a GET request.
+   */
+  async get<T, U>(input: FetchRequestInfo, init: FetchRequestInit = {}): Promise<FetchResponse<T> | FetchError<U>> {
+    return Fetch.send(input, { ...init, method: 'GET' })
+  },
+
+  /**
+   * Sends a HEAD request.
+   */
+  async head(input: FetchRequestInfo, init: FetchRequestInit = {}): Promise<FetchResponse | FetchError> {
+    return Fetch.send(input, { ...init, method: 'HEAD' })
+  },
+
+  /**
+   * Sends a OPTIONS request.
+   */
+  async options<T, U>(input: FetchRequestInfo, init: FetchRequestInit = {}): Promise<FetchResponse<T> | FetchError<U>> {
+    return Fetch.send(input, { ...init, method: 'OPTIONS' })
+  },
+
+  /**
+   * Sends a PATCH request.
+   */
+  async patch<T, U, V>(input: FetchRequestInfo, body?: V, init: FetchRequestInit = {}): Promise<FetchResponse<T> | FetchError<U>> {
+    return Fetch.send(input, { ...init, body, method: 'PATCH' })
+  },
+
+  /**
+   * Sends a POST request.
+   */
+  async post<T, U, V>(input: FetchRequestInfo, body?: V, init: FetchRequestInit = {}): Promise<FetchResponse<T> | FetchError<U>> {
+    return Fetch.send(input, { ...init, body, method: 'POST' })
+  },
+
+  /**
+   * Sends a PUT request.
+   */
+  async put<V>(input: FetchRequestInfo, body?: V, init: FetchRequestInit = {}): Promise<FetchResponse | FetchError> {
+    return Fetch.send(input, { ...init, body, method: 'PUT' })
+  },
   /**
    * Sends a request.
    */
-  static async send<T, U, V>(input: FetchRequestInfo, init: FetchRequestInit<V> = {}): Promise<FetchResponse<T> | FetchError<U>> {
+  async send<T, U, V>(input: FetchRequestInfo, init: FetchRequestInit<V> = {}): Promise<FetchResponse<T> | FetchError<U>> {
     let ninit: RequestInit, response: FetchResponse<T & U> | Error
 
     ninit = toNativeFetchRequestInit(init)
@@ -39,68 +94,12 @@ export class Fetch {
     }
 
     return FetchError.from(response)
-  }
-
-  /**
-   * Sends a CONNECT request.
-   */
-  static async connect<T, U>(input: FetchRequestInfo, init: FetchRequestInit = {}): Promise<FetchResponse<T> | FetchError<U>> {
-    return Fetch.send(input, { ...init, method: 'CONNECT' })
-  }
-
-  /**
-   * Sends a DELETE request.
-   */
-  static async delete<T, U, V>(input: FetchRequestInfo, body?: V, init: FetchRequestInit = {}): Promise<FetchResponse<T> | FetchError<U>> {
-    return Fetch.send(input, { ...init, body, method: 'DELETE' })
-  }
-
-  /**
-   * Sends a GET request.
-   */
-  static async get<T, U>(input: FetchRequestInfo, init: FetchRequestInit = {}): Promise<FetchResponse<T> | FetchError<U>> {
-    return Fetch.send(input, { ...init, method: 'GET' })
-  }
-
-  /**
-   * Sends a HEAD request.
-   */
-  static async head(input: FetchRequestInfo, init: FetchRequestInit = {}): Promise<FetchResponse | FetchError> {
-    return Fetch.send(input, { ...init, method: 'HEAD' })
-  }
-
-  /**
-   * Sends a OPTIONS request.
-   */
-  static async options<T, U>(input: FetchRequestInfo, init: FetchRequestInit = {}): Promise<FetchResponse<T> | FetchError<U>> {
-    return Fetch.send(input, { ...init, method: 'OPTIONS' })
-  }
-
-  /**
-   * Sends a PATCH request.
-   */
-  static async patch<T, U, V>(input: FetchRequestInfo, body?: V, init: FetchRequestInit = {}): Promise<FetchResponse<T> | FetchError<U>> {
-    return Fetch.send(input, { ...init, body, method: 'PATCH' })
-  }
-
-  /**
-   * Sends a POST request.
-   */
-  static async post<T, U, V>(input: FetchRequestInfo, body?: V, init: FetchRequestInit = {}): Promise<FetchResponse<T> | FetchError<U>> {
-    return Fetch.send(input, { ...init, body, method: 'POST' })
-  }
-
-  /**
-   * Sends a PUT request.
-   */
-  static async put<V>(input: FetchRequestInfo, body?: V, init: FetchRequestInit = {}): Promise<FetchResponse | FetchError> {
-    return Fetch.send(input, { ...init, body, method: 'PUT' })
-  }
+  },
 
   /**
    * Sends a TRACE request.
    */
-  static async trace(input: FetchRequestInfo, init: FetchRequestInit = {}): Promise<FetchResponse | FetchError> {
+  async trace(input: FetchRequestInfo, init: FetchRequestInit = {}): Promise<FetchResponse | FetchError> {
     return Fetch.send(input, { ...init, method: 'TRACE' })
   }
 }

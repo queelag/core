@@ -2,7 +2,7 @@ export class StubBlob {
   readonly size: number
   readonly type: string
 
-  constructor(blobParts?: BlobPart[], options?: BlobPropertyBag) {
+  constructor(_?: BlobPart[], options?: BlobPropertyBag) {
     this.size = 0
     this.type = options?.type ?? ''
   }
@@ -15,7 +15,7 @@ export class StubBlob {
     return new Uint8Array()
   }
 
-  slice(start?: number, end?: number, contentType?: string): this {
+  slice(): this {
     return this
   }
 
@@ -60,14 +60,14 @@ export const STUB_STORAGE: (map: Map<string, string>) => Storage = (map: Map<str
 
     return key
   },
+  get length(): number {
+    return map.size
+  },
   removeItem: (key: string) => {
     map.delete(key)
   },
   setItem: (key: string, value: string) => {
     map.set(key, value)
-  },
-  get length(): number {
-    return map.size
   }
 })
 

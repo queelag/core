@@ -6,5 +6,7 @@ import { tcp } from './tcp.js'
  * [Aracna Reference](https://aracna.dariosechi.it/core/functions/rvp)
  */
 export async function rvp(fn?: () => any): Promise<void> {
-  fn && (await tcp(() => fn()))
+  if (fn) {
+    await tcp(() => fn())
+  }
 }

@@ -32,13 +32,13 @@ describe('Number Utils', () => {
 
   it('limits a number', () => {
     expect(getLimitedNumber(5)).toBe(5)
-    expect(getLimitedNumber(5, { min: 0, max: 10 })).toBe(5)
-    expect(getLimitedNumber(5, { min: 4, max: 10 })).toBe(5)
-    expect(getLimitedNumber(5, { min: 5, max: 10 })).toBe(5)
-    expect(getLimitedNumber(5, { min: 6, max: 10 })).toBe(6)
-    expect(getLimitedNumber(5, { min: 0, max: 6 })).toBe(5)
-    expect(getLimitedNumber(5, { min: 0, max: 5 })).toBe(5)
-    expect(getLimitedNumber(5, { min: 0, max: 4 })).toBe(4)
+    expect(getLimitedNumber(5, { max: 10, min: 0 })).toBe(5)
+    expect(getLimitedNumber(5, { max: 10, min: 4 })).toBe(5)
+    expect(getLimitedNumber(5, { max: 10, min: 5 })).toBe(5)
+    expect(getLimitedNumber(5, { max: 10, min: 6 })).toBe(6)
+    expect(getLimitedNumber(5, { max: 6, min: 0 })).toBe(5)
+    expect(getLimitedNumber(5, { max: 5, min: 0 })).toBe(5)
+    expect(getLimitedNumber(5, { max: 4, min: 0 })).toBe(4)
   })
 
   it('calculates the percentage', () => {

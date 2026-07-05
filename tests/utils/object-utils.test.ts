@@ -203,8 +203,8 @@ describe('Object Utils', () => {
       snl1: null,
       snm1: o1.snm1,
       ss1: '',
-      sy1: o1.sy1,
-      su1: undefined
+      su1: undefined,
+      sy1: o1.sy1
     })
     expect(omitObjectProperties(o1, ['snm1'])).toStrictEqual({
       do1: o1.do1,
@@ -214,8 +214,8 @@ describe('Object Utils', () => {
       sf1: o1.sf1,
       snl1: null,
       ss1: '',
-      sy1: o1.sy1,
-      su1: undefined
+      su1: undefined,
+      sy1: o1.sy1
     })
   })
 

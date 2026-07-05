@@ -6,5 +6,7 @@ import { tc } from './tc.js'
  * [Aracna Reference](https://aracna.dariosechi.it/core/functions/rv)
  */
 export function rv(fn?: () => any): void {
-  fn && tc(() => fn())
+  if (fn) {
+    tc(() => fn())
+  }
 }

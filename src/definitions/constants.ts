@@ -38,7 +38,7 @@ export const DEFAULT_APPEARENCE_THEME: Theme = 'system'
  */
 /** */
 export const DEFAULT_HAS_ARRAY_ITEM_PREDICATE: HasArrayItemPredicate<any> = (array: any[], item: any) => array.includes(item)
-export const DEFAULT_REMOVE_ARRAY_ITEMS_PREDICATE: RemoveArrayItemsPredicate<any> = (array: any[], item: any, items?: any[]) => items?.includes(item) ?? false
+export const DEFAULT_REMOVE_ARRAY_ITEMS_PREDICATE: RemoveArrayItemsPredicate<any> = (_: any[], item: any, items?: any[]) => items?.includes(item) ?? false
 
 /**
  * Configuration
@@ -47,11 +47,11 @@ export const DEFAULT_REMOVE_ARRAY_ITEMS_PREDICATE: RemoveArrayItemsPredicate<any
 export const DEFAULT_FUNCTIONS_CONFIGURATION: () => ConfigurationFunctions = () => ({
   tc: {
     log: true,
-    onCatch: () => {}
+    onCatch: () => undefined
   },
   tcp: {
     log: true,
-    onCatch: () => {}
+    onCatch: () => undefined
   }
 })
 
@@ -144,9 +144,9 @@ export const CHAR_UPPERCASE_Z = 90
  * Queue
  */
 /** */
-export const DEFAULT_QUEUE_CONCURRENCY: number = Infinity
+export const DEFAULT_QUEUE_CONCURRENCY: number = Number.POSITIVE_INFINITY
 export const DEFAULT_QUEUE_DELAY: number = 0
-export const DEFAULT_QUEUE_TIMEOUT: number = 10000
+export const DEFAULT_QUEUE_TIMEOUT: number = 10_000
 
 /**
  * Status
@@ -158,11 +158,14 @@ export const DEFAULT_STATUS_TRANSFORMER: StatusTransformer = (keys: string[]) =>
  * String Utils
  */
 /** */
+
+// biome-ignore-start lint/security/noSecrets: not secrets
 export const ALPHABET_LOWERCASE: string = 'abcdefghijklmnopqrstuvwxyz'
 export const ALPHABET_NO_LOOK_ALIKES_SAFE: string = '6789BCDFGHJKLMNPQRTWbcdfghjkmnpqrtwz'
 export const ALPHABET_NO_LOOK_ALIKES: string = '346789ABCDEFGHJKLMNPQRTUVWXYabcdefghijkmnpqrtwxyz'
 export const ALPHABET_NUMBERS: string = '0123456789'
 export const ALPHABET_UPPERCASE: string = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+// biome-ignore-end lint/security/noSecrets: not secrets
 
 export const ALPHABET_ALPHANUMERIC: string = ALPHABET_NUMBERS + ALPHABET_LOWERCASE + ALPHABET_UPPERCASE
 export const ALPHABET_HEX_LOWERCASE: string = ALPHABET_NUMBERS + 'abcdef'
@@ -201,6 +204,6 @@ export const TYPEAHEAD_MAP: Map<TypeaheadMapKey, TypeaheadMapValue> = new Map()
  */
 /** */
 export const DEFAULT_WF_MS: number = 100
-export const DEFAULT_WF_TIMEOUT: number = 10000
+export const DEFAULT_WF_TIMEOUT: number = 10_000
 export const DEFAULT_WFP_MS: number = DEFAULT_WF_MS
 export const DEFAULT_WFP_TIMEOUT: number = DEFAULT_WF_TIMEOUT

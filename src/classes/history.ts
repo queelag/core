@@ -45,7 +45,7 @@ export class History<T extends HistoryDataTarget = HistoryDataTarget, K extends 
   }
 
   protected setIndex(offset: number): void {
-    this.index = this.index + offset
+    this.index += offset
     this.target[this.key] = cloneObject(this.versions[this.index], { deep: true })
   }
 

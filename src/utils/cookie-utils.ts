@@ -1,4 +1,4 @@
-import { type ParseOptions, type SerializeOptions, parse, serialize } from 'cookie'
+import { type ParseOptions, parse, type SerializeOptions, serialize } from 'cookie'
 import type { CookieObject } from '../definitions/interfaces.js'
 import type { CookieObjectValue } from '../definitions/types.js'
 import { tc } from '../functions/tc.js'
@@ -36,7 +36,7 @@ export function deserializeCookie(cookie: string, options?: ParseOptions): Cooki
  */
 export function deserializeCookieValue(value: string | undefined): CookieObjectValue | undefined {
   if (typeof value === 'undefined') {
-    return undefined
+    return
   }
 
   switch (true) {
@@ -48,9 +48,9 @@ export function deserializeCookieValue(value: string | undefined): CookieObjectV
       return Number(value)
     case isStringJSON(value):
       return JSON.parse(value)
+    default:
+      return
   }
-
-  return value
 }
 
 /**
@@ -91,5 +91,7 @@ export function serializeCookieValue(value: unknown): string | Error {
       return ''
     case 'undefined':
       return ''
+    default:
+      return new Error('unknown type')
   }
 }

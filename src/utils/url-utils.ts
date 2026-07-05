@@ -65,8 +65,8 @@ export function concatURL(url: string | URL, ...pathnames: Partial<string>[]): s
  * [Aracna Reference](https://aracna.dariosechi.it/core/utils/url)
  */
 export function deserializeURLSearchParams<T extends URLSearchParamsRecord>(params: DeserializeURLSearchParamsInit): T
-export function deserializeURLSearchParams<T extends URLSearchParamsRecord>(params: DeserializeURLSearchParamsInit, type: 'string'): string
-export function deserializeURLSearchParams<T extends URLSearchParamsRecord>(params: DeserializeURLSearchParamsInit, type: 'array'): string[][]
+export function deserializeURLSearchParams(params: DeserializeURLSearchParamsInit, type: 'string'): string
+export function deserializeURLSearchParams(params: DeserializeURLSearchParamsInit, type: 'array'): string[][]
 export function deserializeURLSearchParams<T extends URLSearchParamsRecord>(params: DeserializeURLSearchParamsInit, type: 'object'): T
 export function deserializeURLSearchParams<T extends URLSearchParamsRecord>(
   params: DeserializeURLSearchParamsInit,
@@ -86,6 +86,8 @@ export function deserializeURLSearchParams<T extends URLSearchParamsRecord>(
     }
     case 'string':
       return new URLSearchParams(params).toString()
+    default:
+      throw new Error('unexpected param type')
   }
 }
 
@@ -148,6 +150,8 @@ export function serializeURLSearchParams<T extends object>(params: SerializeURLS
             continue
           case 'string':
             record[k] = v
+            continue
+          default:
             continue
         }
       }

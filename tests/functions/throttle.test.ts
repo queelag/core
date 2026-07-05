@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, Mock, vi } from 'vitest'
-import { sleep, throttle, ThrottleMapKey } from '../../src'
+import { sleep, ThrottleMapKey, throttle } from '../../src'
 
 describe('Throttle', () => {
   let fn: Mock, key: ThrottleMapKey

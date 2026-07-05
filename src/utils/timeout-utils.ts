@@ -7,7 +7,7 @@ import { UtilLogger } from '../loggers/util-logger.js'
  *
  * [Aracna Reference](https://aracna.dariosechi.it/core/utils/timeout)
  */
-function set(fn: Function, ms: number, key: TimeoutMapKey = fn): void {
+function set(fn: CallableFunction, ms: number, key: TimeoutMapKey = fn): void {
   TIMEOUT_MAP.set(key, setTimeout(fn, ms))
   UtilLogger.debug('setTimeout', key, `The timeout has been set.`)
 }

@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it } from 'vitest'
-import { VisibilityController, sleep } from '../../src'
+import { sleep, VisibilityController } from '../../src'
 
 describe('VisibilityController', () => {
   let controller: VisibilityController, name: string

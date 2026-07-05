@@ -10,7 +10,7 @@ export function getProcessEnvKey(key: string): string | undefined {
   let value: ProcessEnvValue | Error
 
   value = tc(() => process.env[key], false)
-  if (value instanceof Error) return undefined
+  if (value instanceof Error) return
 
   return value
 }
@@ -38,7 +38,7 @@ export function getNodeEnv(): string | undefined {
   let NODE_ENV: string | undefined | Error
 
   NODE_ENV = tc(() => process.env.NODE_ENV, false)
-  if (NODE_ENV instanceof Error) return undefined
+  if (NODE_ENV instanceof Error) return
 
   return NODE_ENV
 }
@@ -265,6 +265,7 @@ export function isTextEncoderNotDefined(): boolean {
  * [Aracna Reference](https://aracna.dariosechi.it/core/utils/environment)
  */
 export function isWindowDefined(): boolean {
+  // biome-ignore lint/style/useGlobalThis: intended access
   return typeof window !== 'undefined'
 }
 
@@ -274,5 +275,6 @@ export function isWindowDefined(): boolean {
  * [Aracna Reference](https://aracna.dariosechi.it/core/utils/environment)
  */
 export function isWindowNotDefined(): boolean {
+  // biome-ignore lint/style/useGlobalThis: intended access
   return typeof window === 'undefined'
 }

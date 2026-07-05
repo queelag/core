@@ -1,5 +1,7 @@
 // Copyright 2018-2024 the Deno authors. All rights reserved. MIT license.
 // Copyright the Browserify authors. MIT License.
+//
+// biome-ignore-all lint: 3rd party code
 
 import {
   CHAR_BACKWARD_SLASH,

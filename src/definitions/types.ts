@@ -8,7 +8,7 @@ export type AppendSearchParamsToURLParams<T extends URLSearchParamsRecord = URLS
 export type CookieObjectKey = string
 export type CookieObjectValue = bigint | boolean | number | object | string | undefined
 
-export type DebounceMapKey = bigint | number | string | symbol | Function
+export type DebounceMapKey = bigint | number | string | symbol | CallableFunction
 export type DebounceMapValue = NodeJS.Timeout | number
 
 export type DeleteObjectPropertiesPredicate<T extends object = object, K extends keyof T | string = keyof T | string> = (
@@ -30,7 +30,7 @@ export type EventEmitterListenerCallback = (...args: any[]) => any
 
 export type HasArrayItemPredicate<T> = (array: T[], item: T) => boolean
 
-export type IntervalMapKey = bigint | number | string | symbol | Function
+export type IntervalMapKey = bigint | number | string | symbol | CallableFunction
 export type IntervalMapValue = NodeJS.Timeout | number
 
 export type IsEqual<T1, T2> = (a: T1, b: T2) => boolean
@@ -42,6 +42,8 @@ export type FetchRequestInitEncode = boolean | FetchEncodeOptions
 export type FetchDecodeType = 'array-buffer' | 'blob' | 'form-data' | 'json' | 'text' | 'url-search-params'
 
 export type GenerateRandomStringRandom = (bytes: number) => Uint8Array<ArrayBuffer>
+
+// export type GenericFunction = (...args: unknown[]) => unknown
 
 export namespace KeyOf {
   export type Deep<T> = keyof T
@@ -89,9 +91,9 @@ export type Storage = AsyncStorage | SyncStorage
 
 export type Theme = 'dark' | 'light' | 'system'
 
-export type ThrottleMapKey = bigint | number | string | symbol | Function
+export type ThrottleMapKey = bigint | number | string | symbol | CallableFunction
 
-export type TimeoutMapKey = bigint | number | string | symbol | Function
+export type TimeoutMapKey = bigint | number | string | symbol | CallableFunction
 export type TimeoutMapValue = NodeJS.Timeout | number
 
 export type TypeaheadOnMatch<T> = (item: T) => any

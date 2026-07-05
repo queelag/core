@@ -65,6 +65,8 @@ export class FetchResponse<T = unknown> implements Response {
         return this.decodeText()
       case 'url-search-params':
         return this.decodeURLSearchParams()
+      default:
+        break
     }
 
     switch (true) {

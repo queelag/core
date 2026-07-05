@@ -1,8 +1,8 @@
 import { beforeEach, describe, expect, it } from 'vitest'
 import {
-  FetchRequestInit,
   countFetchRequestInitHeaders,
   deleteFetchRequestInitHeader,
+  FetchRequestInit,
   getFetchRequestInitHeader,
   hasFetchRequestInitHeader,
   mergeFetchRequestInits,

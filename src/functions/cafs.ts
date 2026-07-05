@@ -7,6 +7,7 @@ import { tcp } from './tcp.js'
  */
 export async function cafs(...fns: ((...args: any[]) => Promise<any>)[]): Promise<void> {
   for (let fn of fns) {
+    // biome-ignore lint/performance/noAwaitInLoops: intended usage
     await tcp(() => fn())
   }
 }
