@@ -149,8 +149,8 @@ describe('Logger', () => {
 
     logger = new Logger('TEST', 'verbose', 'on')
 
-    expect(logger.format('verbose', 'number', 0)).toStrictEqual([AnsiColor.White, 'number -> 0', AnsiColor.Reset])
-    expect(logger.format('verbose', 'object', {})).toStrictEqual([AnsiColor.White, 'object', AnsiColor.Reset, {}])
+    expect(logger.format('verbose', 'number', 0)).toStrictEqual([AnsiColor.Black, 'number -> 0', AnsiColor.Reset])
+    expect(logger.format('verbose', 'object', {})).toStrictEqual([AnsiColor.Black, 'object', AnsiColor.Reset, {}])
 
     expect(logger.format('debug', 'number', 0)).toStrictEqual([AnsiColor.Magenta, 'number -> 0', AnsiColor.Reset])
     expect(logger.format('info', 'number', 0)).toStrictEqual([AnsiColor.Blue, 'number -> 0', AnsiColor.Reset])
